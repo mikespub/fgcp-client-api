@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>fgcp_client_api</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///C|/users/brumdall/documents/portfolio/iaas/global/technology/fgcp_client_api.py">c:\users\brumdall\documents\portfolio\iaas\global\technology\fgcp_client_api.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="https://code.google.com/p/fgcp-client-api/source/browse/fgcp_client_api.py">fgcp_client_api.py</a></font></td></tr></table>
     <p><tt>Client&nbsp;API&nbsp;library&nbsp;for&nbsp;the&nbsp;Fujitsu&nbsp;Global&nbsp;Cloud&nbsp;Platform&nbsp;(FGCP)<br>
 using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31<br>
 &nbsp;<br>
@@ -120,7 +120,8 @@ Data and other attributes defined here:<br>
 &nbsp;<br>
 Example:<br>
 from&nbsp;fgcp_client_api&nbsp;import&nbsp;<a href="#FGCPClient">FGCPClient</a><br>
-client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem')<br>
+client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem',&nbsp;'uk')<br>
+#&nbsp;Backup&nbsp;all&nbsp;VServers&nbsp;in&nbsp;your&nbsp;VSYS<br>
 inventory&nbsp;=&nbsp;client.<a href="#FGCPClient-GetSystemInventory">GetSystemInventory</a>('Python&nbsp;API&nbsp;Demo&nbsp;System')<br>
 for&nbsp;vserver&nbsp;in&nbsp;inventory['vservers']:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-BackupVServerAndRestart">BackupVServerAndRestart</a>(inventory['vsysId'],&nbsp;vserver['vserverId'])<br>
@@ -290,7 +291,7 @@ except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
 
 <hr>
 Methods inherited from <a href="fgcp_client_api.html#FGCPConnection">FGCPConnection</a>:<br>
-<dl><dt><a name="FGCPClient-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, verbose<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPClient-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -308,6 +309,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPClient-get_headers"><strong>get_headers</strong></a>(self, attachment<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPClient-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
 <hr>
 Data and other attributes inherited from <a href="fgcp_client_api.html#FGCPConnection">FGCPConnection</a>:<br>
@@ -340,7 +343,7 @@ Data and other attributes inherited from <a href="fgcp_client_api.html#FGCPConne
 &nbsp;<br>
 Example:<br>
 from&nbsp;fgcp_client_api&nbsp;import&nbsp;<a href="#FGCPCommand">FGCPCommand</a><br>
-cmd&nbsp;=&nbsp;<a href="#FGCPCommand">FGCPCommand</a>('client.pem')<br>
+cmd&nbsp;=&nbsp;<a href="#FGCPCommand">FGCPCommand</a>('client.pem',&nbsp;'uk')<br>
 vsyss&nbsp;=&nbsp;cmd.<a href="#FGCPCommand-ListVSYS">ListVSYS</a>()<br>
 for&nbsp;vsys&nbsp;in&nbsp;vsyss:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;vsys['vsysName']<br>
@@ -474,7 +477,7 @@ except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
 
 <hr>
 Methods inherited from <a href="fgcp_client_api.html#FGCPConnection">FGCPConnection</a>:<br>
-<dl><dt><a name="FGCPCommand-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, verbose<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPCommand-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -492,6 +495,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPCommand-get_headers"><strong>get_headers</strong></a>(self, attachment<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
 <hr>
 Data and other attributes inherited from <a href="fgcp_client_api.html#FGCPConnection">FGCPConnection</a>:<br>
@@ -524,11 +529,11 @@ Data and other attributes inherited from <a href="fgcp_client_api.html#FGCPConne
 &nbsp;<br>
 Example:<br>
 from&nbsp;fgcp_client_api&nbsp;import&nbsp;<a href="#FGCPConnection">FGCPConnection</a><br>
-conn&nbsp;=&nbsp;<a href="#FGCPConnection">FGCPConnection</a>('client.pem')<br>
+conn&nbsp;=&nbsp;<a href="#FGCPConnection">FGCPConnection</a>('client.pem',&nbsp;'uk')<br>
 vsyss&nbsp;=&nbsp;conn.<a href="#FGCPConnection-do_action">do_action</a>('ListVSYS')<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="FGCPConnection-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, verbose<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPConnection-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -546,6 +551,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPConnection-get_headers"><strong>get_headers</strong></a>(self, attachment<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnection-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
 <hr>
 Data and other attributes defined here:<br>
@@ -717,7 +724,7 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-fgcp_run_sample"><strong>fgcp_run_sample</strong></a>(pem_file)</dt></dl>
+<td width="100%"><dl><dt><a name="-fgcp_run_sample"><strong>fgcp_run_sample</strong></a>(pem_file, region)</dt></dl>
  <dl><dt><a name="-fgcp_show_usage"><strong>fgcp_show_usage</strong></a>(name<font color="#909090">='fgcp_client_api.py'</font>)</dt></dl>
 </td></tr></table>
 </body></html>

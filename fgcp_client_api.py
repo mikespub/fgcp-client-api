@@ -43,26 +43,29 @@ class FGCPConnection:
 	
 	Example:
 	from fgcp_client_api import FGCPConnection
-	conn = FGCPConnection('client.pem')
+	conn = FGCPConnection('client.pem', 'uk')
 	vsyss = conn.do_action('ListVSYS')
 	"""
-	host = 'api.globalcloud.de.fujitsu.com' # for Central Europe (CEMEA&I)
-	#host = 'api.globalcloud.uk.fujitsu.com' # for the UK and Ireland
-	#host = 'api.globalcloud.us.fujitsu.com' # for the Americas
-	#host = 'api.globalcloud.sg.fujitsu.com' # for Singapore, Malaysia, Indonesia, Thailand and Vietnam
-	#host = 'api.globalcloud.fujitsu.com.au' # for Australia and New Zealand
-	#host = 'api.oviss.jp.fujitsu.com'       # for Japan
+	host = 'api.globalcloud.de.fujitsu.com'
 	uri = '/ovissapi/endpoint'
 	api_version = '2011-01-31'
 	user_agent = 'OViSS-API-CLIENT'
 	locale = 'en'
-	timezone = 'Central European Time'       # TODO: adapt as needed !
+	timezone = 'Central European Time'			# updated based on time.tzname[0] or time.timezone
 	key_file = 'client.pem'
 	verbose = 0
 	show_status = 0
+	_regions = {
+		'au': 'api.globalcloud.fujitsu.com.au',	# for Australia and New Zealand
+		'de': 'api.globalcloud.de.fujitsu.com',	# for Central Europe, Middle East, Eastern Europe, Africa & India (CEMEA&I)
+		'jp': 'api.oviss.jp.fujitsu.com',		# for Japan
+		'sg': 'api.globalcloud.sg.fujitsu.com',	# for Singapore, Malaysia, Indonesia, Thailand and Vietnam
+		'uk': 'api.globalcloud.uk.fujitsu.com',	# for the UK and Ireland (UK&I)
+		'us': 'api.globalcloud.us.fujitsu.com',	# for the Americas
+	}
 	_conn = None
 
-	def __init__(self, key_file='client.pem', verbose=0):
+	def __init__(self, key_file='client.pem', region='de', verbose=0):
 		"""
 		Use the same PEM file for SSL client certificate and RSA key signature
 		
@@ -72,14 +75,32 @@ class FGCPConnection:
 		openssl pkcs12 -in UserCert.p12 -out client.pem -nodes
 		"""
 		self.key_file = key_file
+		if region in self._regions:
+			self.host = self._regions[region]
 		self.verbose = verbose
-		# CHECKME: replace host here if needed ?
-		# CHECKME: replace timezone here if needed ?
+		# Note: the timezone doesn't seem to matter for the API server,
+		# as long as the expires value is set to the current time
+		self.timezone = time.tzname[0]
+		if len(self.timezone) < 1:
+			offset = int(time.timezone / 3600)
+			if offset > 0:
+				self.timezone = 'Etc/GMT+%s' % offset
+			elif offset < 0:
+				self.timezone = 'Etc/GMT-%s' % offset
+			else:
+				self.timezone = 'Etc/GMT'
 		self._key = None
 
+	def set_region(self, region):
+		if region in self._regions:
+			# reset connection if necessary
+			if self._conn is not None and self.host != self._regions[region]:
+				self.close()
+			self.host = self._regions[region]
+
 	def close(self):
-		# CHECKME: do we really want to close this ?
 		self._conn.close()
+		self._conn = None
 
 	def get_headers(self, attachment=None):
 		if attachment is None:
@@ -188,7 +209,7 @@ class FGCPCommand(FGCPConnection):
 	
 	Example:
 	from fgcp_client_api import FGCPCommand
-	cmd = FGCPCommand('client.pem')
+	cmd = FGCPCommand('client.pem', 'uk')
 	vsyss = cmd.ListVSYS()
 	for vsys in vsyss:
 		print vsys['vsysName']
@@ -593,7 +614,8 @@ class FGCPClient(FGCPCommand):
 	
 	Example:
 	from fgcp_client_api import FGCPClient
-	client = FGCPClient('client.pem')
+	client = FGCPClient('client.pem', 'uk')
+	# Backup all VServers in your VSYS
 	inventory = client.GetSystemInventory('Python API Demo System')
 	for vserver in inventory['vservers']:
 		client.BackupVServerAndRestart(inventory['vsysId'], vserver['vserverId'])
@@ -1158,12 +1180,13 @@ class FGCPResponse(FGCPResponseElement):
 		# initialize the root element
 		self._elem = ElementTree.fromstring(data)
 
-def fgcp_run_sample(pem_file):
+def fgcp_run_sample(pem_file, region):
 	#from fgcp_client_api import FGCPClient
-	client = FGCPClient(pem_file)
+	client = FGCPClient(pem_file, region)
 	# Hint: set verbose=1 to dump the FGCP Response for further development
-	#client = FGCPClient(pem_file, 1)
+	#client = FGCPClient(pem_file, region, 1)
 	client.ShowSystemStatus()
+	# Backup all VServers in your VSYS
 	#inventory = client.GetSystemInventory('Python API Demo System')
 	#for vserver in inventory['vservers']:
 	#	client.BackupVServerAndRestart(inventory['vsysId'], vserver['vserverId'])
@@ -1187,10 +1210,10 @@ def fgcp_run_sample(pem_file):
 def fgcp_show_usage(name='fgcp_client_api.py'):
 	print """Client API library for the Fujitsu Global Cloud Platform (FGCP)
 
-Usage: %s [pem_file]
+Usage: %s [pem_file] [region]
 
 from fgcp_client_api import FGCPClient
-client = FGCPClient('client.pem')
+client = FGCPClient('client.pem', 'uk')
 inventory = client.GetSystemInventory('Python API Demo System')
 ...
 
@@ -1208,11 +1231,13 @@ if __name__ == "__main__":
 	Check if we have an existing 'client.pem' file or command line argument specifying the PEM file
 	"""
 	import os.path, sys
+	pem_file = 'client.pem'
+	region = 'de'
 	if len(sys.argv) > 1:
 		pem_file = sys.argv[1]
-	else:
-		pem_file = 'cliont.pem'
+		if len(sys.argv) > 2:
+			region = sys.argv[2]
 	if os.path.exists(pem_file):
-		fgcp_run_sample(pem_file)
+		fgcp_run_sample(pem_file, region)
 	else:
 		fgcp_show_usage(os.path.basename(sys.argv[0]))
