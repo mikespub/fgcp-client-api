@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>fgcp_client_api</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="https://code.google.com/p/fgcp-client-api/source/browse/fgcp_client_api.py">fgcp_client_api.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="http://code.google.com/p/fgcp-client-api/source/browse/fgcp_client_api.py">fgcp_client_api.py</a></font></td></tr></table>
     <p><tt>Client&nbsp;API&nbsp;library&nbsp;for&nbsp;the&nbsp;Fujitsu&nbsp;Global&nbsp;Cloud&nbsp;Platform&nbsp;(FGCP)<br>
 using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31<br>
 &nbsp;<br>
@@ -143,11 +143,19 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPClient-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
 
+<dl><dt><a name="FGCPClient-CheckStatus"><strong>CheckStatus</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;else&nbsp;than&nbsp;pass_status</tt></dd></dl>
+
 <dl><dt><a name="FGCPClient-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-CreateSystemAndStart"><strong>CreateSystemAndStart</strong></a>(self, vsysdescriptorName, vsysName, show_output<font color="#909090">=0</font>)</dt><dd><tt>Create&nbsp;VSYS&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;servers&nbsp;are&nbsp;started</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetSystemByName"><strong>GetSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Get&nbsp;VSYS&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPClient-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-FindServerTypeByName"><strong>FindServerTypeByName</strong></a>(self, name)</dt><dd><tt>Find&nbsp;ServerType&nbsp;by&nbsp;name&nbsp;-&nbsp;CHECKME:&nbsp;do&nbsp;we&nbsp;actually&nbsp;need&nbsp;this&nbsp;for&nbsp;<a href="#FGCPClient-CreateVServer">CreateVServer</a>()&nbsp;?</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSYS&nbsp;by&nbsp;vsysName</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSYS&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
 
@@ -162,6 +170,8 @@ Methods defined here:<br>
 <dl><dt><a name="FGCPClient-StopSystemAndDestroy"><strong>StopSystemAndDestroy</strong></a>(self, vsysName, show_output<font color="#909090">=0</font>)</dt><dd><tt>Destroy&nbsp;VSYS&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-WaitForStatus"><strong>WaitForStatus</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp_client_api.html#FGCPCommand">FGCPCommand</a>:<br>
@@ -186,7 +196,18 @@ except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;backup&nbsp;VDisk'<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
 
+<dl><dt><a name="FGCPClient-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateEFM">CreateEFM</a>(self,&nbsp;vsysId,&nbsp;efmType,&nbsp;efmName,&nbsp;networkId)</tt></dd></dl>
+
 <dl><dt><a name="FGCPClient-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateVSYS">CreateVSYS</a>(vsysDescriptorId,&nbsp;vsysName)</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateVServer">CreateVServer</a>(self,&nbsp;vsysId,&nbsp;vserverName,&nbsp;vserverType,&nbsp;diskImageId,&nbsp;networkId)</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-DestroyEFM"><strong>DestroyEFM</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:<br>
+try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-DestroyEFM">DestroyEFM</a>(vsysId,&nbsp;efmId)<br>
+&nbsp;except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;destroy&nbsp;EFM'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-DestroyVDiskBackup"><strong>DestroyVDiskBackup</strong></a>(self, vsysId, backupId)</dt><dd><tt>Usage:<br>
 try:<br>
@@ -200,6 +221,13 @@ try:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-DestroyVSYS">DestroyVSYS</a>(vsysId)<br>
 &nbsp;except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;destroy&nbsp;VSYS'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-DestroyVServer"><strong>DestroyVServer</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:<br>
+try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-DestroyVServer">DestroyVServer</a>(vsysId,&nbsp;vserverId)<br>
+&nbsp;except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;destroy&nbsp;VServer'<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-DetachPublicIP"><strong>DetachPublicIP</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Usage:<br>
@@ -242,7 +270,7 @@ Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;client.<a href="#FGCPClient-GetSystemUs
 
 <dl><dt><a name="FGCPClient-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVServerStatus">GetVServerStatus</a>(vsysId,&nbsp;vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListDiskImage"><strong>ListDiskImage</strong></a>(self)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPClient-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPClient-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-ListEFM"><strong>ListEFM</strong></a>(self, vsysId, efmType)</dt><dd><tt>Usage:<br>
 firewalls&nbsp;=&nbsp;client.<a href="#FGCPClient-ListEFM">ListEFM</a>(vsysId,&nbsp;"FW")<br>
@@ -372,7 +400,18 @@ except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;backup&nbsp;VDisk'<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
 
+<dl><dt><a name="FGCPCommand-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;client.<a href="#FGCPCommand-CreateEFM">CreateEFM</a>(self,&nbsp;vsysId,&nbsp;efmType,&nbsp;efmName,&nbsp;networkId)</tt></dd></dl>
+
 <dl><dt><a name="FGCPCommand-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;client.<a href="#FGCPCommand-CreateVSYS">CreateVSYS</a>(vsysDescriptorId,&nbsp;vsysName)</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;client.<a href="#FGCPCommand-CreateVServer">CreateVServer</a>(self,&nbsp;vsysId,&nbsp;vserverName,&nbsp;vserverType,&nbsp;diskImageId,&nbsp;networkId)</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-DestroyEFM"><strong>DestroyEFM</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:<br>
+try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPCommand-DestroyEFM">DestroyEFM</a>(vsysId,&nbsp;efmId)<br>
+&nbsp;except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;destroy&nbsp;EFM'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-DestroyVDiskBackup"><strong>DestroyVDiskBackup</strong></a>(self, vsysId, backupId)</dt><dd><tt>Usage:<br>
 try:<br>
@@ -386,6 +425,13 @@ try:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPCommand-DestroyVSYS">DestroyVSYS</a>(vsysId)<br>
 &nbsp;except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;destroy&nbsp;VSYS'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-DestroyVServer"><strong>DestroyVServer</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:<br>
+try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPCommand-DestroyVServer">DestroyVServer</a>(vsysId,&nbsp;vserverId)<br>
+&nbsp;except&nbsp;<a href="#FGCPResponseError">FGCPResponseError</a>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Unable&nbsp;to&nbsp;destroy&nbsp;VServer'<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-DetachPublicIP"><strong>DetachPublicIP</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Usage:<br>
@@ -428,7 +474,7 @@ Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;client.<a href="#FGCPCommand-GetSystemU
 
 <dl><dt><a name="FGCPCommand-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPCommand-GetVServerStatus">GetVServerStatus</a>(vsysId,&nbsp;vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-ListDiskImage"><strong>ListDiskImage</strong></a>(self)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPCommand-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPCommand-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-ListEFM"><strong>ListEFM</strong></a>(self, vsysId, efmType)</dt><dd><tt>Usage:<br>
 firewalls&nbsp;=&nbsp;client.<a href="#FGCPCommand-ListEFM">ListEFM</a>(vsysId,&nbsp;"FW")<br>

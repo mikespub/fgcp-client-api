@@ -298,11 +298,11 @@ class FGCPCommand(FGCPConnection):
 		if 'addressranges' in result:
 			return result['addressranges']
 
-	def ListDiskImage(self):
+	def ListDiskImage(self, serverCategory=None, vsysDescriptorId=None):
 		"""
 		Usage: diskimages = client.ListDiskImage()
 		"""
-		result = self.do_action('ListDiskImage')
+		result = self.do_action('ListDiskImage', {'serverCategory': serverCategory, 'vsysDescriptorId': vsysDescriptorId})
 		return result['diskimages']
 
 	def ListServerType(self, diskImageId):
@@ -379,6 +379,13 @@ class FGCPCommand(FGCPConnection):
 			print result['vserverStatus']
 		return result['vserverStatus']
 
+	def CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId):
+		"""
+		Usage: vserverId = client.CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId)
+		"""
+		result = self.do_action('CreateVServer', {'vsysId': vsysId, 'vserverName': vserverName, 'vserverType': vserverType, 'diskImageId': diskImageId, 'networkId': networkId})
+		return result['vserverId']
+
 	def StartVServer(self, vsysId, vserverId):
 		"""Usage:
 		try:
@@ -399,6 +406,17 @@ class FGCPCommand(FGCPConnection):
 			raise
 		"""
 		result = self.do_action('StopVServer', {'vsysId': vsysId, 'vserverId': vserverId, 'force': force})
+		return result
+
+	def DestroyVServer(self, vsysId, vserverId):
+		"""Usage:
+		try:
+			client.DestroyVServer(vsysId, vserverId)
+		 except FGCPResponseError:
+			print 'Unable to destroy VServer'
+			raise
+		"""
+		result = self.do_action('DestroyVServer', {'vsysId': vsysId, 'vserverId': vserverId})
 		return result
 
 	def ListVDisk(self, vsysId):
@@ -474,6 +492,13 @@ class FGCPCommand(FGCPConnection):
 			print result['efmStatus']
 		return result['efmStatus']
 
+	def CreateEFM(self, vsysId, efmType, efmName, networkId):
+		"""
+		Usage: efmId = client.CreateEFM(self, vsysId, efmType, efmName, networkId)
+		"""
+		result = self.do_action('CreateEFM', {'vsysId': vsysId, 'efmType': efmType, 'efmName': efmName, 'networkId': networkId})
+		return result['efmId']
+
 	def StartEFM(self, vsysId, efmId):
 		"""Usage:
 		try:
@@ -493,6 +518,17 @@ class FGCPCommand(FGCPConnection):
 			print 'Unable to stop EFM'
 		"""
 		result = self.do_action('StopEFM', {'vsysId': vsysId, 'efmId': efmId})
+		return result
+
+	def DestroyEFM(self, vsysId, efmId):
+		"""Usage:
+		try:
+			client.DestroyEFM(vsysId, efmId)
+		 except FGCPResponseError:
+			print 'Unable to destroy EFM'
+			raise
+		"""
+		result = self.do_action('DestroyEFM', {'vsysId': vsysId, 'efmId': efmId})
 		return result
 
 	def GetSystemUsage(self):
@@ -624,9 +660,9 @@ class FGCPClient(FGCPCommand):
 	vsyss = client.ListVSYS()
 	...
 	"""
-	def GetSystemByName(self, vsysName):
+	def FindSystemByName(self, vsysName):
 		"""
-		Get VSYS by vsysName
+		Find VSYS by vsysName
 		"""
 		vsyss = self.ListVSYS()
 		if len(vsyss) < 1:
@@ -635,7 +671,39 @@ class FGCPClient(FGCPCommand):
 		for vsys in vsyss:
 			if vsysName == vsys['vsysName']:
 				return vsys
-		raise FGCPResponseError('ILLEGAL_VSYS_NAME', 'Invalid vsysName in GetSystemByName')
+		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid vsysName')
+
+	def FindDiskImageByName(self, diskimageName):
+		"""
+		Find DiskImage by diskimageName
+		"""
+		# CHECKME: is baseDescriptor always = vsysDescriptorId ?
+		#diskimages = self.ListDiskImage('GENERAL', inventory['baseDescriptor'])
+		diskimages = self.ListDiskImage()
+		if len(diskimages) < 1:
+			print 'No diskimages are defined'
+			return
+		for diskimage in diskimages:
+			if diskimageName == diskimage['diskimageName']:
+				return diskimage
+		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid diskimageName')
+
+	def FindServerTypeByName(self, name):
+		"""
+		Find ServerType by name - CHECKME: do we actually need this for CreateVServer() ?
+		"""
+		return name
+		# CHECKME: do all diskimages have the same servertypes (for now) ?
+		# pick some random diskimage to get its servertypes ?
+		diskimage = self.ListDiskImage().pop()
+		servertypes = self.ListServerType(diskimage['diskimageId'])
+		if len(servertypes) < 1:
+			print 'No servertypes are defined'
+			return
+		for servertype in servertypes:
+			if name == servertype['name']:
+				return servertype
+		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid name')
 
 	def GetSystemInventory(self, vsysName=None):
 		"""
@@ -645,7 +713,7 @@ class FGCPClient(FGCPCommand):
 			vsyss = self.ListVSYS()
 		else:
 			vsyss = []
-			vsyss.append(self.GetSystemByName(vsysName))
+			vsyss.append(self.FindSystemByName(vsysName))
 		if len(vsyss) < 1:
 			print 'No VSYS are defined'
 			return
@@ -749,27 +817,13 @@ class FGCPClient(FGCPCommand):
 		Start VServer and wait until it's running
 		"""
 		# check current status
-		status = self.GetVServerStatus(vsysId, vserverId)
-		if status == 'RUNNING':
+		status = self.CheckStatus('RUNNING', ['STOPPED', 'UNEXPECTED_STOP'], 'GetVServerStatus', vsysId, vserverId)
+		if status is not None:
 			return status
-		elif status == 'STOPPED':
-			pass
-		elif status == 'UNEXPECTED_STOP':
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid vserver status %s for starting' % status)
 		# start vserver
 		result = self.StartVServer(vsysId, vserverId)
 		# wait until starting is done - TODO: add some timeout
-		while True:
-			time.sleep(5)
-			status = self.GetVServerStatus(vsysId, vserverId)
-			if status == 'STARTING':
-				pass
-			elif status == 'RUNNING':
-				return status
-			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected vserver status %s while starting' % status)
+		status = self.WaitForStatus('RUNNING', 'STARTING', 'GetVServerStatus', vsysId, vserverId)
 		return status
 
 	def StopVServerAndWait(self, vsysId, vserverId, force=None):
@@ -777,27 +831,13 @@ class FGCPClient(FGCPCommand):
 		Stop VServer and wait until it's stopped
 		"""
 		# check current status
-		status = self.GetVServerStatus(vsysId, vserverId)
-		if status == 'STOPPED':
+		status = self.CheckStatus(['STOPPED', 'UNEXPECTED_STOP'], 'RUNNING', 'GetVServerStatus', vsysId, vserverId)
+		if status is not None:
 			return status
-		elif status == 'UNEXPECTED_STOP':
-			return status
-		elif status == 'RUNNING':
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid vserver status %s for stopping' % status)
 		# stop vserver
 		result = self.StopVServer(vsysId, vserverId, force)
 		# wait until stopping is done - TODO: add some timeout
-		while True:
-			time.sleep(5)
-			status = self.GetVServerStatus(vsysId, vserverId)
-			if status == 'STOPPING':
-				pass
-			elif status == 'STOPPED':
-				return status
-			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected vserver status %s while stopping' % status)
+		status = self.WaitForStatus(['STOPPED', 'UNEXPECTED_STOP'], 'STOPPING', 'GetVServerStatus', vsysId, vserverId)
 		return status
 
 	def StartEFMAndWait(self, vsysId, efmId):
@@ -805,27 +845,13 @@ class FGCPClient(FGCPCommand):
 		Start EFM and wait until it's running
 		"""
 		# check current status
-		status = self.GetEFMStatus(vsysId, efmId)
-		if status == 'RUNNING':
+		status = self.CheckStatus('RUNNING', ['STOPPED', 'UNEXPECTED_STOP'], 'GetEFMStatus', vsysId, efmId)
+		if status is not None:
 			return status
-		elif status == 'STOPPED':
-			pass
-		elif status == 'UNEXPECTED_STOP': # CHECKME: this is what happens when calling StopEFM() !?
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid efm status %s for starting' % status)
 		# start efm
 		result = self.StartEFM(vsysId, efmId)
 		# wait until starting is done - TODO: add some timeout
-		while True:
-			time.sleep(5)
-			status = self.GetEFMStatus(vsysId, efmId)
-			if status == 'STARTING':
-				pass
-			elif status == 'RUNNING':
-				return status
-			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected efm status %s while starting' % status)
+		status = self.WaitForStatus('RUNNING', 'STARTING', 'GetEFMStatus', vsysId, efmId)
 		return status
 
 	def StopEFMAndWait(self, vsysId, efmId):
@@ -833,61 +859,29 @@ class FGCPClient(FGCPCommand):
 		Stop EFM and wait until it's stopped
 		"""
 		# check current status
-		status = self.GetEFMStatus(vsysId, efmId)
-		if status == 'STOPPED':
+		status = self.CheckStatus(['STOPPED', 'UNEXPECTED_STOP'], 'RUNNING', 'GetEFMStatus', vsysId, efmId)
+		if status is not None:
 			return status
-		elif status == 'UNEXPECTED_STOP': # CHECKME: this is what happens when calling StopEFM() !?
-			return status
-		elif status == 'RUNNING':
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid efm status %s for stopping' % status)
 		# CHECKME: for firewalls, we need to detach the publicIPs first !?
 		# stop efm
 		result = self.StopEFM(vsysId, efmId)
 		# wait until stopping is done - TODO: add some timeout
-		while True:
-			time.sleep(5)
-			status = self.GetEFMStatus(vsysId, efmId)
-			if status == 'STOPPING':
-				pass
-			elif status == 'STOPPED':
-				return status
-			elif status == 'UNEXPECTED_STOP': # CHECKME: this is what happens when calling StopEFM() !?
-				return status
-			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected efm status %s while stopping' % status)
+		status = self.WaitForStatus(['STOPPED', 'UNEXPECTED_STOP'], 'STOPPING', 'GetEFMStatus', vsysId, efmId)
 		return status
 
 	def BackupVDiskAndWait(self, vsysId, vdiskId):
 		"""
 		Take Backup of VDisk and wait until it's finished (this might take a while)
 		"""
-		# check current status
-		status = self.GetVDiskStatus(vsysId, vdiskId)
-		# CHECKME: for system disk !?
-		if status == 'STOPPED':
-			pass
-		# for other disks
-		elif status == 'NORMAL':
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid vdisk status %s for backup' % status)
+		# check current status - CHECKME: we don't return here !
+		status = self.CheckStatus('N/A', ['STOPPED', 'NORMAL'], 'GetVDiskStatus', vsysId, vdiskId)
+		if status is not None:
+			return status
 		# backup vdisk
 		result = self.BackupVDisk(vsysId, vdiskId)
 		# wait until backup is done - TODO: add some timeout
-		while True:
-			time.sleep(5)
-			status = self.GetVDiskStatus(vsysId, vdiskId)
-			if status == 'BACKUP_ING':
-				pass
-			# CHECKME: for system disk !?
-			elif status == 'STOPPED':
-				return status
-			elif status == 'NORMAL':
-				return status
-			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected vdisk status %s during backup' % status)
+		status = self.WaitForStatus(['STOPPED', 'NORMAL'], 'BACKUP_ING', 'GetVDiskStatus', vsysId, vdiskId)
+		return status
 
 	def BackupVServerAndRestart(self, vsysId, vserverId):
 		"""
@@ -952,25 +946,13 @@ class FGCPClient(FGCPCommand):
 		Attach PublicIP and wait until it's attached
 		"""
 		# check current status
-		status = self.GetPublicIPStatus(publicIp)
-		if status == 'ATTACHED':
+		status = self.CheckStatus('ATTACHED', 'DETACHED', 'GetPublicIPStatus', publicIp)
+		if status is not None:
 			return status
-		elif status == 'DETACHED':
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid publicip status %s for attaching' % status)
 		# attach publicIP
 		result = self.AttachPublicIP(vsysId, publicIp)
 		# wait until attaching is done - TODO: add some timeout
-		while True:
-			time.sleep(5)
-			status = self.GetPublicIPStatus(publicIp)
-			if status == 'ATTACHING':
-				pass
-			elif status == 'ATTACHED':
-				return status
-			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected publicip status %s while attaching' % status)
+		status = self.WaitForStatus('ATTACHED', 'ATTACHING', 'GetPublicIPStatus', publicIp)
 		return status
 
 	def DetachPublicIPAndWait(self, vsysId, publicIp):
@@ -978,26 +960,158 @@ class FGCPClient(FGCPCommand):
 		Detach PublicIP and wait until it's detached
 		"""
 		# check current status
-		status = self.GetPublicIPStatus(publicIp)
-		if status == 'DETACHED':
+		status = self.CheckStatus('DETACHED', 'ATTACHED', 'GetPublicIPStatus', publicIp)
+		if status is not None:
 			return status
-		elif status == 'ATTACHED':
-			pass
-		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid publicip status %s for detaching' % status)
 		# detach publicIP
 		result = self.DetachPublicIP(vsysId, publicIp)
 		# wait until detaching is done - TODO: add some timeout
+		status = self.WaitForStatus('DETACHED', 'DETACHING', 'GetPublicIPStatus', publicIp)
+		return status
+
+	def CheckStatus(self, done_status, pass_status, status_method, *args):
+		"""
+		Call status_method(*args) to see if we get done_status, or something else than pass_status
+		"""
+		if not hasattr(self, status_method):
+			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+		check_status = getattr(self, status_method, None)
+		if not callable(check_status):
+			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+		if isinstance(done_status, str):
+			done_list = [done_status]
+		else:
+			done_list = done_status
+		if isinstance(pass_status, str):
+			pass_list = [pass_status]
+		else:
+			pass_list = pass_status
+		status = check_status(*args)
+		if status in done_list:
+			return status
+		elif status in pass_list:
+			return
+		else:
+			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid status %s for %s' % (status, status_method))
+
+	def WaitForStatus(self, done_status, wait_status, status_method, *args):
+		"""
+		Call status_method(*args) repeatedly until we get done_status (or something else than wait_status)
+		"""
+		if not hasattr(self, status_method):
+			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+		check_status = getattr(self, status_method, None)
+		if not callable(check_status):
+			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+		if isinstance(done_status, str):
+			done_list = [done_status]
+		else:
+			done_list = done_status
+		if isinstance(wait_status, str):
+			wait_list = [wait_status]
+		else:
+			wait_list = wait_status
+		# wait until we get the done_status - TODO: add some timeout
 		while True:
 			time.sleep(5)
-			status = self.GetPublicIPStatus(publicIp)
-			if status == 'DETACHING':
-				pass
-			elif status == 'DETACHED':
+			status = check_status(*args)
+			if status in done_list:
 				return status
+			elif status in wait_list:
+				pass
 			else:
-				raise FGCPResponseError('ILLEGAL_STATE', 'Unexpected publicip status %s while detaching' % status)
+				raise FGCPResponseError('ILLEGAL_STATE', '%s returned unexpected status %s while %s' % (status_method, status, wait_status))
 		return status
+
+	def CreateSystemAndStart(self, vsysdescriptorName, vsysName, show_output=0):
+		"""
+		Create VSYS based on descriptor and wait until all servers are started
+		"""
+		if show_output:
+			print 'Creating VSYS %s' % vsysName
+			# start showing status
+			old_show_status = self.show_status
+			self.show_status = 1
+		try:
+			vsys = self.FindSystemByName(vsysName)
+		except FGCPResponseError:
+			vsysId = None
+			vsysdescriptors = self.ListVSYSDescriptor()
+			for vsysdescriptor in vsysdescriptors:
+				if vsysdescriptor['vsysdescriptorName'] == vsysdescriptorName:
+					vsysId = self.CreateVSYS(vsysdescriptor['vsysdescriptorId'], vsysName)
+					break
+			if vsysId is None:
+				raise FGCPResponseError('RESOURCE_NOT_FOUND', 'Invalid vsysDescriptorName %s' % vsysDescriptorName)
+			if show_output:
+				print 'New VSYS %s created: %s' % (vsysName, vsysId)
+			# wait until vsys deploying is done - TODO: add some timeout
+			self.WaitForStatus('NORMAL', 'DEPLOYING', 'GetVSYSStatus', vsysId)
+			pass
+		else:
+			vsysId = vsys['vsysId']
+			if show_output:
+				print 'VSYS %s already exists: %s' % (vsysName, vsysId)
+		# get inventory of the new vsys
+		inventory = self.GetSystemInventory(vsysName)
+		# CHECKME: start firewall if necessary
+		if len(inventory['firewalls']) > 0:
+			firewall = inventory['firewalls'][0]
+			self.StartEFMAndWait(vsysId, firewall['efmId'])
+		# CHECKME: allocate publicip if necessary
+		if len(inventory['publicips']) < 1:
+			if show_output:
+				print 'Allocate PublicIP to VSYS'
+			self.AllocatePublicIP(vsysId)
+			# update list of publicips
+			inventory['publicips'] = self.ListPublicIP(vsysId)
+			publicip = inventory['publicips'][0]
+			# wait until publicip deploying is done - TODO: add some timeout
+			self.WaitForStatus(['DETACHED', 'ATTACHED'], 'DEPLOYING', 'GetPublicIPStatus', publicip['address'])
+		# CHECKME: attach publicip if necessary
+		if show_output:
+			print 'Attach PublicIP to VSYS'
+		publicip = inventory['publicips'][0]
+		self.AttachPublicIPAndWait(vsysId, publicip['address'])
+		# TODO: create vserver etc.
+		if len(inventory['vservers']) < len(inventory['vnets']):
+			diskimage = self.FindDiskImageByName('CentOS 5.4 32bit(EN)')
+			print diskimage
+			# CHECKME: do we actually need this for CreateVServer ?
+			servertype = self.FindServerTypeByName('economy')
+			print servertype
+			# TODO CreateVServer
+			#...
+			idx = 1
+			for vnetId in inventory['vnets']:
+				print vnetId
+				# CHECKME: add vservers to the network zone
+				#vserverId = self.CreateVServer(vsysId, 'Server%s' % idx, 'economy', diskimage['diskimageId'], vnetId)
+				# wait until vserver deploying is done - TODO: add some timeout
+				#status = self.WaitForStatus('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsysId, vserverId)
+				idx += 1
+				vserverId = self.CreateVServer(vsysId, 'Server%s' % idx, 'economy', diskimage['diskimageId'], vnetId)
+				# wait until vserver deploying is done - TODO: add some timeout
+				status = self.WaitForStatus('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsysId, vserverId)
+				idx += 1
+				# CHECKME: add loadbalancer to the DMZ
+				if len(inventory['loadbalancers']) < 1 and vnetId.split('-').pop() == 'DMZ':
+					efmId = self.CreateEFM(vsysId, 'SLB', 'LoadBalancer', vnetId)
+					# wait until efm deploying is done - TODO: add some timeout
+					self.WaitForStatus('STOPPED', 'DEPLOYING', 'GetEFMStatus', vsysId, efmId)
+			# repopulate inventory
+			inventory = self.GetSystemInventory(vsysName)
+		# CHECKME: start loadbalancer if necessary
+		if len(inventory['loadbalancers']) > 0:
+			loadbalancer = inventory['loadbalancers'][0]
+			self.StartEFMAndWait(vsysId, loadbalancer['efmId'])
+		# CHECKME: start servers if necessary
+		if len(inventory['vservers']) > 0:
+			for vserver in inventory['vservers']:
+				self.StartVServerAndWait(vsysId, vserver['vserverId'])
+		if show_output:
+			# stop showing status
+			self.show_status = old_show_status
 
 	def StopSystemAndDestroy(self, vsysName, show_output=0):
 		"""
@@ -1025,7 +1139,6 @@ class FGCPClient(FGCPCommand):
 			if show_output:
 				print publicip['address']
 			status = self.DetachPublicIPAndWait(inventory['vsysId'], publicip['address'])
-		return
 		# Stop all firewalls
 		for firewall in inventory['firewalls']:
 			if show_output:
@@ -1191,17 +1304,19 @@ def fgcp_run_sample(pem_file, region):
 	#for vserver in inventory['vservers']:
 	#	client.BackupVServerAndRestart(inventory['vsysId'], vserver['vserverId'])
 	#client.CleanupBackups(inventory['vsysId'])
+	#...
+	#client.CreateSystemAndStart('2-tier Skeleton', 'Python API Demo System', 1)
 	#client.StopSystemAndDestroy('Python API Demo System', 1)
 	#...
-	#
 	# Note: you can also use all API commands from FGCPCommand() here
 	#vsyss = client.ListVSYS()
 	#for vsys in vsyss:
 	#	vsysconfig = client.GetVSYSConfiguration(vsys['vsysId'])
 	#	...
 	#vsysdescriptors = client.ListVSYSDescriptor()
+	#print vsysdescriptors
 	#for vsysdescriptor in vsysdescriptors:
-	#	if vsysdescriptor['vsysdescriptorName'] == '1-tier Skeleton':
+	#	if vsysdescriptor['vsysdescriptorName'] == '2-tier Skeleton':
 	#		vsysId = client.CreateVSYS(vsysdescriptor['vsysdescriptorId'], 'Python API Demo System')
 	#		print 'New VSYS Created: %s' % vsysId
 	#		break
