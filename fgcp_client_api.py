@@ -250,157 +250,16 @@ class FGCPConnection:
 			print data
 
 		# analyze XML-RPC response
-		resp = FGCPResponse(data)
+		resp = FGCPResponseParser().parse_data(data)
 		if self.debug > 0:
 			print 'FGCP Response for %s:' % action
 			resp.dump()
 		# FIXME: use todict() first, and then verify responseStatus ?
-		if resp.responseStatus.text != 'SUCCESS':
-			raise FGCPResponseError(resp.responseStatus.text, resp.responseMessage.text)
+		if resp.responseStatus != 'SUCCESS':
+			raise FGCPResponseError(resp.responseStatus, resp.responseMessage)
 
-		# return dictionary
-		return resp.todict()
-
-class FGCPResponseError(Exception):
-	"""
-	Exception class for FGCP Response errors
-	"""
-	def __init__(self, status, message):
-		self.status = status
-		self.message = message
-	def __str__(self):
-		return "Status: " + self.status + "\nMessage: " + self.message
-
-class FGCPResponseElement(object):
-	"""
-	FIXME: dummy object to access response elements by name
-	"""
-	_elem = None
-	text = 'N/A'
-	def __init__(self, elem):
-		"""
-		Initialize the root element
-		"""
-		self._elem = elem
-		# CHECKME: initialize the text (?)
-		if self._elem is not None and self._elem.text is not None:
-			self.text = self._elem.text.strip()
-	def __getattr__(self, name):
-		"""
-		Find the first subelement that matches the name
-		"""
-		found = self._elem.find('{http://apioviss.jp.fujitsu.com}%s' % name)
-		if found is not None:
-			return FGCPResponseElement(found)
-	def __repr__(self):
-		"""
-		Return the text corresponding to this element
-		"""
-		if self._elem is None:
-			return 'N/A'
-		elif self._elem.text:
-			text = self._elem.text.strip()
-			return self.cleantag(self._elem.tag) + ': "' + text + '"'
-		else:
-			return self.cleantag(self._elem.tag) + ': N/A'
-	def __iter__(self):
-		"""
-		Return a list of subelements as iterator
-		"""
-		nodes = []
-		for subelem in self._elem:
-			nodes.append(FGCPResponseElement(subelem))
-		return iter(nodes)
-	def dump(self, depth=0):
-		"""
-		Show dump of the FGCP Response for development
-		"""
-		#self.printelem(self._elem)
-		import pprint
-		pprint.pprint(self.todict())
-	def todict(self, root=None):
-		"""
-		Convert the Element to a (semi-)flat dict
-		"""
-		if root is None:
-			root = self._elem
-		if root is None:
-			return
-		# CHECKME: we don't seem to have any attributes here
-		#for key, val in root.items():
-		#	if key in info:
-		#		print "OOPS ! " + key + " attrib is already in " + repr(info)
-		#	else:
-		#		info[key] = val
-		# No children -> return text
-		if len(root) < 1:
-			if root.text is None:
-				return ''
-			else:
-				return root.text.strip()
-		# One child -> return list !?
-		elif len(root) == 1:
-			info = []
-			# if the child returns a string, return that too (cfr. ListServerType - servertype - memory - memorySize)
-			for subelem in root:
-				child = self.todict(subelem)
-				if isinstance(child, str):
-					return child
-				else:
-					info.append(child)
-			return info
-		# More children -> return dict or list !?
-		info = {}
-		is_array = 0
-		for subelem in root:
-			key = self.cleantag(subelem.tag)
-			if key in info:
-				#print "OOPS ! " + key + " child is already in " + repr(info)
-				# convert to list !?
-				old_info = info[key]
-				info = []
-				info.append(old_info)
-				is_array = 1
-			if is_array == 1:
-				info.append(self.todict(subelem))
-			else:
-				info[key] = self.todict(subelem)
-		return info
-	def printelem(self, elem, depth=0):
-		"""
-		Print out the Element recursively
-		"""
-		if elem.text:
-			print '  ' * depth + self.cleantag(elem.tag) + ': ' + elem.text
-		else:
-			print '  ' * depth + self.cleantag(elem.tag) + ': '
-		# CHECKME: we don't seem to have any attributes here
-		for key, val in elem.items():
-			print '  ' * depth + '  ' + key + '=' + val
-		for child in elem:
-			self.printelem(child, depth+1)
-	def cleantag(self, tag):
-		"""
-		Return the tag without namespace
-		"""
-		if tag is None:
-			return tag
-		elif tag.startswith('{'):
-			return tag[tag.index('}') + 1:]
-		else:
-			return tag
-
-class FGCPResponse(FGCPResponseElement):
-	"""
-	FIXME: dummy object to access response elements by name
-	"""
-	def __init__(self, data):
-		"""
-		Load the FGCP Response as XML ElementTree
-		"""
-		#ElementTree.register_namespace(uri='http://apioviss.jp.fujitsu.com')
-		# initialize the root element
-		self._elem = ElementTree.fromstring(data)
+		# return FGCP Response
+		return resp
 
 
 class FGCPCommand(FGCPConnection):
@@ -412,8 +271,8 @@ class FGCPCommand(FGCPConnection):
 	cmd = FGCPCommand('client.pem', 'uk')
 	vsyss = cmd.ListVSYS()
 	for vsys in vsyss:
-		print vsys['vsysName']
-		vsysconfig = cmd.GetVSYSConfiguration(vsys['vsysId'])
+		print vsys.vsysName
+		vsysconfig = cmd.GetVSYSConfiguration(vsys.vsysId)
 		...
 	"""
 
@@ -449,21 +308,21 @@ class FGCPCommand(FGCPConnection):
 		Usage: vsysdescriptors = client.ListVSYSDescriptor()
 		"""
 		result = self.do_action('ListVSYSDescriptor')
-		return result['vsysdescriptors']
+		return result.vsysdescriptors
 
 	def GetVSYSDescriptorConfiguration(self, vsysDescriptorId):
 		"""
-		Usage: vsysdescriptorconfig = client.GetVSYSDescriptorConfiguration(vsysDescriptorId)
+		Usage: vsysdescriptorconfig = client.GetVSYSDescriptorConfiguration(vsysdescriptor.vsysdescriptorId)
 		"""
 		result = self.do_action('GetVSYSDescriptorConfiguration', {'vsysDescriptorId': vsysDescriptorId})
-		return result['vsysdescriptor']
+		return result.vsysdescriptor
 
 	def GetVSYSDescriptorAttributes(self, vsysDescriptorId):
 		"""
-		Usage: vsysdescriptorattr = client.GetVSYSDescriptorAttributes(vsysDescriptorId)
+		Usage: vsysdescriptorattr = client.GetVSYSDescriptorAttributes(vsysdescriptor.vsysdescriptorId)
 		"""
 		result = self.do_action('GetVSYSDescriptorAttributes', {'vsysDescriptorId': vsysDescriptorId})
-		return result['vsysdescriptor']
+		return result.vsysdescriptor
 
 	def UpdateVSYSDescriptorAttribute(self, vsysDescriptorId, updateLcId, attributeName, attributeValue):
 		result = self.do_action('UpdateVSYSDescriptorAttribute', {'vsysDescriptorId': vsysDescriptorId, 'updateLcId': updateLcId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -475,8 +334,8 @@ class FGCPCommand(FGCPConnection):
 
 	def RegisterPrivateVSYSDescriptor(self, vsysId, name, description, keyword, vservers):
 		"""Usage:
-		inventory = client.GetSystemInventory('My Existing VSYS')
-		client.RegisterPrivateVSYSDescriptor(inventory['vsysId'], 'My New Template', 'This is a new template based on my existing VSYS', 'some key words', inventory['vservers'])
+		vsys = client.GetSystemInventory('My Existing VSYS')
+		client.RegisterPrivateVSYSDescriptor(vsys.vsysId, 'My New Template', 'This is a new template based on my existing VSYS', 'some key words', vsys.vservers)
 		"""
 		filename = 'dummy.xml'
 		vsysDescriptorXML = self.get_vsysDescriptorXML(vsysId, name, description, keyword, vservers)
@@ -503,13 +362,13 @@ class FGCPCommand(FGCPConnection):
 			for vserver in vservers:
 				L.append('    <server>')
 				# CHECKME: and what should we use for the id here - is it mandatory ?
-				L.append('      <id>%s</id>' % vserver['vserverId'])
+				L.append('      <id>%s</id>' % vserver.vserverId)
 				L.append('      <locales>')
 				L.append('        <locale>')
 				L.append('          <lcid>en</lcid>')
-				L.append('          <name>%s</name>' % vserver['vserverName'])
+				L.append('          <name>%s</name>' % vserver.vserverName)
 				# CHECKME: what should we use for description ?
-				descr = vserver['vserverName'] + ' on ' + vserver['vserverType'] + ' server type'
+				descr = vserver.vserverName + ' on ' + vserver.vserverType + ' server type'
 				L.append('          <description>%s</description>' % descr)
 				L.append('        </locale>')
 				L.append('      </locales>')
@@ -527,23 +386,23 @@ class FGCPCommand(FGCPConnection):
 		Usage: publicips = client.ListPublicIP()
 		"""
 		result = self.do_action('ListPublicIP', {'vsysId': vsysId})
-		return result['publicips']
+		return result.publicips
 
 	def GetPublicIPAttributes(self, publicIp):
 		"""
-		Usage: publicipattr = client.GetPublicIPAttributes(publicIp)
+		Usage: publicipattr = client.GetPublicIPAttributes(publicip.address)
 		"""
 		result = self.do_action('GetPublicIPStatus', {'publicIp': publicIp})
-		return result['publicips']
+		return result.publicips
 
 	def GetPublicIPStatus(self, publicIp):
 		"""
-		Usage: status = client.GetPublicIPStatus(publicIp)
+		Usage: status = client.GetPublicIPStatus(publicip.address)
 		"""
 		result = self.do_action('GetPublicIPStatus', {'publicIp': publicIp})
 		# show status if requested, e.g. for wait operations
-		self.show_status(result['publicipStatus'])
-		return result['publicipStatus']
+		self.show_status(result.publicipStatus)
+		return result.publicipStatus
 
 	def AllocatePublicIP(self, vsysId):
 		result = self.do_action('AllocatePublicIP', {'vsysId': vsysId})
@@ -566,8 +425,8 @@ class FGCPCommand(FGCPConnection):
 		Usage: addressranges = client.GetAddressRange()
 		"""
 		result = self.do_action('GetAddressRange')
-		if 'addressranges' in result:
-			return result['addressranges']
+		if hasattr(result, 'addressranges'):
+			return result.addressranges
 
 	def CreateAddressPool(self, pipFrom=None, pipTo=None):
 		result = self.do_action('CreateAddressPool', {'pipFrom': pipFrom, 'pipTo': pipTo})
@@ -586,14 +445,14 @@ class FGCPCommand(FGCPConnection):
 		Usage: diskimages = client.ListDiskImage()
 		"""
 		result = self.do_action('ListDiskImage', {'serverCategory': serverCategory, 'vsysDescriptorId': vsysDescriptorId})
-		return result['diskimages']
+		return result.diskimages
 
 	def GetDiskImageAttributes(self, vsysId, diskImageId):
 		"""
-		Usage: diskimage = client.GetDiskImageAttributes(vsysId, diskImageId)
+		Usage: diskimage = client.GetDiskImageAttributes(vsys.vsysId, diskimage.diskimageId)
 		"""
 		result = self.do_action('GetDiskImageAttributes', {'vsysId': vsysId, 'diskImageId': diskImageId})
-		return result['diskimage']
+		return result.diskimage
 
 	def UpdateDiskImageAttribute(self, vsysId, diskImageId, updateLcId, attributeName, attributeValue):
 		result = self.do_action('UpdateDiskImageAttribute', {'vsysId': vsysId, 'diskImageId': diskImageId, 'updateLcId': updateLcId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -627,10 +486,10 @@ class FGCPCommand(FGCPConnection):
 
 	def ListServerType(self, diskImageId):
 		"""
-		Usage: servertypes = client.ListServerType(diskImageId)
+		Usage: servertypes = client.ListServerType(diskimage.diskimageId)
 		"""
 		result = self.do_action('ListServerType', {'diskImageId': diskImageId})
-		return result['servertypes']
+		return result.servertypes
 
 	def ListVSYS(self):
 		"""
@@ -638,16 +497,16 @@ class FGCPCommand(FGCPConnection):
 		"""
 		result = self.do_action('ListVSYS')
 		# CHECKME: initialize empty list if necessary
-		if 'vsyss' not in result:
-			result['vsyss'] = []
-		return result['vsyss']
+		if not hasattr(result, 'vsyss'):
+			setattr(result, 'vsyss', [])
+		return result.vsyss
 
 	def GetVSYSConfiguration(self, vsysId):
 		"""
-		Usage: vsysconfig = client.GetVSYSConfiguration(vsysId)
+		Usage: vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 		"""
 		result = self.do_action('GetVSYSConfiguration', {'vsysId': vsysId})
-		return result['vsys']
+		return result.vsys
 
 	def UpdateVSYSConfiguration(self, vsysId, configurationName, configurationValue):
 		result = self.do_action('UpdateVSYSConfiguration', {'vsysId': vsysId, 'configurationName': configurationName, 'configurationValue': configurationValue})
@@ -655,10 +514,10 @@ class FGCPCommand(FGCPConnection):
 
 	def GetVSYSAttributes(self, vsysId):
 		"""
-		Usage: vsysattr = client.GetVSYSAttributes(vsysId)
+		Usage: vsysattr = client.GetVSYSAttributes(vsys.vsysId)
 		"""
 		result = self.do_action('GetVSYSAttributes', {'vsysId': vsysId})
-		return result['vsys']
+		return result.vsys
 
 	def UpdateVSYSAttribute(self, vsysId, attributeName, attributeValue):
 		result = self.do_action('UpdateVSYSAttribute', {'vsysId': vsysId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -666,19 +525,19 @@ class FGCPCommand(FGCPConnection):
 
 	def GetVSYSStatus(self, vsysId):
 		"""
-		Usage: status = client.GetVSYSStatus(vsysId)
+		Usage: status = client.GetVSYSStatus(vsys.vsysId)
 		"""
 		result = self.do_action('GetVSYSStatus', {'vsysId': vsysId})
 		# show status if requested, e.g. for wait operations
-		self.show_status(result['vsysStatus'])
-		return result['vsysStatus']
+		self.show_status(result.vsysStatus)
+		return result.vsysStatus
 
 	def CreateVSYS(self, vsysDescriptorId, vsysName):
 		"""
-		Usage: vsysId = client.CreateVSYS(vsysDescriptorId, vsysName)
+		Usage: vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'My New System')
 		"""
 		result = self.do_action('CreateVSYS', {'vsysDescriptorId': vsysDescriptorId, 'vsysName': vsysName})
-		return result['vsysId']
+		return result.vsysId
 
 	def DestroyVSYS(self, vsysId):
 		result = self.do_action('DestroyVSYS', {'vsysId': vsysId})
@@ -686,24 +545,24 @@ class FGCPCommand(FGCPConnection):
 
 	def ListVServer(self, vsysId):
 		"""
-		Usage: vservers = client.ListVServer(vsysId)
+		Usage: vservers = client.ListVServer(vsys.vsysId)
 		"""
 		result = self.do_action('ListVServer', {'vsysId': vsysId})
-		return result['vservers']
+		return result.vservers
 
 	def GetVServerConfiguration(self, vsysId, vserverId):
 		"""
-		Usage: vserverconfig = client.GetVServerConfiguration(vsysId, vserverId)
+		Usage: vserverconfig = client.GetVServerConfiguration(vsys.vsysId, vserver.vserverId)
 		"""
 		result = self.do_action('GetVServerConfiguration', {'vsysId': vsysId, 'vserverId': vserverId})
-		return result['vserver']
+		return result.vserver
 
 	def GetVServerAttributes(self, vsysId, vserverId):
 		"""
-		Usage: vserverattr = client.GetVServerAttributes(vsysId, vserverId)
+		Usage: vserverattr = client.GetVServerAttributes(vsys.vsysId, vserver.vserverId)
 		"""
 		result = self.do_action('GetVServerAttributes', {'vsysId': vsysId, 'vserverId': vserverId})
-		return result['vserver']
+		return result.vserver
 
 	def UpdateVServerAttribute(self, vsysId, vserverId, attributeName, attributeValue):
 		result = self.do_action('UpdateVServerAttribute', {'vsysId': vsysId, 'vserverId': vserverId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -711,26 +570,26 @@ class FGCPCommand(FGCPConnection):
 
 	def GetVServerInitialPassword(self, vsysId, vserverId):
 		"""
-		Usage: initialpwd = client.GetVServerInitialPassword(vsysId, vserverId)
+		Usage: initialpwd = client.GetVServerInitialPassword(vsys.vsysId, vserver.vserverId)
 		"""
 		result = self.do_action('GetVServerInitialPassword', {'vsysId': vsysId, 'vserverId': vserverId})
-		return result['initialPassword']
+		return result.initialPassword
 
 	def GetVServerStatus(self, vsysId, vserverId):
 		"""
-		Usage: status = client.GetVServerStatus(vsysId, vserverId)
+		Usage: status = client.GetVServerStatus(vsys.vsysId, vserver.vserverId)
 		"""
 		result = self.do_action('GetVServerStatus', {'vsysId': vsysId, 'vserverId': vserverId})
 		# show status if requested, e.g. for wait operations
-		self.show_status(result['vserverStatus'])
-		return result['vserverStatus']
+		self.show_status(result.vserverStatus)
+		return result.vserverStatus
 
 	def CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId):
 		"""
-		Usage: vserverId = client.CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId)
+		Usage: vserverId = client.CreateVServer(self, vsys.vsysId, 'My New Server', servertype.name, diskimage.diskimageId, vsys.vnets[0])
 		"""
 		result = self.do_action('CreateVServer', {'vsysId': vsysId, 'vserverName': vserverName, 'vserverType': vserverType, 'diskImageId': diskImageId, 'networkId': networkId})
-		return result['vserverId']
+		return result.vserverId
 
 	def StartVServer(self, vsysId, vserverId):
 		result = self.do_action('StartVServer', {'vsysId': vsysId, 'vserverId': vserverId})
@@ -746,17 +605,17 @@ class FGCPCommand(FGCPConnection):
 
 	def ListVDisk(self, vsysId):
 		"""
-		Usage: vdisks = client.ListVDisk(vsysId)
+		Usage: vdisks = client.ListVDisk(vsys.vsysId)
 		"""
 		result = self.do_action('ListVDisk', {'vsysId': vsysId})
-		return result['vdisks']
+		return result.vdisks
 
 	def GetVDiskAttributes(self, vsysId, vdiskId):
 		"""
-		Usage: vdiskattr = client.GetVDiskAttributes(vsysId, vdiskId)
+		Usage: vdiskattr = client.GetVDiskAttributes(vsys.vsysId, vdisk.vdiskId)
 		"""
 		result = self.do_action('GetVDiskAttributes', {'vsysId': vsysId, 'vdiskId': vdiskId})
-		return result['vdisk']
+		return result.vdisk
 
 	def UpdateVDiskAttribute(self, vsysId, vdiskId, attributeName, attributeValue):
 		result = self.do_action('UpdateVDiskAttribute', {'vsysId': vsysId, 'vdiskId': vdiskId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -764,19 +623,19 @@ class FGCPCommand(FGCPConnection):
 
 	def GetVDiskStatus(self, vsysId, vdiskId):
 		"""
-		Usage: status = client.GetVDiskStatus(vsysId, vdiskId)
+		Usage: status = client.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
 		"""
 		result = self.do_action('GetVDiskStatus', {'vsysId': vsysId, 'vdiskId': vdiskId})
 		# show status if requested, e.g. for wait operations
-		self.show_status(result['vdiskStatus'])
-		return result['vdiskStatus']
+		self.show_status(result.vdiskStatus)
+		return result.vdiskStatus
 
 	def CreateVDisk(self, vsysId, vdiskName, size):
 		"""
-		Usage: vdiskId = client.CreateVDisk(self, vsysId, vdiskName, size)
+		Usage: vdiskId = client.CreateVDisk(self, vsys.vsysId, vdiskName, size)
 		"""
 		result = self.do_action('CreateVDisk', {'vsysId': vsysId, 'vdiskName': vdiskName, 'size': size})
-		return result['vdiskId']
+		return result.vdiskId
 
 	def AttachVDisk(self, vsysId, vserverId, vdiskId):
 		result = self.do_action('AttachVDisk', {'vsysId': vsysId, 'vserverId': vserverId, 'vdiskId': vdiskId})
@@ -792,10 +651,10 @@ class FGCPCommand(FGCPConnection):
 
 	def ListVDiskBackup(self, vsysId, vdiskId, timeZone=None, countryCode=None):
 		"""
-		Usage: backups = client.ListVDiskBackup(vsysId, vdiskId)
+		Usage: backups = client.ListVDiskBackup(vsys.vsysId, vdisk.vdiskId)
 		"""
 		result = self.do_action('ListVDiskBackup', {'vsysId': vsysId, 'vdiskId': vdiskId, 'timeZone': timeZone, 'countryCode': countryCode})
-		return result['backups']
+		return result.backups
 
 	def BackupVDisk(self, vsysId, vdiskId):
 		result = self.do_action('BackupVDisk', {'vsysId': vsysId, 'vdiskId': vdiskId})
@@ -811,11 +670,11 @@ class FGCPCommand(FGCPConnection):
 
 	def ListEFM(self, vsysId, efmType):
 		"""Usage:
-		firewalls = client.ListEFM(vsysId, "FW")
-		loadbalancers = client.ListEFM(vsysId, "SLB")
+		firewalls = client.ListEFM(vsys.vsysId, "FW")
+		loadbalancers = client.ListEFM(vsys.vsysId, "SLB")
 		"""
 		result = self.do_action('ListEFM', {'vsysId': vsysId, 'efmType': efmType})
-		return result['efms']
+		return result.efms
 
 	def GetEFMConfiguration(self, vsysId, efmId, configurationName, configurationXML=None):
 		"""Generic method for all GetEFMConfiguration methods"""
@@ -823,11 +682,11 @@ class FGCPCommand(FGCPConnection):
 			result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName':  configurationName})
 		else:
 			result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName':  configurationName}, {'name': 'configurationXMLFilePath', 'body': configurationXML})
-		return result['efm']
+		return result.efm
 
 	def GetEFMConfigHandler(self, vsysId, efmId):
 		"""Handler for specific GetEFMConfiguration methods, see FGCPGetEFMConfigHandler for details
-		Usage: fw_policy = client.GetEFMConfigHandler(vsysId, efmId).FW_POLICY(from_zone, to_zone)
+		Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY(from_zone, to_zone)
 		"""
 		return FGCPGetEFMConfigHandler(self, vsysId, efmId)
 
@@ -844,7 +703,7 @@ class FGCPCommand(FGCPConnection):
 
 	def UpdateEFMConfigHandler(self, vsysId, efmId):
 		"""Handler for specific UpdateEFMConfiguration methods, see FGCPUpdateEFMConfigHandler for details
-		Usage: client.UpdateEFMConfigHandler(vsysId, efmId).FW_DNS('AUTO')
+		Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS('AUTO')
 		"""
 		return FGCPUpdateEFMConfigHandler(self, vsysId, efmId)
 
@@ -861,10 +720,10 @@ class FGCPCommand(FGCPConnection):
 
 	def GetEFMAttributes(self, vsysId, efmId):
 		"""
-		Usage: efmattr = client.GetEFMAttributes(vsysId, efmId)
+		Usage: efmattr = client.GetEFMAttributes(vsys.vsysId, loadbalancer.efmId)
 		"""
 		result = self.do_action('GetEFMAttributes', {'vsysId': vsysId, 'efmId': efmId})
-		return result['efm']
+		return result.efm
 
 	def UpdateEFMAttribute(self, vsysId, efmId, attributeName, attributeValue):
 		result = self.do_action('UpdateEFMAttribute', {'vsysId': vsysId, 'efmId': efmId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -872,19 +731,19 @@ class FGCPCommand(FGCPConnection):
 
 	def GetEFMStatus(self, vsysId, efmId):
 		"""
-		Usage: status = client.GetEFMStatus(vsysId, efmId)
+		Usage: status = client.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
 		"""
 		result = self.do_action('GetEFMStatus', {'vsysId': vsysId, 'efmId': efmId})
 		# show status if requested, e.g. for wait operations
-		self.show_status(result['efmStatus'])
-		return result['efmStatus']
+		self.show_status(result.efmStatus)
+		return result.efmStatus
 
 	def CreateEFM(self, vsysId, efmType, efmName, networkId):
 		"""
-		Usage: efmId = client.CreateEFM(self, vsysId, efmType, efmName, networkId)
+		Usage: efmId = client.CreateEFM(self, vsys.vsysId, 'SLB', 'My LoadBalancer', vsys.vnets[0])
 		"""
 		result = self.do_action('CreateEFM', {'vsysId': vsysId, 'efmType': efmType, 'efmName': efmName, 'networkId': networkId})
-		return result['efmId']
+		return result.efmId
 
 	def StartEFM(self, vsysId, efmId):
 		result = self.do_action('StartEFM', {'vsysId': vsysId, 'efmId': efmId})
@@ -900,10 +759,10 @@ class FGCPCommand(FGCPConnection):
 
 	def ListEFMBackup(self, vsysId, efmId, timeZone=None, countryCode=None):
 		"""
-		Usage: backups = client.ListEFMBackup(vsysId, efmId)
+		Usage: backups = client.ListEFMBackup(vsys.vsysId, firewall.efmId)
 		"""
 		result = self.do_action('ListEFMBackup', {'vsysId': vsysId, 'efmId': efmId, 'timeZone': timeZone, 'countryCode': countryCode})
-		return result['backups']
+		return result.backups
 
 	def BackupEFM(self, vsysId, efmId):
 		result = self.do_action('BackupEFM', {'vsysId': vsysId, 'efmId': efmId})
@@ -919,17 +778,17 @@ class FGCPCommand(FGCPConnection):
 
 	def StandByConsole(self, vsysId, networkId):
 		"""
-		Usage: url = client.StandByConsole(vsysId, networkId)
+		Usage: url = client.StandByConsole(vsys.vsysId, vsys.vnets[0])
 		"""
 		result = self.do_action('StandByConsole', {'vsysId': vsysId, 'networkId': networkId})
-		return result['url']
+		return result.url
 
 	def GetSystemUsage(self, vsysIds=None):
 		"""NOTE: extra 'date' element on top-level compared to other API calls !
 		Usage: date, usage = client.GetSystemUsage()
 		"""
 		result = self.do_action('GetSystemUsage', {'vsysIds': vsysIds})
-		return result['date'], result['usageinfos']
+		return result.date, result.usageinfos
 
 class FGCPGenericEFMHandler:
 	"""
@@ -949,76 +808,92 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 	"""
 	Handler for FGCP GetEFMConfiguration methods
 	
-	Example: fw_policy = client.GetEFMConfigHandler(vsysId, efmId).FW_POLICY(from_zone, to_zone)
+	Example: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE()
 	"""
 	def FW_NAT_RULE(self):
 		"""
-		Usage: fw_nat_rule = client.GetEFMConfigHandler(vsysId, efmId).FW_NAT_RULE()
+		Usage: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE()
 		"""
-		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE')['firewall']
-		if 'nat' in firewall:
-			return firewall['nat']
+		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE').firewall
+		if hasattr(firewall, 'nat'):
+			# CHECKME: remove <rules> part first
+			if isinstance(firewall.nat, list) and len(firewall.nat) > 0:
+				return firewall.nat[0]
 
 	def FW_DNS(self):
 		"""
-		Usage: fw_dns = client.GetEFMConfigHandler(vsysId, efmId).FW_DNS()
+		Usage: fw_dns = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS()
 		"""
-		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS')['firewall']
-		if 'dns' in firewall:
-			return firewall['dns']
+		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS').firewall
+		if hasattr(firewall, 'dns'):
+			return firewall.dns
 
 	def FW_POLICY(self, from_zone=None, to_zone=None):
 		"""CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
-		Usage: fw_policy = client.GetEFMConfigHandler(vsysId, efmId).FW_POLICY(from_zone, to_zone)
+		Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY(from_zone, to_zone)
 		"""
 		configurationXML = self._client.get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
-		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)['firewall']
-		if 'directions' in firewall:
-			return firewall['directions']
+		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML).firewall
+		if hasattr(firewall, 'directions'):
+			return firewall.directions
 
 	def FW_LOG(self, num=None, orders=None):
 		"""CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
 		Usage:
-		ipaddress = inventory['publicips'][0]['address']
-		orders = [{'order': {'prefix': 'dst', 'value': ipaddress, 'from': None, 'to': None}}]
-		fw_log = client.GetEFMConfigHandler(vsysId, efmId).FW_LOG(num, orders)
+		ipaddress = vsys.publicips[0].address
+		orders = [FGCPFWLogOrder(prefix='dst', value=ipaddress, from_zone=None, to_zone=None)]
+		fw_log = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_LOG(100, orders)
 		"""
+		orders = self.convert_fw_log_orders(orders)
 		configurationXML = self._client.get_configurationXML('firewall_log', {'num': num, 'orders': orders})
-		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML)['firewall']
+		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML).firewall
+
+	def convert_fw_log_orders(self, orders=None):
+		if orders is None or len(orders) < 1:
+			return None
+		new_orders = []
+		for order in orders:
+			new_orders.append({'order': order.__dict__})
+		return new_orders
 
 	def FW_LIMIT_POLICY(self, from_zone=None, to_zone=None):
 		"""CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
-		Usage: fw_limit_policy = client.GetEFMConfigHandler(vsysId, efmId).FW_LIMIT_POLICY(from_zone, to_zone)
+		Usage: fw_limit_policy = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_LIMIT_POLICY(from_zone, to_zone)
 		"""
 		configurationXML = self._client.get_configurationXML('firewall_limit_policy', {'from': from_zone, 'to': to_zone})
-		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML)['firewall']
+		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML).firewall
 
 	def SLB_RULE(self):
 		"""
-		Usage: slb_rule = client.GetEFMConfigHandler(vsysId, efmId).SLB_RULE()
+		Usage: slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE()
 		"""
-		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE')['loadbalancer']
+		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE').loadbalancer
 
 	def SLB_LOAD(self):
 		"""
-		Usage: slb_load_stats = client.GetEFMConfigHandler(vsysId, efmId).SLB_RULE()
+		Usage: slb_load_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_LOAD()
 		"""
 		# FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS')['loadbalancer']['loadStatistics']
+		stats = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
+		# CHECKME: remove <groups> part first
+		if len(stats) > 0:
+			return stats[0]
+		else:
+			return []
 
 	def SLB_ERROR(self):
 		"""
-		Usage: slb_error_stats = client.GetEFMConfigHandler(vsysId, efmId).SLB_RULE()
+		Usage: slb_error_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_ERROR()
 		"""
 		# FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS')['loadbalancer']['errorStatistics']
+		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
 
 	def SLB_CERT_LIST(self, certCategory=None, detail=None):
 		"""
-		Usage: slb_cert_list = client.GetEFMConfigHandler(vsysId, efmId).SLB_CERT_LIST()
+		Usage: slb_cert_list = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_CERT_LIST()
 		"""
 		configurationXML = self._client.get_configurationXML('loadbalancer_certificate_list', {'certCategory': certCategory, 'detail': detail})
-		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML)['loadbalancer']
+		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML).loadbalancer
 
 	def EFM_UPDATE(self):
 		"""
@@ -1028,101 +903,108 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 
 	def FW_UPDATE(self):
 		"""
-		Usage: fw_update = client.GetEFMConfigHandler(vsysId, efmId).FW_UPDATE()
+		Usage: fw_update = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_UPDATE()
 		"""
-		return self.EFM_UPDATE()['firewall']
+		return self.EFM_UPDATE().firewall
 
 	def SLB_UPDATE(self):
 		"""
-		Usage: slb_update = client.GetEFMConfigHandler(vsysId, efmId).SLB_UPDATE()
+		Usage: slb_update = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_UPDATE()
 		"""
-		return self.EFM_UPDATE()['loadbalancer']
+		return self.EFM_UPDATE().loadbalancer
 
 class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 	"""
 	Handler for FGCP UpdateEFMConfiguration methods
 	
-	Example: client.UpdateEFMConfigHandler(vsysId, efmId).FW_DNS('AUTO')
+	Example: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS('AUTO')
 	"""
 	def FW_NAT_RULE(self, rules=None):
 		"""Usage:
-		fw_nat_rules = [{'rule': {'publicIp': '80.70.163.172', 'snapt': 'true', 'privateIp': '192.168.0.211'}}]
-		client.UpdateEFMConfigHandler(vsysId, efmId).FW_NAT_RULE(fw_nat_rules)
+		fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULES()
+		client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE(fw_nat_rules)
 		"""
+		# TODO: add firewall nat rule builder ?
+		# round-trip support
+		rules = self.convert_fw_nat_rules(rules)
+		configurationXML = self._client.get_configurationXML('firewall_nat', rules)
+		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE', configurationXML)
+
+	def convert_fw_nat_rules(self, rules=None):
+		# CHECKME: for round-trip support, we need to:
 		if rules is None or len(rules) < 1:
 			# this resets the NAT and SNAPT rules
-			configurationXML = self._client.get_configurationXML('firewall_nat', '')
-		elif isinstance(rules, dict) and 'rule' not in rules:
-			# single rule: you can use {'publicIp': '80.70.163.172', 'snapt': 'true', 'privateIp': '192.168.0.211'}
-			configurationXML = self._client.get_configurationXML('firewall_nat', {'rule': rules})
+			return ''
+		elif len(rules) == 1:
+			# single rule: use {'rule': {'publicIp': '80.70.163.172', 'snapt': 'true', 'privateIp': '192.168.0.211'}}
+			rule = rules[0]
+			return {'rule': rule.__dict__}
 		else:
-			# multiple rules: you must use [{'rule': {...}}, {'rule': {...}}, ...]
-			configurationXML = self._client.get_configurationXML('firewall_nat', rules)
-		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE', configurationXML)
+			# multiple rules: use [{'rule': {...}}, {'rule': {...}}, ...]
+			new_rules = []
+			for rule in rules:
+				new_rules.append({'rule': rule.__dict__})
+			return new_rules
 
 	def FW_DNS(self, dnstype='AUTO', primary=None, secondary=None):
 		"""
-		Usage: client.UpdateEFMConfigHandler(vsysId, efmId).FW_DNS('AUTO')
+		Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS('AUTO')
 		"""
 		configurationXML = self._client.get_configurationXML('firewall_dns', {'type': dnstype, 'primary': primary, 'secondary': secondary})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS', configurationXML)
 
 	def FW_POLICY(self, log='On', directions=None):
 		"""Usage:
-		directions = client.GetEFMConfigHandler(vsysId, efmId).FW_POLICY()
-		client.UpdateEFMConfigHandler(vsysId, efmId).FW_POLICY(log, directions)
+		directions = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY()
+		client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY(log, directions)
 
 		Warning: this overrides the complete firewall configuration, so you need to specify all the policies at once !
 		"""
 		# TODO: add firewall policy builder
-		if directions is None:
-			directions = []
-		else:
-			# round-trip support
-			directions = self.convert_fw_directions(directions)
-		# add default log policy to directions
-		directions.append({'direction': {'policies': {'policy': {'log': log}}}})
+		# round-trip support
+		directions = self.convert_fw_directions(log, directions)
 		configurationXML = self._client.get_configurationXML('firewall_policy', {'directions': directions})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)
 
-	def convert_fw_directions(self, directions):
-		# CHECKME: for round-trip support, we need to:
+	def convert_fw_directions(self, log, directions=None):
 		new_directions = []
+		# add default log policy to directions
+		new_directions.append({'direction': {'policies': {'policy': {'log': log}}}})
+		if directions is None:
+			return new_directions
+		# CHECKME: for round-trip support, we need to:
 		for direction in directions:
 			# a. add {'direction': {...}} for each {from, to, policies}
-			if 'direction' in direction:
-				new_direction = direction
-			else:
-				new_direction = {'direction': direction}
+			new_direction = {'direction': {}}
 			# b. replace 'UU62ICIP-AQYOXXRXS-N-INTERNET' by 'INTERNET' in each from and to
-			if 'from' not in new_direction['direction']:
+			# CHECKME: direction.from is restricted, so we use getattr() here instead !?
+			if not hasattr(direction, 'from'):
 				pass
-			elif new_direction['direction']['from'].endswith('-INTERNET'):
+			elif getattr(direction, 'from').endswith('-INTERNET'):
 				new_direction['direction']['from'] = 'INTERNET'
-			elif new_direction['direction']['from'].endswith('-INTRANET'):
+			elif getattr(direction, 'from').endswith('-INTRANET'):
 				new_direction['direction']['from'] = 'INTRANET'
-			if 'to' not in new_direction['direction']:
+			else:
+				new_direction['direction']['from'] = getattr(direction, 'from')
+			if not hasattr(direction, 'to'):
 				pass
-			elif new_direction['direction']['to'].endswith('-INTERNET'):
+			elif direction.to.endswith('-INTERNET'):
 				new_direction['direction']['to'] = 'INTERNET'
-			elif new_direction['direction']['to'].endswith('-INTRANET'):
+			elif direction.to.endswith('-INTRANET'):
 				new_direction['direction']['to'] = 'INTRANET'
-			new_policies = []
+			else:
+				new_direction['direction']['to'] = direction.to
 			# c. add {'policy': {...}} for each policy
-			for policy in new_direction['direction']['policies']:
-				if 'policy' in policy:
-					new_policy = policy
-				else:
-					new_policy = {'policy': policy}
+			new_policies = []
+			for policy in direction.policies:
 				# d. remove all policies with id 50000 = default rule
-				if new_policy['policy']['id'] == '50000':
-					pass
+				if policy.id == '50000':
+					continue
 				# e. replace each policy id 46999 by id 999
-				elif len(new_policy['policy']['id']) > 3:
-					new_policy['policy']['id'] = new_policy['policy']['id'][2:]
-					new_policies.append(new_policy)
-				else:
-					new_policies.append(new_policy)
+				elif len(policy.id) > 3:
+					policy.id = policy.id[2:]
+				# CHECKME: dump the whole dictionary here ?
+				new_policies.append({'policy': policy.__dict__})
 			# if we have anything left, add it to the new directions
 			if len(new_policies) > 0:
 				new_direction['direction']['policies'] = new_policies
@@ -1131,39 +1013,32 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 
 	def SLB_RULE(self, groups=None, force=None, webAccelerator=None):
 		"""Usage:
-		slb_rule = client.GetEFMConfigHandler(vsysId, efmId).SLB_RULE()
-		client.UpdateEFMConfigHandler(vsysId, efmId).SLB_RULE(slb_rule['groups'])
+		slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE()
+		client.UpdateEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE(slb_rule.groups)
 
 		Warning: this overrides the complete loadbalancer configuration, so you need to specify all the groups at once !
 		"""
 		# TODO: add loadbalancer group builder
-		if groups is None:
-			groups = []
-		else:
-			# round-trip support
-			groups = self.convert_slb_groups(groups)
+		# round-trip support
+		groups = self.convert_slb_groups(groups)
 		configurationXML = self._client.get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE', configurationXML)
 
-	def convert_slb_groups(self, groups):
-		# CHECKME: for round-trip support, we need to:
+	def convert_slb_groups(self, groups=None):
 		new_groups = []
+		if groups is None:
+			return new_groups
+		# CHECKME: for round-trip support, we need to:
 		for group in groups:
 			# a. add {'group': {...}} for each {id, protocol, ..., targets}
-			if 'group' in group:
-				new_group = group
-			else:
-				new_group = {'group': group}
+			new_group = {'group': group.__dict__}
 			# b. CHECKME: remove causes ?
 			if 'causes' in new_group['group']:
 				del new_group['group']['causes']
 			new_targets = []
 			# c. add {'target': {...}} for each target
 			for target in new_group['group']['targets']:
-				if 'target' in target:
-					new_target = target
-				else:
-					new_target = {'target': target}
+				new_target = {'target': target.__dict__}
 				# d. remove ipAddress and serverName from each target
 				if 'ipAddress' in new_target['target']:
 					del new_target['target']['ipAddress']
@@ -1284,7 +1159,7 @@ class FGCPMonitor(FGCPCommand):
 		if len(vsyss) < 1:
 			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No VSYS are defined')
 		for vsys in vsyss:
-			if vsysName == vsys['vsysName']:
+			if vsysName == vsys.vsysName:
 				return vsys
 		raise FGCPResponseError('ILLEGAL_VSYS_ID', 'Invalid vsysName %s' % vsysName)
 
@@ -1303,31 +1178,32 @@ class FGCPMonitor(FGCPCommand):
 		inventory = {}
 		inventory['vsys'] = {}
 		for vsys in vsyss:
-			vsysconfig = self.GetVSYSConfiguration(vsys['vsysId'])
-			vsysconfig['firewalls'] = self.ListEFM(vsys['vsysId'], "FW")
-			vsysconfig['loadbalancers'] = self.ListEFM(vsys['vsysId'], "SLB")
+			# get configuration for this vsys
+			vsys = self.GetVSYSConfiguration(vsys.vsysId)
+			setattr(vsys, 'firewalls', self.ListEFM(vsys.vsysId, "FW"))
+			setattr(vsys, 'loadbalancers', self.ListEFM(vsys.vsysId, "SLB"))
 			# CHECKME: remove firewalls and loadbalancers from vservers list
 			seenId = {}
-			if vsysconfig['firewalls']:
-				for firewall in vsysconfig['firewalls']:
-					seenId[firewall['efmId']] = 1
-			if vsysconfig['loadbalancers']:
-				for loadbalancer in vsysconfig['loadbalancers']:
-					seenId[loadbalancer['efmId']] = 1
+			if hasattr(vsys, 'firewalls'):
+				for firewall in vsys.firewalls:
+					seenId[firewall.efmId] = 1
+			if hasattr(vsys, 'loadbalancers'):
+				for loadbalancer in vsys.loadbalancers:
+					seenId[loadbalancer.efmId] = 1
 			todo = []
-			if 'vservers' in vsysconfig:
-				for vserver in vsysconfig['vservers']:
+			if hasattr(vsys, 'vservers'):
+				for vserver in vsys.vservers:
 					# skip servers we've already seen, i.e. firewalls and loadbalancers
-					if vserver['vserverId'] in seenId:
+					if vserver.vserverId in seenId:
 						continue
 					todo.append(vserver)
-			vsysconfig['vservers'] = todo
-			if 'vdisks' not in vsysconfig:
-				vsysconfig['vdisks'] = []
-			if 'publicips' not in vsysconfig:
-				vsysconfig['publicips'] = []
-			inventory['vsys'][vsys['vsysName']] = vsysconfig
-			# TODO: transform vsysconfig ?
+			setattr(vsys, 'vservers', todo)
+			if not hasattr(vsys, 'vdisks'):
+				setattr(vsys, 'vdisks', [])
+			if not hasattr(vsys, 'publicips'):
+				setattr(vsys, 'publicips', [])
+			inventory['vsys'][vsys.vsysName] = vsys
+			# TODO: transform vsys ?
 			#vservers = self.ListVServer(vsys['vsysId'])
 			#inventory['vsys'][vsys['vsysName']]['vserver'] = {}
 			#for vserver in vservers:
@@ -1358,71 +1234,71 @@ class FGCPMonitor(FGCPCommand):
 			return
 		# CHECKME: keep track of status in new_inventory
 		new_inventory = inventory
-		for name, vsysconfig in inventory['vsys'].iteritems():
+		for name, vsys in inventory['vsys'].iteritems():
 			# get status of vsys overall
-			status = self.GetVSYSStatus(vsysconfig['vsysId'])
-			self.show_output('VSYS\t%s\t%s' % (vsysconfig['vsysName'], status))
-			new_inventory['vsys'][name]['vsysStatus'] = status
+			status = self.GetVSYSStatus(vsys.vsysId)
+			self.show_output('VSYS\t%s\t%s' % (vsys.vsysName, status))
+			setattr(new_inventory['vsys'][name], 'vsysStatus', status)
 			# get status of public ips
 			new_publicips = []
-			for publicip in vsysconfig['publicips']:
-				status = self.GetPublicIPStatus(publicip['address'])
-				self.show_output('PublicIP\t%s\t%s' % (publicip['address'], status))
-				publicip['publicipStatus'] = status
+			for publicip in vsys.publicips:
+				status = self.GetPublicIPStatus(publicip.address)
+				self.show_output('PublicIP\t%s\t%s' % (publicip.address, status))
+				setattr(publicip, 'publicipStatus', status)
 				new_publicips.append(publicip)
-			new_inventory['vsys'][name]['publicips'] = new_publicips
+			setattr(new_inventory['vsys'][name], 'publicips', new_publicips)
 			# get status of firewalls
 			new_firewalls = []
-			for firewall in vsysconfig['firewalls']:
-				status = self.GetEFMStatus(vsysconfig['vsysId'], firewall['efmId'])
-				self.show_output('EFM FW\t%s\t%s' % (firewall['efmName'], status))
-				firewall['efmStatus'] = status
+			for firewall in vsys.firewalls:
+				status = self.GetEFMStatus(vsys.vsysId, firewall.efmId)
+				self.show_output('EFM FW\t%s\t%s' % (firewall.efmName, status))
+				setattr(firewall, 'efmStatus', status)
 				new_firewalls.append(firewall)
-			new_inventory['vsys'][name]['firewalls'] = new_firewalls
+			setattr(new_inventory['vsys'][name], 'firewalls', new_firewalls)
 			# get status of loadbalancers
 			new_loadbalancers = []
-			for loadbalancer in vsysconfig['loadbalancers']:
-				status = self.GetEFMStatus(vsysconfig['vsysId'], loadbalancer['efmId'])
-				self.show_output('EFM SLB\t%s\t%s\t%s' % (loadbalancer['efmName'], loadbalancer['slbVip'], status))
-				loadbalancer['efmStatus'] = status
+			for loadbalancer in vsys.loadbalancers:
+				status = self.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
+				self.show_output('EFM SLB\t%s\t%s\t%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
+				setattr(loadbalancer, 'efmStatus', status)
 				new_loadbalancers.append(loadbalancer)
-			new_inventory['vsys'][name]['loadbalancers'] = new_loadbalancers
+			setattr(new_inventory['vsys'][name], 'loadbalancers', new_loadbalancers)
 			# get status of vservers (excl. firewalls and loadbalancers)
 			new_vservers = []
 			seenId = {}
-			for vserver in vsysconfig['vservers']:
-				status = self.GetVServerStatus(vsysconfig['vsysId'], vserver['vserverId'])
-				self.show_output('VServer\t%s\t%s\t%s' % (vserver['vserverName'], vserver['vnics'][0]['privateIp'], status))
-				vserver['vserverStatus'] = status
+			for vserver in vsys.vservers:
+				status = self.GetVServerStatus(vsys.vsysId, vserver.vserverId)
+				self.show_output('VServer\t%s\t%s\t%s' % (vserver.vserverName, vserver.vnics[0].privateIp, status))
+				setattr(vserver, 'vserverStatus', status)
 				# get status of attached disks
 				new_vdisks = []
-				for vdisk in vserver['vdisks']:
-					status = self.GetVDiskStatus(vsysconfig['vsysId'], vdisk['vdiskId'])
-					self.show_output('\tVDisk\t%s\t%s' % (vdisk['vdiskName'], status))
-					seenId[vdisk['vdiskId']] = 1
-					vdisk['vdiskStatus'] = status
+				for vdisk in vserver.vdisks:
+					status = self.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
+					self.show_output('\tVDisk\t%s\t%s' % (vdisk.vdiskName, status))
+					seenId[vdisk.vdiskId] = 1
+					setattr(vdisk, 'vdiskStatus', status)
 					new_vdisks.append(vdisk)
-				vserver['vdisks'] = new_vdisks
+				vserver.vdisks = new_vdisks
 				new_vservers.append(vserver)
-			new_inventory['vsys'][name]['vservers'] = new_vservers
+			setattr(new_inventory['vsys'][name], 'vservers', new_vservers)
 			# get status of unattached disks
 			todo = []
 			new_vdisks = []
-			for vdisk in vsysconfig['vdisks']:
+			for vdisk in vsys.vdisks:
 				# skip disks we've already seen, i.e. attached to a server
-				if vdisk['vdiskId'] in seenId:
+				if vdisk.vdiskId in seenId:
 					new_vdisks.append(vdisk)
 					continue
 				todo.append(vdisk)
 			if len(todo) > 0:
 				self.show_output('Unattached Disks')
 				for vdisk in todo:
-					status = self.GetVDiskStatus(vsysconfig['vsysId'], vdisk['vdiskId'])
-					self.show_output('\tVDisk\t%s\t%s' % (vdisk['vdiskName'], status))
-					seenId[vdisk['vdiskId']] = 1
-					vdisk['vdiskStatus'] = status
+					status = self.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
+					self.show_output('\tVDisk\t%s\t%s' % (vdisk.vdiskName, status))
+					seenId[vdisk.vdiskId] = 1
+					setattr(vdisk, 'vdiskStatus', status)
 					new_vdisks.append(vdisk)
-			new_inventory['vsys'][name]['vdisks'] = new_vdisks
+			setattr(new_inventory['vsys'][name], 'vdisks', new_vdisks)
 			self.show_output()
 		# reset output
 		self.set_verbose(old_verbose)
@@ -1607,14 +1483,14 @@ class FGCPOperator(FGCPMonitor):
 			print 'Unable to stop vserver: %s' % status
 			return status
 		# get server configuration
-		config = self.GetVServerConfiguration(vsysId, vserverId)
+		vserver = self.GetVServerConfiguration(vsysId, vserverId)
 		todo = []
 		# the system disk has the same id as the server
-		todo.append(config['vserverId'])
-		if config['vdisks'] != '':
+		todo.append(vserver.vserverId)
+		if vserver.vdisks != '':
 			# add other disks if necessary
-			for vdisk in config['vdisks']:
-				todo.append(vdisk['vdiskId'])
+			for vdisk in vserver.vdisks:
+				todo.append(vdisk.vdiskId)
 		# backup the different disks
 		for vdiskId in todo:
 			status = self.BackupVDiskAndWait(vsysId, vdiskId)
@@ -1637,7 +1513,7 @@ class FGCPOperator(FGCPMonitor):
 		if vdiskId is None:
 			vdisks = self.ListVDisk(vsysId)
 			for vdisk in vdisks:
-				todo.append(vdisk['vdiskId'])
+				todo.append(vdisk.vdiskId)
 		else:
 			todo.append(vdiskId)
 		for vdiskId in todo:
@@ -1646,11 +1522,14 @@ class FGCPOperator(FGCPMonitor):
 				newlist = []
 				for backup in backups:
 					# convert weird time format to time value
-					backup['timeval'] = time.mktime(time.strptime(backup['backupTime'], "%b %d, %Y %I:%M:%S %p"))
+					setattr(backup, 'timeval', time.mktime(time.strptime(backup.backupTime, "%b %d, %Y %I:%M:%S %p")))
 					newlist.append(backup)
 				# Sort list of dictionaries: http://stackoverflow.com/questions/652291/sorting-a-list-of-dictionary-values-by-date-in-python
-				from operator import itemgetter
-				newlist.sort(key=itemgetter('timeval'), reverse=True)
+				#from operator import itemgetter
+				#newlist.sort(key=itemgetter('timeval'), reverse=True)
+				# Sort list of objects: http://stackoverflow.com/questions/2338531/python-sorting-a-list-of-objects
+				from operator import attrgetter
+				newlist.sort(key=attrgetter('timeval'), reverse=True)
 				# TODO: remove oldest backup(s) ?
 				backup = newlist.pop()
 				#client.DestroyVDiskBackup(vsysId, backup['backupId'])
@@ -1660,27 +1539,26 @@ class FGCPOperator(FGCPMonitor):
 		Start VSYS and wait until all VServers and EFMs are started (TODO: define start sequence for vservers)
 		"""
 		# Get inventory of the vsys
-		inventory = self.GetSystemInventory(vsysName)
-		vsysId = inventory['vsysId']
+		vsys = self.GetSystemInventory(vsysName)
 		# Set output
 		old_verbose = self.set_verbose(verbose)
 		self.show_output('Starting VSYS %s' % vsysName)
 		# CHECKME: start firewall if necessary
 		self.show_output('Start Firewalls')
-		for firewall in inventory['firewalls']:
-			self.StartEFMAndWait(vsysId, firewall['efmId'])
+		for firewall in vsys.firewalls:
+			self.StartEFMAndWait(vsys.vsysId, firewall.efmId)
 		# CHECKME: attach publicip if necessary
 		self.show_output('Attach PublicIPs')
-		for publicip in inventory['publicips']:
-			self.AttachPublicIPAndWait(vsysId, publicip['address'])
+		for publicip in vsys.publicips:
+			self.AttachPublicIPAndWait(vsys.vsysId, publicip.address)
 		# CHECKME: start loadbalancers if necessary
 		self.show_output('Start Loadbalancers')
-		for loadbalancer in inventory['loadbalancers']:
-			self.StartEFMAndWait(vsysId, loadbalancer['efmId'])
+		for loadbalancer in vsys.loadbalancers:
+			self.StartEFMAndWait(vsys.vsysId, loadbalancer.efmId)
 		# CHECKME: start servers if necessary
 		self.show_output('Start VServers')
-		for vserver in inventory['vservers']:
-			self.StartVServerAndWait(vsysId, vserver['vserverId'])
+		for vserver in vsys.vservers:
+			self.StartVServerAndWait(vsys.vsysId, vserver.vserverId)
 		self.show_output('Started VSYS %s' % vsysName)
 		# Reset output
 		self.set_verbose(old_verbose)
@@ -1690,35 +1568,33 @@ class FGCPOperator(FGCPMonitor):
 		Stop VSYS and wait until all VServers and EFMs are stopped (TODO: define stop sequence for vservers)
 		"""
 		# Get system inventory
-		inventory = self.GetSystemInventory(vsysName)
-		vsysId = inventory['vsysId']
+		vsys = self.GetSystemInventory(vsysName)
 		# Set output
 		old_verbose = self.set_verbose(verbose)
 		self.show_output('Stopping VSYS %s' % vsysName)
 		# Stop all vservers
 		self.show_output('Stop VServers')
-		for vserver in inventory['vservers']:
-			self.show_output(vserver['vserverName'])
-			status = self.StopVServerAndWait(vsysId, vserver['vserverId'])
+		for vserver in vsys.vservers:
+			self.show_output(vserver.vserverName)
+			status = self.StopVServerAndWait(vsys.vsysId, vserver.vserverId)
 		# Stop all loadbalancers
 		self.show_output('Stop Loadbalancers')
-		for loadbalancer in inventory['loadbalancers']:
-			self.show_output(loadbalancer['efmName'])
-			status = self.StopEFMAndWait(vsysId, loadbalancer['efmId'])
+		for loadbalancer in vsys.loadbalancers:
+			self.show_output(loadbalancer.efmName)
+			status = self.StopEFMAndWait(vsys.vsysId, loadbalancer.efmId)
 		# Detach publicip - cfr. sequence3 in java sdk
 		self.show_output('Detach PublicIPs')
-		for publicip in inventory['publicips']:
-			self.show_output(publicip['address'])
-			status = self.DetachPublicIPAndWait(vsysId, publicip['address'])
+		for publicip in vsys.publicips:
+			self.show_output(publicip.address)
+			status = self.DetachPublicIPAndWait(vsys.vsysId, publicip.address)
 		# Stop all firewalls
 		self.show_output('Stop Firewalls')
-		for firewall in inventory['firewalls']:
-			self.show_output(firewall['efmName'])
-			status = self.StopEFMAndWait(vsysId, firewall['efmId'])
+		for firewall in vsys.firewalls:
+			self.show_output(firewall.efmName)
+			status = self.StopEFMAndWait(vsys.vsysId, firewall.efmId)
 		self.show_output('Stopped VSYS %s' % vsysName)
 		# Reset output
 		self.set_verbose(old_verbose)
-
 
 class FGCPDesigner(FGCPOperator):
 	"""
@@ -1729,12 +1605,12 @@ class FGCPDesigner(FGCPOperator):
 		Find DiskImage by diskimageName
 		"""
 		# CHECKME: is baseDescriptor always = vsysDescriptorId ?
-		#diskimages = self.ListDiskImage('GENERAL', inventory['baseDescriptor'])
+		#diskimages = self.ListDiskImage('GENERAL', vsys.baseDescriptor)
 		diskimages = self.ListDiskImage()
 		if len(diskimages) < 1:
 			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No diskimages are defined')
 		for diskimage in diskimages:
-			if diskimageName == diskimage['diskimageName']:
+			if diskimageName == diskimage.diskimageName:
 				return diskimage
 		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid diskimageName')
 
@@ -1746,7 +1622,7 @@ class FGCPDesigner(FGCPOperator):
 		if len(vsysdescriptors) < 1:
 			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No vsysdescriptors are defined')
 		for vsysdescriptor in vsysdescriptors:
-			if vsysdescriptorName == vsysdescriptor['vsysdescriptorName']:
+			if vsysdescriptorName == vsysdescriptor.vsysdescriptorName:
 				return vsysdescriptor
 		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid vsysdescriptorName')
 
@@ -1758,11 +1634,11 @@ class FGCPDesigner(FGCPOperator):
 		# CHECKME: do all diskimages have the same servertypes (for now) ?
 		# pick some random diskimage to get its servertypes ?
 		diskimage = self.ListDiskImage().pop()
-		servertypes = self.ListServerType(diskimage['diskimageId'])
+		servertypes = self.ListServerType(diskimage.diskimageId)
 		if len(servertypes) < 1:
 			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No servertypes are defined')
 		for servertype in servertypes:
-			if name == servertype['name']:
+			if name == servertype.name:
 				return servertype
 		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid servertype name')
 
@@ -1778,80 +1654,81 @@ class FGCPDesigner(FGCPOperator):
 			vsys = self.FindSystemByName(vsysName)
 		except FGCPResponseError:
 			vsysdescriptor = self.FindVSYSDescriptorByName(vsysdescriptorName)
-			vsysId = self.CreateVSYS(vsysdescriptor['vsysdescriptorId'], vsysName)
+			vsysId = self.CreateVSYS(vsysdescriptor.vsysdescriptorId, vsysName)
 			self.show_output('Created VSYS %s: %s' % (vsysName, vsysId))
 			# wait until vsys deploying is done - TODO: add some timeout
 			self.wait_for_status('NORMAL', 'DEPLOYING', 'GetVSYSStatus', vsysId)
 			self.show_output('Deployed VSYS %s: %s' % (vsysName, vsysId))
 			pass
 		else:
-			vsysId = vsys['vsysId']
+			vsysId = vsys.vsysId
 			self.show_output('Existing VSYS %s: %s' % (vsysName, vsysId))
 		# Reset output
 		self.set_verbose(old_verbose)
 		return vsysId
 
-	def ConfigureSystem(self, vsysName, vsysConfig, verbose=None):
+	def ConfigureSystem(self, vsysName, systemDesign, verbose=None):
 		"""
-		TODO: Configure VSYS based on some configuration options
+		TODO: Configure VSYS based on some systemDesign - see LoadSystemDesign()
 		"""
-		print 'TODO: Configure VSYS based on some configuration options'
+		print 'TODO: Configure VSYS based on some vsysDesign - see LoadSystemDesign()'
 		return
 		# Get inventory of the vsys
-		inventory = self.GetSystemInventory(vsysName)
-		vsysId = inventory['vsysId']
+		vsys = self.GetSystemInventory(vsysName)
 		# Set output
 		old_verbose = self.set_verbose(verbose)
 		self.show_output('Configuring VSYS %s' % vsysName)
 		# CHECKME: start firewall if necessary
-		if len(inventory['firewalls']) > 0:
+		if len(vsys.firewalls) > 0:
 			self.show_output('Start Firewalls')
-			for firewall in inventory['firewalls']:
-				self.StartEFMAndWait(vsysId, firewall['efmId'])
+			for firewall in vsys.firewalls:
+				self.StartEFMAndWait(vsys.vsysId, firewall.efmId)
 		# CHECKME: allocate publicip if necessary
-		if len(inventory['publicips']) < 1:
+		if len(vsys.publicips) < 1:
 			self.show_output('Allocate PublicIP')
-			self.AllocatePublicIP(vsysId)
+			self.AllocatePublicIP(vsys.vsysId)
 			# CHECKME: we need to wait a bit before retrieving the new list !
-			time.sleep(10)
+			time.sleep(30)
 			# update list of publicips
-			inventory['publicips'] = self.ListPublicIP(vsysId)
-			publicip = inventory['publicips'][0]
-			# wait until publicip deploying is done - TODO: add some timeout
-			self.wait_for_status(['DETACHED', 'ATTACHED'], 'DEPLOYING', 'GetPublicIPStatus', publicip['address'])
+			vsys.publicips = self.ListPublicIP(vsys.vsysId)
+			if len(vsys.publicips) > 0:
+				publicip = vsys.publicips[0]
+				# wait until publicip deploying is done - TODO: add some timeout
+				self.wait_for_status(['DETACHED', 'ATTACHED'], 'DEPLOYING', 'GetPublicIPStatus', publicip.address)
 		# CHECKME: attach publicip if necessary
 		self.show_output('Attach PublicIPs')
-		for publicip in inventory['publicips']:
-			self.AttachPublicIPAndWait(vsysId, publicip['address'])
+		for publicip in vsys.publicips:
+			self.AttachPublicIPAndWait(vsys.vsysId, publicip.address)
+
 		# TODO: add vserver etc. based on configuration
-		if len(inventory['vservers']) < len(inventory['vnets']):
+		if len(vsys.vservers) < len(vsys.vnets):
 			diskimage = self.FindDiskImageByName('CentOS 5.4 32bit(EN)')
-			print diskimage
+			print diskimage.diskimageName
 			# CHECKME: do we actually need this for CreateVServer ?
 			servertype = self.FindServerTypeByName('economy')
 			print servertype
 			# TODO CreateVServer
 			self.show_output('Create VServers')
 			idx = 1
-			for vnetId in inventory['vnets']:
+			for vnetId in vsys.vnets:
 				print vnetId
 				# CHECKME: add vservers to the network zone
-				vserverId = self.CreateVServer(vsysId, 'Server%s' % idx, 'economy', diskimage['diskimageId'], vnetId)
+				vserverId = self.CreateVServer(vsys.vsysId, 'Server%s' % idx, 'economy', diskimage.diskimageId, vnetId)
 				# wait until vserver deploying is done - TODO: add some timeout
-				status = self.wait_for_status('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsysId, vserverId)
+				status = self.wait_for_status('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsys.vsysId, vserverId)
 				idx += 1
-				vserverId = self.CreateVServer(vsysId, 'Server%s' % idx, 'economy', diskimage['diskimageId'], vnetId)
+				vserverId = self.CreateVServer(vsys.vsysId, 'Server%s' % idx, 'economy', diskimage.diskimageId, vnetId)
 				# wait until vserver deploying is done - TODO: add some timeout
-				status = self.wait_for_status('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsysId, vserverId)
+				status = self.wait_for_status('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsys.vsysId, vserverId)
 				idx += 1
 				# CHECKME: add loadbalancer to the DMZ
-				if vnetId.endswith('-DMZ') and len(inventory['loadbalancers']) < 1:
+				if vnetId.endswith('-DMZ') and len(vsys.loadbalancers) < 1:
 					self.show_output('Create Loadbalancer')
-					efmId = self.CreateEFM(vsysId, 'SLB', 'LoadBalancer', vnetId)
+					efmId = self.CreateEFM(vsys.vsysId, 'SLB', 'LoadBalancer', vnetId)
 					# wait until efm deploying is done - TODO: add some timeout
-					self.wait_for_status('STOPPED', 'DEPLOYING', 'GetEFMStatus', vsysId, efmId)
+					self.wait_for_status('STOPPED', 'DEPLOYING', 'GetEFMStatus', vsys.vsysId, efmId)
 					# update list of loadbalancers
-					inventory['loadbalancers'] = self.ListEFM(vsysId, "SLB")
+					vsys.loadbalancers = self.ListEFM(vsys.vsysId, "SLB")
 		self.show_output('Configured VSYS %s' % vsysName)
 		# Reset output
 		self.set_verbose(old_verbose)
@@ -1861,19 +1738,126 @@ class FGCPDesigner(FGCPOperator):
 		Destroy VSYS after stopping all VServers and EFMs
 		"""
 		# Get system inventory
-		inventory = self.GetSystemInventory(vsysName)
-		vsysId = inventory['vsysId']
+		vsys = self.GetSystemInventory(vsysName)
 		# Set output
 		old_verbose = self.set_verbose(verbose)
 		self.show_output('Destroying VSYS %s' % vsysName)
 		# CHECKME: should we stop the VSYS here ?
 		# Destroy the VSYS
-		result = self.DestroyVSYS(vsysId)
-		self.show_output(result['responseStatus'])
+		result = self.DestroyVSYS(vsys.vsysId)
+		self.show_output(result.responseStatus)
 		# TODO: wait until it's really gone ?
 		self.show_output('Destroyed VSYS %s' % vsysName)
 		# Reset output
 		self.set_verbose(old_verbose)
+
+	def SaveSystemDesign(self, vsysName, filePath):
+		"""
+		TODO: Save (fixed parts of) VSYS design to file
+		"""
+		# Get system inventory
+		vsys = self.GetSystemInventory(vsysName)
+		self.show_output('Saving VSYS design for %s to file %s' % (vsysName, filePath))
+		# CHECKME: is description always the name correspoding to baseDescriptor ?
+		seenip = {}
+		# Replace addresses and other variable information
+		idx = 1
+		#new_publicips = []
+		for publicip in vsys.publicips:
+			seenip[publicip.address] = 'publicip.%s' % idx
+			idx += 1
+			#publicip.address = 'xxx.xxx.xxx.xxx'
+			#new_publicips.append(publicip)
+		#vsys.publicips = new_publicips
+		new_firewalls = []
+		for firewall in vsys.firewalls:
+			# TODO: Add FW and SLB configurations
+			setattr(firewall, 'firewall', FGCPFirewall())
+			setattr(firewall.firewall, 'nat', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE())
+			setattr(firewall.firewall, 'dns', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS())
+			setattr(firewall.firewall, 'directions', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY())
+			new_firewalls.append(firewall)
+		vsys.firewalls = new_firewalls
+		new_loadbalancers = []
+		for loadbalancer in vsys.loadbalancers:
+			seenip[loadbalancer.slbVip] = loadbalancer.efmName
+			#loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
+			# TODO: Add FW and SLB configurations
+			setattr(loadbalancer, 'loadbalancer', self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE())
+			new_loadbalancers.append(loadbalancer)
+		vsys.loadbalancers = new_loadbalancers
+		# Get mapping of diskimage id to name
+		diskimages = self.ListDiskImage()
+		imageid2name = {}
+		for diskimage in diskimages:
+			imageid2name[diskimage.diskimageId] = diskimage.diskimageName
+		new_vservers = []
+		for vserver in vsys.vservers:
+			# CHECKME: use diskimage name as reference across regions !?
+			setattr(vserver, 'diskimageName', imageid2name[vserver.diskimageId])
+			#new_vnics = []
+			for vnic in vserver.vnics:
+				seenip[vnic.privateIp] = vserver.vserverName
+				#vnic.privateIp = 'xxx.xxx.xxx.xxx'
+				#new_vnics.append(vnic)
+			#vserver.vnics = new_vnics
+			#new_vdisks = []
+			#for vdisk in vserver.vdisks:
+			#	new_vdisks.append(vdisk)
+			#vserver.vdisks = new_vdisks
+			new_vservers.append(vserver)
+		vsys.vservers = new_vservers
+		#new_vdisks = []
+		#for vdisk in vsys.vdisks:
+		#	new_vdisks.append(vdisk)
+		#vsys.vdisks = new_vdisks
+		# Prepare for output
+		lines = vsys.pformat(vsys)
+		# Replace vsysId and creator everywhere (including Id's)
+		lines = lines.replace(vsys.vsysId, 'DEMO-VSYS')
+		lines = lines.replace(vsys.creator, 'DEMO')
+		# CHECKME: replace ip addresses with names everywhere, including firewall policies and loadbalancer rules
+		for ip in seenip.keys():
+			lines = lines.replace(ip, seenip[ip])
+		# CHECKME: fix from=... issue for firewall policies
+		lines = lines.replace('from=', 'from_zone=')
+		lines = lines.replace('to=', 'to_zone=')
+		# Write configuration to file
+		f = open(filePath, 'wb')
+		f.write(lines)
+		f.close()
+		self.show_output('Saved VSYS design for %s to file %s' % (vsysName, filePath))
+
+	def LoadSystemDesign(self, filePath):
+		"""
+		Load VSYS design from file, for use e.g. in ConfigureSystem()
+		"""
+		self.show_output('Loading VSYS design from file %s' % filePath)
+		import os.path
+		if not os.path.exists(filePath):
+			self.show_output('File %s does not seem to exist' % filePath)
+			return
+		f = open(filePath, 'r')
+		lines = f.read()
+		f.close()
+		# Check if we have something we need, i.e. a FGCPSys() instance
+		if not lines.startswith('FGCPVSys('):
+			self.show_output('File %s does not seem to start with FGCPSys(' % filePath)
+			return
+		# CHECKME: add line continuations before exec() !?
+		try:
+			exec 'vsys = ' + lines.replace("\r\n","\\\r\n")
+		except:
+			self.show_output('File %s seems to have some syntax errors' % filePath)
+			raise
+		self.show_output('Loaded VSYS design for %s from file %s' % (vsys.vsysName, filePath))
+		try:
+			found = self.FindSystemByName(vsys.vsysName)
+			self.show_output('Caution: you already have a VSYS called %s' % vsys.vsysName)
+		except FGCPResponseError:
+			pass
+		# Return system inventory
+		return vsys
 
 class FGCPClient(FGCPDesigner):
 	"""
@@ -1885,18 +1869,305 @@ class FGCPClient(FGCPDesigner):
 	client = FGCPClient('client.pem', 'uk')
 
 	# Backup all VServers in some VSYS
-	inventory = client.GetSystemInventory('Python API Demo System')
-	for vserver in inventory['vservers']:
-		client.BackupVServerAndRestart(inventory['vsysId'], vserver['vserverId'])
-	client.CleanupBackups(inventory['vsysId'])
+	vsys = client.GetSystemInventory('Python API Demo System')
+	for vserver in vsys.vservers:
+		client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
+	client.CleanupBackups(vsys.vsysId)
 
 	# Note: you can also use all API commands from FGCPCommand()
 	vsyss = client.ListVSYS()
 	for vsys in vsyss:
-		vsysconfig = client.GetVSYSConfiguration(vsys['vsysId'])
+		vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 		...
 	"""
 	pass
+
+
+class FGCPResponseError(Exception):
+	"""
+	Exception class for FGCP Response errors
+	"""
+	def __init__(self, status, message):
+		self.status = status
+		self.message = message
+	def __str__(self):
+		return "Status: " + self.status + "\nMessage: " + self.message
+
+
+class FGCPElement(object):
+	def __init__(self, **kwargs):
+		for key in kwargs:
+			setattr(self, key, kwargs[key])
+
+	def pformat(self, what, depth=0):
+		if isinstance(what, str):
+			return '  ' * depth + "'%s'" % what
+		CRLF = '\r\n'
+		L = []
+		if isinstance(what, list):
+			L.append('  ' * depth + '[')
+			for val in what:
+				L.append(self.pformat(val, depth + 1) + ',')
+			L.append('  ' * depth + ']')
+			return CRLF.join(L)
+		L.append('  ' * depth + '%s(' % type(what).__name__)
+		depth += 1
+		for key in what.__dict__:
+			if isinstance(what.__dict__[key], FGCPElement):
+				L.append('  ' * depth + '%s=' % key)
+				L.append(self.pformat(what.__dict__[key], depth + 1) + ',')
+			elif isinstance(what.__dict__[key], list):
+				L.append('  ' * depth + '%s=[' % key)
+				for val in what.__dict__[key]:
+					L.append(self.pformat(val, depth + 1) + ',')
+				L.append('  ' * depth + '],')
+			elif isinstance(what.__dict__[key], str):
+				L.append('  ' * depth + "%s='%s'," % (key, what.__dict__[key]))
+			elif what.__dict__[key] is None:
+				#L.append('  ' * depth + "%s=None," % key)
+				pass
+			else:
+				L.append('  ' * depth + "%s=?%s?," % (key, what.__dict__[key]))
+		depth -= 1
+		L.append('  ' * depth + ')')
+		return CRLF.join(L)
+
+	def dump(self):
+		"""
+		Show dump of the FGCP Element for development
+		"""
+		print self.pformat(self)
+
+class FGCPResponse(FGCPElement):
+	"""
+	FGCP Response
+	"""
+	pass
+
+class FGCPResource(FGCPElement):
+	"""
+	Generic FGCP Resource
+	"""
+	_client = None
+
+class FGCPVDataCenter(FGCPResource):
+	pass
+
+class FGCPVSysDescriptor(FGCPResource):
+	pass
+
+class FGCPPublicIP(FGCPResource):
+	pass
+
+class FGCPAddressRange(FGCPResource):
+	pass
+
+class FGCPDiskImage(FGCPResource):
+	pass
+
+class FGCPSoftware(FGCPDiskImage):
+	# CHECKME: this is used as internal response element for ListDiskImage
+	pass
+
+class FGCPServerType(FGCPResource):
+	pass
+
+class FGCPServerTypeCPU(FGCPServerType):
+	# CHECKME: this is used as internal response element for ListServerType
+	pass
+
+class FGCPVSys(FGCPResource):
+	pass
+
+class FGCPVServer(FGCPResource):
+	pass
+
+class FGCPVDisk(FGCPResource):
+	pass
+
+class FGCPBackup(FGCPResource):
+	pass
+
+class FGCPVNic(FGCPResource):
+	pass
+
+class FGCPEfm(FGCPResource):
+	pass
+
+class FGCPFirewall(FGCPEfm):
+	# CHECKME: this is not used as subclass of EFM, but as internal response element for GetEFMConfiguration
+	pass
+
+class FGCPFWNATRule(FGCPFirewall):
+	pass
+
+class FGCPFWDns(FGCPFirewall):
+	pass
+
+class FGCPFWDirection(FGCPFirewall):
+	pass
+
+class FGCPFWPolicy(FGCPFWDirection):
+	pass
+
+class FGCPFWLogOrder(FGCPFirewall):
+	def __init__(self, **kwargs):
+		for key in kwargs:
+			# CHECKME: replace from_zone and to_zone, because from=... is restricted
+			setattr(self, key.replace('_zone',''), kwargs[key])
+
+class FGCPLoadBalancer(FGCPEfm):
+	# CHECKME: this is not used as subclass of EFM, but as internal response element for GetEFMConfiguration
+	pass
+
+class FGCPSLBGroup(FGCPLoadBalancer):
+	pass
+
+class FGCPSLBTarget(FGCPSLBGroup):
+	pass
+
+class FGCPSLBErrorStats(FGCPLoadBalancer):
+	pass
+
+class FGCPSLBErrorCause(FGCPSLBErrorStats):
+	pass
+
+class FGCPSLBErrorPeriod(FGCPSLBErrorStats):
+	pass
+
+class FGCPSLBServerCert(FGCPLoadBalancer):
+	pass
+
+class FGCPSLBCCACert(FGCPLoadBalancer):
+	pass
+
+class FGCPUsageInfo(FGCPElement):
+	pass
+
+class FGCPProduct(FGCPUsageInfo):
+	# CHECKME: this is used as internal response element for GetSystemUsage
+	pass
+
+class FGCPUnknown(FGCPElement):
+	pass
+
+
+class FGCPResponseParser:
+	"""
+	FGCP Response Parser
+	"""
+	# CHECKME: this assumes all tags are unique - otherwise we'll need to use the path
+	_tag2class = {
+		'vsysdescriptor': FGCPVSysDescriptor,
+		'publicip': FGCPPublicIP,
+		'addressrange': FGCPAddressRange,
+		'diskimage': FGCPDiskImage,
+		'software': FGCPSoftware,
+		'servertype': FGCPServerType,
+		'cpu': FGCPServerTypeCPU,
+		'vsys': FGCPVSys,
+		'vserver': FGCPVServer,
+		'vdisk': FGCPVDisk,
+		'backup': FGCPBackup,
+		'vnic': FGCPVNic,
+		'efm': FGCPEfm,
+		'firewall': FGCPFirewall,
+		'rule': FGCPFWNATRule,
+		'dns': FGCPFWDns,
+		'direction': FGCPFWDirection,
+		'policy': FGCPFWPolicy,
+		'order': FGCPFWLogOrder,
+		'loadbalancer': FGCPLoadBalancer,
+		'group': FGCPSLBGroup,
+		'target': FGCPSLBTarget,
+		'errorStatistics': FGCPSLBErrorStats,
+		'cause': FGCPSLBErrorCause,
+		'period': FGCPSLBErrorPeriod,
+		'servercert': FGCPSLBServerCert,
+		'ccacert': FGCPSLBCCACert,
+		'usageinfo': FGCPUsageInfo,
+		'product': FGCPProduct,
+		'response': FGCPResponse,
+		'default': FGCPUnknown,
+	}
+
+	def parse_data(self, data):
+		"""
+		Load the data as XML ElementTree and convert to FGCP Response
+		"""
+		#ElementTree.register_namespace(uri='http://apioviss.jp.fujitsu.com')
+		# initialize the XML Element
+		root = ElementTree.fromstring(data)
+		# convert the XML Element to FGCP Response object
+		return self.xmlelement_to_object(root)
+
+	def clean_tag(self, tag):
+		"""
+		Return the tag without namespace
+		"""
+		if tag is None:
+			return tag
+		elif tag.startswith('{'):
+			return tag[tag.index('}') + 1:]
+		else:
+			return tag
+
+	def get_tag_object(self, tag):
+		tag = self.clean_tag(tag)
+		if tag in self._tag2class:
+			return self._tag2class[tag]()
+		elif tag.endswith('Response'):
+			return self._tag2class['response']()
+		else:
+			#print 'CHECKME: unknown tag ' + tag
+			return self._tag2class['default']()
+
+	def xmlelement_to_object(self, root=None):
+		"""
+		Convert the XML Element to an FGCP Element
+		"""
+		if root is None:
+			return
+		# CHECKME: we don't seem to have any attributes here
+		#for key, val in root.items():
+		#	if key in info:
+		#		print "OOPS ! " + key + " attrib is already in " + repr(info)
+		#	else:
+		#		info[key] = val
+		# No children -> return text
+		if len(root) < 1:
+			if root.text is None:
+				return ''
+			else:
+				return root.text.strip()
+		# One child -> return list !?
+		elif len(root) == 1:
+			info = []
+			# if the child returns a string, return that too (cfr. ListServerType - servertype - memory - memorySize)
+			for subelem in root:
+				child = self.xmlelement_to_object(subelem)
+				if isinstance(child, str):
+					return child
+				else:
+					info.append(child)
+			return info
+		# More children -> return dict or list !?
+		#info = {}
+		# FIXME: adapt class based on subelem or tag ?
+		info = self.get_tag_object(root.tag)
+		for subelem in root:
+			key = self.clean_tag(subelem.tag)
+			if isinstance(info, list):
+				info.append(self.xmlelement_to_object(subelem))
+			elif hasattr(info, key):
+				#print "OOPS ! " + key + " child is already in " + repr(info)
+				# convert to list !?
+				old_info = getattr(info,key)
+				info = [old_info]
+				info.append(self.xmlelement_to_object(subelem))
+			else:
+				setattr(info, key, self.xmlelement_to_object(subelem))
+		return info
 
 
 def fgcp_run_sample(pem_file, region):
@@ -1908,16 +2179,18 @@ def fgcp_run_sample(pem_file, region):
 	client.ShowSystemStatus()
 	#
 	# Backup all VServers in some VSYS
-	#inventory = client.GetSystemInventory('Python API Demo System')
-	#for vserver in inventory['vservers']:
-	#	client.BackupVServerAndRestart(inventory['vsysId'], vserver['vserverId'])
-	#client.CleanupBackups(inventory['vsysId'])
+	#vsys = client.GetSystemInventory('Python API Demo System')
+	#for vserver in vsys.vservers:
+	#	client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
+	#client.CleanupBackups(vsys.vsysId)
 	#
-	# Create and start a complete VSYS
+	# Create and start a complete VSYS based on an existing configuration
 	#client.set_verbose(2) # show output and status checks during script execution
-	#client.CreateSystem('Python API Demo System', '2-tier Skeleton')
-	#client.ConfigureSystem('Python API Demo System', myconfig_todo)
+	#vsysdesign = client.LoadSystemDesign('fgcp_demo_system.txt')
+	#client.CreateSystem('Python API Demo System', vsysdesign.baseDescriptor)
+	#client.ConfigureSystem('Python API Demo System', vsysdesign)
 	#client.StartSystem('Python API Demo System')
+	#
 	# Stop and destroy a complete VSYS
 	#client.StopSystem('Python API Demo System')
 	#client.DestroySystem('Python API Demo System')
@@ -1925,13 +2198,12 @@ def fgcp_run_sample(pem_file, region):
 	# Note: you can also use all API commands from FGCPCommand()
 	#vsyss = client.ListVSYS()
 	#for vsys in vsyss:
-	#	vsysconfig = client.GetVSYSConfiguration(vsys['vsysId'])
+	#	vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 	#	...
 	#vsysdescriptors = client.ListVSYSDescriptor()
-	#print vsysdescriptors
 	#for vsysdescriptor in vsysdescriptors:
-	#	if vsysdescriptor['vsysdescriptorName'] == '2-tier Skeleton':
-	#		vsysId = client.CreateVSYS(vsysdescriptor['vsysdescriptorId'], 'Python API Demo System')
+	#	if vsysdescriptor.vsysdescriptorName == '2-tier Skeleton':
+	#		vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'Python API Demo System')
 	#		print 'New VSYS Created: %s' % vsysId
 	#		break
 	exit()
@@ -1943,7 +2215,7 @@ Usage: %s [pem_file] [region]
 
 from fgcp_client_api import FGCPClient
 client = FGCPClient('client.pem', 'uk')
-inventory = client.GetSystemInventory('Python API Demo System')
+vsys = client.GetSystemInventory('Python API Demo System')
 ...
 
 Requirements: this module uses gdata.tlslite.utils to create the key signature,
