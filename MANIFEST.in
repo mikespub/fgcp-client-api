@@ -1,0 +1,2 @@
+include fgcp_demo.py fgcp_demo_system.txt
+recursive-include docs *.html *.png
