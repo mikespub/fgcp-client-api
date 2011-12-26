@@ -15,14 +15,11 @@
 #  limitations under the License.
 
 """
-Client API library for the Fujitsu Global Cloud Platform (FGCP)
+Connection with the Fujitsu Global Cloud Platform (FGCP) API Server
 using XML-RPC API Version 2011-01-31
 
 Requirements: this module uses gdata.tlslite.utils to create the key signature,
 see http://code.google.com/p/gdata-python-client/ for download and installation
-
-Caution: this is a development work in progress - please do not use
-for productive systems without adequate testing...
 """
 
 import httplib

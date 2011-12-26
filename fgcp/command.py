@@ -15,14 +15,8 @@
 #  limitations under the License.
 
 """
-Client API library for the Fujitsu Global Cloud Platform (FGCP)
+API Commands to the Fujitsu Global Cloud Platform (FGCP)
 using XML-RPC API Version 2011-01-31
-
-Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation
-
-Caution: this is a development work in progress - please do not use
-for productive systems without adequate testing...
 """
 
 from fgcp.connection import FGCPConnection, FGCPResponseError
@@ -103,11 +97,11 @@ class FGCPCommand(FGCPConnection):
 		client.RegisterPrivateVSYSDescriptor(vsys.vsysId, 'My New Template', 'This is a new template based on my existing VSYS', 'some key words', vsys.vservers)
 		"""
 		filename = 'dummy.xml'
-		vsysDescriptorXML = self.get_vsysDescriptorXML(vsysId, name, description, keyword, vservers)
+		vsysDescriptorXML = self._get_vsysDescriptorXML(vsysId, name, description, keyword, vservers)
 		result = self.do_action('RegisterPrivateVSYSDescriptor', {'vsysDescriptorXMLFilePath': filename}, {'name': 'vsysDescriptorXMLFilePath', 'filename': filename, 'body': vsysDescriptorXML})
 		return result
 
-	def get_vsysDescriptorXML(self, vsysId, name, description, keyword, vservers):
+	def _get_vsysDescriptorXML(self, vsysId, name, description, keyword, vservers):
 		CRLF = '\r\n'
 		L = []
 		L.append('<?xml version="1.0" encoding="UTF-8"?>')
@@ -225,11 +219,11 @@ class FGCPCommand(FGCPConnection):
 
 	def RegisterPrivateDiskImage(self, vserverId, name, description):
 		filename = 'dummy.xml'
-		diskImageXML = self.get_diskImageXML(vserverId, name, description)
+		diskImageXML = self._get_diskImageXML(vserverId, name, description)
 		result = self.do_action('RegisterPrivateDiskImage', {'diskImageXMLFilePath': filename}, {'name': 'diskImageXMLFilePath', 'filename': filename, 'body': diskImageXML})
 		return result
 
-	def get_diskImageXML(self, vserverId, name, description):
+	def _get_diskImageXML(self, vserverId, name, description):
 		CRLF = '\r\n'
 		L = []
 		L.append('<?xml version="1.0" encoding="UTF-8"?>')
@@ -451,7 +445,7 @@ class FGCPCommand(FGCPConnection):
 
 	def GetEFMConfigHandler(self, vsysId, efmId):
 		"""Handler for specific GetEFMConfiguration methods, see FGCPGetEFMConfigHandler for details
-		Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY(from_zone, to_zone)
+		Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
 		"""
 		return FGCPGetEFMConfigHandler(self, vsysId, efmId)
 
@@ -468,11 +462,11 @@ class FGCPCommand(FGCPConnection):
 
 	def UpdateEFMConfigHandler(self, vsysId, efmId):
 		"""Handler for specific UpdateEFMConfiguration methods, see FGCPUpdateEFMConfigHandler for details
-		Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS('AUTO')
+		Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
 		"""
 		return FGCPUpdateEFMConfigHandler(self, vsysId, efmId)
 
-	def get_configurationXML(self, configName, params=None):
+	def _get_configurationXML(self, configName, params=None):
 		CRLF = '\r\n'
 		L = []
 		L.append('<?xml version="1.0" encoding="UTF-8"?>')
@@ -573,11 +567,11 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 	"""
 	Handler for FGCP GetEFMConfiguration methods
 	
-	Example: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE()
+	Example: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
 	"""
-	def FW_NAT_RULE(self):
+	def fw_nat_rule(self):
 		"""
-		Usage: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE()
+		Usage: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
 		"""
 		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE').firewall
 		if hasattr(firewall, 'nat'):
@@ -585,35 +579,35 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 			if isinstance(firewall.nat, list) and len(firewall.nat) > 0:
 				return firewall.nat[0]
 
-	def FW_DNS(self):
+	def fw_dns(self):
 		"""
-		Usage: fw_dns = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS()
+		Usage: fw_dns = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns()
 		"""
 		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS').firewall
 		if hasattr(firewall, 'dns'):
 			return firewall.dns
 
-	def FW_POLICY(self, from_zone=None, to_zone=None):
+	def fw_policy(self, from_zone=None, to_zone=None):
 		"""CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
-		Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY(from_zone, to_zone)
+		Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
 		"""
-		configurationXML = self._client.get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
+		configurationXML = self._client._get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
 		firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML).firewall
 		if hasattr(firewall, 'directions'):
 			return firewall.directions
 
-	def FW_LOG(self, num=None, orders=None):
+	def fw_log(self, num=None, orders=None):
 		"""CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
 		Usage:
 		ipaddress = vsys.publicips[0].address
 		orders = [FGCPFWLogOrder(prefix='dst', value=ipaddress, from_zone=None, to_zone=None)]
-		fw_log = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_LOG(100, orders)
+		fw_log = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_log(100, orders)
 		"""
-		orders = self.convert_fw_log_orders(orders)
-		configurationXML = self._client.get_configurationXML('firewall_log', {'num': num, 'orders': orders})
+		orders = self._convert_fw_log_orders(orders)
+		configurationXML = self._client._get_configurationXML('firewall_log', {'num': num, 'orders': orders})
 		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML).firewall
 
-	def convert_fw_log_orders(self, orders=None):
+	def _convert_fw_log_orders(self, orders=None):
 		if orders is None or len(orders) < 1:
 			return None
 		new_orders = []
@@ -621,22 +615,22 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 			new_orders.append({'order': order.__dict__})
 		return new_orders
 
-	def FW_LIMIT_POLICY(self, from_zone=None, to_zone=None):
+	def fw_limit_policy(self, from_zone=None, to_zone=None):
 		"""CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
-		Usage: fw_limit_policy = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_LIMIT_POLICY(from_zone, to_zone)
+		Usage: fw_limit_policy = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_limit_policy(from_zone, to_zone)
 		"""
-		configurationXML = self._client.get_configurationXML('firewall_limit_policy', {'from': from_zone, 'to': to_zone})
+		configurationXML = self._client._get_configurationXML('firewall_limit_policy', {'from': from_zone, 'to': to_zone})
 		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML).firewall
 
-	def SLB_RULE(self):
+	def slb_rule(self):
 		"""
-		Usage: slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE()
+		Usage: slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
 		"""
 		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE').loadbalancer
 
-	def SLB_LOAD(self):
+	def slb_load(self):
 		"""
-		Usage: slb_load_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_LOAD()
+		Usage: slb_load_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_load()
 		"""
 		# FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
 		stats = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
@@ -646,56 +640,56 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 		else:
 			return []
 
-	def SLB_ERROR(self):
+	def slb_error(self):
 		"""
-		Usage: slb_error_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_ERROR()
+		Usage: slb_error_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_error()
 		"""
 		# FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
 		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
 
-	def SLB_CERT_LIST(self, certCategory=None, detail=None):
+	def slb_cert_list(self, certCategory=None, detail=None):
 		"""
-		Usage: slb_cert_list = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_CERT_LIST()
+		Usage: slb_cert_list = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_cert_list()
 		"""
-		configurationXML = self._client.get_configurationXML('loadbalancer_certificate_list', {'certCategory': certCategory, 'detail': detail})
+		configurationXML = self._client._get_configurationXML('loadbalancer_certificate_list', {'certCategory': certCategory, 'detail': detail})
 		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML).loadbalancer
 
-	def EFM_UPDATE(self):
+	def efm_update(self):
 		"""
 		Common method for FW and SLB EFM_UPDATE returns firewall or loadbalancer
 		"""
 		return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'EFM_UPDATE')
 
-	def FW_UPDATE(self):
+	def fw_update(self):
 		"""
-		Usage: fw_update = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_UPDATE()
+		Usage: fw_update = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_update()
 		"""
-		return self.EFM_UPDATE().firewall
+		return self.efm_update().firewall
 
-	def SLB_UPDATE(self):
+	def slb_update(self):
 		"""
-		Usage: slb_update = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_UPDATE()
+		Usage: slb_update = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_update()
 		"""
-		return self.EFM_UPDATE().loadbalancer
+		return self.efm_update().loadbalancer
 
 class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 	"""
 	Handler for FGCP UpdateEFMConfiguration methods
 	
-	Example: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS('AUTO')
+	Example: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
 	"""
-	def FW_NAT_RULE(self, rules=None):
+	def fw_nat_rule(self, rules=None):
 		"""Usage:
-		fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE()
-		client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE(fw_nat_rules)
+		fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
+		client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule(fw_nat_rules)
 		"""
 		# TODO: add firewall nat rule builder ?
 		# round-trip support
-		rules = self.convert_fw_nat_rules(rules)
-		configurationXML = self._client.get_configurationXML('firewall_nat', rules)
+		rules = self._convert_fw_nat_rules(rules)
+		configurationXML = self._client._get_configurationXML('firewall_nat', rules)
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE', configurationXML)
 
-	def convert_fw_nat_rules(self, rules=None):
+	def _convert_fw_nat_rules(self, rules=None):
 		# CHECKME: for round-trip support, we need to:
 		if rules is None or len(rules) < 1:
 			# this resets the NAT and SNAPT rules
@@ -711,27 +705,27 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 				new_rules.append({'rule': rule.__dict__})
 			return new_rules
 
-	def FW_DNS(self, dnstype='AUTO', primary=None, secondary=None):
+	def fw_dns(self, dnstype='AUTO', primary=None, secondary=None):
 		"""
-		Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS('AUTO')
+		Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
 		"""
-		configurationXML = self._client.get_configurationXML('firewall_dns', {'type': dnstype, 'primary': primary, 'secondary': secondary})
+		configurationXML = self._client._get_configurationXML('firewall_dns', {'type': dnstype, 'primary': primary, 'secondary': secondary})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS', configurationXML)
 
-	def FW_POLICY(self, log='On', directions=None):
+	def fw_policy(self, log='On', directions=None):
 		"""Usage:
-		directions = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY()
-		client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY(log, directions)
+		directions = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy()
+		client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(log, directions)
 
 		Warning: this overrides the complete firewall configuration, so you need to specify all the policies at once !
 		"""
 		# TODO: add firewall policy builder
 		# round-trip support
-		directions = self.convert_fw_directions(log, directions)
-		configurationXML = self._client.get_configurationXML('firewall_policy', {'directions': directions})
+		directions = self._convert_fw_directions(log, directions)
+		configurationXML = self._client._get_configurationXML('firewall_policy', {'directions': directions})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)
 
-	def convert_fw_directions(self, log, directions=None):
+	def _convert_fw_directions(self, log, directions=None):
 		new_directions = []
 		# add default log policy to directions
 		new_directions.append({'direction': {'policies': {'policy': {'log': log}}}})
@@ -776,20 +770,20 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 				new_directions.append(new_direction)
 		return new_directions
 
-	def SLB_RULE(self, groups=None, force=None, webAccelerator=None):
+	def slb_rule(self, groups=None, force=None, webAccelerator=None):
 		"""Usage:
-		slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE()
-		client.UpdateEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE(slb_rule.groups)
+		slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
+		client.UpdateEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule(slb_rule.groups)
 
 		Warning: this overrides the complete loadbalancer configuration, so you need to specify all the groups at once !
 		"""
 		# TODO: add loadbalancer group builder
 		# round-trip support
-		groups = self.convert_slb_groups(groups)
-		configurationXML = self._client.get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
+		groups = self._convert_slb_groups(groups)
+		configurationXML = self._client._get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE', configurationXML)
 
-	def convert_slb_groups(self, groups=None):
+	def _convert_slb_groups(self, groups=None):
 		new_groups = []
 		if groups is None:
 			return new_groups
@@ -817,56 +811,56 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 				new_groups.append(new_group)
 		return new_groups
 
-	def SLB_LOAD_CLEAR(self):
+	def slb_load_clear(self):
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS_CLEAR')
 
-	def SLB_ERROR_CLEAR(self):
+	def slb_error_clear(self):
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS_CLEAR')
 
-	def SLB_START_MAINT(self, id, ipAddress, time=None, unit=None):
-		configurationXML = self._client.get_configurationXML('loadbalancer_start_maintenance', {'id': id, 'ipAddress': ipAddress, 'time': time, 'unit': unit})
+	def slb_start_maint(self, id, ipAddress, time=None, unit=None):
+		configurationXML = self._client._get_configurationXML('loadbalancer_start_maintenance', {'id': id, 'ipAddress': ipAddress, 'time': time, 'unit': unit})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_START_MAINTENANCE', configurationXML)
 
-	def SLB_STOP_MAINT(self, id, ipAddress):
-		configurationXML = self._client.get_configurationXML('loadbalancer_stop_maintenance', {'id': id, 'ipAddress': ipAddress})
+	def slb_stop_maint(self, id, ipAddress):
+		configurationXML = self._client._get_configurationXML('loadbalancer_stop_maintenance', {'id': id, 'ipAddress': ipAddress})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_STOP_MAINTENANCE', configurationXML)
 
-	def SLB_CERT_ADD(self, certNum, filePath, passphrase):
+	def slb_cert_add(self, certNum, filePath, passphrase):
 		"""
 		Note: server certificates in unencrypted PEM format are NOT supported here, use PKCS12 format (and others ?)
 		"""
 		# when adding SLB server/cca certificates, configurationXML contains the filePath for the actual certificate to be uploaded
-		configurationXML = self._client.get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'filePath': filePath, 'passphrase': passphrase})
+		configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'filePath': filePath, 'passphrase': passphrase})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_ADD', configurationXML, filePath)
 
-	def SLB_CERT_SET(self, certNum, id):
-		configurationXML = self._client.get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'id': id})
+	def slb_cert_set(self, certNum, id):
+		configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'id': id})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_SET', configurationXML)
 
-	def SLB_CERT_RELEASE(self, certNum):
-		configurationXML = self._client.get_configurationXML('loadbalancer_certificate', {'certNum': certNum})
+	def slb_cert_release(self, certNum):
+		configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_RELEASE', configurationXML)
 
-	def SLB_CERT_DELETE(self, certNum, force=None):
-		configurationXML = self._client.get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'force': force})
+	def slb_cert_delete(self, certNum, force=None):
+		configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'force': force})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_DELETE', configurationXML)
 
-	def SLB_CCA_ADD(self, ccacertNum, filePath):
+	def slb_cca_add(self, ccacertNum, filePath):
 		"""
 		Note: cca certificates in .crt or .pem format ARE supported here (and others ?)
 		"""
 		# when adding SLB server/cca certificates, configurationXML contains the filePath for the actual certificate to be uploaded
-		configurationXML = self._client.get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum, 'filePath': filePath})
+		configurationXML = self._client._get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum, 'filePath': filePath})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CCA_CERTIFICATE_ADD', configurationXML, filePath)
 
-	def SLB_CCA_DELETE(self, ccacertNum):
-		configurationXML = self._client.get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum})
+	def slb_cca_delete(self, ccacertNum):
+		configurationXML = self._client._get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum})
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CCA_CERTIFICATE_DELETE', configurationXML)
 
-	def EFM_UPDATE(self):
+	def efm_update(self):
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'EFM_UPDATE')
 
-	def EFM_BACKOUT(self):
+	def efm_backout(self):
 		return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'EFM_BACKOUT')
 
 		

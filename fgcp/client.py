@@ -15,14 +15,8 @@
 #  limitations under the License.
 
 """
-Client API library for the Fujitsu Global Cloud Platform (FGCP)
+Client library for the Fujitsu Global Cloud Platform (FGCP)
 using XML-RPC API Version 2011-01-31
-
-Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation
-
-Caution: this is a development work in progress - please do not use
-for productive systems without adequate testing...
 """
 
 import time
@@ -657,9 +651,9 @@ class FGCPDesigner(FGCPOperator):
 		for firewall in vsys.firewalls:
 			# TODO: Add FW and SLB configurations
 			setattr(firewall, 'firewall', FGCPFirewall())
-			setattr(firewall.firewall, 'nat', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_NAT_RULE())
-			setattr(firewall.firewall, 'dns', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_DNS())
-			setattr(firewall.firewall, 'directions', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).FW_POLICY())
+			setattr(firewall.firewall, 'nat', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule())
+			setattr(firewall.firewall, 'dns', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns())
+			setattr(firewall.firewall, 'directions', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy())
 			new_firewalls.append(firewall)
 		vsys.firewalls = new_firewalls
 		new_loadbalancers = []
@@ -667,7 +661,7 @@ class FGCPDesigner(FGCPOperator):
 			seenip[loadbalancer.slbVip] = loadbalancer.efmName
 			#loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
 			# TODO: Add FW and SLB configurations
-			setattr(loadbalancer, 'loadbalancer', self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).SLB_RULE())
+			setattr(loadbalancer, 'loadbalancer', self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule())
 			new_loadbalancers.append(loadbalancer)
 		vsys.loadbalancers = new_loadbalancers
 		# Get mapping of diskimage id to name
