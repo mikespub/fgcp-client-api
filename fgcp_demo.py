@@ -26,9 +26,45 @@ for productive systems without adequate testing...
 """
 
 def fgcp_run_sample(pem_file, region):
+	"""
+	>>> from fgcp.client import FGCPClient
+	>>> client = FGCPClient('client.pem', 'test')
+	>>> client.ShowSystemStatus('Python API Demo System')
+	Show System Status for VSYS Python API Demo System
+	VSYS:Python API Demo System:NORMAL
+	PublicIP:80.70.163.238:ATTACHED
+	EFM FW:Firewall:RUNNING
+	EFM SLB:LoadBalancer:192.168.3.211:RUNNING
+	VServer:Server1:192.168.3.12:RUNNING
+	VServer:Server2:192.168.3.13:RUNNING
+	VServer:Server3:192.168.4.12:RUNNING
+	VServer:Server4:192.168.4.13:RUNNING
+	.
+	>>> vsystems = client.ListVSYS()
+	>>> for vsys in vsystems:
+	...     vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
+	...     print 'VSystem %s has %d servers' % (vsysconfig.vsysName, len(vsysconfig.vservers))
+	...
+	VSystem Python API Demo System has 6 servers
+	VSystem Demo System has 5 servers
+	"""
 	# Get FGCP client with your certificate in this region
 	from fgcp.client import FGCPClient
+	#region = 'test'
 	client = FGCPClient(pem_file, region)
+	client.debug = 3
+	diskimages = client.ListDiskImage()
+	client.ListServerType(diskimages[0].getid())
+	#client.GetSystemUsage()
+	vsys = client.GetSystemInventory('Demo System')
+	vdisks = client.ListVDisk(vsys.vsysId)
+	for vdisk in vdisks:
+		vdisk.get_backups()
+	#client.ShowSystemStatus()
+	#print vsys
+	#info = client.GetSystemUsage()
+	#client.ListDiskImage('GENERAL', vsys.vsysId)
+	return
 	# Hint: set debug=1 to dump the FGCP Response for further development
 	#client = FGCPClient(pem_file, region, debug=1)
 	client.ShowSystemStatus()
@@ -51,8 +87,8 @@ def fgcp_run_sample(pem_file, region):
 	#client.DestroySystem('Python API Demo System')
 	#
 	# Note: you can also use all API commands from FGCPCommand()
-	#vsyss = client.ListVSYS()
-	#for vsys in vsyss:
+	#vsystems = client.ListVSYS()
+	#for vsys in vsystems:
 	#	vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 	#	...
 	#vsysdescriptors = client.ListVSYSDescriptor()

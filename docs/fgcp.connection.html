@@ -25,7 +25,8 @@ see&nbsp;<a href="http://code.google.com/p/gdata-python-client/">http://code.goo
 <a href="base64.html">base64</a><br>
 </td><td width="25%" valign=top><a href="httplib.html">httplib</a><br>
 <a href="gdata.tlslite.utils.keyfactory.html">gdata.tlslite.utils.keyfactory</a><br>
-</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="time.html">time</a><br>
 </td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
@@ -55,7 +56,7 @@ see&nbsp;<a href="http://code.google.com/p/gdata-python-client/">http://code.goo
 Example:<br>
 from&nbsp;fgcp_client_api&nbsp;import&nbsp;<a href="#FGCPConnection">FGCPConnection</a><br>
 conn&nbsp;=&nbsp;<a href="#FGCPConnection">FGCPConnection</a>('client.pem',&nbsp;'uk')<br>
-vsyss&nbsp;=&nbsp;conn.<a href="#FGCPConnection-do_action">do_action</a>('ListVSYS')<br>&nbsp;</tt></td></tr>
+vsystems&nbsp;=&nbsp;conn.<a href="#FGCPConnection-do_action">do_action</a>('ListVSYS')<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
 <dl><dt><a name="FGCPConnection-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
@@ -65,9 +66,13 @@ the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
 &nbsp;<br>
 openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes</tt></dd></dl>
 
+<dl><dt><a name="FGCPConnection-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPConnection-add_param"><strong>add_param</strong></a>(self, key<font color="#909090">=None</font>, value<font color="#909090">=None</font>, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-close"><strong>close</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPConnection-connect"><strong>connect</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-do_action"><strong>do_action</strong></a>(self, action, params<font color="#909090">=None</font>, attachments<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;the&nbsp;XML-RPC&nbsp;request&nbsp;and&nbsp;get&nbsp;the&nbsp;response</tt></dd></dl>
 
@@ -78,6 +83,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPConnection-get_headers"><strong>get_headers</strong></a>(self, attachments<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnection-receive"><strong>receive</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPConnection-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
@@ -174,9 +183,9 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 
 <dl><dt><a name="FGCPResponseParser-get_tag_object"><strong>get_tag_object</strong></a>(self, tag)</dt></dl>
 
-<dl><dt><a name="FGCPResponseParser-parse_data"><strong>parse_data</strong></a>(self, data)</dt><dd><tt>Load&nbsp;the&nbsp;data&nbsp;as&nbsp;XML&nbsp;ElementTree&nbsp;and&nbsp;convert&nbsp;to&nbsp;FGCP&nbsp;Response</tt></dd></dl>
+<dl><dt><a name="FGCPResponseParser-parse_data"><strong>parse_data</strong></a>(self, data, client)</dt><dd><tt>Load&nbsp;the&nbsp;data&nbsp;as&nbsp;XML&nbsp;ElementTree&nbsp;and&nbsp;convert&nbsp;to&nbsp;FGCP&nbsp;Response</tt></dd></dl>
 
-<dl><dt><a name="FGCPResponseParser-xmlelement_to_object"><strong>xmlelement_to_object</strong></a>(self, root<font color="#909090">=None</font>)</dt><dd><tt>Convert&nbsp;the&nbsp;XML&nbsp;Element&nbsp;to&nbsp;an&nbsp;FGCP&nbsp;Element</tt></dd></dl>
+<dl><dt><a name="FGCPResponseParser-xmlelement_to_object"><strong>xmlelement_to_object</strong></a>(self, root<font color="#909090">=None</font>, parent<font color="#909090">=None</font>)</dt><dd><tt>Convert&nbsp;the&nbsp;XML&nbsp;Element&nbsp;to&nbsp;an&nbsp;FGCP&nbsp;Element</tt></dd></dl>
 
 </td></tr></table></td></tr></table>
 </body></html>

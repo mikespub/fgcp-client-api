@@ -10,7 +10,9 @@
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="http://code.google.com/p/fgcp-client-api/source/browse/fgcp/resource.py">resource.py</a></font></td></tr></table>
     <p><tt>Resources&nbsp;on&nbsp;the&nbsp;Fujitsu&nbsp;Global&nbsp;Cloud&nbsp;Platform&nbsp;(FGCP)<br>
-using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
+using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31<br>
+&nbsp;<br>
+TODO:&nbsp;review&nbsp;class&nbsp;inheritance&nbsp;vs.&nbsp;composition</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
@@ -25,20 +27,13 @@ using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
 <dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPElement">FGCPElement</a>
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a>
-</font></dt><dd>
-<dl>
 <dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPResource">FGCPResource</a>
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPAddressRange">FGCPAddressRange</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPDiskImage">FGCPDiskImage</a>
-</font></dt><dd>
-<dl>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSoftware">FGCPSoftware</a>
-</font></dt></dl>
-</dd>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPDiskImageSoftware">FGCPDiskImageSoftware</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a>
@@ -79,12 +74,11 @@ using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
 </dd>
 <dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPPublicIP">FGCPPublicIP</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPServerType">FGCPServerType</a>
-</font></dt><dd>
-<dl>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPServerTypeCPU">FGCPServerTypeCPU</a>
-</font></dt></dl>
-</dd>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDataCenter">FGCPVDataCenter</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPServerTypeCPU">FGCPServerTypeCPU</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUnknown">FGCPUnknown</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfoProduct">FGCPUsageInfoProduct</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDataCenter">FGCPVDataCenter</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDisk">FGCPVDisk</a>
 </font></dt><dd>
 <dl>
@@ -101,16 +95,8 @@ using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVSysDescriptor">FGCPVSysDescriptor</a>
 </font></dt></dl>
 </dd>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUnknown">FGCPUnknown</a>
-</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a>
-</font></dt><dd>
-<dl>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPProduct">FGCPProduct</a>
+<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a>
 </font></dt></dl>
-</dd>
-</dl>
-</dd>
-</dl>
 </dd>
 </dl>
 </dd>
@@ -125,17 +111,38 @@ using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPAddressRange">FGCPAddressRange</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPAddressRange-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPAddressRange-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPAddressRange-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPAddressRange-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPAddressRange-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -157,17 +164,52 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPVDisk">FGCPVDisk</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPVDisk">FGCPVDisk</a>:<br>
+<dl><dt><a name="FGCPBackup-attach"><strong>attach</strong></a>(self, vserver)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-detach"><strong>detach</strong></a>(self, vserver)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-get_backups"><strong>get_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPBackup-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPBackup-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPBackup-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPBackup-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPBackup-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPBackup-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -187,17 +229,95 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPDiskImage">FGCPDiskImage</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPDiskImage-get_servertypes"><strong>get_servertypes</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-get_softwares"><strong>get_softwares</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPDiskImage-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPDiskImage-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPDiskImage-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPDiskImage-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPDiskImage-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPDiskImageSoftware">class <strong>FGCPDiskImageSoftware</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPDiskImageSoftware">FGCPDiskImageSoftware</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPDiskImageSoftware-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPDiskImageSoftware-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -217,17 +337,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPEfm-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPEfm-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPEfm-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPEfm-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPEfm-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -247,9 +394,9 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%">Methods defined here:<br>
 <dl><dt><a name="FGCPElement-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPElement-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
-
 <dl><dt><a name="FGCPElement-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPElement-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -271,17 +418,44 @@ Data descriptors defined here:<br>
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFWDirection-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPFWDirection-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPFWDirection-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPFWDirection-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPFWDirection-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPFWDirection-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -303,17 +477,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFWDns-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPFWDns-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPFWDns-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPFWDns-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPFWDns-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPFWDns-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -335,7 +536,6 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
@@ -344,10 +544,38 @@ Methods defined here:<br>
 <dl><dt><a name="FGCPFWLogOrder-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
-<dl><dt><a name="FGCPFWLogOrder-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFWLogOrder-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFWLogOrder-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPFWLogOrder-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPFWLogOrder-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -369,17 +597,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFWNATRule-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPFWNATRule-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPFWNATRule-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPFWNATRule-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPFWNATRule-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPFWNATRule-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -402,17 +657,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFWPolicy-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPFWPolicy-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPFWPolicy-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPFWPolicy-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPFWPolicy-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPFWPolicy-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -433,17 +715,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFirewall-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPFirewall-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPFirewall-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPFirewall-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPFirewall-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPFirewall-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -464,47 +773,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPLoadBalancer-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPLoadBalancer-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPLoadBalancer-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPLoadBalancer-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPLoadBalancer-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+<dl><dt><a name="FGCPLoadBalancer-create"><strong>create</strong></a>(self)</dt></dl>
 
-<hr>
-Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPProduct">class <strong>FGCPProduct</strong></a>(<a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a>)</font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="fgcp.resource.html#FGCPProduct">FGCPProduct</a></dd>
-<dd><a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
-<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
+<dl><dt><a name="FGCPLoadBalancer-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-update"><strong>update</strong></a>(self)</dt></dl>
+
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
-<dl><dt><a name="FGCPProduct-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+<dl><dt><a name="FGCPLoadBalancer-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
-<dl><dt><a name="FGCPProduct-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
-
-<dl><dt><a name="FGCPProduct-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+<dl><dt><a name="FGCPLoadBalancer-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -524,17 +830,38 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPPublicIP">FGCPPublicIP</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPPublicIP-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPPublicIP-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPPublicIP-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPPublicIP-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPPublicIP-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -548,24 +875,45 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPResource">class <strong>FGCPResource</strong></a>(<a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPResource">class <strong>FGCPResource</strong></a>(<a href="fgcp.resource.html#FGCPElement">FGCPElement</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
 <td colspan=2><tt>Generic&nbsp;FGCP&nbsp;Resource<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
 <dl><dt><a name="FGCPResource-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPResource-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPResource-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPResource-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPResource-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPResource-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPResource-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -593,9 +941,9 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPResponse-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPResponse-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
-
 <dl><dt><a name="FGCPResponse-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPResponse-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -617,17 +965,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBCCACert-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBCCACert-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBCCACert-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBCCACert-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBCCACert-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBCCACert-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -650,17 +1025,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBErrorCause-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBErrorCause-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBErrorCause-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBErrorCause-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBErrorCause-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBErrorCause-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -683,17 +1085,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBErrorPeriod-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBErrorPeriod-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBErrorPeriod-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBErrorPeriod-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBErrorPeriod-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBErrorPeriod-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -715,17 +1144,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBErrorStats-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBErrorStats-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBErrorStats-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBErrorStats-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBErrorStats-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBErrorStats-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -747,17 +1203,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBGroup-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBGroup-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBGroup-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBGroup-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBGroup-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBGroup-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -779,17 +1262,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBServerCert-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBServerCert-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBServerCert-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBServerCert-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBServerCert-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBServerCert-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -812,17 +1322,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPSLBTarget-start"><strong>start</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-stop"><strong>stop</strong></a>(self, what<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPSLBTarget-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPSLBTarget-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPSLBTarget-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPSLBTarget-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPSLBTarget-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -842,17 +1379,38 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPServerType">FGCPServerType</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPServerType-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPServerType-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPServerType-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPServerType-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPServerType-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -866,55 +1424,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPServerTypeCPU">class <strong>FGCPServerTypeCPU</strong></a>(<a href="fgcp.resource.html#FGCPServerType">FGCPServerType</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPServerTypeCPU">class <strong>FGCPServerTypeCPU</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPServerTypeCPU">FGCPServerTypeCPU</a></dd>
-<dd><a href="fgcp.resource.html#FGCPServerType">FGCPServerType</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPServerTypeCPU-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPServerTypeCPU-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPServerTypeCPU-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPServerTypeCPU-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+<dl><dt><a name="FGCPServerTypeCPU-create"><strong>create</strong></a>(self)</dt></dl>
 
-<hr>
-Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPSoftware">class <strong>FGCPSoftware</strong></a>(<a href="fgcp.resource.html#FGCPDiskImage">FGCPDiskImage</a>)</font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="fgcp.resource.html#FGCPSoftware">FGCPSoftware</a></dd>
-<dd><a href="fgcp.resource.html#FGCPDiskImage">FGCPDiskImage</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
-<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
+<dl><dt><a name="FGCPServerTypeCPU-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-update"><strong>update</strong></a>(self)</dt></dl>
+
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
-<dl><dt><a name="FGCPSoftware-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+<dl><dt><a name="FGCPServerTypeCPU-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
-<dl><dt><a name="FGCPSoftware-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
-
-<dl><dt><a name="FGCPSoftware-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+<dl><dt><a name="FGCPServerTypeCPU-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -928,22 +1475,44 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPUnknown">class <strong>FGCPUnknown</strong></a>(<a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPUnknown">class <strong>FGCPUnknown</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPUnknown">FGCPUnknown</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPUnknown-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPUnknown-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPUnknown-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPUnknown-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPUnknown-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -957,22 +1526,95 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPUsageInfo">class <strong>FGCPUsageInfo</strong></a>(<a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPUsageInfo">class <strong>FGCPUsageInfo</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPUsageInfo-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPUsageInfo-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPUsageInfo-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPUsageInfo-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPUsageInfo-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPUsageInfoProduct">class <strong>FGCPUsageInfoProduct</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPUsageInfoProduct">FGCPUsageInfoProduct</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPUsageInfoProduct-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUsageInfoProduct-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -992,17 +1634,52 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPVDataCenter">FGCPVDataCenter</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPVDataCenter-get_addressranges"><strong>get_addressranges</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_diskimages"><strong>get_diskimages</strong></a>(self, vsysdescriptor<font color="#909090">=None</font>, category<font color="#909090">='GENERAL'</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_publicips"><strong>get_publicips</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_servertypes"><strong>get_servertypes</strong></a>(self, diskimage<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_vsysdescriptors"><strong>get_vsysdescriptors</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_vsystems"><strong>get_vsystems</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPVDataCenter-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPVDataCenter-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPVDataCenter-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVDataCenter-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPVDataCenter-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1022,17 +1699,46 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPVDisk">FGCPVDisk</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPVDisk-attach"><strong>attach</strong></a>(self, vserver)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-detach"><strong>detach</strong></a>(self, vserver)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-get_backups"><strong>get_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPVDisk-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPVDisk-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPVDisk-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVDisk-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPVDisk-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDisk-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1053,17 +1759,54 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dd><a href="fgcp.resource.html#FGCPVNic">FGCPVNic</a></dd>
 <dd><a href="fgcp.resource.html#FGCPVServer">FGCPVServer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods inherited from <a href="fgcp.resource.html#FGCPVServer">FGCPVServer</a>:<br>
+<dl><dt><a name="FGCPVNic-attach"><strong>attach</strong></a>(self, vdisk)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-create"><strong>create</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-detach"><strong>detach</strong></a>(self, vdisk)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-get_disks"><strong>get_disks</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-get_vnics"><strong>get_vnics</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-password"><strong>password</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-start"><strong>start</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-stop"><strong>stop</strong></a>(self, force<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPVNic-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPVNic-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPVNic-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVNic-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-status"><strong>status</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPVNic-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1083,17 +1826,54 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPVServer">FGCPVServer</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPVServer-attach"><strong>attach</strong></a>(self, vdisk)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-create"><strong>create</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-detach"><strong>detach</strong></a>(self, vdisk)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-get_disks"><strong>get_disks</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-get_vnics"><strong>get_vnics</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-password"><strong>password</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-start"><strong>start</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-stop"><strong>stop</strong></a>(self, force<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPVServer-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPVServer-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPVServer-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVServer-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-status"><strong>status</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPVServer-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1113,17 +1893,54 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPVSys">FGCPVSys</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPVSys-get_console"><strong>get_console</strong></a>(self, vnet<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-get_firewalls"><strong>get_firewalls</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-get_loadbalancers"><strong>get_loadbalancers</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-get_publicips"><strong>get_publicips</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-get_vdisks"><strong>get_vdisks</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-get_vnets"><strong>get_vnets</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-get_vservers"><strong>get_vservers</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPVSys-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPVSys-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPVSys-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVSys-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPVSys-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSys-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1143,17 +1960,42 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPVSysDescriptor">FGCPVSysDescriptor</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
-<dd><a href="fgcp.resource.html#FGCPResponse">FGCPResponse</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
-Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+Methods defined here:<br>
+<dl><dt><a name="FGCPVSysDescriptor-get_diskimages"><strong>get_diskimages</strong></a>(self, category<font color="#909090">='GENERAL'</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
 <dl><dt><a name="FGCPVSysDescriptor-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
-<dl><dt><a name="FGCPVSysDescriptor-dump"><strong>dump</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+<dl><dt><a name="FGCPVSysDescriptor-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVSysDescriptor-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-getclient"><strong>getclient</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-replace"><strong>replace</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-update"><strong>update</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPVSysDescriptor-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>

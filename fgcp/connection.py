@@ -25,6 +25,7 @@ see http://code.google.com/p/gdata-python-client/ for download and installation
 import httplib
 import time
 import base64
+import os.path
 
 from fgcp.resource import *
 
@@ -43,17 +44,18 @@ class FGCPConnection:
 	Example:
 	from fgcp_client_api import FGCPConnection
 	conn = FGCPConnection('client.pem', 'uk')
-	vsyss = conn.do_action('ListVSYS')
+	vsystems = conn.do_action('ListVSYS')
 	"""
-	host = 'api.globalcloud.de.fujitsu.com'
-	uri = '/ovissapi/endpoint'
-	api_version = '2011-01-31'
-	user_agent = 'OViSS-API-CLIENT'
-	locale = 'en'
+	host = 'api.globalcloud.de.fujitsu.com'		# updated based on region argument
+	key_file = 'client.pem'						# updated based on key_file argument
+	locale = 'en'								# TODO: make configurable to 'en' or 'jp' ?
 	timezone = 'Central European Time'			# updated based on time.tzname[0] or time.timezone
-	key_file = 'client.pem'
 	verbose = 0									# normal script output for users
 	debug = 0									# for development purposes
+
+	uri = '/ovissapi/endpoint'					# fixed value for the API version
+	api_version = '2011-01-31'					# fixed value for the API version
+	user_agent = 'OViSS-API-CLIENT'				# fixed value for the API version
 	_regions = {
 		'au': 'api.globalcloud.fujitsu.com.au',	# for Australia and New Zealand
 		'de': 'api.globalcloud.de.fujitsu.com',	# for Central Europe, Middle East, Eastern Europe, Africa & India (CEMEA&I)
@@ -61,8 +63,13 @@ class FGCPConnection:
 		'sg': 'api.globalcloud.sg.fujitsu.com',	# for Singapore, Malaysia, Indonesia, Thailand and Vietnam
 		'uk': 'api.globalcloud.uk.fujitsu.com',	# for the UK and Ireland (UK&I)
 		'us': 'api.globalcloud.us.fujitsu.com',	# for the Americas
+		'test': 'test',							# for local client tests with test fixtures
+		#'fake': 'fake',							# for local client tests with fake updates etc. ?
 	}
-	_conn = None
+
+	_conn = None								# actual httplib.HTTPSConnection() or FGCPTestServer()
+	_caller = None								# which FGCPResource() is calling
+	_testid = None								# test identifier for fixtures
 
 	def __init__(self, key_file='client.pem', region='de', verbose=0, debug=0):
 		"""
@@ -91,12 +98,43 @@ class FGCPConnection:
 				self.timezone = 'Etc/GMT'
 		self._key = None
 
+	def __repr__(self):
+		return '<%s:%s>' % (self.__class__.__name__, self.host)
+
 	def set_region(self, region):
 		if region in self._regions:
 			# reset connection if necessary
 			if self._conn is not None and self.host != self._regions[region]:
 				self.close()
 			self.host = self._regions[region]
+
+	def connect(self):
+		if self._conn is None:
+			if self.host == 'test':
+				# use test API server for testing
+				from fgcp.dummy import FGCPTestServerWithFixtures
+				self._conn = FGCPTestServerWithFixtures()
+			else:
+				# use the same PEM file for cert and key
+				self._conn = httplib.HTTPSConnection(self.host, key_file=self.key_file, cert_file=self.key_file)
+
+	def send(self, method, uri, body, headers):
+		# initialize connection if necessary
+		self.connect()
+		# set testid if necessary
+		if self.host == 'test':
+			self._conn._testid = self._testid
+		# send HTTPS request
+		self._conn.request(method, uri, body, headers)
+
+	def receive(self):
+		# get HTTPS response
+		resp = self._conn.getresponse()
+		# check response
+		if resp.status != 200:
+			raise FGCPResponseError(repr(resp.status), repr(resp.reason))
+		# return data
+		return resp.read()
 
 	def close(self):
 		self._conn.close()
@@ -129,10 +167,17 @@ class FGCPConnection:
 		return sig
 
 	def get_body(self, action, params=None, attachments=None):
-		acc = self.get_accesskeyid()
-		sig = self.get_signature(acc)
+		if self.host == 'test':
+			# sanitize accesskeyid and signature for test fixtures
+			acc = '...'
+			sig = '...'
+		else:
+			acc = self.get_accesskeyid()
+			sig = self.get_signature(acc)
 		CRLF = '\r\n'
 		L = []
+		if self.host == 'test' or self.debug > 1:
+			self._testid = action
 		L.append('<?xml version="1.0" encoding="UTF-8"?>')
 		L.append('<OViSSRequest>')
 		L.append('  <Action>' + action + '</Action>')
@@ -171,6 +216,8 @@ class FGCPConnection:
 				L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (attachment['name'], attachment['filename']))
 				L.append('')
 				L.append(attachment['body'])
+				if self.host == 'test' or self.debug > 1:
+					self._testid += '.%s' % attachment['filename']
 			L.append('--BOUNDARY--')
 			body = CRLF.join(L)
 			#if len(attachments) > 1:
@@ -190,6 +237,8 @@ class FGCPConnection:
 		elif isinstance(value, str):
 			# <prefix>proto</prefix>
 			L.append('  ' * depth + '<%s>%s</%s>' % (key, value, key))
+			if self.host == 'test' or self.debug > 1:
+				self._testid += '.%s' % value
 		elif isinstance(value, dict):
 			# <order>
 			#   <prefix>proto</proto>
@@ -221,38 +270,53 @@ class FGCPConnection:
 		else:
 			# <prefix>proto</prefix>
 			L.append('  ' * depth + '<%s>%s</%s>' % (key, value, key))
+			if self.host == 'test' or self.debug > 1:
+				self._testid += '.%s' % value
 		return CRLF.join(L)
 
 	def do_action(self, action, params=None, attachments=None):
 		"""
 		Send the XML-RPC request and get the response
 		"""
-		if self._conn is None:
-			# use the same PEM file for cert and key
-			self._conn = httplib.HTTPSConnection(self.host, key_file=self.key_file, cert_file=self.key_file)
-
+		# prepare headers and body
 		headers = self.get_headers(attachments)
 		body = self.get_body(action, params, attachments)
-		if self.debug > 1:
-			print 'XML-RPC Request for %s:' % action
+		if self.debug > 2 and os.path.isdir(os.path.join('tests','fixtures')):
+			# sanitize accesskeyid and signature for test fixtures
+			import re
+			p = re.compile('<AccessKeyId>[^<]+</AccessKeyId>')
+			req = p.sub('<AccessKeyId>...</AccessKeyId>', body)
+			p = re.compile('<Signature>[^<]+</Signature>')
+			req = p.sub('<Signature>...</Signature>', req)
+			print 'Saving request for %s' % self._testid
+			# save request in tests/fixtures
+			f = open(os.path.join('tests','fixtures',self._testid + '.request.xml'),'wb')
+			f.write(req)
+			f.close()
+		elif self.debug > 1:
+			print 'XML-RPC Request for %s:' % self._testid
 			print body
 
 		# send XML-RPC request
-		self._conn.request('POST', self.uri, body, headers)
+		self.send('POST', self.uri, body, headers)
 
-		resp = self._conn.getresponse()
-		if resp.status != 200:
-			raise FGCPResponseError(repr(resp.status), repr(resp.reason))
-		data = resp.read()
-		if self.debug > 1:
-			print 'XML-RPC Response for %s:' % action
+		# receive XML-RPC response
+		data = self.receive()
+		if self.debug > 2 and os.path.isdir(os.path.join('tests','fixtures')):
+			print 'Saving response for %s' % self._testid
+			# save response in tests/fixtures
+			f = open(os.path.join('tests','fixtures',self._testid + '.response.xml'),'wb')
+			f.write(data)
+			f.close()
+		elif self.debug > 1:
+			print 'XML-RPC Response for %s:' % self._testid
 			print data
 
 		# analyze XML-RPC response
-		resp = FGCPResponseParser().parse_data(data)
+		resp = FGCPResponseParser().parse_data(data, self)
 		if self.debug > 0:
 			print 'FGCP Response for %s:' % action
-			resp.dump()
+			resp.pprint()
 		# FIXME: use todict() first, and then verify responseStatus ?
 		if resp.responseStatus != 'SUCCESS':
 			raise FGCPResponseError(resp.responseStatus, resp.responseMessage)
@@ -274,13 +338,14 @@ class FGCPResponseParser:
 	"""
 	FGCP Response Parser
 	"""
+	_client = None
 	# CHECKME: this assumes all tags are unique - otherwise we'll need to use the path
 	_tag2class = {
 		'vsysdescriptor': FGCPVSysDescriptor,
 		'publicip': FGCPPublicIP,
 		'addressrange': FGCPAddressRange,
 		'diskimage': FGCPDiskImage,
-		'software': FGCPSoftware,
+		'software': FGCPDiskImageSoftware,
 		'servertype': FGCPServerType,
 		'cpu': FGCPServerTypeCPU,
 		'vsys': FGCPVSys,
@@ -304,20 +369,22 @@ class FGCPResponseParser:
 		'servercert': FGCPSLBServerCert,
 		'ccacert': FGCPSLBCCACert,
 		'usageinfo': FGCPUsageInfo,
-		'product': FGCPProduct,
+		'product': FGCPUsageInfoProduct,
 		'response': FGCPResponse,
 		'default': FGCPUnknown,
 	}
 
-	def parse_data(self, data):
+	def parse_data(self, data, client):
 		"""
 		Load the data as XML ElementTree and convert to FGCP Response
 		"""
+		# keep track of the connection client
+		self._client = client
 		#ElementTree.register_namespace(uri='http://apioviss.jp.fujitsu.com')
 		# initialize the XML Element
 		root = ElementTree.fromstring(data)
-		# convert the XML Element to FGCP Response object
-		return self.xmlelement_to_object(root)
+		# convert the XML Element to FGCP Response object - CHECKME: and link to caller !?
+		return self.xmlelement_to_object(root, client._caller)
 
 	def clean_tag(self, tag):
 		"""
@@ -340,7 +407,8 @@ class FGCPResponseParser:
 			#print 'CHECKME: unknown tag ' + tag
 			return self._tag2class['default']()
 
-	def xmlelement_to_object(self, root=None):
+	# CHECKME: get rid of parent here again, and re-parent in resource itself ?
+	def xmlelement_to_object(self, root=None, parent=None):
 		"""
 		Convert the XML Element to an FGCP Element
 		"""
@@ -363,7 +431,8 @@ class FGCPResponseParser:
 			info = []
 			# if the child returns a string, return that too (cfr. ListServerType - servertype - memory - memorySize)
 			for subelem in root:
-				child = self.xmlelement_to_object(subelem)
+				# CHECKME: use grand-parent for the child now !
+				child = self.xmlelement_to_object(subelem, parent)
 				if isinstance(child, str):
 					return child
 				else:
@@ -373,16 +442,34 @@ class FGCPResponseParser:
 		#info = {}
 		# FIXME: adapt class based on subelem or tag ?
 		info = self.get_tag_object(root.tag)
+		# add client to object
+		info._client = self._client
+		if isinstance(info, FGCPResource):
+			# CHECKME: add parent and client to the FGCP resource
+			info._parent = parent
+			info._client = self._client
+		elif isinstance(info, FGCPResponse):
+			# CHECKME: add caller to the FGCP respone
+			info._caller = parent
 		for subelem in root:
 			key = self.clean_tag(subelem.tag)
 			if isinstance(info, list):
-				info.append(self.xmlelement_to_object(subelem))
+				# CHECKME: use grand-parent for the child now !
+				info.append(self.xmlelement_to_object(subelem, parent))
 			elif hasattr(info, key):
 				#print "OOPS ! " + key + " child is already in " + repr(info)
 				# convert to list !?
-				old_info = getattr(info,key)
-				info = [old_info]
-				info.append(self.xmlelement_to_object(subelem))
+				child = getattr(info,key)
+				# CHECKME: re-parent the child
+				if child is not None and isinstance(child, FGCPResource):
+					child._parent = parent
+				info = [child]
+				# CHECKME: use grand-parent for the child now !
+				info.append(self.xmlelement_to_object(subelem, parent))
+			elif isinstance(info, FGCPResponse):
+				# CHECKME: use caller as parent here
+				setattr(info, key, self.xmlelement_to_object(subelem, parent))
 			else:
-				setattr(info, key, self.xmlelement_to_object(subelem))
+				# CHECKME: use current info as parent for now
+				setattr(info, key, self.xmlelement_to_object(subelem, info))
 		return info

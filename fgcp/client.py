@@ -33,10 +33,10 @@ class FGCPMonitor(FGCPCommand):
 		"""
 		Find VSYS by vsysName
 		"""
-		vsyss = self.ListVSYS()
-		if len(vsyss) < 1:
+		vsystems = self.ListVSYS()
+		if len(vsystems) < 1:
 			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No VSYS are defined')
-		for vsys in vsyss:
+		for vsys in vsystems:
 			if vsysName == vsys.vsysName:
 				return vsys
 		raise FGCPResponseError('ILLEGAL_VSYS_ID', 'Invalid vsysName %s' % vsysName)
@@ -46,18 +46,20 @@ class FGCPMonitor(FGCPCommand):
 		Get VSYS inventory (by vsysName)
 		"""
 		if vsysName is None:
-			vsyss = self.ListVSYS()
+			vsystems = self.ListVSYS()
 		else:
-			vsyss = []
-			vsyss.append(self.FindSystemByName(vsysName))
-		if len(vsyss) < 1:
+			vsystems = []
+			vsystems.append(self.FindSystemByName(vsysName))
+		if len(vsystems) < 1:
 			self.show_output('No VSYS are defined')
 			return
 		inventory = {}
 		inventory['vsys'] = {}
-		for vsys in vsyss:
+		for vsys in vsystems:
 			# get configuration for this vsys
 			vsys = self.GetVSYSConfiguration(vsys.vsysId)
+			# CHECKME: set vsys as parent for next commands ?
+			self._caller = vsys
 			setattr(vsys, 'firewalls', self.ListEFM(vsys.vsysId, "FW"))
 			setattr(vsys, 'loadbalancers', self.ListEFM(vsys.vsysId, "SLB"))
 			# CHECKME: remove firewalls and loadbalancers from vservers list
@@ -115,13 +117,13 @@ class FGCPMonitor(FGCPCommand):
 		for name, vsys in inventory['vsys'].iteritems():
 			# get status of vsys overall
 			status = self.GetVSYSStatus(vsys.vsysId)
-			self.show_output('VSYS\t%s\t%s' % (vsys.vsysName, status))
+			self.show_output('VSYS:%s:%s' % (vsys.vsysName, status))
 			setattr(new_inventory['vsys'][name], 'vsysStatus', status)
 			# get status of public ips
 			new_publicips = []
 			for publicip in vsys.publicips:
 				status = self.GetPublicIPStatus(publicip.address)
-				self.show_output('PublicIP\t%s\t%s' % (publicip.address, status))
+				self.show_output('PublicIP:%s:%s' % (publicip.address, status))
 				setattr(publicip, 'publicipStatus', status)
 				new_publicips.append(publicip)
 			setattr(new_inventory['vsys'][name], 'publicips', new_publicips)
@@ -129,7 +131,7 @@ class FGCPMonitor(FGCPCommand):
 			new_firewalls = []
 			for firewall in vsys.firewalls:
 				status = self.GetEFMStatus(vsys.vsysId, firewall.efmId)
-				self.show_output('EFM FW\t%s\t%s' % (firewall.efmName, status))
+				self.show_output('EFM FW:%s:%s' % (firewall.efmName, status))
 				setattr(firewall, 'efmStatus', status)
 				new_firewalls.append(firewall)
 			setattr(new_inventory['vsys'][name], 'firewalls', new_firewalls)
@@ -137,7 +139,7 @@ class FGCPMonitor(FGCPCommand):
 			new_loadbalancers = []
 			for loadbalancer in vsys.loadbalancers:
 				status = self.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
-				self.show_output('EFM SLB\t%s\t%s\t%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
+				self.show_output('EFM SLB:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
 				setattr(loadbalancer, 'efmStatus', status)
 				new_loadbalancers.append(loadbalancer)
 			setattr(new_inventory['vsys'][name], 'loadbalancers', new_loadbalancers)
@@ -146,13 +148,13 @@ class FGCPMonitor(FGCPCommand):
 			seenId = {}
 			for vserver in vsys.vservers:
 				status = self.GetVServerStatus(vsys.vsysId, vserver.vserverId)
-				self.show_output('VServer\t%s\t%s\t%s' % (vserver.vserverName, vserver.vnics[0].privateIp, status))
+				self.show_output('VServer:%s:%s:%s' % (vserver.vserverName, vserver.vnics[0].privateIp, status))
 				setattr(vserver, 'vserverStatus', status)
 				# get status of attached disks
 				new_vdisks = []
 				for vdisk in vserver.vdisks:
 					status = self.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
-					self.show_output('\tVDisk\t%s\t%s' % (vdisk.vdiskName, status))
+					self.show_output(':VDisk:%s:%s' % (vdisk.vdiskName, status))
 					seenId[vdisk.vdiskId] = 1
 					setattr(vdisk, 'vdiskStatus', status)
 					new_vdisks.append(vdisk)
@@ -172,12 +174,12 @@ class FGCPMonitor(FGCPCommand):
 				self.show_output('Unattached Disks')
 				for vdisk in todo:
 					status = self.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
-					self.show_output('\tVDisk\t%s\t%s' % (vdisk.vdiskName, status))
+					self.show_output(':VDisk:%s:%s' % (vdisk.vdiskName, status))
 					seenId[vdisk.vdiskId] = 1
 					setattr(vdisk, 'vdiskStatus', status)
 					new_vdisks.append(vdisk)
 			setattr(new_inventory['vsys'][name], 'vdisks', new_vdisks)
-			self.show_output()
+			self.show_output('.')
 		# reset output
 		self.set_verbose(old_verbose)
 		# return inventory with updated status for each component
@@ -647,6 +649,7 @@ class FGCPDesigner(FGCPOperator):
 			#publicip.address = 'xxx.xxx.xxx.xxx'
 			#new_publicips.append(publicip)
 		#vsys.publicips = new_publicips
+		from fgcp.resource import FGCPFirewall
 		new_firewalls = []
 		for firewall in vsys.firewalls:
 			# TODO: Add FW and SLB configurations
@@ -689,7 +692,7 @@ class FGCPDesigner(FGCPOperator):
 		#for vdisk in vsys.vdisks:
 		#	new_vdisks.append(vdisk)
 		#vsys.vdisks = new_vdisks
-		# Prepare for output
+		# Prepare for output - FGCPElement().pformat() writes objects initialized with the right values
 		lines = vsys.pformat(vsys)
 		# Replace vsysId and creator everywhere (including Id's)
 		lines = lines.replace(vsys.vsysId, 'DEMO-VSYS')
@@ -724,6 +727,7 @@ class FGCPDesigner(FGCPOperator):
 			return
 		# CHECKME: add line continuations before exec() !?
 		try:
+			# See above - FGCPElement().pformat() writes objects initialized with the right values
 			exec 'vsys = ' + lines.replace("\r\n","\\\r\n")
 		except:
 			self.show_output('File %s seems to have some syntax errors' % filePath)
@@ -753,8 +757,8 @@ class FGCPClient(FGCPDesigner):
 	client.CleanupBackups(vsys.vsysId)
 
 	# Note: you can also use all API commands from FGCPCommand()
-	vsyss = client.ListVSYS()
-	for vsys in vsyss:
+	vsystems = client.ListVSYS()
+	for vsys in vsystems:
 		vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 		...
 	"""
@@ -787,8 +791,8 @@ def fgcp_run_sample(pem_file, region):
 	#client.DestroySystem('Python API Demo System')
 	#
 	# Note: you can also use all API commands from FGCPCommand()
-	#vsyss = client.ListVSYS()
-	#for vsys in vsyss:
+	#vsystems = client.ListVSYS()
+	#for vsys in vsystems:
 	#	vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 	#	...
 	#vsysdescriptors = client.ListVSYSDescriptor()

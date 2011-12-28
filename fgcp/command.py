@@ -28,8 +28,8 @@ class FGCPCommand(FGCPConnection):
 	Example:
 	from fgcp_client_api import FGCPCommand
 	cmd = FGCPCommand('client.pem', 'uk')
-	vsyss = cmd.ListVSYS()
-	for vsys in vsyss:
+	vsystems = cmd.ListVSYS()
+	for vsys in vsystems:
 		print vsys.vsysName
 		vsysconfig = cmd.GetVSYSConfiguration(vsys.vsysId)
 		...
@@ -151,7 +151,7 @@ class FGCPCommand(FGCPConnection):
 		"""
 		Usage: publicipattr = client.GetPublicIPAttributes(publicip.address)
 		"""
-		result = self.do_action('GetPublicIPStatus', {'publicIp': publicIp})
+		result = self.do_action('GetPublicIPAttributes', {'publicIp': publicIp})
 		return result.publicips
 
 	def GetPublicIPStatus(self, publicIp):
@@ -206,15 +206,15 @@ class FGCPCommand(FGCPConnection):
 		result = self.do_action('ListDiskImage', {'serverCategory': serverCategory, 'vsysDescriptorId': vsysDescriptorId})
 		return result.diskimages
 
-	def GetDiskImageAttributes(self, vsysId, diskImageId):
+	def GetDiskImageAttributes(self, diskImageId):
 		"""
-		Usage: diskimage = client.GetDiskImageAttributes(vsys.vsysId, diskimage.diskimageId)
+		Usage: diskimage = client.GetDiskImageAttributes(diskimage.diskimageId)
 		"""
-		result = self.do_action('GetDiskImageAttributes', {'vsysId': vsysId, 'diskImageId': diskImageId})
+		result = self.do_action('GetDiskImageAttributes', {'diskImageId': diskImageId})
 		return result.diskimage
 
-	def UpdateDiskImageAttribute(self, vsysId, diskImageId, updateLcId, attributeName, attributeValue):
-		result = self.do_action('UpdateDiskImageAttribute', {'vsysId': vsysId, 'diskImageId': diskImageId, 'updateLcId': updateLcId, 'attributeName': attributeName, 'attributeValue': attributeValue})
+	def UpdateDiskImageAttribute(self, diskImageId, updateLcId, attributeName, attributeValue):
+		result = self.do_action('UpdateDiskImageAttribute', {'diskImageId': diskImageId, 'updateLcId': updateLcId, 'attributeName': attributeName, 'attributeValue': attributeValue})
 		return result
 
 	def RegisterPrivateDiskImage(self, vserverId, name, description):
@@ -252,7 +252,7 @@ class FGCPCommand(FGCPConnection):
 
 	def ListVSYS(self):
 		"""
-		Usage: vsyss = client.ListVSYS()
+		Usage: vsystems = client.ListVSYS()
 		"""
 		result = self.do_action('ListVSYS')
 		# CHECKME: initialize empty list if necessary

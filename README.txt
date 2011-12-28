@@ -29,11 +29,14 @@ via command-line scripts, web interfaces etc. as you prefer.
 			vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
 			...
 
+Note: this client API library provides higher-level Client Methods, intermediate Resource Actions and lower-level API Commands.
+
 Fujitsu Global Cloud Platform (FGCP)
 ------------------------------------
-Service Portal:
 
 .. image:: http://mikespub.net/fgcp_client_api.png
+
+Service Portal:
 
 * for Australia and New Zealand: http://globalcloud.fujitsu.com.au/
 * for Central Europe (CEMEA&I): http://globalcloud.de.fujitsu.com/

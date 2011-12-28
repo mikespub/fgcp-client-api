@@ -70,8 +70,8 @@ for&nbsp;vserver&nbsp;in&nbsp;vsys.vservers:<br>
 client.<a href="#FGCPClient-CleanupBackups">CleanupBackups</a>(vsys.vsysId)<br>
 &nbsp;<br>
 #&nbsp;Note:&nbsp;you&nbsp;can&nbsp;also&nbsp;use&nbsp;all&nbsp;API&nbsp;commands&nbsp;from&nbsp;<a href="fgcp.command.html#FGCPCommand">FGCPCommand</a>()<br>
-vsyss&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()<br>
-for&nbsp;vsys&nbsp;in&nbsp;vsyss:<br>
+vsystems&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()<br>
+for&nbsp;vsys&nbsp;in&nbsp;vsystems:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
@@ -185,7 +185,7 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPClient-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPClient-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, vsysId, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPClient-GetDiskImageAttributes">GetDiskImageAttributes</a>(vsys.vsysId,&nbsp;diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPClient-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
@@ -241,7 +241,7 @@ loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPClient-ListEFM">ListEFM</a>(vsys.
 
 <dl><dt><a name="FGCPClient-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsyss&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
@@ -273,7 +273,7 @@ client.<a href="#FGCPClient-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDe
 
 <dl><dt><a name="FGCPClient-UnregisterVSYSDescriptor"><strong>UnregisterVSYSDescriptor</strong></a>(self, vsysDescriptorId)</dt></dl>
 
-<dl><dt><a name="FGCPClient-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, vsysId, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
+<dl><dt><a name="FGCPClient-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPClient-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
@@ -307,9 +307,13 @@ the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
 &nbsp;<br>
 openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes</tt></dd></dl>
 
+<dl><dt><a name="FGCPClient-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPClient-add_param"><strong>add_param</strong></a>(self, key<font color="#909090">=None</font>, value<font color="#909090">=None</font>, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPClient-close"><strong>close</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPClient-connect"><strong>connect</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPClient-do_action"><strong>do_action</strong></a>(self, action, params<font color="#909090">=None</font>, attachments<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;the&nbsp;XML-RPC&nbsp;request&nbsp;and&nbsp;get&nbsp;the&nbsp;response</tt></dd></dl>
 
@@ -320,6 +324,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPClient-get_headers"><strong>get_headers</strong></a>(self, attachments<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPClient-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-receive"><strong>receive</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPClient-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
 <dl><dt><a name="FGCPClient-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
@@ -461,7 +469,7 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPDesigner-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, vsysId, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetDiskImageAttributes">GetDiskImageAttributes</a>(vsys.vsysId,&nbsp;diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
@@ -517,7 +525,7 @@ loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListEFM">ListEFM</a>(vsy
 
 <dl><dt><a name="FGCPDesigner-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsyss&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
@@ -549,7 +557,7 @@ client.<a href="#FGCPDesigner-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYS
 
 <dl><dt><a name="FGCPDesigner-UnregisterVSYSDescriptor"><strong>UnregisterVSYSDescriptor</strong></a>(self, vsysDescriptorId)</dt></dl>
 
-<dl><dt><a name="FGCPDesigner-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, vsysId, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
+<dl><dt><a name="FGCPDesigner-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
@@ -583,9 +591,13 @@ the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
 &nbsp;<br>
 openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes</tt></dd></dl>
 
+<dl><dt><a name="FGCPDesigner-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPDesigner-add_param"><strong>add_param</strong></a>(self, key<font color="#909090">=None</font>, value<font color="#909090">=None</font>, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-close"><strong>close</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDesigner-connect"><strong>connect</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-do_action"><strong>do_action</strong></a>(self, action, params<font color="#909090">=None</font>, attachments<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;the&nbsp;XML-RPC&nbsp;request&nbsp;and&nbsp;get&nbsp;the&nbsp;response</tt></dd></dl>
 
@@ -596,6 +608,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPDesigner-get_headers"><strong>get_headers</strong></a>(self, attachments<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPDesigner-receive"><strong>receive</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPDesigner-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
@@ -689,7 +705,7 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPMonitor-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, vsysId, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetDiskImageAttributes">GetDiskImageAttributes</a>(vsys.vsysId,&nbsp;diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
@@ -745,7 +761,7 @@ loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListEFM">ListEFM</a>(vsys
 
 <dl><dt><a name="FGCPMonitor-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsyss&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
@@ -777,7 +793,7 @@ client.<a href="#FGCPMonitor-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSD
 
 <dl><dt><a name="FGCPMonitor-UnregisterVSYSDescriptor"><strong>UnregisterVSYSDescriptor</strong></a>(self, vsysDescriptorId)</dt></dl>
 
-<dl><dt><a name="FGCPMonitor-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, vsysId, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
+<dl><dt><a name="FGCPMonitor-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
@@ -811,9 +827,13 @@ the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
 &nbsp;<br>
 openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes</tt></dd></dl>
 
+<dl><dt><a name="FGCPMonitor-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPMonitor-add_param"><strong>add_param</strong></a>(self, key<font color="#909090">=None</font>, value<font color="#909090">=None</font>, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-close"><strong>close</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPMonitor-connect"><strong>connect</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-do_action"><strong>do_action</strong></a>(self, action, params<font color="#909090">=None</font>, attachments<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;the&nbsp;XML-RPC&nbsp;request&nbsp;and&nbsp;get&nbsp;the&nbsp;response</tt></dd></dl>
 
@@ -824,6 +844,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPMonitor-get_headers"><strong>get_headers</strong></a>(self, attachments<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPMonitor-receive"><strong>receive</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPMonitor-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
@@ -946,7 +970,7 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPOperator-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, vsysId, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetDiskImageAttributes">GetDiskImageAttributes</a>(vsys.vsysId,&nbsp;diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
@@ -1002,7 +1026,7 @@ loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListEFM">ListEFM</a>(vsy
 
 <dl><dt><a name="FGCPOperator-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsyss&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
@@ -1034,7 +1058,7 @@ client.<a href="#FGCPOperator-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYS
 
 <dl><dt><a name="FGCPOperator-UnregisterVSYSDescriptor"><strong>UnregisterVSYSDescriptor</strong></a>(self, vsysDescriptorId)</dt></dl>
 
-<dl><dt><a name="FGCPOperator-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, vsysId, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
+<dl><dt><a name="FGCPOperator-UpdateDiskImageAttribute"><strong>UpdateDiskImageAttribute</strong></a>(self, diskImageId, updateLcId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
@@ -1068,9 +1092,13 @@ the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
 &nbsp;<br>
 openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes</tt></dd></dl>
 
+<dl><dt><a name="FGCPOperator-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPOperator-add_param"><strong>add_param</strong></a>(self, key<font color="#909090">=None</font>, value<font color="#909090">=None</font>, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-close"><strong>close</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPOperator-connect"><strong>connect</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-do_action"><strong>do_action</strong></a>(self, action, params<font color="#909090">=None</font>, attachments<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;the&nbsp;XML-RPC&nbsp;request&nbsp;and&nbsp;get&nbsp;the&nbsp;response</tt></dd></dl>
 
@@ -1081,6 +1109,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPOperator-get_headers"><strong>get_headers</strong></a>(self, attachments<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-get_signature"><strong>get_signature</strong></a>(self, acc<font color="#909090">=None</font>)</dt><dd><tt>#&nbsp;see&nbsp;com.fujitsu.oviss.pub.OViSSSignature</tt></dd></dl>
+
+<dl><dt><a name="FGCPOperator-receive"><strong>receive</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPOperator-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
