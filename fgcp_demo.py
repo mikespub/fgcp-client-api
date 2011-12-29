@@ -25,68 +25,70 @@ Caution: this is a development work in progress - please do not use
 for productive systems without adequate testing...
 """
 
+
 def fgcp_run_sample(pem_file, region):
-	"""
-	>>> from fgcp.client import FGCPClient
-	>>> client = FGCPClient('client.pem', 'test')
-	>>> client.ShowSystemStatus('Python API Demo System')
-	Show System Status for VSYS Python API Demo System
-	VSYS:Python API Demo System:NORMAL
-	PublicIP:80.70.163.238:ATTACHED
-	EFM FW:Firewall:RUNNING
-	EFM SLB:LoadBalancer:192.168.3.211:RUNNING
-	VServer:Server1:192.168.3.12:RUNNING
-	VServer:Server2:192.168.3.13:RUNNING
-	VServer:Server3:192.168.4.12:RUNNING
-	VServer:Server4:192.168.4.13:RUNNING
-	.
-	>>> vsystems = client.ListVSYS()
-	>>> for vsys in vsystems:
-	...     vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
-	...     print 'VSystem %s has %d servers' % (vsysconfig.vsysName, len(vsysconfig.vservers))
-	...
-	VSystem Python API Demo System has 6 servers
-	VSystem Demo System has 5 servers
-	"""
-	# Get FGCP Client with your certificate in this region
-	from fgcp.client import FGCPClient
-	client = FGCPClient(pem_file, region)
-	# Hint: set debug=1 to dump the FGCP Response for further development
-	#client = FGCPClient(pem_file, region, debug=1)
-	client.ShowSystemStatus()
-	#
-	# Backup all VServers in some VSYS
-	#vsys = client.GetSystemInventory('Python API Demo System')
-	#for vserver in vsys.vservers:
-	#	client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
-	#client.CleanupBackups(vsys.vsysId)
-	#
-	# Create and start a complete VSYS based on an existing configuration
-	#client.set_verbose(2) # show output and status checks during script execution
-	#vsysdesign = client.LoadSystemDesign('fgcp_demo_system.txt')
-	#client.CreateSystem('Python API Demo System', vsysdesign.baseDescriptor)
-	#client.ConfigureSystem('Python API Demo System', vsysdesign)
-	#client.StartSystem('Python API Demo System')
-	#
-	# Stop and destroy a complete VSYS
-	#client.StopSystem('Python API Demo System')
-	#client.DestroySystem('Python API Demo System')
-	#
-	# Note: you can also use all API commands from FGCPCommand()
-	#vsystems = client.ListVSYS()
-	#for vsys in vsystems:
-	#	vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
-	#	...
-	#vsysdescriptors = client.ListVSYSDescriptor()
-	#for vsysdescriptor in vsysdescriptors:
-	#	if vsysdescriptor.vsysdescriptorName == '2-tier Skeleton':
-	#		vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'Python API Demo System')
-	#		print 'New VSYS Created: %s' % vsysId
-	#		break
-	exit()
+    """
+    >>> from fgcp.client import FGCPClient
+    >>> client = FGCPClient('client.pem', 'test')
+    >>> client.ShowSystemStatus('Python API Demo System')
+    Show System Status for VSYS Python API Demo System
+    VSYS:Python API Demo System:NORMAL
+    PublicIP:80.70.163.238:ATTACHED
+    EFM FW:Firewall:RUNNING
+    EFM SLB:LoadBalancer:192.168.3.211:RUNNING
+    VServer:Server1:192.168.3.12:RUNNING
+    VServer:Server2:192.168.3.13:RUNNING
+    VServer:Server3:192.168.4.12:RUNNING
+    VServer:Server4:192.168.4.13:RUNNING
+    .
+    >>> vsystems = client.ListVSYS()
+    >>> for vsys in vsystems:
+    ...     vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
+    ...     print 'VSystem %s has %d servers' % (vsysconfig.vsysName, len(vsysconfig.vservers))
+    ...
+    VSystem Python API Demo System has 6 servers
+    VSystem Demo System has 5 servers
+    """
+    # Get FGCP Client with your certificate in this region
+    from fgcp.client import FGCPClient
+    client = FGCPClient(pem_file, region)
+    # Hint: set debug=1 to dump the FGCP Response for further development
+    #client = FGCPClient(pem_file, region, debug=1)
+    client.ShowSystemStatus()
+    #
+    # Backup all VServers in some VSYS
+    #vsys = client.GetSystemInventory('Python API Demo System')
+    #for vserver in vsys.vservers:
+    #    client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
+    #client.CleanupBackups(vsys.vsysId)
+    #
+    # Create and start a complete VSYS based on an existing configuration
+    #client.set_verbose(2) # show output and status checks during script execution
+    #vsysdesign = client.LoadSystemDesign('fgcp_demo_system.txt')
+    #client.CreateSystem('Python API Demo System', vsysdesign.baseDescriptor)
+    #client.ConfigureSystem('Python API Demo System', vsysdesign)
+    #client.StartSystem('Python API Demo System')
+    #
+    # Stop and destroy a complete VSYS
+    #client.StopSystem('Python API Demo System')
+    #client.DestroySystem('Python API Demo System')
+    #
+    # Note: you can also use all API commands from FGCPCommand()
+    #vsystems = client.ListVSYS()
+    #for vsys in vsystems:
+    #    vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
+    #    ...
+    #vsysdescriptors = client.ListVSYSDescriptor()
+    #for vsysdescriptor in vsysdescriptors:
+    #    if vsysdescriptor.vsysdescriptorName == '2-tier Skeleton':
+    #        vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'Python API Demo System')
+    #        print 'New VSYS Created: %s' % vsysId
+    #        break
+    exit()
+
 
 def fgcp_show_usage(name='fgcp_demo.py'):
-	print """Client API library for the Fujitsu Global Cloud Platform (FGCP)
+    print """Client API library for the Fujitsu Global Cloud Platform (FGCP)
 
 Usage: %s [pem_file] [region]
 
@@ -104,18 +106,20 @@ the following 'openssl' command:
 openssl pkcs12 -in UserCert.p12 -out client.pem -nodes
 """ % name
 
+
 if __name__ == "__main__":
-	"""
-	Check if we have an existing 'client.pem' file or command line argument specifying the PEM file
-	"""
-	import os.path, sys
-	pem_file = 'client.pem'
-	region = 'de'
-	if len(sys.argv) > 1:
-		pem_file = sys.argv[1]
-		if len(sys.argv) > 2:
-			region = sys.argv[2]
-	if os.path.exists(pem_file):
-		fgcp_run_sample(pem_file, region)
-	else:
-		fgcp_show_usage(os.path.basename(sys.argv[0]))
+    """
+    Check if we have an existing 'client.pem' file or command line argument specifying the PEM file
+    """
+    import os.path
+    import sys
+    pem_file = 'client.pem'
+    region = 'de'
+    if len(sys.argv) > 1:
+        pem_file = sys.argv[1]
+        if len(sys.argv) > 2:
+            region = sys.argv[2]
+    if os.path.exists(pem_file):
+        fgcp_run_sample(pem_file, region)
+    else:
+        fgcp_show_usage(os.path.basename(sys.argv[0]))
