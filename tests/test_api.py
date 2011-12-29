@@ -18,7 +18,7 @@
 Test API Commands
 """
 
-def fgcp_api_walker(pem_file, region):
+def fgcp_api_walker(key_file, region):
 	"""
 	Test API commands using test server (or generate .xml test fixtures using real API server)
 	"""
@@ -30,8 +30,8 @@ def fgcp_api_walker(pem_file, region):
 	#
 	# Virtual Data Center (VDC)
 	#
-	#client = FGCPClient(pem_file, region)
-	client = FGCPCommand(pem_file, region)
+	#client = FGCPClient(key_file, region)
+	client = FGCPCommand(key_file, region)
 	client.debug = 1
 
 	client.GetSystemUsage()

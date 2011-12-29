@@ -27,8 +27,6 @@ import time
 import base64
 import os.path
 
-from fgcp.resource import *
-
 try:
 	from gdata.tlslite.utils import keyfactory
 except:
@@ -36,6 +34,12 @@ except:
 see http://code.google.com/p/gdata-python-client/ for download and installation"""
 	exit()
 from xml.etree import ElementTree
+
+from fgcp import FGCPError
+from fgcp.resource import *
+
+class FGCPResponseError(FGCPError):
+	pass
 
 class FGCPConnection:
 	"""
@@ -317,22 +321,12 @@ class FGCPConnection:
 		if self.debug > 0:
 			print 'FGCP Response for %s:' % action
 			resp.pprint()
-		# FIXME: use todict() first, and then verify responseStatus ?
+		# CHECKME: raise exception whenever we don't have SUCCESS
 		if resp.responseStatus != 'SUCCESS':
 			raise FGCPResponseError(resp.responseStatus, resp.responseMessage)
 
 		# return FGCP Response
 		return resp
-
-class FGCPResponseError(Exception):
-	"""
-	Exception class for FGCP Response errors
-	"""
-	def __init__(self, status, message):
-		self.status = status
-		self.message = message
-	def __str__(self):
-		return "Status: " + self.status + "\nMessage: " + self.message
 
 class FGCPResponseParser:
 	"""
@@ -348,7 +342,7 @@ class FGCPResponseParser:
 		'software': FGCPDiskImageSoftware,
 		'servertype': FGCPServerType,
 		'cpu': FGCPServerTypeCPU,
-		'vsys': FGCPVSys,
+		'vsys': FGCPVSystem,
 		'vserver': FGCPVServer,
 		'vdisk': FGCPVDisk,
 		'backup': FGCPBackup,
@@ -445,11 +439,11 @@ class FGCPResponseParser:
 		# add client to object
 		info._client = self._client
 		if isinstance(info, FGCPResource):
-			# CHECKME: add parent and client to the FGCP resource
+			# CHECKME: add parent and client to the FGCP Resource
 			info._parent = parent
 			info._client = self._client
 		elif isinstance(info, FGCPResponse):
-			# CHECKME: add caller to the FGCP respone
+			# CHECKME: add caller to the FGCP Respone
 			info._caller = parent
 		for subelem in root:
 			key = self.clean_tag(subelem.tag)

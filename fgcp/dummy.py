@@ -22,6 +22,11 @@ using XML-RPC API Version 2011-01-31
 import time
 import os.path
 
+from fgcp import FGCPError
+
+class FGCPDummyError(FGCPError):
+	pass
+
 class FGCPTestServerWithFixtures:
 	"""
 	Test API server for local client tests - updates are not supported
@@ -50,21 +55,21 @@ class FGCPTestServerWithFixtures:
 	def __init__(self, *args, **kwargs):
 		self._path = os.path.join('tests','fixtures')
 		if not os.path.isdir(self._path):
-			raise FGCPResponseError('INVALID_PATH', 'Path %s does not exist' % self._path)
+			raise FGCPDummyError('INVALID_PATH', 'Path %s does not exist' % self._path)
 
 	def request(self, method, uri, body, headers):
 		if self._testid is None:
-			raise FGCPResponseError('INVALID_PATH', 'Invalid test identifier')
+			raise FGCPDummyError('INVALID_PATH', 'Invalid test identifier')
 		# check if we have a request file
 		self._file = os.path.join(self._path, self._testid + '.request.xml')
 		if not os.path.isfile(self._file):
-			raise FGCPResponseError('INVALID_PATH', 'File %s does not exist' % self._file)
+			raise FGCPDummyError('INVALID_PATH', 'File %s does not exist' % self._file)
 		# compare body with request file
 		f = open(self._file, 'rb')
 		data = f.read()
 		f.close()
 		if data != body:
-			raise FGCPResponseError('INVALID_REQUEST', 'Request for test %s does not match test fixture:\nCurrent body:\n====\n%s\n====\nTest fixture:\n====\n%s\n====\n' % (self._testid,body,data))
+			raise FGCPDummyError('INVALID_REQUEST', 'Request for test %s does not match test fixture:\nCurrent body:\n====\n%s\n====\nTest fixture:\n====\n%s\n====\n' % (self._testid,body,data))
 		return
 
 	def getresponse(self):

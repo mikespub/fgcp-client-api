@@ -18,7 +18,7 @@
 Test Client Methods
 """
 
-def fgcp_client_walker(pem_file, region):
+def fgcp_client_walker(key_file, region):
 	"""
 	Test client methods using test server (or generate .xml test fixtures using real API server)
 	"""
@@ -30,7 +30,7 @@ def fgcp_client_walker(pem_file, region):
 	#
 	# Monitor
 	#
-	client = FGCPMonitor(pem_file, region)
+	client = FGCPMonitor(key_file, region)
 	client.debug = 0
 
 	vsys = client.FindSystemByName(vsysName)
@@ -41,7 +41,7 @@ def fgcp_client_walker(pem_file, region):
 	#
 	# Operator
 	#
-	client = FGCPOperator(pem_file, region)
+	client = FGCPOperator(key_file, region)
 	client.debug = 0
 	vsys = client.GetSystemInventory(vsysName)
 	client.StartSystem(vsysName, verbose=1)
@@ -70,7 +70,7 @@ def fgcp_client_walker(pem_file, region):
 	#
 	# Designer
 	#
-	client = FGCPDesigner(pem_file, region)
+	client = FGCPDesigner(key_file, region)
 	client.debug = 0
 	vsys = client.GetSystemInventory(vsysName)
 
@@ -87,7 +87,7 @@ def fgcp_client_walker(pem_file, region):
 	#
 	# Client
 	#
-	client = FGCPClient(pem_file, region)
+	client = FGCPClient(key_file, region)
 
 	# all of the above
 

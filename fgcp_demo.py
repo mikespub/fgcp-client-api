@@ -48,23 +48,9 @@ def fgcp_run_sample(pem_file, region):
 	VSystem Python API Demo System has 6 servers
 	VSystem Demo System has 5 servers
 	"""
-	# Get FGCP client with your certificate in this region
+	# Get FGCP Client with your certificate in this region
 	from fgcp.client import FGCPClient
-	#region = 'test'
 	client = FGCPClient(pem_file, region)
-	client.debug = 3
-	diskimages = client.ListDiskImage()
-	client.ListServerType(diskimages[0].getid())
-	#client.GetSystemUsage()
-	vsys = client.GetSystemInventory('Demo System')
-	vdisks = client.ListVDisk(vsys.vsysId)
-	for vdisk in vdisks:
-		vdisk.get_backups()
-	#client.ShowSystemStatus()
-	#print vsys
-	#info = client.GetSystemUsage()
-	#client.ListDiskImage('GENERAL', vsys.vsysId)
-	return
 	# Hint: set debug=1 to dump the FGCP Response for further development
 	#client = FGCPClient(pem_file, region, debug=1)
 	client.ShowSystemStatus()
@@ -106,8 +92,8 @@ Usage: %s [pem_file] [region]
 
 from fgcp.client import FGCPClient
 client = FGCPClient('client.pem', 'uk')
-vsys = client.GetSystemInventory('Python API Demo System')
-...
+vsystem = client.GetSystemInventory('Python API Demo System')
+# ...
 
 Requirements: this module uses gdata.tlslite.utils to create the key signature,
 see http://code.google.com/p/gdata-python-client/ for download and installation

@@ -21,8 +21,12 @@ using XML-RPC API Version 2011-01-31
 
 import time
 
-from fgcp.connection import FGCPResponseError
 from fgcp.command import FGCPCommand
+
+from fgcp import FGCPError
+
+class FGCPClientError(FGCPError):
+	pass
 
 class FGCPMonitor(FGCPCommand):
 	"""
@@ -35,11 +39,11 @@ class FGCPMonitor(FGCPCommand):
 		"""
 		vsystems = self.ListVSYS()
 		if len(vsystems) < 1:
-			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No VSYS are defined')
+			raise FGCPClientError('RESOURCE_NOT_FOUND', 'No VSYS are defined')
 		for vsys in vsystems:
 			if vsysName == vsys.vsysName:
 				return vsys
-		raise FGCPResponseError('ILLEGAL_VSYS_ID', 'Invalid vsysName %s' % vsysName)
+		raise FGCPClientError('ILLEGAL_VSYS_ID', 'Invalid vsysName %s' % vsysName)
 
 	def GetSystemInventory(self, vsysName=None):
 		"""
@@ -203,10 +207,10 @@ class FGCPOperator(FGCPMonitor):
 		Call status_method(*args) to see if we get done_status, or something other than pass_status
 		"""
 		if not hasattr(self, status_method):
-			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+			raise FGCPClientError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
 		check_status = getattr(self, status_method, None)
 		if not callable(check_status):
-			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+			raise FGCPClientError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
 		if isinstance(done_status, str):
 			done_list = [done_status]
 		else:
@@ -223,17 +227,17 @@ class FGCPOperator(FGCPMonitor):
 			# we can continue with whatever needs doing
 			return
 		else:
-			raise FGCPResponseError('ILLEGAL_STATE', 'Invalid status %s for %s' % (status, status_method))
+			raise FGCPClientError('ILLEGAL_STATE', 'Invalid status %s for %s' % (status, status_method))
 
 	def wait_for_status(self, done_status, wait_status, status_method, *args):
 		"""
 		Call status_method(*args) repeatedly until we get done_status (or something else than wait_status)
 		"""
 		if not hasattr(self, status_method):
-			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+			raise FGCPClientError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
 		check_status = getattr(self, status_method, None)
 		if not callable(check_status):
-			raise FGCPResponseError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
+			raise FGCPClientError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
 		if isinstance(done_status, str):
 			done_list = [done_status]
 		else:
@@ -251,7 +255,7 @@ class FGCPOperator(FGCPMonitor):
 			elif status in wait_list:
 				pass
 			else:
-				raise FGCPResponseError('ILLEGAL_STATE', '%s returned unexpected status %s while %s' % (status_method, status, wait_status))
+				raise FGCPClientError('ILLEGAL_STATE', '%s returned unexpected status %s while %s' % (status_method, status, wait_status))
 		return status
 
 	def StartVServerAndWait(self, vsysId, vserverId):
@@ -399,19 +403,14 @@ class FGCPOperator(FGCPMonitor):
 		for vdiskId in todo:
 			backups = self.ListVDiskBackup(vsysId, vdiskId)
 			if len(backups) > 10:
-				newlist = []
-				for backup in backups:
-					# convert weird time format to time value
-					setattr(backup, 'timeval', time.mktime(time.strptime(backup.backupTime, "%b %d, %Y %I:%M:%S %p")))
-					newlist.append(backup)
 				# Sort list of dictionaries: http://stackoverflow.com/questions/652291/sorting-a-list-of-dictionary-values-by-date-in-python
 				#from operator import itemgetter
-				#newlist.sort(key=itemgetter('timeval'), reverse=True)
+				#backups.sort(key=itemgetter('timeval'), reverse=True)
 				# Sort list of objects: http://stackoverflow.com/questions/2338531/python-sorting-a-list-of-objects
 				from operator import attrgetter
-				newlist.sort(key=attrgetter('timeval'), reverse=True)
+				backups.sort(key=attrgetter('timeval'), reverse=True)
 				# TODO: remove oldest backup(s) ?
-				backup = newlist.pop()
+				backup = backups.pop()
 				#client.DestroyVDiskBackup(vsysId, backup['backupId'])
 
 	def StartSystem(self, vsysName, verbose=None):
@@ -488,11 +487,11 @@ class FGCPDesigner(FGCPOperator):
 		#diskimages = self.ListDiskImage('GENERAL', vsys.baseDescriptor)
 		diskimages = self.ListDiskImage()
 		if len(diskimages) < 1:
-			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No diskimages are defined')
+			raise FGCPClientError('RESOURCE_NOT_FOUND', 'No diskimages are defined')
 		for diskimage in diskimages:
 			if diskimageName == diskimage.diskimageName:
 				return diskimage
-		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid diskimageName')
+		raise FGCPClientError('ILLEGAL_NAME', 'Invalid diskimageName')
 
 	def FindVSYSDescriptorByName(self, vsysdescriptorName):
 		"""
@@ -500,11 +499,11 @@ class FGCPDesigner(FGCPOperator):
 		"""
 		vsysdescriptors = self.ListVSYSDescriptor()
 		if len(vsysdescriptors) < 1:
-			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No vsysdescriptors are defined')
+			raise FGCPClientError('RESOURCE_NOT_FOUND', 'No vsysdescriptors are defined')
 		for vsysdescriptor in vsysdescriptors:
 			if vsysdescriptorName == vsysdescriptor.vsysdescriptorName:
 				return vsysdescriptor
-		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid vsysdescriptorName')
+		raise FGCPClientError('ILLEGAL_NAME', 'Invalid vsysdescriptorName')
 
 	def FindServerTypeByName(self, name):
 		"""
@@ -516,11 +515,11 @@ class FGCPDesigner(FGCPOperator):
 		diskimage = self.ListDiskImage().pop()
 		servertypes = self.ListServerType(diskimage.diskimageId)
 		if len(servertypes) < 1:
-			raise FGCPResponseError('RESOURCE_NOT_FOUND', 'No servertypes are defined')
+			raise FGCPClientError('RESOURCE_NOT_FOUND', 'No servertypes are defined')
 		for servertype in servertypes:
 			if name == servertype.name:
 				return servertype
-		raise FGCPResponseError('ILLEGAL_NAME', 'Invalid servertype name')
+		raise FGCPClientError('ILLEGAL_NAME', 'Invalid servertype name')
 
 	def CreateSystem(self, vsysName, vsysdescriptorName, verbose=None):
 		"""
@@ -532,7 +531,7 @@ class FGCPDesigner(FGCPOperator):
 		# Try to find vsys or create it
 		try:
 			vsys = self.FindSystemByName(vsysName)
-		except FGCPResponseError:
+		except FGCPClientError:
 			vsysdescriptor = self.FindVSYSDescriptorByName(vsysdescriptorName)
 			vsysId = self.CreateVSYS(vsysdescriptor.vsysdescriptorId, vsysName)
 			self.show_output('Created VSYS %s: %s' % (vsysName, vsysId))
@@ -625,7 +624,7 @@ class FGCPDesigner(FGCPOperator):
 		# CHECKME: should we stop the VSYS here ?
 		# Destroy the VSYS
 		result = self.DestroyVSYS(vsys.vsysId)
-		self.show_output(result.responseStatus)
+		self.show_output(result)
 		# TODO: wait until it's really gone ?
 		self.show_output('Destroyed VSYS %s' % vsysName)
 		# Reset output
@@ -722,8 +721,8 @@ class FGCPDesigner(FGCPOperator):
 		lines = f.read()
 		f.close()
 		# Check if we have something we need, i.e. a FGCPSys() instance
-		if not lines.startswith('FGCPVSys('):
-			self.show_output('File %s does not seem to start with FGCPSys(' % filePath)
+		if not lines.startswith('FGCPVSystem('):
+			self.show_output('File %s does not seem to start with FGCPSystem(' % filePath)
 			return
 		# CHECKME: add line continuations before exec() !?
 		try:
@@ -736,7 +735,7 @@ class FGCPDesigner(FGCPOperator):
 		try:
 			found = self.FindSystemByName(vsys.vsysName)
 			self.show_output('Caution: you already have a VSYS called %s' % vsys.vsysName)
-		except FGCPResponseError:
+		except FGCPClientError:
 			pass
 		# Return system inventory
 		return vsys
@@ -763,77 +762,3 @@ class FGCPClient(FGCPDesigner):
 		...
 	"""
 	pass
-
-
-def fgcp_run_sample(pem_file, region):
-	# Get FGCP client with your certificate in this region
-	#from fgcp.client import FGCPClient
-	client = FGCPClient(pem_file, region)
-	# Hint: set debug=1 to dump the FGCP Response for further development
-	#client = FGCPClient(pem_file, region, debug=1)
-	client.ShowSystemStatus()
-	#
-	# Backup all VServers in some VSYS
-	#vsys = client.GetSystemInventory('Python API Demo System')
-	#for vserver in vsys.vservers:
-	#	client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
-	#client.CleanupBackups(vsys.vsysId)
-	#
-	# Create and start a complete VSYS based on an existing configuration
-	#client.set_verbose(2) # show output and status checks during script execution
-	#vsysdesign = client.LoadSystemDesign('fgcp_demo_system.txt')
-	#client.CreateSystem('Python API Demo System', vsysdesign.baseDescriptor)
-	#client.ConfigureSystem('Python API Demo System', vsysdesign)
-	#client.StartSystem('Python API Demo System')
-	#
-	# Stop and destroy a complete VSYS
-	#client.StopSystem('Python API Demo System')
-	#client.DestroySystem('Python API Demo System')
-	#
-	# Note: you can also use all API commands from FGCPCommand()
-	#vsystems = client.ListVSYS()
-	#for vsys in vsystems:
-	#	vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
-	#	...
-	#vsysdescriptors = client.ListVSYSDescriptor()
-	#for vsysdescriptor in vsysdescriptors:
-	#	if vsysdescriptor.vsysdescriptorName == '2-tier Skeleton':
-	#		vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'Python API Demo System')
-	#		print 'New VSYS Created: %s' % vsysId
-	#		break
-	exit()
-
-def fgcp_show_usage(name='fgcp_demo.py'):
-	print """Client API library for the Fujitsu Global Cloud Platform (FGCP)
-
-Usage: %s [pem_file] [region]
-
-from fgcp.client import FGCPClient
-client = FGCPClient('client.pem', 'uk')
-vsys = client.GetSystemInventory('Python API Demo System')
-...
-
-Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation
-
-Note: to convert your .p12 or .pfx file to unencrypted PEM format, you can use
-the following 'openssl' command:
-
-openssl pkcs12 -in UserCert.p12 -out client.pem -nodes
-""" % name
-
-if __name__ == "__main__":
-	"""
-	Check if we have an existing 'client.pem' file or command line argument specifying the PEM file
-	"""
-	import os.path, sys
-	pem_file = 'client.pem'
-	region = 'de'
-	if len(sys.argv) > 1:
-		pem_file = sys.argv[1]
-		if len(sys.argv) > 2:
-			region = sys.argv[2]
-	if os.path.exists(pem_file):
-		fgcp_run_sample(pem_file, region)
-	else:
-		fgcp_show_usage(os.path.basename(sys.argv[0]))
