@@ -72,14 +72,14 @@ client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem',&nbsp;'uk')
 #&nbsp;Backup&nbsp;all&nbsp;VServers&nbsp;in&nbsp;some&nbsp;VSYS<br>
 vsys&nbsp;=&nbsp;client.<a href="#FGCPClient-GetSystemInventory">GetSystemInventory</a>('Python&nbsp;API&nbsp;Demo&nbsp;System')<br>
 for&nbsp;vserver&nbsp;in&nbsp;vsys.vservers:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-BackupVServerAndRestart">BackupVServerAndRestart</a>(vsys.vsysId,&nbsp;vserver.vserverId)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-BackupVServerAndRestart">BackupVServerAndRestart</a>(vsys.vsysId,&nbsp;vserver.vserverId)<br>
 client.<a href="#FGCPClient-CleanupBackups">CleanupBackups</a>(vsys.vsysId)<br>
 &nbsp;<br>
 #&nbsp;Note:&nbsp;you&nbsp;can&nbsp;also&nbsp;use&nbsp;all&nbsp;API&nbsp;commands&nbsp;from&nbsp;<a href="fgcp.command.html#FGCPCommand">FGCPCommand</a>()<br>
 vsystems&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()<br>
 for&nbsp;vsys&nbsp;in&nbsp;vsystems:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;</tt></td></tr>
+&nbsp;&nbsp;&nbsp;&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.client.html#FGCPClient">FGCPClient</a></dd>

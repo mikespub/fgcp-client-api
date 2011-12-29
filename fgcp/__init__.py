@@ -27,12 +27,14 @@ for productive systems without adequate testing...
 
 __version__ = '0.9.0'
 
+
 class FGCPError(Exception):
-	"""
-	Exception class for FGCP Errors
-	"""
-	def __init__(self, status, message):
-		self.status = status
-		self.message = message
-	def __str__(self):
-		return '\nStatus: %s\nMessage: %s' % (self.status, self.message)
+    """
+    Exception class for FGCP Errors
+    """
+    def __init__(self, status, message):
+        self.status = status
+        self.message = message
+
+    def __str__(self):
+        return '\nStatus: %s\nMessage: %s' % (self.status, self.message)
