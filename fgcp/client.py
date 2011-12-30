@@ -15,8 +15,16 @@
 #  limitations under the License.
 
 """
-Client library for the Fujitsu Global Cloud Platform (FGCP)
-using XML-RPC API Version 2011-01-31
+Client Methods for the Fujitsu Global Cloud Platform (FGCP)
+
+Example: [see tests/test_client.py for more examples]
+
+# Connect with your client certificate to region 'uk'
+from fgcp.client import FGCPClient
+client = FGCPClient('client.pem', 'uk')
+
+# Call custom client methods
+client.ShowSystemStatus()
 """
 
 import time
@@ -413,7 +421,7 @@ class FGCPOperator(FGCPMonitor):
                 backups.sort(key=attrgetter('timeval'), reverse=True)
                 # TODO: remove oldest backup(s) ?
                 backup = backups.pop()
-                #client.DestroyVDiskBackup(vsysId, backup['backupId'])
+                #self.DestroyVDiskBackup(vsysId, backup['backupId'])
 
     def StartSystem(self, vsysName, verbose=None):
         """
@@ -762,7 +770,7 @@ class FGCPClient(FGCPDesigner):
     FGCP Client Methods
 
     Example:
-    # Get FGCP client with your certificate in region 'uk'
+    # Connect with your client certificate in region 'uk'
     from fgcp.client import FGCPClient
     client = FGCPClient('client.pem', 'uk')
 

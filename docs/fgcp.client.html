@@ -9,8 +9,16 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="fgcp.html"><font color="#ffffff">fgcp</font></a>.client</strong></big></big></font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="http://code.google.com/p/fgcp-client-api/source/browse/fgcp/client.py">client.py</a></font></td></tr></table>
-    <p><tt>Client&nbsp;library&nbsp;for&nbsp;the&nbsp;Fujitsu&nbsp;Global&nbsp;Cloud&nbsp;Platform&nbsp;(FGCP)<br>
-using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
+    <p><tt>Client&nbsp;Methods&nbsp;for&nbsp;the&nbsp;Fujitsu&nbsp;Global&nbsp;Cloud&nbsp;Platform&nbsp;(FGCP)<br>
+&nbsp;<br>
+Example:&nbsp;[see&nbsp;tests/test_client.py&nbsp;for&nbsp;more&nbsp;examples]<br>
+&nbsp;<br>
+#&nbsp;Connect&nbsp;with&nbsp;your&nbsp;client&nbsp;certificate&nbsp;to&nbsp;region&nbsp;'uk'<br>
+from&nbsp;fgcp.client&nbsp;import&nbsp;<a href="#FGCPClient">FGCPClient</a><br>
+client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem',&nbsp;'uk')<br>
+&nbsp;<br>
+#&nbsp;Call&nbsp;custom&nbsp;client&nbsp;methods<br>
+client.ShowSystemStatus()</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -33,7 +41,7 @@ using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
 <dt><font face="helvetica, arial"><a href="fgcp.client.html#FGCPClientError">FGCPClientError</a>
 </font></dt></dl>
 </dd>
-<dt><font face="helvetica, arial"><a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>(<a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>)
+<dt><font face="helvetica, arial"><a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>(<a href="fgcp.connection.html#FGCPProxyServer">fgcp.connection.FGCPProxyServer</a>)
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>
@@ -65,7 +73,7 @@ using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2011-01-31</tt></p>
 <td colspan=2><tt>FGCP&nbsp;Client&nbsp;Methods<br>
 &nbsp;<br>
 Example:<br>
-#&nbsp;Get&nbsp;FGCP&nbsp;client&nbsp;with&nbsp;your&nbsp;certificate&nbsp;in&nbsp;region&nbsp;'uk'<br>
+#&nbsp;Connect&nbsp;with&nbsp;your&nbsp;client&nbsp;certificate&nbsp;in&nbsp;region&nbsp;'uk'<br>
 from&nbsp;fgcp.client&nbsp;import&nbsp;<a href="#FGCPClient">FGCPClient</a><br>
 client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem',&nbsp;'uk')<br>
 &nbsp;<br>
@@ -87,6 +95,7 @@ for&nbsp;vsys&nbsp;in&nbsp;vsystems:<br>
 <dd><a href="fgcp.client.html#FGCPOperator">FGCPOperator</a></dd>
 <dd><a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a></dd>
 <dd><a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a></dd>
+<dd><a href="fgcp.connection.html#FGCPProxyServer">fgcp.connection.FGCPProxyServer</a></dd>
 <dd><a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a></dd>
 </dl>
 <hr>
@@ -161,13 +170,13 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPClient-CreateAddressPool"><strong>CreateAddressPool</strong></a>(self, pipFrom<font color="#909090">=None</font>, pipTo<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPClient-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPClient-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;proxy.<a href="#FGCPClient-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;proxy.<a href="#FGCPClient-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;client.<a href="#FGCPClient-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;proxy.<a href="#FGCPClient-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-DeleteAddressRange"><strong>DeleteAddressRange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
@@ -189,81 +198,81 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPClient-FreePublicIP"><strong>FreePublicIP</strong></a>(self, vsysId, publicIp)</dt></dl>
 
-<dl><dt><a name="FGCPClient-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPClient-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPClient-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-GetEFMConfigHandler"><strong>GetEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;GetEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPGetEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;fw_policies&nbsp;=&nbsp;client.<a href="#FGCPClient-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
+Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPClient-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPClient-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
-Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;client.<a href="#FGCPClient-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
+Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPClient-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPClient-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-ListEFM"><strong>ListEFM</strong></a>(self, vsysId, efmType)</dt><dd><tt>Usage:<br>
-firewalls&nbsp;=&nbsp;client.<a href="#FGCPClient-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
-loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPClient-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
+firewalls&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
+loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPClient-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;client.<a href="#FGCPClient-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;client.<a href="#FGCPClient-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;client.<a href="#FGCPClient-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;proxy.<a href="#FGCPClient-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-RegisterPrivateDiskImage"><strong>RegisterPrivateDiskImage</strong></a>(self, vserverId, name, description)</dt></dl>
 
 <dl><dt><a name="FGCPClient-RegisterPrivateVSYSDescriptor"><strong>RegisterPrivateVSYSDescriptor</strong></a>(self, vsysId, name, description, keyword, vservers)</dt><dd><tt>Usage:<br>
-vsys&nbsp;=&nbsp;client.<a href="#FGCPClient-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
-client.<a href="#FGCPClient-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
+vsys&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
+proxy.<a href="#FGCPClient-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-RestoreEFM"><strong>RestoreEFM</strong></a>(self, vsysId, efmId, backupId)</dt></dl>
 
 <dl><dt><a name="FGCPClient-RestoreVDisk"><strong>RestoreVDisk</strong></a>(self, vsysId, backupId)</dt></dl>
 
-<dl><dt><a name="FGCPClient-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;client.<a href="#FGCPClient-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;proxy.<a href="#FGCPClient-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId)</dt></dl>
 
@@ -284,7 +293,7 @@ client.<a href="#FGCPClient-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDe
 <dl><dt><a name="FGCPClient-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPClient-UpdateEFMConfigHandler"><strong>UpdateEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;UpdateEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPUpdateEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;client.<a href="#FGCPClient-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
+Usage:&nbsp;proxy.<a href="#FGCPClient-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-UpdateEFMConfiguration"><strong>UpdateEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;UpdateEFMConfiguration&nbsp;methods</tt></dd></dl>
 
@@ -431,6 +440,7 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 <dd><a href="fgcp.client.html#FGCPOperator">FGCPOperator</a></dd>
 <dd><a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a></dd>
 <dd><a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a></dd>
+<dd><a href="fgcp.connection.html#FGCPProxyServer">fgcp.connection.FGCPProxyServer</a></dd>
 <dd><a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a></dd>
 </dl>
 <hr>
@@ -505,13 +515,13 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPDesigner-CreateAddressPool"><strong>CreateAddressPool</strong></a>(self, pipFrom<font color="#909090">=None</font>, pipTo<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPDesigner-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;client.<a href="#FGCPDesigner-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;client.<a href="#FGCPDesigner-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;client.<a href="#FGCPDesigner-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;client.<a href="#FGCPDesigner-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-DeleteAddressRange"><strong>DeleteAddressRange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
@@ -533,81 +543,81 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPDesigner-FreePublicIP"><strong>FreePublicIP</strong></a>(self, vsysId, publicIp)</dt></dl>
 
-<dl><dt><a name="FGCPDesigner-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-GetEFMConfigHandler"><strong>GetEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;GetEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPGetEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;fw_policies&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
+Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
-Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
+Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-ListEFM"><strong>ListEFM</strong></a>(self, vsysId, efmType)</dt><dd><tt>Usage:<br>
-firewalls&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
-loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
+firewalls&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
+loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;client.<a href="#FGCPDesigner-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-RegisterPrivateDiskImage"><strong>RegisterPrivateDiskImage</strong></a>(self, vserverId, name, description)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-RegisterPrivateVSYSDescriptor"><strong>RegisterPrivateVSYSDescriptor</strong></a>(self, vsysId, name, description, keyword, vservers)</dt><dd><tt>Usage:<br>
-vsys&nbsp;=&nbsp;client.<a href="#FGCPDesigner-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
-client.<a href="#FGCPDesigner-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
+vsys&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
+proxy.<a href="#FGCPDesigner-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-RestoreEFM"><strong>RestoreEFM</strong></a>(self, vsysId, efmId, backupId)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-RestoreVDisk"><strong>RestoreVDisk</strong></a>(self, vsysId, backupId)</dt></dl>
 
-<dl><dt><a name="FGCPDesigner-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;client.<a href="#FGCPDesigner-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId)</dt></dl>
 
@@ -628,7 +638,7 @@ client.<a href="#FGCPDesigner-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYS
 <dl><dt><a name="FGCPDesigner-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPDesigner-UpdateEFMConfigHandler"><strong>UpdateEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;UpdateEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPUpdateEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;client.<a href="#FGCPDesigner-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
+Usage:&nbsp;proxy.<a href="#FGCPDesigner-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-UpdateEFMConfiguration"><strong>UpdateEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;UpdateEFMConfiguration&nbsp;methods</tt></dd></dl>
 
@@ -715,6 +725,7 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a></dd>
 <dd><a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a></dd>
+<dd><a href="fgcp.connection.html#FGCPProxyServer">fgcp.connection.FGCPProxyServer</a></dd>
 <dd><a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a></dd>
 </dl>
 <hr>
@@ -743,13 +754,13 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPMonitor-CreateAddressPool"><strong>CreateAddressPool</strong></a>(self, pipFrom<font color="#909090">=None</font>, pipTo<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPMonitor-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;client.<a href="#FGCPMonitor-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;client.<a href="#FGCPMonitor-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;client.<a href="#FGCPMonitor-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;client.<a href="#FGCPMonitor-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-DeleteAddressRange"><strong>DeleteAddressRange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
@@ -771,81 +782,81 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPMonitor-FreePublicIP"><strong>FreePublicIP</strong></a>(self, vsysId, publicIp)</dt></dl>
 
-<dl><dt><a name="FGCPMonitor-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-GetEFMConfigHandler"><strong>GetEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;GetEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPGetEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;fw_policies&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
+Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
-Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
+Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-ListEFM"><strong>ListEFM</strong></a>(self, vsysId, efmType)</dt><dd><tt>Usage:<br>
-firewalls&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
-loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
+firewalls&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
+loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;client.<a href="#FGCPMonitor-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-RegisterPrivateDiskImage"><strong>RegisterPrivateDiskImage</strong></a>(self, vserverId, name, description)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-RegisterPrivateVSYSDescriptor"><strong>RegisterPrivateVSYSDescriptor</strong></a>(self, vsysId, name, description, keyword, vservers)</dt><dd><tt>Usage:<br>
-vsys&nbsp;=&nbsp;client.<a href="#FGCPMonitor-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
-client.<a href="#FGCPMonitor-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
+vsys&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
+proxy.<a href="#FGCPMonitor-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-RestoreEFM"><strong>RestoreEFM</strong></a>(self, vsysId, efmId, backupId)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-RestoreVDisk"><strong>RestoreVDisk</strong></a>(self, vsysId, backupId)</dt></dl>
 
-<dl><dt><a name="FGCPMonitor-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;client.<a href="#FGCPMonitor-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId)</dt></dl>
 
@@ -866,7 +877,7 @@ client.<a href="#FGCPMonitor-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSD
 <dl><dt><a name="FGCPMonitor-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPMonitor-UpdateEFMConfigHandler"><strong>UpdateEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;UpdateEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPUpdateEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;client.<a href="#FGCPMonitor-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
+Usage:&nbsp;proxy.<a href="#FGCPMonitor-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-UpdateEFMConfiguration"><strong>UpdateEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;UpdateEFMConfiguration&nbsp;methods</tt></dd></dl>
 
@@ -954,6 +965,7 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <dd><a href="fgcp.client.html#FGCPOperator">FGCPOperator</a></dd>
 <dd><a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a></dd>
 <dd><a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a></dd>
+<dd><a href="fgcp.connection.html#FGCPProxyServer">fgcp.connection.FGCPProxyServer</a></dd>
 <dd><a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a></dd>
 </dl>
 <hr>
@@ -1010,13 +1022,13 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPOperator-CreateAddressPool"><strong>CreateAddressPool</strong></a>(self, pipFrom<font color="#909090">=None</font>, pipTo<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPOperator-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;client.<a href="#FGCPOperator-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;client.<a href="#FGCPOperator-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;client.<a href="#FGCPOperator-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;client.<a href="#FGCPOperator-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-DeleteAddressRange"><strong>DeleteAddressRange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
@@ -1038,81 +1050,81 @@ Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCP
 
 <dl><dt><a name="FGCPOperator-FreePublicIP"><strong>FreePublicIP</strong></a>(self, vsysId, publicIp)</dt></dl>
 
-<dl><dt><a name="FGCPOperator-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetAddressRange"><strong>GetAddressRange</strong></a>(self)</dt><dd><tt>Usage:&nbsp;addressranges&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetAddressRange">GetAddressRange</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetDiskImageAttributes"><strong>GetDiskImageAttributes</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;diskimage&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetDiskImageAttributes">GetDiskImageAttributes</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetEFMAttributes"><strong>GetEFMAttributes</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;efmattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetEFMAttributes">GetEFMAttributes</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-GetEFMConfigHandler"><strong>GetEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;GetEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPGetEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;fw_policies&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
+Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
-Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
+Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVDiskStatus"><strong>GetVDiskStatus</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVDiskStatus">GetVDiskStatus</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVSYSAttributes"><strong>GetVSYSAttributes</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVSYSAttributes">GetVSYSAttributes</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVSYSConfiguration"><strong>GetVSYSConfiguration</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vsysconfig&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVSYSConfiguration">GetVSYSConfiguration</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVSYSDescriptorAttributes"><strong>GetVSYSDescriptorAttributes</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVSYSDescriptorAttributes">GetVSYSDescriptorAttributes</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVSYSDescriptorConfiguration"><strong>GetVSYSDescriptorConfiguration</strong></a>(self, vsysDescriptorId)</dt><dd><tt>Usage:&nbsp;vsysdescriptorconfig&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVSYSDescriptorConfiguration">GetVSYSDescriptorConfiguration</a>(vsysdescriptor.vsysdescriptorId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVSYSStatus"><strong>GetVSYSStatus</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVSYSStatus">GetVSYSStatus</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVServerAttributes"><strong>GetVServerAttributes</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVServerAttributes">GetVServerAttributes</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVServerConfiguration"><strong>GetVServerConfiguration</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;vserverconfig&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVServerConfiguration">GetVServerConfiguration</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVServerInitialPassword"><strong>GetVServerInitialPassword</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;initialpwd&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVServerInitialPassword">GetVServerInitialPassword</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetVServerStatus"><strong>GetVServerStatus</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetVServerStatus">GetVServerStatus</a>(vsys.vsysId,&nbsp;vserver.vserverId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListDiskImage"><strong>ListDiskImage</strong></a>(self, serverCategory<font color="#909090">=None</font>, vsysDescriptorId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;diskimages&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListDiskImage">ListDiskImage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-ListEFM"><strong>ListEFM</strong></a>(self, vsysId, efmType)</dt><dd><tt>Usage:<br>
-firewalls&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
-loadbalancers&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
+firewalls&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"FW")<br>
+loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListEFM">ListEFM</a>(vsys.vsysId,&nbsp;"SLB")</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVSYS">ListVSYS</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;client.<a href="#FGCPOperator-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-RegisterPrivateDiskImage"><strong>RegisterPrivateDiskImage</strong></a>(self, vserverId, name, description)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-RegisterPrivateVSYSDescriptor"><strong>RegisterPrivateVSYSDescriptor</strong></a>(self, vsysId, name, description, keyword, vservers)</dt><dd><tt>Usage:<br>
-vsys&nbsp;=&nbsp;client.<a href="#FGCPOperator-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
-client.<a href="#FGCPOperator-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
+vsys&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetSystemInventory">GetSystemInventory</a>('My&nbsp;Existing&nbsp;VSYS')<br>
+proxy.<a href="#FGCPOperator-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDescriptor</a>(vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Template',&nbsp;'This&nbsp;is&nbsp;a&nbsp;new&nbsp;template&nbsp;based&nbsp;on&nbsp;my&nbsp;existing&nbsp;VSYS',&nbsp;'some&nbsp;key&nbsp;words',&nbsp;vsys.vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-RestoreEFM"><strong>RestoreEFM</strong></a>(self, vsysId, efmId, backupId)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-RestoreVDisk"><strong>RestoreVDisk</strong></a>(self, vsysId, backupId)</dt></dl>
 
-<dl><dt><a name="FGCPOperator-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;client.<a href="#FGCPOperator-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId)</dt></dl>
 
@@ -1133,7 +1145,7 @@ client.<a href="#FGCPOperator-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYS
 <dl><dt><a name="FGCPOperator-UpdateEFMAttribute"><strong>UpdateEFMAttribute</strong></a>(self, vsysId, efmId, attributeName, attributeValue)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-UpdateEFMConfigHandler"><strong>UpdateEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;UpdateEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;FGCPUpdateEFMConfigHandler&nbsp;for&nbsp;details<br>
-Usage:&nbsp;client.<a href="#FGCPOperator-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
+Usage:&nbsp;proxy.<a href="#FGCPOperator-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-UpdateEFMConfiguration"><strong>UpdateEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;UpdateEFMConfiguration&nbsp;methods</tt></dd></dl>
 

@@ -16,10 +16,24 @@
 
 """
 API Commands to the Fujitsu Global Cloud Platform (FGCP)
-using XML-RPC API Version 2011-01-31
+
+Example: [see tests/test_api.py for more examples]
+
+# Connect with your client certificate to region 'uk'
+from fgcp.command import FGCPCommand
+api_proxy = FGCPCommand('client.pem', 'uk')
+
+# Call standard API commands with identifiers
+vsystems = api_proxy.ListVSYS()
+for vsys in vsystems:
+    status = api_proxy.GetVSYSStatus(vsys.vsysId)
+    vsysconfig = api_proxy.GetVSYSConfiguration(vsys.vsysId)
+    for vserver in vsysconfig.vservers:
+        status = api_proxy.GetVServerStatus(vsys.vsysId, vserver.vserverId)
+    ...
 """
 
-from fgcp.connection import FGCPConnection
+from fgcp.connection import FGCPProxyServer
 
 from fgcp import FGCPError
 
@@ -28,18 +42,9 @@ class FGCPCommandError(FGCPError):
     pass
 
 
-class FGCPCommand(FGCPConnection):
+class FGCPCommand(FGCPProxyServer):
     """
-    FGCP API Commands
-
-    Example:
-    from fgcp.command import FGCPCommand
-    cmd = FGCPCommand('client.pem', 'uk')
-    vsystems = cmd.ListVSYS()
-    for vsys in vsystems:
-        print vsys.vsysName
-        vsysconfig = cmd.GetVSYSConfiguration(vsys.vsysId)
-        ...
+    Proxy for FGCP API Commands
     """
 
     def set_verbose(self, verbose=None):
@@ -71,21 +76,21 @@ class FGCPCommand(FGCPConnection):
 
     def ListVSYSDescriptor(self):
         """
-        Usage: vsysdescriptors = client.ListVSYSDescriptor()
+        Usage: vsysdescriptors = proxy.ListVSYSDescriptor()
         """
         result = self.do_action('ListVSYSDescriptor')
         return result.vsysdescriptors
 
     def GetVSYSDescriptorConfiguration(self, vsysDescriptorId):
         """
-        Usage: vsysdescriptorconfig = client.GetVSYSDescriptorConfiguration(vsysdescriptor.vsysdescriptorId)
+        Usage: vsysdescriptorconfig = proxy.GetVSYSDescriptorConfiguration(vsysdescriptor.vsysdescriptorId)
         """
         result = self.do_action('GetVSYSDescriptorConfiguration', {'vsysDescriptorId': vsysDescriptorId})
         return result.vsysdescriptor
 
     def GetVSYSDescriptorAttributes(self, vsysDescriptorId):
         """
-        Usage: vsysdescriptorattr = client.GetVSYSDescriptorAttributes(vsysdescriptor.vsysdescriptorId)
+        Usage: vsysdescriptorattr = proxy.GetVSYSDescriptorAttributes(vsysdescriptor.vsysdescriptorId)
         """
         result = self.do_action('GetVSYSDescriptorAttributes', {'vsysDescriptorId': vsysDescriptorId})
         return result.vsysdescriptor
@@ -100,8 +105,8 @@ class FGCPCommand(FGCPConnection):
 
     def RegisterPrivateVSYSDescriptor(self, vsysId, name, description, keyword, vservers):
         """Usage:
-        vsys = client.GetSystemInventory('My Existing VSYS')
-        client.RegisterPrivateVSYSDescriptor(vsys.vsysId, 'My New Template', 'This is a new template based on my existing VSYS', 'some key words', vsys.vservers)
+        vsys = proxy.GetSystemInventory('My Existing VSYS')
+        proxy.RegisterPrivateVSYSDescriptor(vsys.vsysId, 'My New Template', 'This is a new template based on my existing VSYS', 'some key words', vsys.vservers)
         """
         filename = 'dummy.xml'
         vsysDescriptorXML = self._get_vsysDescriptorXML(vsysId, name, description, keyword, vservers)
@@ -149,21 +154,21 @@ class FGCPCommand(FGCPConnection):
 
     def ListPublicIP(self, vsysId=None):
         """
-        Usage: publicips = client.ListPublicIP()
+        Usage: publicips = proxy.ListPublicIP()
         """
         result = self.do_action('ListPublicIP', {'vsysId': vsysId})
         return result.publicips
 
     def GetPublicIPAttributes(self, publicIp):
         """
-        Usage: publicipattr = client.GetPublicIPAttributes(publicip.address)
+        Usage: publicipattr = proxy.GetPublicIPAttributes(publicip.address)
         """
         result = self.do_action('GetPublicIPAttributes', {'publicIp': publicIp})
         return result.publicips
 
     def GetPublicIPStatus(self, publicIp):
         """
-        Usage: status = client.GetPublicIPStatus(publicip.address)
+        Usage: status = proxy.GetPublicIPStatus(publicip.address)
         """
         result = self.do_action('GetPublicIPStatus', {'publicIp': publicIp})
         # show status if requested, e.g. for wait operations
@@ -188,7 +193,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetAddressRange(self):
         """
-        Usage: addressranges = client.GetAddressRange()
+        Usage: addressranges = proxy.GetAddressRange()
         """
         result = self.do_action('GetAddressRange')
         if hasattr(result, 'addressranges'):
@@ -208,14 +213,14 @@ class FGCPCommand(FGCPConnection):
 
     def ListDiskImage(self, serverCategory=None, vsysDescriptorId=None):
         """
-        Usage: diskimages = client.ListDiskImage()
+        Usage: diskimages = proxy.ListDiskImage()
         """
         result = self.do_action('ListDiskImage', {'serverCategory': serverCategory, 'vsysDescriptorId': vsysDescriptorId})
         return result.diskimages
 
     def GetDiskImageAttributes(self, diskImageId):
         """
-        Usage: diskimage = client.GetDiskImageAttributes(diskimage.diskimageId)
+        Usage: diskimage = proxy.GetDiskImageAttributes(diskimage.diskimageId)
         """
         result = self.do_action('GetDiskImageAttributes', {'diskImageId': diskImageId})
         return result.diskimage
@@ -252,14 +257,14 @@ class FGCPCommand(FGCPConnection):
 
     def ListServerType(self, diskImageId):
         """
-        Usage: servertypes = client.ListServerType(diskimage.diskimageId)
+        Usage: servertypes = proxy.ListServerType(diskimage.diskimageId)
         """
         result = self.do_action('ListServerType', {'diskImageId': diskImageId})
         return result.servertypes
 
     def ListVSYS(self):
         """
-        Usage: vsystems = client.ListVSYS()
+        Usage: vsystems = proxy.ListVSYS()
         """
         result = self.do_action('ListVSYS')
         # CHECKME: initialize empty list if necessary
@@ -269,7 +274,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetVSYSConfiguration(self, vsysId):
         """
-        Usage: vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
+        Usage: vsysconfig = proxy.GetVSYSConfiguration(vsys.vsysId)
         """
         result = self.do_action('GetVSYSConfiguration', {'vsysId': vsysId})
         # FIXME: we seem to have ghosts in VSYSConfiguration.publicips compared to the overall ListPublicIP(vsys.vsysId) !
@@ -282,7 +287,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetVSYSAttributes(self, vsysId):
         """
-        Usage: vsysattr = client.GetVSYSAttributes(vsys.vsysId)
+        Usage: vsysattr = proxy.GetVSYSAttributes(vsys.vsysId)
         """
         result = self.do_action('GetVSYSAttributes', {'vsysId': vsysId})
         return result.vsys
@@ -293,7 +298,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetVSYSStatus(self, vsysId):
         """
-        Usage: status = client.GetVSYSStatus(vsys.vsysId)
+        Usage: status = proxy.GetVSYSStatus(vsys.vsysId)
         """
         result = self.do_action('GetVSYSStatus', {'vsysId': vsysId})
         # show status if requested, e.g. for wait operations
@@ -302,7 +307,7 @@ class FGCPCommand(FGCPConnection):
 
     def CreateVSYS(self, vsysDescriptorId, vsysName):
         """
-        Usage: vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'My New System')
+        Usage: vsysId = proxy.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'My New System')
         """
         result = self.do_action('CreateVSYS', {'vsysDescriptorId': vsysDescriptorId, 'vsysName': vsysName})
         return result.vsysId
@@ -313,21 +318,21 @@ class FGCPCommand(FGCPConnection):
 
     def ListVServer(self, vsysId):
         """
-        Usage: vservers = client.ListVServer(vsys.vsysId)
+        Usage: vservers = proxy.ListVServer(vsys.vsysId)
         """
         result = self.do_action('ListVServer', {'vsysId': vsysId})
         return result.vservers
 
     def GetVServerConfiguration(self, vsysId, vserverId):
         """
-        Usage: vserverconfig = client.GetVServerConfiguration(vsys.vsysId, vserver.vserverId)
+        Usage: vserverconfig = proxy.GetVServerConfiguration(vsys.vsysId, vserver.vserverId)
         """
         result = self.do_action('GetVServerConfiguration', {'vsysId': vsysId, 'vserverId': vserverId})
         return result.vserver
 
     def GetVServerAttributes(self, vsysId, vserverId):
         """
-        Usage: vserverattr = client.GetVServerAttributes(vsys.vsysId, vserver.vserverId)
+        Usage: vserverattr = proxy.GetVServerAttributes(vsys.vsysId, vserver.vserverId)
         """
         result = self.do_action('GetVServerAttributes', {'vsysId': vsysId, 'vserverId': vserverId})
         return result.vserver
@@ -338,14 +343,14 @@ class FGCPCommand(FGCPConnection):
 
     def GetVServerInitialPassword(self, vsysId, vserverId):
         """
-        Usage: initialpwd = client.GetVServerInitialPassword(vsys.vsysId, vserver.vserverId)
+        Usage: initialpwd = proxy.GetVServerInitialPassword(vsys.vsysId, vserver.vserverId)
         """
         result = self.do_action('GetVServerInitialPassword', {'vsysId': vsysId, 'vserverId': vserverId})
         return result.initialPassword
 
     def GetVServerStatus(self, vsysId, vserverId):
         """
-        Usage: status = client.GetVServerStatus(vsys.vsysId, vserver.vserverId)
+        Usage: status = proxy.GetVServerStatus(vsys.vsysId, vserver.vserverId)
         """
         result = self.do_action('GetVServerStatus', {'vsysId': vsysId, 'vserverId': vserverId})
         # show status if requested, e.g. for wait operations
@@ -354,7 +359,7 @@ class FGCPCommand(FGCPConnection):
 
     def CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId):
         """
-        Usage: vserverId = client.CreateVServer(self, vsys.vsysId, 'My New Server', servertype.name, diskimage.diskimageId, vsys.vnets[0])
+        Usage: vserverId = proxy.CreateVServer(self, vsys.vsysId, 'My New Server', servertype.name, diskimage.diskimageId, vsys.vnets[0])
         """
         result = self.do_action('CreateVServer', {'vsysId': vsysId, 'vserverName': vserverName, 'vserverType': vserverType, 'diskImageId': diskImageId, 'networkId': networkId})
         return result.vserverId
@@ -373,14 +378,14 @@ class FGCPCommand(FGCPConnection):
 
     def ListVDisk(self, vsysId):
         """
-        Usage: vdisks = client.ListVDisk(vsys.vsysId)
+        Usage: vdisks = proxy.ListVDisk(vsys.vsysId)
         """
         result = self.do_action('ListVDisk', {'vsysId': vsysId})
         return result.vdisks
 
     def GetVDiskAttributes(self, vsysId, vdiskId):
         """
-        Usage: vdiskattr = client.GetVDiskAttributes(vsys.vsysId, vdisk.vdiskId)
+        Usage: vdiskattr = proxy.GetVDiskAttributes(vsys.vsysId, vdisk.vdiskId)
         """
         result = self.do_action('GetVDiskAttributes', {'vsysId': vsysId, 'vdiskId': vdiskId})
         return result.vdisk
@@ -391,7 +396,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetVDiskStatus(self, vsysId, vdiskId):
         """
-        Usage: status = client.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
+        Usage: status = proxy.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
         """
         result = self.do_action('GetVDiskStatus', {'vsysId': vsysId, 'vdiskId': vdiskId})
         # show status if requested, e.g. for wait operations
@@ -400,7 +405,7 @@ class FGCPCommand(FGCPConnection):
 
     def CreateVDisk(self, vsysId, vdiskName, size):
         """
-        Usage: vdiskId = client.CreateVDisk(self, vsys.vsysId, vdiskName, size)
+        Usage: vdiskId = proxy.CreateVDisk(self, vsys.vsysId, vdiskName, size)
         """
         result = self.do_action('CreateVDisk', {'vsysId': vsysId, 'vdiskName': vdiskName, 'size': size})
         return result.vdiskId
@@ -419,7 +424,7 @@ class FGCPCommand(FGCPConnection):
 
     def ListVDiskBackup(self, vsysId, vdiskId, timeZone=None, countryCode=None):
         """
-        Usage: backups = client.ListVDiskBackup(vsys.vsysId, vdisk.vdiskId)
+        Usage: backups = proxy.ListVDiskBackup(vsys.vsysId, vdisk.vdiskId)
         """
         result = self.do_action('ListVDiskBackup', {'vsysId': vsysId, 'vdiskId': vdiskId, 'timeZone': timeZone, 'countryCode': countryCode})
         # convert weird time format to time value
@@ -441,8 +446,8 @@ class FGCPCommand(FGCPConnection):
 
     def ListEFM(self, vsysId, efmType):
         """Usage:
-        firewalls = client.ListEFM(vsys.vsysId, "FW")
-        loadbalancers = client.ListEFM(vsys.vsysId, "SLB")
+        firewalls = proxy.ListEFM(vsys.vsysId, "FW")
+        loadbalancers = proxy.ListEFM(vsys.vsysId, "SLB")
         """
         result = self.do_action('ListEFM', {'vsysId': vsysId, 'efmType': efmType})
         return result.efms
@@ -457,7 +462,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetEFMConfigHandler(self, vsysId, efmId):
         """Handler for specific GetEFMConfiguration methods, see FGCPGetEFMConfigHandler for details
-        Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
+        Usage: fw_policies = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
         """
         return FGCPGetEFMConfigHandler(self, vsysId, efmId)
 
@@ -474,7 +479,7 @@ class FGCPCommand(FGCPConnection):
 
     def UpdateEFMConfigHandler(self, vsysId, efmId):
         """Handler for specific UpdateEFMConfiguration methods, see FGCPUpdateEFMConfigHandler for details
-        Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
+        Usage: proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
         """
         return FGCPUpdateEFMConfigHandler(self, vsysId, efmId)
 
@@ -491,7 +496,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetEFMAttributes(self, vsysId, efmId):
         """
-        Usage: efmattr = client.GetEFMAttributes(vsys.vsysId, loadbalancer.efmId)
+        Usage: efmattr = proxy.GetEFMAttributes(vsys.vsysId, loadbalancer.efmId)
         """
         result = self.do_action('GetEFMAttributes', {'vsysId': vsysId, 'efmId': efmId})
         return result.efm
@@ -502,7 +507,7 @@ class FGCPCommand(FGCPConnection):
 
     def GetEFMStatus(self, vsysId, efmId):
         """
-        Usage: status = client.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
+        Usage: status = proxy.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
         """
         result = self.do_action('GetEFMStatus', {'vsysId': vsysId, 'efmId': efmId})
         # show status if requested, e.g. for wait operations
@@ -511,7 +516,7 @@ class FGCPCommand(FGCPConnection):
 
     def CreateEFM(self, vsysId, efmType, efmName, networkId):
         """
-        Usage: efmId = client.CreateEFM(self, vsys.vsysId, 'SLB', 'My LoadBalancer', vsys.vnets[0])
+        Usage: efmId = proxy.CreateEFM(self, vsys.vsysId, 'SLB', 'My LoadBalancer', vsys.vnets[0])
         """
         result = self.do_action('CreateEFM', {'vsysId': vsysId, 'efmType': efmType, 'efmName': efmName, 'networkId': networkId})
         return result.efmId
@@ -530,7 +535,7 @@ class FGCPCommand(FGCPConnection):
 
     def ListEFMBackup(self, vsysId, efmId, timeZone=None, countryCode=None):
         """
-        Usage: backups = client.ListEFMBackup(vsys.vsysId, firewall.efmId)
+        Usage: backups = proxy.ListEFMBackup(vsys.vsysId, firewall.efmId)
         """
         result = self.do_action('ListEFMBackup', {'vsysId': vsysId, 'efmId': efmId, 'timeZone': timeZone, 'countryCode': countryCode})
         return result.backups
@@ -549,14 +554,14 @@ class FGCPCommand(FGCPConnection):
 
     def StandByConsole(self, vsysId, networkId):
         """
-        Usage: url = client.StandByConsole(vsys.vsysId, vsys.vnets[0])
+        Usage: url = proxy.StandByConsole(vsys.vsysId, vsys.vnets[0])
         """
         result = self.do_action('StandByConsole', {'vsysId': vsysId, 'networkId': networkId})
         return result.url
 
     def GetSystemUsage(self, vsysIds=None):
         """NOTE: extra 'date' element on top-level compared to other API calls !
-        Usage: date, usage = client.GetSystemUsage()
+        Usage: date, usage = proxy.GetSystemUsage()
         """
         if isinstance(vsysIds, list):
             vsysIds = ' '.join(vsysIds)
@@ -568,13 +573,13 @@ class FGCPGenericEFMHandler:
     """
     Generic Handler for FGCP Get/Update EFM Configuration methods
     """
-    _client = None
+    _proxy = None
     vsysId = None
     efmId = None
 
-    def __init__(self, client, vsysId=None, efmId=None):
-        # initialize client
-        self._client = client
+    def __init__(self, proxy, vsysId=None, efmId=None):
+        # initialize proxy
+        self._proxy = proxy
         self.vsysId = vsysId
         self.efmId = efmId
 
@@ -583,13 +588,13 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
     """
     Handler for FGCP GetEFMConfiguration methods
 
-    Example: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
+    Example: fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
     """
     def fw_nat_rule(self):
         """
-        Usage: fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
+        Usage: fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
         """
-        firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE').firewall
+        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE').firewall
         if hasattr(firewall, 'nat'):
             # CHECKME: remove <rules> part first
             if isinstance(firewall.nat, list) and len(firewall.nat) > 0:
@@ -597,18 +602,18 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 
     def fw_dns(self):
         """
-        Usage: fw_dns = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns()
+        Usage: fw_dns = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns()
         """
-        firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS').firewall
+        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS').firewall
         if hasattr(firewall, 'dns'):
             return firewall.dns
 
     def fw_policy(self, from_zone=None, to_zone=None):
         """CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
-        Usage: fw_policies = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
+        Usage: fw_policies = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
         """
-        configurationXML = self._client._get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
-        firewall = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML).firewall
+        configurationXML = self._proxy._get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
+        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML).firewall
         if hasattr(firewall, 'directions'):
             return firewall.directions
 
@@ -617,11 +622,11 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         Usage:
         ipaddress = vsys.publicips[0].address
         orders = [FGCPFWLogOrder(prefix='dst', value=ipaddress, from_zone=None, to_zone=None)]
-        fw_log = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_log(100, orders)
+        fw_log = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_log(100, orders)
         """
         orders = self._convert_fw_log_orders(orders)
-        configurationXML = self._client._get_configurationXML('firewall_log', {'num': num, 'orders': orders})
-        return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML).firewall
+        configurationXML = self._proxy._get_configurationXML('firewall_log', {'num': num, 'orders': orders})
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML).firewall
 
     def _convert_fw_log_orders(self, orders=None):
         if orders is None or len(orders) < 1:
@@ -633,23 +638,23 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 
     def fw_limit_policy(self, from_zone=None, to_zone=None):
         """CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
-        Usage: fw_limit_policy = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_limit_policy(from_zone, to_zone)
+        Usage: fw_limit_policy = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_limit_policy(from_zone, to_zone)
         """
-        configurationXML = self._client._get_configurationXML('firewall_limit_policy', {'from': from_zone, 'to': to_zone})
-        return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML).firewall
+        configurationXML = self._proxy._get_configurationXML('firewall_limit_policy', {'from': from_zone, 'to': to_zone})
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML).firewall
 
     def slb_rule(self):
         """
-        Usage: slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
+        Usage: slb_rule = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
         """
-        return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE').loadbalancer
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE').loadbalancer
 
     def slb_load(self):
         """
-        Usage: slb_load_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_load()
+        Usage: slb_load_stats = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_load()
         """
         # FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-        stats = self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
+        stats = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
         # CHECKME: remove <groups> part first
         if len(stats) > 0:
             return stats[0]
@@ -658,33 +663,33 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 
     def slb_error(self):
         """
-        Usage: slb_error_stats = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_error()
+        Usage: slb_error_stats = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_error()
         """
         # FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-        return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
 
     def slb_cert_list(self, certCategory=None, detail=None):
         """
-        Usage: slb_cert_list = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_cert_list()
+        Usage: slb_cert_list = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_cert_list()
         """
-        configurationXML = self._client._get_configurationXML('loadbalancer_certificate_list', {'certCategory': certCategory, 'detail': detail})
-        return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML).loadbalancer
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_certificate_list', {'certCategory': certCategory, 'detail': detail})
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML).loadbalancer
 
     def efm_update(self):
         """
         Common method for FW and SLB EFM_UPDATE returns firewall or loadbalancer
         """
-        return self._client.GetEFMConfiguration(self.vsysId, self.efmId, 'EFM_UPDATE')
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'EFM_UPDATE')
 
     def fw_update(self):
         """
-        Usage: fw_update = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_update()
+        Usage: fw_update = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_update()
         """
         return self.efm_update().firewall
 
     def slb_update(self):
         """
-        Usage: slb_update = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_update()
+        Usage: slb_update = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_update()
         """
         return self.efm_update().loadbalancer
 
@@ -693,18 +698,18 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
     """
     Handler for FGCP UpdateEFMConfiguration methods
 
-    Example: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
+    Example: proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
     """
     def fw_nat_rule(self, rules=None):
         """Usage:
-        fw_nat_rules = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
-        client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule(fw_nat_rules)
+        fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
+        proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule(fw_nat_rules)
         """
         # TODO: add firewall nat rule builder ?
         # round-trip support
         rules = self._convert_fw_nat_rules(rules)
-        configurationXML = self._client._get_configurationXML('firewall_nat', rules)
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('firewall_nat', rules)
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE', configurationXML)
 
     def _convert_fw_nat_rules(self, rules=None):
         # CHECKME: for round-trip support, we need to:
@@ -724,23 +729,23 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 
     def fw_dns(self, dnstype='AUTO', primary=None, secondary=None):
         """
-        Usage: client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
+        Usage: proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns('AUTO')
         """
-        configurationXML = self._client._get_configurationXML('firewall_dns', {'type': dnstype, 'primary': primary, 'secondary': secondary})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('firewall_dns', {'type': dnstype, 'primary': primary, 'secondary': secondary})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS', configurationXML)
 
     def fw_policy(self, log='On', directions=None):
         """Usage:
-        directions = client.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy()
-        client.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(log, directions)
+        directions = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy()
+        proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(log, directions)
 
         Warning: this overrides the complete firewall configuration, so you need to specify all the policies at once !
         """
         # TODO: add firewall policy builder
         # round-trip support
         directions = self._convert_fw_directions(log, directions)
-        configurationXML = self._client._get_configurationXML('firewall_policy', {'directions': directions})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('firewall_policy', {'directions': directions})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)
 
     def _convert_fw_directions(self, log, directions=None):
         new_directions = []
@@ -789,16 +794,16 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 
     def slb_rule(self, groups=None, force=None, webAccelerator=None):
         """Usage:
-        slb_rule = client.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
-        client.UpdateEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule(slb_rule.groups)
+        slb_rule = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
+        proxy.UpdateEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule(slb_rule.groups)
 
         Warning: this overrides the complete loadbalancer configuration, so you need to specify all the groups at once !
         """
         # TODO: add loadbalancer group builder
         # round-trip support
         groups = self._convert_slb_groups(groups)
-        configurationXML = self._client._get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE', configurationXML)
 
     def _convert_slb_groups(self, groups=None):
         new_groups = []
@@ -829,56 +834,56 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
         return new_groups
 
     def slb_load_clear(self):
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS_CLEAR')
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS_CLEAR')
 
     def slb_error_clear(self):
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS_CLEAR')
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS_CLEAR')
 
     def slb_start_maint(self, id, ipAddress, time=None, unit=None):
-        configurationXML = self._client._get_configurationXML('loadbalancer_start_maintenance', {'id': id, 'ipAddress': ipAddress, 'time': time, 'unit': unit})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_START_MAINTENANCE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_start_maintenance', {'id': id, 'ipAddress': ipAddress, 'time': time, 'unit': unit})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_START_MAINTENANCE', configurationXML)
 
     def slb_stop_maint(self, id, ipAddress):
-        configurationXML = self._client._get_configurationXML('loadbalancer_stop_maintenance', {'id': id, 'ipAddress': ipAddress})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_STOP_MAINTENANCE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_stop_maintenance', {'id': id, 'ipAddress': ipAddress})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_STOP_MAINTENANCE', configurationXML)
 
     def slb_cert_add(self, certNum, filePath, passphrase):
         """
         Note: server certificates in unencrypted PEM format are NOT supported here, use PKCS12 format (and others ?)
         """
         # when adding SLB server/cca certificates, configurationXML contains the filePath for the actual certificate to be uploaded
-        configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'filePath': filePath, 'passphrase': passphrase})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_ADD', configurationXML, filePath)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'filePath': filePath, 'passphrase': passphrase})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_ADD', configurationXML, filePath)
 
     def slb_cert_set(self, certNum, id):
-        configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'id': id})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_SET', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'id': id})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_SET', configurationXML)
 
     def slb_cert_release(self, certNum):
-        configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_RELEASE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_certificate', {'certNum': certNum})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_RELEASE', configurationXML)
 
     def slb_cert_delete(self, certNum, force=None):
-        configurationXML = self._client._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'force': force})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_DELETE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_certificate', {'certNum': certNum, 'force': force})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_DELETE', configurationXML)
 
     def slb_cca_add(self, ccacertNum, filePath):
         """
         Note: cca certificates in .crt or .pem format ARE supported here (and others ?)
         """
         # when adding SLB server/cca certificates, configurationXML contains the filePath for the actual certificate to be uploaded
-        configurationXML = self._client._get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum, 'filePath': filePath})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CCA_CERTIFICATE_ADD', configurationXML, filePath)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum, 'filePath': filePath})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CCA_CERTIFICATE_ADD', configurationXML, filePath)
 
     def slb_cca_delete(self, ccacertNum):
-        configurationXML = self._client._get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum})
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CCA_CERTIFICATE_DELETE', configurationXML)
+        configurationXML = self._proxy._get_configurationXML('loadbalancer_cca_certificate', {'ccacertNum': ccacertNum})
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_CCA_CERTIFICATE_DELETE', configurationXML)
 
     def efm_update(self):
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'EFM_UPDATE')
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'EFM_UPDATE')
 
     def efm_backout(self):
-        return self._client.UpdateEFMConfiguration(self.vsysId, self.efmId, 'EFM_BACKOUT')
+        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'EFM_BACKOUT')
 
 
 """

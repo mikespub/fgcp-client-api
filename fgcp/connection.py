@@ -15,11 +15,22 @@
 #  limitations under the License.
 
 """
-Connection with the Fujitsu Global Cloud Platform (FGCP) API Server
-using XML-RPC API Version 2011-01-31
+XML-RPC Connection with the Fujitsu Global Cloud Platform (FGCP) API Server
 
-Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation
+Example: [not recommended, use API Commands, Resource Actions and/or Client Methods instead]
+
+# Connect with your client certificate to region 'uk'
+from fgcp.connection import FGCPProxyServer
+xmlrpc_proxy = FGCPProxyServer('client.pem', 'uk')
+
+# Send XML-RPC actions, request parameters and attachments
+vsystems = xmlrpc_proxy.do_action('ListVSYS')
+for vsys in vsystems:
+    status = xmlrpc_proxy.do_action('GetVSYSStatus', {'vsysId': vsys.vsysId})
+    vsysconfig = xmlrpc_proxy.do_action('GetVSYSConfiguration', {'vsysId': vsys.vsysId})
+    for vserver in vsysconfig.vservers:
+        status = xmlrpc_proxy.do_action('GetVServerStatus', {'vsysId': vsys.vsysId, 'vserverId': vserver.vserverId})
+    ...
 """
 
 import httplib
@@ -46,11 +57,6 @@ class FGCPResponseError(FGCPError):
 class FGCPConnection:
     """
     FGCP XML-RPC Connection
-
-    Example:
-    from fgcp.connection import FGCPConnection
-    conn = FGCPConnection('client.pem', 'uk')
-    vsystems = conn.do_action('ListVSYS')
     """
     host = 'api.globalcloud.de.fujitsu.com'         # updated based on region argument
     key_file = 'client.pem'                         # updated based on key_file argument
@@ -123,13 +129,13 @@ class FGCPConnection:
             self.host = self._regions[region]
 
     def set_conn(self, conn):
-        # set connection from elsewhere
+        # CHECKME: set connection from elsewhere, e.g. for integration with Apache Libcloud or running on Google App Engine
         self._conn = conn
 
     def connect(self):
         if self._conn is None:
             if self.host == 'test':
-                # use test API server for testing
+                # use dummy Test API server for testing
                 from fgcp.dummy import FGCPTestServerWithFixtures
                 self._conn = FGCPTestServerWithFixtures()
             else:
@@ -141,7 +147,7 @@ class FGCPConnection:
         self.connect()
         # set testid if necessary
         if self.host == 'test':
-            self._conn._testid = self._testid
+            self._conn.set_testid(self._testid)
         # send HTTPS request
         self._conn.request(method, uri, body, headers)
 
@@ -299,18 +305,13 @@ class FGCPConnection:
         # prepare headers and body
         headers = self.get_headers(attachments)
         body = self.get_body(action, params, attachments)
-        if self.debug > 10 and os.path.isdir(os.path.join('tests', 'fixtures')):
-            # sanitize accesskeyid and signature for test fixtures
-            import re
-            p = re.compile('<AccessKeyId>[^<]+</AccessKeyId>')
-            req = p.sub('<AccessKeyId>...</AccessKeyId>', body)
-            p = re.compile('<Signature>[^<]+</Signature>')
-            req = p.sub('<Signature>...</Signature>', req)
+        if self.debug > 10:
             print 'Saving request for %s' % self._testid
-            # save request in tests/fixtures
-            f = open(os.path.join('tests', 'fixtures', self._testid + '.request.xml'), 'wb')
-            f.write(req)
-            f.close()
+            if not hasattr(self, '_tester'):
+                # use dummy Test API server for saving tests too
+                from fgcp.dummy import FGCPTestServerWithFixtures
+                setattr(self, '_tester', FGCPTestServerWithFixtures())
+            self._tester.save_request(self._testid, body)
         elif self.debug > 2:
             print 'XML-RPC Request for %s:' % self._testid
             print body
@@ -322,17 +323,9 @@ class FGCPConnection:
 
         # receive XML-RPC response
         data = self.receive()
-        if self.debug > 10 and os.path.isdir(os.path.join('tests', 'fixtures')):
-            # sanitize initialPassword for test fixtures :-)
-            if self._testid.startswith('GetVServerInitialPassword'):
-                import re
-                p = re.compile('<initialPassword>[^<]+</initialPassword>')
-                data = p.sub('<initialPassword>...</initialPassword>', data)
+        if self.debug > 10:
             print 'Saving response for %s' % self._testid
-            # save response in tests/fixtures
-            f = open(os.path.join('tests', 'fixtures', self._testid + '.response.xml'), 'wb')
-            f.write(data)
-            f.close()
+            self._tester.save_response(self._testid, data)
         elif self.debug > 2:
             print 'XML-RPC Response for %s:' % self._testid
             print data
@@ -350,11 +343,18 @@ class FGCPConnection:
         return resp
 
 
+class FGCPProxyServer(FGCPConnection):
+    """
+    FGCP XML-RPC Proxy Server
+    """
+    pass
+
+
 class FGCPResponseParser:
     """
     FGCP Response Parser
     """
-    _client = None
+    _proxy = None
     # CHECKME: this assumes all tags are unique - otherwise we'll need to use the path
     _tag2class = {
         'vsysdescriptor': FGCPVSysDescriptor,
@@ -390,17 +390,17 @@ class FGCPResponseParser:
         'default': FGCPUnknown,
     }
 
-    def parse_data(self, data, client):
+    def parse_data(self, data, proxy):
         """
         Load the data as XML ElementTree and convert to FGCP Response
         """
-        # keep track of the connection client
-        self._client = client
+        # keep track of the connection proxy
+        self._proxy = proxy
         #ElementTree.register_namespace(uri='http://apioviss.jp.fujitsu.com')
         # initialize the XML Element
         root = ElementTree.fromstring(data)
         # convert the XML Element to FGCP Response object - CHECKME: and link to caller !?
-        return self.xmlelement_to_object(root, client._caller)
+        return self.xmlelement_to_object(root, proxy._caller)
 
     def clean_tag(self, tag):
         """
@@ -458,12 +458,12 @@ class FGCPResponseParser:
         #info = {}
         # FIXME: adapt class based on subelem or tag ?
         info = self.get_tag_object(root.tag)
-        # add client to object
-        info._client = self._client
+        # add proxy to object
+        info._proxy = self._proxy
         if isinstance(info, FGCPResource):
-            # CHECKME: add parent and client to the FGCP Resource
+            # CHECKME: add parent and proxy to the FGCP Resource
             info._parent = parent
-            info._client = self._client
+            info._proxy = self._proxy
         elif isinstance(info, FGCPResponse):
             # CHECKME: add caller to the FGCP Respone
             info._caller = parent

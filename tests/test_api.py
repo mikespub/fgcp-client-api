@@ -36,15 +36,15 @@ def test_api_command(key_file, region):
     """
     # we only need FGCPCommand here, but FGCPClient/FGCPDesigner/FGCPOperator/FGCPMonitor would work just as well
     #from fgcp.client import FGCPClient
-    #client = FGCPClient(key_file, region)
+    #proxy = FGCPClient(key_file, region)
 
     from fgcp.command import FGCPCommand
-    client = FGCPCommand(key_file, region)
+    proxy = FGCPCommand(key_file, region)
 
-    client.verbose = 1  # 1 = show any user output the library might generate (nothing much)
-    client.debug = 1    # 1 = show the API commands being sent, 2 = dump the response objects (99 = save test fixtures)
+    proxy.verbose = 1  # 1 = show any user output the library might generate (nothing much)
+    proxy.debug = 1    # 1 = show the API commands being sent, 2 = dump the response objects (99 = save test fixtures)
 
-    date, usage = client.GetSystemUsage()
+    date, usage = proxy.GetSystemUsage()
     #print 'Usage Report on %s' % date
     #for entry in usage:
     #    #entry.pprint()
@@ -53,322 +53,322 @@ def test_api_command(key_file, region):
     #    for product in entry.products:
     #        print '  %s: %s %s' % (product.productName, product.usedPoints, product.unitName)
 
-    vsystems = client.ListVSYS()
+    vsystems = proxy.ListVSYS()
     for vsys in vsystems:
-        test_vsys(client, vsys.vsysId)
+        test_vsys(proxy, vsys.vsysId)
 
-    publicips = client.ListPublicIP(None)
+    publicips = proxy.ListPublicIP(None)
     for publicip in publicips:
-        test_publicip(client, publicip.address)
+        test_publicip(proxy, publicip.address)
 
-    test_addressrange(client)
+    test_addressrange(proxy)
 
-    vsysdescriptors = client.ListVSYSDescriptor()
+    vsysdescriptors = proxy.ListVSYSDescriptor()
     for vsysdescriptor in vsysdescriptors:
-        test_vsysdescriptor(client, vsysdescriptor.vsysdescriptorId)
+        test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
 
-    diskimages = client.ListDiskImage()
+    diskimages = proxy.ListDiskImage()
     for diskimage in diskimages:
-        test_diskimage(client, diskimage.diskimageId)
+        test_diskimage(proxy, diskimage.diskimageId)
 
 
-def test_vsys(client, vsysId):
+def test_vsys(proxy, vsysId):
     """
     Virtual System (VSYS)
     """
-    #result = client.DestroyVSYS(vsysId)
+    #result = proxy.DestroyVSYS(vsysId)
 
-    vsys_attr = client.GetVSYSAttributes(vsysId)
+    vsys_attr = proxy.GetVSYSAttributes(vsysId)
     vsysName = vsys_attr.vsysName
-    result = client.UpdateVSYSAttribute(vsysId, 'vsysName', vsysName)
+    result = proxy.UpdateVSYSAttribute(vsysId, 'vsysName', vsysName)
     try:
         cloudCategory = vsys_attr.cloudCategory
-        result = client.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
+        result = proxy.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
     except:
         pass
 
-    status = client.GetVSYSStatus(vsysId)
+    status = proxy.GetVSYSStatus(vsysId)
 
-    vservers = client.ListVServer(vsysId)
+    vservers = proxy.ListVServer(vsysId)
     for vserver in vservers:
-        test_vsys_vserver(client, vsysId, vserver.vserverId)
+        test_vsys_vserver(proxy, vsysId, vserver.vserverId)
 
-    #result = client.CreateVDisk(vsysId, vdiskName, size)
-    vdisks = client.ListVDisk(vsysId)
+    #result = proxy.CreateVDisk(vsysId, vdiskName, size)
+    vdisks = proxy.ListVDisk(vsysId)
     for vdisk in vdisks:
-        test_vsys_vdisk(client, vsysId, vdisk.vdiskId)
+        test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
 
-    #result = client.AllocatePublicIP(vsysId)
-    publicips = client.ListPublicIP(vsysId)
+    #result = proxy.AllocatePublicIP(vsysId)
+    publicips = proxy.ListPublicIP(vsysId)
     for publicip in publicips:
-        test_vsys_publicip(client, vsysId, publicip.address)
+        test_vsys_publicip(proxy, vsysId, publicip.address)
 
-    vsys_config = client.GetVSYSConfiguration(vsysId)
+    vsys_config = proxy.GetVSYSConfiguration(vsysId)
     for networkId in vsys_config.vnets:
-        test_vsys_vnet(client, vsysId, networkId)
+        test_vsys_vnet(proxy, vsysId, networkId)
 
     efmType = 'FW'
-    #result = client.CreateEFM(vsysId, efmType, efmName, networkId)
-    firewalls = client.ListEFM(vsysId, efmType)
+    #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
+    firewalls = proxy.ListEFM(vsysId, efmType)
     for firewall in firewalls:
-        test_vsys_efm_generic(client, vsysId, firewall.efmId)
-        test_vsys_efm_firewall(client, vsysId, firewall.efmId)
+        test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
+        test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
 
     efmType = 'SLB'
-    #result = client.CreateEFM(vsysId, efmType, efmName, networkId)
-    loadbalancers = client.ListEFM(vsysId, efmType)
+    #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
+    loadbalancers = proxy.ListEFM(vsysId, efmType)
     for loadbalancer in loadbalancers:
-        test_vsys_efm_generic(client, vsysId, loadbalancer.efmId)
-        test_vsys_efm_loadbalancer(client, vsysId, loadbalancer.efmId)
+        test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
+        test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
 
-    #result = client.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId)
+    #result = proxy.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId)
 
     # only allowed on private vsysdescriptors
     name = 'My New VSYS Template'
     description = 'This is a 3-tier web application database template'
     keyword = '3-tier web application database'
-    vservers = client.ListVServer(vsysId)
-    #result = client.RegisterPrivateVSYSDescriptor(vsysId, name, description, keyword, vservers)
+    vservers = proxy.ListVServer(vsysId)
+    #result = proxy.RegisterPrivateVSYSDescriptor(vsysId, name, description, keyword, vservers)
 
 
-def test_vsys_vserver(client, vsysId, vserverId):
+def test_vsys_vserver(proxy, vsysId, vserverId):
     """
     Virtual Server (VServer)
     """
-    #result = client.StartVServer(vsysId, vserverId)
-    #result = client.StopVServer(vsysId, vserverId, force=None)
-    #result = client.DestroyVServer(vsysId, vserverId)
+    #result = proxy.StartVServer(vsysId, vserverId)
+    #result = proxy.StopVServer(vsysId, vserverId, force=None)
+    #result = proxy.DestroyVServer(vsysId, vserverId)
 
-    vserver_attr = client.GetVServerAttributes(vsysId, vserverId)
+    vserver_attr = proxy.GetVServerAttributes(vsysId, vserverId)
     vserverName = vserver_attr.vserverName
-    result = client.UpdateVServerAttribute(vsysId, vserverId, 'vserverName', vserverName)
+    result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverName', vserverName)
     try:
         vserverType = vserver_attr.vserverType
-        result = client.UpdateVServerAttribute(vsysId, vserverId, 'vserverType', vserverType)
+        result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverType', vserverType)
     except:
         pass
 
-    status = client.GetVServerStatus(vsysId, vserverId)
-    password = client.GetVServerInitialPassword(vsysId, vserverId)
+    status = proxy.GetVServerStatus(vsysId, vserverId)
+    password = proxy.GetVServerInitialPassword(vsysId, vserverId)
 
-    vserver_config = client.GetVServerConfiguration(vsysId, vserverId)
+    vserver_config = proxy.GetVServerConfiguration(vsysId, vserverId)
 
     for vdisk in vserver_config.vdisks:
-        test_vsys_vserver_vdisk(client, vsysId, vserverId, vdisk.vdiskId)
+        test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
 
     for vnic in vserver_config.vnics:
-        test_vsys_vserver_vnic(client, vsysId, vserverId, vnic.networkId)
+        test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
 
-    #result = client.RegisterPrivateDiskImage(vserverId, name, description)
+    #result = proxy.RegisterPrivateDiskImage(vserverId, name, description)
 
 
-def test_vsys_vserver_vdisk(client, vsysId, vserverId, vdiskId):
+def test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdiskId):
     """
     Virtual Disk (VDisk) attached to this server
     """
-    #result = client.AttachVDisk(vsysId, vserverId, vdiskId)
-    #result = client.DetachVDisk(vsysId, vserverId, vdiskId)
+    #result = proxy.AttachVDisk(vsysId, vserverId, vdiskId)
+    #result = proxy.DetachVDisk(vsysId, vserverId, vdiskId)
     #test_vsys_vdisk(vsysId, vdiskId)
     pass
 
 
-def test_vsys_vserver_vnic(client, vsysId, vserverId, networkId):
+def test_vsys_vserver_vnic(proxy, vsysId, vserverId, networkId):
     """
     Virtual Network Interface (VNIC)
     """
     pass
 
 
-def test_vsys_vdisk(client, vsysId, vdiskId):
+def test_vsys_vdisk(proxy, vsysId, vdiskId):
     """
     Virtual Disk (VDisk)
     """
-    #result = client.DestroyVDisk(vsysId, vdiskId)
+    #result = proxy.DestroyVDisk(vsysId, vdiskId)
 
-    client.GetVDiskAttributes(vsysId, vdiskId)
-    #result = client.UpdateVDiskAttribute(vsysId, vdiskId, 'vdiskName', vdisk.vdiskName)
-    client.GetVDiskStatus(vsysId, vdiskId)
+    proxy.GetVDiskAttributes(vsysId, vdiskId)
+    #result = proxy.UpdateVDiskAttribute(vsysId, vdiskId, 'vdiskName', vdisk.vdiskName)
+    proxy.GetVDiskStatus(vsysId, vdiskId)
 
-    #result = client.BackupVDisk(vsysId, vdiskId)
-    backups = client.ListVDiskBackup(vsysId, vdiskId)
+    #result = proxy.BackupVDisk(vsysId, vdiskId)
+    backups = proxy.ListVDiskBackup(vsysId, vdiskId)
     for backup in backups:
-        test_vsys_backup(client, vsysId, backup.backupId)
+        test_vsys_backup(proxy, vsysId, backup.backupId)
 
 
-def test_vsys_backup(client, vsysId, backupId):
+def test_vsys_backup(proxy, vsysId, backupId):
     """
     Virtual Disk (VDisk) Backup
     """
-    #result = client.RestoreVDisk(vsysId, backupId)
-    #result = client.DestroyVDiskBackup(vsysId, backupId)
+    #result = proxy.RestoreVDisk(vsysId, backupId)
+    #result = proxy.DestroyVDiskBackup(vsysId, backupId)
     pass
 
 
-def test_vsys_publicip(client, vsysId, publicipAddress):
+def test_vsys_publicip(proxy, vsysId, publicipAddress):
     """
     Public IP (PublicIP) for this vsys
     """
-    #result = client.AttachPublicIP(vsysId, publicipAddress)
-    #result = client.DetachPublicIP(vsysId, publicipAddress)
-    #result = client.FreePublicIP(vsysId, publicipAddress)
+    #result = proxy.AttachPublicIP(vsysId, publicipAddress)
+    #result = proxy.DetachPublicIP(vsysId, publicipAddress)
+    #result = proxy.FreePublicIP(vsysId, publicipAddress)
     #test_publicip(publicipAddress)
 
 
-def test_vsys_vnet(client, vsysId, networkId):
+def test_vsys_vnet(proxy, vsysId, networkId):
     """
     Virtual Network (VNet)
     """
-    test_vsys_vnet_console(client, vsysId, networkId)
+    test_vsys_vnet_console(proxy, vsysId, networkId)
 
 
-def test_vsys_vnet_console(client, vsysId, networkId):
+def test_vsys_vnet_console(proxy, vsysId, networkId):
     """
     Other (SSL-VPN)
     """
-    console_url = client.StandByConsole(vsysId, networkId)
+    console_url = proxy.StandByConsole(vsysId, networkId)
 
 
-def test_vsys_efm_generic(client, vsysId, efmId):
+def test_vsys_efm_generic(proxy, vsysId, efmId):
     """
     Extended Function Module (EFM) Generic
     """
-    #result = client.StartEFM(vsysId, efmId)
-    #result = client.StopEFM(vsysId, efmId)
-    #result = client.DestroyEFM(vsysId, efmId)
+    #result = proxy.StartEFM(vsysId, efmId)
+    #result = proxy.StopEFM(vsysId, efmId)
+    #result = proxy.DestroyEFM(vsysId, efmId)
 
-    efm_attr = client.GetEFMAttributes(vsysId, efmId)
+    efm_attr = proxy.GetEFMAttributes(vsysId, efmId)
     efmName = efm_attr.efmName
-    result = client.UpdateEFMAttribute(vsysId, efmId, 'efmName', efmName)
-    #handler = client.GetEFMConfigHandler(vsysId, efmId)
-    #config = client.GetEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None)
-    #handler = client.UpdateEFMConfigHandler(vsysId, efmId)
-    #result = client.UpdateEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None, filePath=None)
-    status = client.GetEFMStatus(vsysId, efmId)
-    update_info = client.GetEFMConfigHandler(vsysId, efmId).efm_update()
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).efm_update()
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).efm_backout()
+    result = proxy.UpdateEFMAttribute(vsysId, efmId, 'efmName', efmName)
+    #handler = proxy.GetEFMConfigHandler(vsysId, efmId)
+    #config = proxy.GetEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None)
+    #handler = proxy.UpdateEFMConfigHandler(vsysId, efmId)
+    #result = proxy.UpdateEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None, filePath=None)
+    status = proxy.GetEFMStatus(vsysId, efmId)
+    update_info = proxy.GetEFMConfigHandler(vsysId, efmId).efm_update()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).efm_update()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).efm_backout()
 
-    #result = client.BackupEFM(vsysId, efmId)
-    backups = client.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None)
+    #result = proxy.BackupEFM(vsysId, efmId)
+    backups = proxy.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None)
     for backup in backups:
-        test_vsys_efm_backup(client, vsysId, efmId, backup.backupId)
+        test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
 
 
-def test_vsys_efm_backup(client, vsysId, efmId, backupId):
+def test_vsys_efm_backup(proxy, vsysId, efmId, backupId):
     """
     Extended Function Module (EFM) Backup
     """
-    #result = client.RestoreEFM(vsysId, efmId, backup.backupId)
-    #result = client.DestroyEFMBackup(vsysId, efmId, backup.backupId)
+    #result = proxy.RestoreEFM(vsysId, efmId, backup.backupId)
+    #result = proxy.DestroyEFMBackup(vsysId, efmId, backup.backupId)
     pass
 
 
-def test_vsys_efm_firewall(client, vsysId, efmId):
+def test_vsys_efm_firewall(proxy, vsysId, efmId):
     """
     Extended Function Module (EFM) Firewall
     """
-    nat_rules = client.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=None)
-    dns = client.GetEFMConfigHandler(vsysId, efmId).fw_dns()
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype='AUTO', primary=None, secondary=None)
-    fw_policy = client.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log='On', directions=None)
-    logs = client.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
-    fw_limit_policy = client.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
-    update_info = client.GetEFMConfigHandler(vsysId, efmId).fw_update()
+    nat_rules = proxy.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=None)
+    dns = proxy.GetEFMConfigHandler(vsysId, efmId).fw_dns()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype='AUTO', primary=None, secondary=None)
+    fw_policy = proxy.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log='On', directions=None)
+    logs = proxy.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
+    fw_limit_policy = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
+    update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()
 
 
-def test_vsys_efm_loadbalancer(client, vsysId, efmId):
+def test_vsys_efm_loadbalancer(proxy, vsysId, efmId):
     """
     Extended Function Module (EFM) LoadBalancer
     """
     try:
-        rules = client.GetEFMConfigHandler(vsysId, efmId).slb_rule()
+        rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
     except:
         pass
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=None, force=None, webAccelerator=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=None, force=None, webAccelerator=None)
     try:
-        load_stats = client.GetEFMConfigHandler(vsysId, efmId).slb_load()
+        load_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_load()
     except:
         pass
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_load_clear()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_load_clear()
     try:
-        error_stats = client.GetEFMConfigHandler(vsysId, efmId).slb_error()
+        error_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_error()
     except:
         pass
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_error_clear()
-    cert_list = client.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=None, detail=None)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_add(certNum, filePath, passphrase)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_set(certNum, id)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_release(certNum)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_delete(certNum, force=None)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_add(ccacertNum, filePath)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_delete(ccacertNum)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_start_maint(id, ipAddress, time=None, unit=None)
-    #result = client.UpdateEFMConfigHandler(vsysId, efmId).slb_stop_maint(id, ipAddress)
-    update_info = client.GetEFMConfigHandler(vsysId, efmId).slb_update()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_error_clear()
+    cert_list = proxy.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=None, detail=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_add(certNum, filePath, passphrase)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_set(certNum, id)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_release(certNum)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_delete(certNum, force=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_add(ccacertNum, filePath)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_delete(ccacertNum)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_start_maint(id, ipAddress, time=None, unit=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_stop_maint(id, ipAddress)
+    update_info = proxy.GetEFMConfigHandler(vsysId, efmId).slb_update()
 
 
-def test_publicip(client, publicipAddress):
+def test_publicip(proxy, publicipAddress):
     """
     Public IP (PublicIP) overall
     """
-    publicip_attr = client.GetPublicIPAttributes(publicipAddress)
-    status = client.GetPublicIPStatus(publicipAddress)
+    publicip_attr = proxy.GetPublicIPAttributes(publicipAddress)
+    status = proxy.GetPublicIPStatus(publicipAddress)
 
 
-def test_addressrange(client):
+def test_addressrange(proxy):
     """
     Address Range (AddressRange)
     """
-    addressranges = client.GetAddressRange()
-    #result = client.CreateAddressPool(pipFrom=None, pipTo=None)
-    #result = client.AddAddressRange(pipFrom, pipTo)
-    #result = client.DeleteAddressRange(pipFrom, pipTo)
+    addressranges = proxy.GetAddressRange()
+    #result = proxy.CreateAddressPool(pipFrom=None, pipTo=None)
+    #result = proxy.AddAddressRange(pipFrom, pipTo)
+    #result = proxy.DeleteAddressRange(pipFrom, pipTo)
 
 
-def test_vsysdescriptor(client, vsysdescriptorId):
+def test_vsysdescriptor(proxy, vsysdescriptorId):
     """
     Virtual System Descriptor (VSYSDescriptor)
     """
-    vsysdescriptor_attr = client.GetVSYSDescriptorAttributes(vsysdescriptorId)
+    vsysdescriptor_attr = proxy.GetVSYSDescriptorAttributes(vsysdescriptorId)
     # only allowed on private vsysdescriptors
     vsysdescriptorName = vsysdescriptor_attr.vsysdescriptorName
     description = vsysdescriptor_attr.description
     keyword = vsysdescriptor_attr.keyword
-    #result = client.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateName', vsysdescriptorName)
-    #result = client.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateDescription', description)
-    #result = client.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateKeyword', keyword)
-    vsysdescriptor_config = client.GetVSYSDescriptorConfiguration(vsysdescriptorId)
+    #result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateName', vsysdescriptorName)
+    #result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateDescription', description)
+    #result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateKeyword', keyword)
+    vsysdescriptor_config = proxy.GetVSYSDescriptorConfiguration(vsysdescriptorId)
 
-    #result = client.CreateVSYS(vsysdescriptorId, vsysdescriptorName)
+    #result = proxy.CreateVSYS(vsysdescriptorId, vsysdescriptorName)
 
-    diskimages = client.ListDiskImage('GENERAL', vsysdescriptorId)
+    diskimages = proxy.ListDiskImage('GENERAL', vsysdescriptorId)
     #for diskimage in diskimages:
-    #    test_diskimage(client, diskimage.diskimageId)
+    #    test_diskimage(proxy, diskimage.diskimageId)
 
-    #result = client.UnregisterPrivateVSYSDescriptor(vsysdescriptorId)
-    #result = client.UnregisterVSYSDescriptor(vsysdescriptorId)
+    #result = proxy.UnregisterPrivateVSYSDescriptor(vsysdescriptorId)
+    #result = proxy.UnregisterVSYSDescriptor(vsysdescriptorId)
 
 
-def test_diskimage(client, diskimageId):
+def test_diskimage(proxy, diskimageId):
     """
     Disk Image (DiskImage)
     """
-    #result = client.UnregisterDiskImage(diskimageId)
-    diskimage_attr = client.GetDiskImageAttributes(diskimageId)
+    #result = proxy.UnregisterDiskImage(diskimageId)
+    diskimage_attr = proxy.GetDiskImageAttributes(diskimageId)
     # only allowed on private diskimages
     diskimageName = diskimage_attr.diskimageName
-    #result = client.UpdateDiskImageAttribute(diskimageId, 'en', 'updateName', diskimageName)
+    #result = proxy.UpdateDiskImageAttribute(diskimageId, 'en', 'updateName', diskimageName)
     description = diskimage_attr.description
-    #result = client.UpdateDiskImageAttribute(diskimageId, 'en', 'updateDescription', description)
+    #result = proxy.UpdateDiskImageAttribute(diskimageId, 'en', 'updateDescription', description)
 
-    servertypes = client.ListServerType(diskimageId)
+    servertypes = proxy.ListServerType(diskimageId)
     for servertype in servertypes:
-        test_diskimage_servertype(client, diskimageId, servertype.name)
+        test_diskimage_servertype(proxy, diskimageId, servertype.name)
 
 
-def test_diskimage_servertype(client, diskimageId, servertypeName):
+def test_diskimage_servertype(proxy, diskimageId, servertypeName):
     """
     Server Type (ServerType)
     """

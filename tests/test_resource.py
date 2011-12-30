@@ -26,20 +26,61 @@ def fgcp_resource_walker(key_file, region):
     Test resource actions using test server (or generate .xml test fixtures using real API server)
     """
     #region = 'test'
-    verbose = 1     # 1 = show any user output the library might generate (nothing much except vsystem.show_status())
+    verbose = 2     # 1 = show any user output the library might generate (nothing much except vsystem.show_status())
     debug = 1       # 1 = show the API commands being sent, 2 = dump the response objects (99 = save test fixtures)
 
     from fgcp.resource import FGCPVDataCenter
     vdc = FGCPVDataCenter(key_file, region, verbose, debug)
 
-    test_vdatacenter(vdc)
-    #test_in_progress(vdc)
+    #test_vdatacenter(vdc)
+    test_in_progress(vdc)
 
 
 def test_in_progress(vdc):
-    vsystem = vdc.get_vsystem('Demo System')
-    vsystem.create_vserver(vserverName='My New Server', servertype='economy', diskimage='CentOS 5.4 32bit(EN)', vnet='DMZ')
+    design = vdc.get_vsystem_design()
+    vsystem = design.load('fgcp_demo_system.txt')
+    #vsystem.pprint()
+    #result = design.build('My New VSystem')
+    #design.save('Demo System', 'new_demo_system.txt')
     exit()
+
+
+def test_todo(vdc):
+    vsystem = vdc.get_vsystem('Python API Demo System')
+    vserverId = vsystem.create_vserver('My New Server', 'economy', 'CentOS 5.4 32bit(EN)', 'DMZ', wait=True)
+    #result = vsystem.start_vserver('My New Server', wait=None)
+    #result = vsystem.stop_vserver('My New Server', wait=None)
+    #result = vsystem.detroy_vserver('My New Server', wait=None)
+
+    #result = design.build('My New VSystem')
+    #design.save('My New VSystem', 'new_demo_system.txt')
+
+    #new_vserver = vserver.copy()
+    #new_vserver.vserverName = '%s Copy' % vserver.vserverName
+    #result = new_vserver.create()
+
+    #new_vdisk = vdisk.copy()
+    #new_vdisk.vdiskName = '%s Copy' % vdisk.vdiskName
+    #result = new_vdisk.create()
+
+    #new_vsystem = vsystem.copy()
+    #new_vsystem.vsysName = '%s Copy' % vsystem.vsysName
+    #result = new_vsystem.create()
+
+
+def test_done(vdc):
+    vsysId = vdc.create_vsystem('Python API Demo System', '2-tier Skeleton', wait=True)
+    vsystem = vdc.get_vsystem('Python API Demo System')
+    vsystem.allocate_publicip(wait=True)
+    publicips = vsystem.list_publicips()
+    if len(publicips) > 1:
+        publicip = publicips.pop()
+        publicip.free(wait=True)
+    publicip = publicips.pop()
+    #publicip.attach(wait=True)
+    #publicip.detach(wait=True)
+    vserverId = vsystem.create_vserver('My New Server', 'economy', 'CentOS 5.4 32bit(EN)', 'DMZ', wait=True)
+    result = vdc.destroy_vsystem('Python API Demo System', wait=True)
 
 
 def test_vdatacenter(vdc):
@@ -51,14 +92,14 @@ def test_vdatacenter(vdc):
 
     status = vdc.status()
 
-    usage = vdc.get_system_usage()
+    usage = vdc.get_vsystem_usage()
 
     vsystems = vdc.list_vsystems()
     #vsystem = vdc.get_vsystem('Python API Demo System')
     vsystem = vdc.get_vsystem('Demo System')
+    test_vsystem(vsystem)
     #vsysId = vdc.create_vsystem('Python API Demo System', '2-tier Skeleton', wait=None)
     #result = vdc.destroy_vsystem('Python API Demo System', wait=None)
-    test_vsystem(vsystem)
 
     publicips = vdc.list_publicips()
     publicip = vdc.get_publicip(publicips[0].address)
@@ -66,8 +107,8 @@ def test_vdatacenter(vdc):
 
     addressranges = vdc.list_addressranges()
     #result = vdc.create_addresspool(pipFrom=None, pipTo=None)
-    #result = vcd.add_addressrange(pipFrom, pipTo)
-    #result = delete_addressrange(pipFrom, pipTo)
+    #result = vdc.add_addressrange(pipFrom, pipTo)
+    #result = vdc.delete_addressrange(pipFrom, pipTo)
 
     vsysdescriptors = vdc.list_vsysdescriptors()
     vsysdescriptor = vdc.get_vsysdescriptor('2-tier Skeleton')
@@ -83,6 +124,9 @@ def test_vdatacenter(vdc):
     servertype = vdc.get_servertype('economy')
     test_servertype(servertype)
 
+    design = vdc.get_vsystem_design('fgcp_demo_system.txt')
+    test_design(design)
+
 
 def test_vsystem(vsystem):
     """
@@ -92,7 +136,7 @@ def test_vsystem(vsystem):
 
     status = vsystem.status()
 
-    usage = vsystem.get_system_usage()
+    usage = vsystem.get_usage()
 
     #result = vsystem.start(wait=None)
     #result = vsystem.stop(wait=None, force=None)
@@ -105,7 +149,10 @@ def test_vsystem(vsystem):
     #vserver = vsystem.get_vserver('Server1')
     vserver = vsystem.get_vserver('DB1')
     test_vserver(vserver)
-    #vsystem.create_vserver(vserverName='My New Server', servertype='economy', diskimage='CentOS 5.4 32bit(EN)', vnet='DMZ')
+    #vserverId = vsystem.create_vserver(vserverName='My New Server', servertype='economy', diskimage='CentOS 5.4 32bit(EN)', vnet='DMZ')
+    #result = vsystem.start_vserver('My New Server', wait=None)
+    #result = vsystem.stop_vserver('My New Server', wait=None)
+    #result = vsystem.detroy_vserver('My New Server', wait=None)
 
     vdisks = vsystem.list_vdisks()
     for vdisk in vsystem.vdisks:
@@ -120,6 +167,7 @@ def test_vsystem(vsystem):
         pass
     publicip = vsystem.get_publicip(publicips[0].address)
     test_publicip(publicip)
+    #result = vsystem.allocate_publicip(wait=None)
 
     firewalls = vsystem.list_firewalls()
     for firewall in vsystem.firewalls:
@@ -139,15 +187,17 @@ def test_vsystem(vsystem):
 
     console = vsystem.get_console_url(vnets[0])
 
-    vsystem.get_status()
+    info = vsystem.get_status()
     vsystem.show_status()
 
+    #new_vsystem = vsystem.copy()
+    #new_vsystem.vsysName = '%s Copy' % vsystem.vsysName
+    #result = new_vsystem.create()
+
+    #result = vsystem.detroy(wait=None)
+
     """
-    vsystem.create()
-    vsystem.retrieve()
     vsystem.update()
-    vsystem.destroy()
-    vsystem.status()
     """
 
 
@@ -170,6 +220,16 @@ def test_vserver(vserver):
 
     initialpwd = vserver.get_password()
 
+    #new_vserver = vserver.copy()
+    #new_vserver.vserverName = '%s Copy' % vserver.vserverName
+    #result = new_vserver.create()
+
+    #result = vserver.detroy(wait=None)
+
+    """
+    vserver.update()
+    """
+
 
 def test_vdisk(vdisk):
     """
@@ -177,6 +237,16 @@ def test_vdisk(vdisk):
     """
     backups = vdisk.list_backups()
     #result = vdisk.backup(wait=None)
+
+    #new_vdisk = vdisk.copy()
+    #new_vdisk.vdiskName = '%s Copy' % vdisk.vdiskName
+    #result = new_vdisk.create()
+
+    #result = vdisk.detroy(wait=None)
+
+    """
+    vdisk.update()
+    """
 
 
 def test_backup(backup):
@@ -252,6 +322,15 @@ def test_servertype(servertype):
     FGCP ServerType
     """
     pass
+
+
+def test_design(design):
+    """
+    FGCP VSystem Design
+    """
+    #vsystem = design.load('fgcp_demo_system.txt')
+    #result = design.build('My New VSystem')
+    #design.save('My New VSystem', 'new_demo_system.txt')
 
 
 if __name__ == "__main__":

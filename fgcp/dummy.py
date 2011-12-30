@@ -15,12 +15,27 @@
 #  limitations under the License.
 
 """
-Dummy Fujitsu Global Cloud Platform (FGCP) API Server(s) for local client tests
-using XML-RPC API Version 2011-01-31
+Dummy Fujitsu Global Cloud Platform (FGCP) API Server(s) for local tests
+
+Example: [see tests/test_*.py for more examples]
+
+# Connect without client certificate to region 'test'
+from fgcp.resource import FGCPVDataCenter
+vdc = FGCPVDataCenter('client.pem', 'test')
+
+# Do typical resource actions - updates are not supported here
+vsystem = vdc.get_vsystem('Demo System')
+vsystem.show_status()
+for vserver in vsystem.vservers:
+    #result = vserver.backup(wait=True)
+...
+
+Note: you need to unzip the file 'fixtures.zip' in tests/fixtures first
 """
 
 import time
 import os.path
+import re
 
 from fgcp import FGCPError
 
@@ -31,7 +46,7 @@ class FGCPDummyError(FGCPError):
 
 class FGCPTestServerWithFixtures:
     """
-    Test API server for local client tests - updates are not supported
+    Test API server for local tests - updates are not supported
 
     >>> from fgcp.client import FGCPClient
     >>> client = FGCPClient('client.pem', 'test')
@@ -63,7 +78,7 @@ class FGCPTestServerWithFixtures:
         if self._testid is None:
             raise FGCPDummyError('INVALID_PATH', 'Invalid test identifier')
         # check if we have a request file
-        self._file = os.path.join(self._path, self._testid + '.request.xml')
+        self._file = os.path.join(self._path, '%s.request.xml' % self._testid)
         if not os.path.isfile(self._file):
             print body
             raise FGCPDummyError('INVALID_PATH', 'File %s does not exist' % self._file)
@@ -87,7 +102,7 @@ Test fixture:\n\
         # add some delay to make it more realistic
         time.sleep(0.3)
         # check if we have a response file
-        self._file = os.path.join(self._path, self._testid + '.response.xml')
+        self._file = os.path.join(self._path, '%s.response.xml' % self._testid)
         if os.path.exists(self._file):
             self.status = 200
             self.reason = 'OK'
@@ -107,6 +122,34 @@ Test fixture:\n\
     def close(self):
         self._file = None
         return
+
+    #=========================================================================
+
+    def set_testid(self, testid):
+        self._testid = testid
+
+    #=========================================================================
+
+    def save_request(self, testid, body):
+        # sanitize accesskeyid and signature for test fixtures
+        p = re.compile('<AccessKeyId>[^<]+</AccessKeyId>')
+        body = p.sub('<AccessKeyId>...</AccessKeyId>', body)
+        p = re.compile('<Signature>[^<]+</Signature>')
+        body = p.sub('<Signature>...</Signature>', body)
+        # save request in tests/fixtures
+        f = open(os.path.join('tests', 'fixtures', '%s.request.xml' % testid), 'wb')
+        f.write(body)
+        f.close()
+
+    def save_response(self, testid, data):
+        # sanitize initialPassword for test fixtures :-)
+        if testid.startswith('GetVServerInitialPassword'):
+            p = re.compile('<initialPassword>[^<]+</initialPassword>')
+            data = p.sub('<initialPassword>...</initialPassword>', data)
+        # save response in tests/fixtures
+        f = open(os.path.join('tests', 'fixtures', '%s.response.xml' % testid), 'wb')
+        f.write(data)
+        f.close()
 
 
 class FGCPFakeServerWithRegistry:

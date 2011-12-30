@@ -20,24 +20,24 @@ The&nbsp;test&nbsp;functions&nbsp;are&nbsp;organised&nbsp;by&nbsp;logical&nbsp;"
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-fgcp_api_walker"><strong>fgcp_api_walker</strong></a>(key_file, region)</dt><dd><tt>Test&nbsp;API&nbsp;commands&nbsp;using&nbsp;test&nbsp;server&nbsp;(or&nbsp;generate&nbsp;.xml&nbsp;test&nbsp;fixtures&nbsp;using&nbsp;real&nbsp;API&nbsp;server)</tt></dd></dl>
- <dl><dt><a name="-test_addressrange"><strong>test_addressrange</strong></a>(client)</dt><dd><tt>Address&nbsp;Range&nbsp;(AddressRange)</tt></dd></dl>
+ <dl><dt><a name="-test_addressrange"><strong>test_addressrange</strong></a>(proxy)</dt><dd><tt>Address&nbsp;Range&nbsp;(AddressRange)</tt></dd></dl>
  <dl><dt><a name="-test_api_command"><strong>test_api_command</strong></a>(key_file, region)</dt><dd><tt>FGCP&nbsp;Command</tt></dd></dl>
- <dl><dt><a name="-test_diskimage"><strong>test_diskimage</strong></a>(client, diskimageId)</dt><dd><tt>Disk&nbsp;Image&nbsp;(DiskImage)</tt></dd></dl>
- <dl><dt><a name="-test_diskimage_servertype"><strong>test_diskimage_servertype</strong></a>(client, diskimageId, servertypeName)</dt><dd><tt>Server&nbsp;Type&nbsp;(ServerType)</tt></dd></dl>
- <dl><dt><a name="-test_publicip"><strong>test_publicip</strong></a>(client, publicipAddress)</dt><dd><tt>Public&nbsp;IP&nbsp;(PublicIP)&nbsp;overall</tt></dd></dl>
- <dl><dt><a name="-test_vsys"><strong>test_vsys</strong></a>(client, vsysId)</dt><dd><tt>Virtual&nbsp;System&nbsp;(VSYS)</tt></dd></dl>
- <dl><dt><a name="-test_vsys_backup"><strong>test_vsys_backup</strong></a>(client, vsysId, backupId)</dt><dd><tt>Virtual&nbsp;Disk&nbsp;(VDisk)&nbsp;Backup</tt></dd></dl>
- <dl><dt><a name="-test_vsys_efm_backup"><strong>test_vsys_efm_backup</strong></a>(client, vsysId, efmId, backupId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;Backup</tt></dd></dl>
- <dl><dt><a name="-test_vsys_efm_firewall"><strong>test_vsys_efm_firewall</strong></a>(client, vsysId, efmId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;Firewall</tt></dd></dl>
- <dl><dt><a name="-test_vsys_efm_generic"><strong>test_vsys_efm_generic</strong></a>(client, vsysId, efmId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;Generic</tt></dd></dl>
- <dl><dt><a name="-test_vsys_efm_loadbalancer"><strong>test_vsys_efm_loadbalancer</strong></a>(client, vsysId, efmId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;LoadBalancer</tt></dd></dl>
- <dl><dt><a name="-test_vsys_publicip"><strong>test_vsys_publicip</strong></a>(client, vsysId, publicipAddress)</dt><dd><tt>Public&nbsp;IP&nbsp;(PublicIP)&nbsp;for&nbsp;this&nbsp;vsys</tt></dd></dl>
- <dl><dt><a name="-test_vsys_vdisk"><strong>test_vsys_vdisk</strong></a>(client, vsysId, vdiskId)</dt><dd><tt>Virtual&nbsp;Disk&nbsp;(VDisk)</tt></dd></dl>
- <dl><dt><a name="-test_vsys_vnet"><strong>test_vsys_vnet</strong></a>(client, vsysId, networkId)</dt><dd><tt>Virtual&nbsp;Network&nbsp;(VNet)</tt></dd></dl>
- <dl><dt><a name="-test_vsys_vnet_console"><strong>test_vsys_vnet_console</strong></a>(client, vsysId, networkId)</dt><dd><tt>Other&nbsp;(SSL-VPN)</tt></dd></dl>
- <dl><dt><a name="-test_vsys_vserver"><strong>test_vsys_vserver</strong></a>(client, vsysId, vserverId)</dt><dd><tt>Virtual&nbsp;Server&nbsp;(VServer)</tt></dd></dl>
- <dl><dt><a name="-test_vsys_vserver_vdisk"><strong>test_vsys_vserver_vdisk</strong></a>(client, vsysId, vserverId, vdiskId)</dt><dd><tt>Virtual&nbsp;Disk&nbsp;(VDisk)&nbsp;attached&nbsp;to&nbsp;this&nbsp;server</tt></dd></dl>
- <dl><dt><a name="-test_vsys_vserver_vnic"><strong>test_vsys_vserver_vnic</strong></a>(client, vsysId, vserverId, networkId)</dt><dd><tt>Virtual&nbsp;Network&nbsp;Interface&nbsp;(VNIC)</tt></dd></dl>
- <dl><dt><a name="-test_vsysdescriptor"><strong>test_vsysdescriptor</strong></a>(client, vsysdescriptorId)</dt><dd><tt>Virtual&nbsp;System&nbsp;Descriptor&nbsp;(VSYSDescriptor)</tt></dd></dl>
+ <dl><dt><a name="-test_diskimage"><strong>test_diskimage</strong></a>(proxy, diskimageId)</dt><dd><tt>Disk&nbsp;Image&nbsp;(DiskImage)</tt></dd></dl>
+ <dl><dt><a name="-test_diskimage_servertype"><strong>test_diskimage_servertype</strong></a>(proxy, diskimageId, servertypeName)</dt><dd><tt>Server&nbsp;Type&nbsp;(ServerType)</tt></dd></dl>
+ <dl><dt><a name="-test_publicip"><strong>test_publicip</strong></a>(proxy, publicipAddress)</dt><dd><tt>Public&nbsp;IP&nbsp;(PublicIP)&nbsp;overall</tt></dd></dl>
+ <dl><dt><a name="-test_vsys"><strong>test_vsys</strong></a>(proxy, vsysId)</dt><dd><tt>Virtual&nbsp;System&nbsp;(VSYS)</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_backup"><strong>test_vsys_backup</strong></a>(proxy, vsysId, backupId)</dt><dd><tt>Virtual&nbsp;Disk&nbsp;(VDisk)&nbsp;Backup</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_efm_backup"><strong>test_vsys_efm_backup</strong></a>(proxy, vsysId, efmId, backupId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;Backup</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_efm_firewall"><strong>test_vsys_efm_firewall</strong></a>(proxy, vsysId, efmId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;Firewall</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_efm_generic"><strong>test_vsys_efm_generic</strong></a>(proxy, vsysId, efmId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;Generic</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_efm_loadbalancer"><strong>test_vsys_efm_loadbalancer</strong></a>(proxy, vsysId, efmId)</dt><dd><tt>Extended&nbsp;Function&nbsp;Module&nbsp;(EFM)&nbsp;LoadBalancer</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_publicip"><strong>test_vsys_publicip</strong></a>(proxy, vsysId, publicipAddress)</dt><dd><tt>Public&nbsp;IP&nbsp;(PublicIP)&nbsp;for&nbsp;this&nbsp;vsys</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_vdisk"><strong>test_vsys_vdisk</strong></a>(proxy, vsysId, vdiskId)</dt><dd><tt>Virtual&nbsp;Disk&nbsp;(VDisk)</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_vnet"><strong>test_vsys_vnet</strong></a>(proxy, vsysId, networkId)</dt><dd><tt>Virtual&nbsp;Network&nbsp;(VNet)</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_vnet_console"><strong>test_vsys_vnet_console</strong></a>(proxy, vsysId, networkId)</dt><dd><tt>Other&nbsp;(SSL-VPN)</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_vserver"><strong>test_vsys_vserver</strong></a>(proxy, vsysId, vserverId)</dt><dd><tt>Virtual&nbsp;Server&nbsp;(VServer)</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_vserver_vdisk"><strong>test_vsys_vserver_vdisk</strong></a>(proxy, vsysId, vserverId, vdiskId)</dt><dd><tt>Virtual&nbsp;Disk&nbsp;(VDisk)&nbsp;attached&nbsp;to&nbsp;this&nbsp;server</tt></dd></dl>
+ <dl><dt><a name="-test_vsys_vserver_vnic"><strong>test_vsys_vserver_vnic</strong></a>(proxy, vsysId, vserverId, networkId)</dt><dd><tt>Virtual&nbsp;Network&nbsp;Interface&nbsp;(VNIC)</tt></dd></dl>
+ <dl><dt><a name="-test_vsysdescriptor"><strong>test_vsysdescriptor</strong></a>(proxy, vsysdescriptorId)</dt><dd><tt>Virtual&nbsp;System&nbsp;Descriptor&nbsp;(VSYSDescriptor)</tt></dd></dl>
 </td></tr></table>
 </body></html>
