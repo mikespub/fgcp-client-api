@@ -48,34 +48,42 @@ class FGCPConnection:
     FGCP XML-RPC Connection
 
     Example:
-    from fgcp_client_api import FGCPConnection
+    from fgcp.connection import FGCPConnection
     conn = FGCPConnection('client.pem', 'uk')
     vsystems = conn.do_action('ListVSYS')
     """
-    host = 'api.globalcloud.de.fujitsu.com'        # updated based on region argument
-    key_file = 'client.pem'                        # updated based on key_file argument
-    locale = 'en'                                # TODO: make configurable to 'en' or 'jp' ?
-    timezone = 'Central European Time'            # updated based on time.tzname[0] or time.timezone
-    verbose = 0                                    # normal script output for users
-    debug = 0                                    # for development purposes
+    host = 'api.globalcloud.de.fujitsu.com'         # updated based on region argument
+    key_file = 'client.pem'                         # updated based on key_file argument
+    locale = 'en'                                   # TODO: make configurable to 'en' or 'jp' ?
+    timezone = 'Central European Time'              # updated based on time.tzname[0] or time.timezone
+    verbose = 0                                     # normal script output for users:
+                                                    #   0 = quiet
+                                                    #   1 = show user output
+                                                    #   2 = show status output
+    debug = 0                                       # for development purposes:
+                                                    #   0 = quiet
+                                                    #   1 = show API request
+                                                    #   2 = dump response object
+                                                    #   3 = dump request/response body
+                                                    #  99 = save request/response body for test fixture
 
-    uri = '/ovissapi/endpoint'                    # fixed value for the API version
-    api_version = '2011-01-31'                    # fixed value for the API version
-    user_agent = 'OViSS-API-CLIENT'                # fixed value for the API version
+    uri = '/ovissapi/endpoint'                      # fixed value for the API version
+    api_version = '2011-01-31'                      # fixed value for the API version
+    user_agent = 'OViSS-API-CLIENT'                 # fixed value for the API version
     _regions = {
-        'au': 'api.globalcloud.fujitsu.com.au',        # for Australia and New Zealand
-        'de': 'api.globalcloud.de.fujitsu.com',        # for Central Europe, Middle East, Eastern Europe, Africa & India (CEMEA&I)
-        'jp': 'api.oviss.jp.fujitsu.com',            # for Japan
-        'sg': 'api.globalcloud.sg.fujitsu.com',        # for Singapore, Malaysia, Indonesia, Thailand and Vietnam
-        'uk': 'api.globalcloud.uk.fujitsu.com',        # for the UK and Ireland (UK&I)
-        'us': 'api.globalcloud.us.fujitsu.com',        # for the Americas
-        'test': 'test',                                # for local client tests with test fixtures
+        'au': 'api.globalcloud.fujitsu.com.au',     # for Australia and New Zealand
+        'de': 'api.globalcloud.de.fujitsu.com',     # for Central Europe, Middle East, Eastern Europe, Africa & India (CEMEA&I)
+        'jp': 'api.oviss.jp.fujitsu.com',           # for Japan
+        'sg': 'api.globalcloud.sg.fujitsu.com',     # for Singapore, Malaysia, Indonesia, Thailand and Vietnam
+        'uk': 'api.globalcloud.uk.fujitsu.com',     # for the UK and Ireland (UK&I)
+        'us': 'api.globalcloud.us.fujitsu.com',     # for the Americas
+        'test': 'test',                             # for local client tests with test fixtures
         #'fake': 'fake',                            # for local client tests with fake updates etc. ?
     }
 
-    _conn = None                                # actual httplib.HTTPSConnection() or FGCPTestServer()
-    _caller = None                                # which FGCPResource() is calling
-    _testid = None                                # test identifier for fixtures
+    _conn = None                                    # actual httplib.HTTPSConnection() or FGCPTestServer()
+    _caller = None                                  # which FGCPResource() is calling
+    _testid = None                                  # test identifier for fixtures
 
     def __init__(self, key_file='client.pem', region='de', verbose=0, debug=0):
         """
@@ -113,6 +121,10 @@ class FGCPConnection:
             if self._conn is not None and self.host != self._regions[region]:
                 self.close()
             self.host = self._regions[region]
+
+    def set_conn(self, conn):
+        # set connection from elsewhere
+        self._conn = conn
 
     def connect(self):
         if self._conn is None:
@@ -182,7 +194,7 @@ class FGCPConnection:
             sig = self.get_signature(acc)
         CRLF = '\r\n'
         L = []
-        if self.host == 'test' or self.debug > 1:
+        if self.host == 'test' or self.debug > 0:
             self._testid = action
         L.append('<?xml version="1.0" encoding="UTF-8"?>')
         L.append('<OViSSRequest>')
@@ -222,7 +234,7 @@ class FGCPConnection:
                 L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (attachment['name'], attachment['filename']))
                 L.append('')
                 L.append(attachment['body'])
-                if self.host == 'test' or self.debug > 1:
+                if self.host == 'test' or self.debug > 0:
                     self._testid += '.%s' % attachment['filename']
             L.append('--BOUNDARY--')
             body = CRLF.join(L)
@@ -243,7 +255,7 @@ class FGCPConnection:
         elif isinstance(value, str):
             # <prefix>proto</prefix>
             L.append('  ' * depth + '<%s>%s</%s>' % (key, value, key))
-            if self.host == 'test' or self.debug > 1:
+            if self.host == 'test' or self.debug > 0:
                 self._testid += '.%s' % value
         elif isinstance(value, dict):
             # <order>
@@ -276,7 +288,7 @@ class FGCPConnection:
         else:
             # <prefix>proto</prefix>
             L.append('  ' * depth + '<%s>%s</%s>' % (key, value, key))
-            if self.host == 'test' or self.debug > 1:
+            if self.host == 'test' or self.debug > 0:
                 self._testid += '.%s' % value
         return CRLF.join(L)
 
@@ -287,7 +299,7 @@ class FGCPConnection:
         # prepare headers and body
         headers = self.get_headers(attachments)
         body = self.get_body(action, params, attachments)
-        if self.debug > 2 and os.path.isdir(os.path.join('tests', 'fixtures')):
+        if self.debug > 10 and os.path.isdir(os.path.join('tests', 'fixtures')):
             # sanitize accesskeyid and signature for test fixtures
             import re
             p = re.compile('<AccessKeyId>[^<]+</AccessKeyId>')
@@ -299,28 +311,35 @@ class FGCPConnection:
             f = open(os.path.join('tests', 'fixtures', self._testid + '.request.xml'), 'wb')
             f.write(req)
             f.close()
-        elif self.debug > 1:
+        elif self.debug > 2:
             print 'XML-RPC Request for %s:' % self._testid
             print body
+        elif self.debug > 0:
+            print self._testid
 
         # send XML-RPC request
         self.send('POST', self.uri, body, headers)
 
         # receive XML-RPC response
         data = self.receive()
-        if self.debug > 2 and os.path.isdir(os.path.join('tests', 'fixtures')):
+        if self.debug > 10 and os.path.isdir(os.path.join('tests', 'fixtures')):
+            # sanitize initialPassword for test fixtures :-)
+            if self._testid.startswith('GetVServerInitialPassword'):
+                import re
+                p = re.compile('<initialPassword>[^<]+</initialPassword>')
+                data = p.sub('<initialPassword>...</initialPassword>', data)
             print 'Saving response for %s' % self._testid
             # save response in tests/fixtures
             f = open(os.path.join('tests', 'fixtures', self._testid + '.response.xml'), 'wb')
             f.write(data)
             f.close()
-        elif self.debug > 1:
+        elif self.debug > 2:
             print 'XML-RPC Response for %s:' % self._testid
             print data
 
         # analyze XML-RPC response
         resp = FGCPResponseParser().parse_data(data, self)
-        if self.debug > 0:
+        if self.debug > 2:
             print 'FGCP Response for %s:' % action
             resp.pprint()
         # CHECKME: raise exception whenever we don't have SUCCESS

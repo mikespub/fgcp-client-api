@@ -54,7 +54,7 @@ see&nbsp;<a href="http://code.google.com/p/gdata-python-client/">http://code.goo
 <td colspan=2><tt>FGCP&nbsp;XML-RPC&nbsp;Connection<br>
 &nbsp;<br>
 Example:<br>
-from&nbsp;fgcp_client_api&nbsp;import&nbsp;<a href="#FGCPConnection">FGCPConnection</a><br>
+from&nbsp;fgcp.connection&nbsp;import&nbsp;<a href="#FGCPConnection">FGCPConnection</a><br>
 conn&nbsp;=&nbsp;<a href="#FGCPConnection">FGCPConnection</a>('client.pem',&nbsp;'uk')<br>
 vsystems&nbsp;=&nbsp;conn.<a href="#FGCPConnection-do_action">do_action</a>('ListVSYS')<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
@@ -87,6 +87,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPConnection-receive"><strong>receive</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
+
+<dl><dt><a name="FGCPConnection-set_conn"><strong>set_conn</strong></a>(self, conn)</dt></dl>
 
 <dl><dt><a name="FGCPConnection-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 

@@ -69,7 +69,7 @@ Example:<br>
 from&nbsp;fgcp.client&nbsp;import&nbsp;<a href="#FGCPClient">FGCPClient</a><br>
 client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem',&nbsp;'uk')<br>
 &nbsp;<br>
-#&nbsp;Backup&nbsp;all&nbsp;VServers&nbsp;in&nbsp;some&nbsp;VSYS<br>
+#&nbsp;Backup&nbsp;all&nbsp;VServers&nbsp;in&nbsp;some&nbsp;VSystem<br>
 vsys&nbsp;=&nbsp;client.<a href="#FGCPClient-GetSystemInventory">GetSystemInventory</a>('Python&nbsp;API&nbsp;Demo&nbsp;System')<br>
 for&nbsp;vserver&nbsp;in&nbsp;vsys.vservers:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;client.<a href="#FGCPClient-BackupVServerAndRestart">BackupVServerAndRestart</a>(vsys.vsysId,&nbsp;vserver.vserverId)<br>
@@ -91,11 +91,11 @@ for&nbsp;vsys&nbsp;in&nbsp;vsystems:<br>
 </dl>
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPDesigner">FGCPDesigner</a>:<br>
-<dl><dt><a name="FGCPClient-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Configure&nbsp;VSYS&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPClient-LoadSystemDesign">LoadSystemDesign</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Configure&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPClient-LoadSystemDesign">LoadSystemDesign</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSYS&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSYS&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
+<dl><dt><a name="FGCPClient-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSystem&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName</tt></dd></dl>
 
@@ -103,9 +103,9 @@ Methods inherited from <a href="fgcp.client.html#FGCPDesigner">FGCPDesigner</a>:
 
 <dl><dt><a name="FGCPClient-FindVSYSDescriptorByName"><strong>FindVSYSDescriptorByName</strong></a>(self, vsysdescriptorName)</dt><dd><tt>Find&nbsp;VSYSDescriptor&nbsp;by&nbsp;vsysdescriptorName</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath)</dt><dd><tt>Load&nbsp;VSYS&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPClient-ConfigureSystem">ConfigureSystem</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Load&nbsp;VSystem&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPClient-ConfigureSystem">ConfigureSystem</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath)</dt><dd><tt>TODO:&nbsp;Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSYS&nbsp;design&nbsp;to&nbsp;file</tt></dd></dl>
+<dl><dt><a name="FGCPClient-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSystem&nbsp;design&nbsp;to&nbsp;file</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:<br>
@@ -121,13 +121,13 @@ Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:
 
 <dl><dt><a name="FGCPClient-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSYS&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSYS&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
 
@@ -137,13 +137,13 @@ Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>:<br>
-<dl><dt><a name="FGCPClient-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSYS&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPClient-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSYS&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -335,6 +335,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPClient-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
+<dl><dt><a name="FGCPClient-set_conn"><strong>set_conn</strong></a>(self, conn)</dt></dl>
+
 <dl><dt><a name="FGCPClient-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
 <hr>
@@ -433,11 +435,11 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPDesigner-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Configure&nbsp;VSYS&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPDesigner-LoadSystemDesign">LoadSystemDesign</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Configure&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPDesigner-LoadSystemDesign">LoadSystemDesign</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSYS&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSYS&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSystem&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName</tt></dd></dl>
 
@@ -445,9 +447,9 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPDesigner-FindVSYSDescriptorByName"><strong>FindVSYSDescriptorByName</strong></a>(self, vsysdescriptorName)</dt><dd><tt>Find&nbsp;VSYSDescriptor&nbsp;by&nbsp;vsysdescriptorName</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath)</dt><dd><tt>Load&nbsp;VSYS&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPDesigner-ConfigureSystem">ConfigureSystem</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Load&nbsp;VSystem&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPDesigner-ConfigureSystem">ConfigureSystem</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath)</dt><dd><tt>TODO:&nbsp;Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSYS&nbsp;design&nbsp;to&nbsp;file</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSystem&nbsp;design&nbsp;to&nbsp;file</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:<br>
@@ -463,13 +465,13 @@ Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:
 
 <dl><dt><a name="FGCPDesigner-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSYS&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSYS&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
 
@@ -479,13 +481,13 @@ Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>:<br>
-<dl><dt><a name="FGCPDesigner-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSYS&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSYS&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -677,6 +679,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPDesigner-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
+<dl><dt><a name="FGCPDesigner-set_conn"><strong>set_conn</strong></a>(self, conn)</dt></dl>
+
 <dl><dt><a name="FGCPDesigner-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
 <hr>
@@ -715,13 +719,13 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPMonitor-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSYS&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSYS&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -913,6 +917,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPMonitor-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
 
+<dl><dt><a name="FGCPMonitor-set_conn"><strong>set_conn</strong></a>(self, conn)</dt></dl>
+
 <dl><dt><a name="FGCPMonitor-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 
 <hr>
@@ -964,13 +970,13 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPOperator-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSYS&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSYS&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
 
@@ -980,13 +986,13 @@ Methods defined here:<br>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>:<br>
-<dl><dt><a name="FGCPOperator-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSYS&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSYS&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSYS)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -1177,6 +1183,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPOperator-receive"><strong>receive</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-send"><strong>send</strong></a>(self, method, uri, body, headers)</dt></dl>
+
+<dl><dt><a name="FGCPOperator-set_conn"><strong>set_conn</strong></a>(self, conn)</dt></dl>
 
 <dl><dt><a name="FGCPOperator-set_region"><strong>set_region</strong></a>(self, region)</dt></dl>
 

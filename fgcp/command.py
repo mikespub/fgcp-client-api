@@ -272,6 +272,8 @@ class FGCPCommand(FGCPConnection):
         Usage: vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
         """
         result = self.do_action('GetVSYSConfiguration', {'vsysId': vsysId})
+        # FIXME: we seem to have ghosts in VSYSConfiguration.publicips compared to the overall ListPublicIP(vsys.vsysId) !
+        setattr(result.vsys, 'publicips', self.ListPublicIP(vsysId))
         return result.vsys
 
     def UpdateVSYSConfiguration(self, vsysId, configurationName, configurationValue):

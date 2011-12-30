@@ -37,11 +37,11 @@ class FGCPMonitor(FGCPCommand):
 
     def FindSystemByName(self, vsysName):
         """
-        Find VSYS by vsysName
+        Find VSystem by vsysName
         """
         vsystems = self.ListVSYS()
         if len(vsystems) < 1:
-            raise FGCPClientError('RESOURCE_NOT_FOUND', 'No VSYS are defined')
+            raise FGCPClientError('RESOURCE_NOT_FOUND', 'No VSystems are defined')
         for vsys in vsystems:
             if vsysName == vsys.vsysName:
                 return vsys
@@ -49,7 +49,7 @@ class FGCPMonitor(FGCPCommand):
 
     def GetSystemInventory(self, vsysName=None):
         """
-        Get VSYS inventory (by vsysName)
+        Get VSystem inventory (by vsysName)
         """
         if vsysName is None:
             vsystems = self.ListVSYS()
@@ -57,7 +57,7 @@ class FGCPMonitor(FGCPCommand):
             vsystems = []
             vsystems.append(self.FindSystemByName(vsysName))
         if len(vsystems) < 1:
-            self.show_output('No VSYS are defined')
+            self.show_output('No VSystems are defined')
             return
         inventory = {}
         inventory['vsys'] = {}
@@ -99,32 +99,35 @@ class FGCPMonitor(FGCPCommand):
 
     def GetSystemStatus(self, vsysName=None, verbose=None):
         """
-        Get the overall system status (for a particular VSYS)
+        Get the overall system status (for a particular VSystem)
         """
         # set output
         old_verbose = self.set_verbose(verbose)
         if vsysName is None:
-            self.show_output('Show System Status for all VSYS')
+            self.show_output('Show System Status for all VSystems')
             inventory = self.GetSystemInventory()
         else:
-            self.show_output('Show System Status for VSYS %s' % vsysName)
+            self.show_output('Show System Status for VSystem %s' % vsysName)
             inventory = {}
             inventory['vsys'] = {}
             inventory['vsys'][vsysName] = self.GetSystemInventory(vsysName)
         if inventory is None or len(inventory['vsys']) < 1:
-            self.show_output('No VSYS are defined')
+            self.show_output('No VSystems are defined')
             return
         # CHECKME: keep track of status in new_inventory
         new_inventory = inventory
         for name, vsys in inventory['vsys'].iteritems():
             # get status of vsys overall
             status = self.GetVSYSStatus(vsys.vsysId)
-            self.show_output('VSYS:%s:%s' % (vsys.vsysName, status))
+            self.show_output('VSystem:%s:%s' % (vsys.vsysName, status))
             setattr(new_inventory['vsys'][name], 'vsysStatus', status)
             # get status of public ips
             new_publicips = []
             for publicip in vsys.publicips:
-                status = self.GetPublicIPStatus(publicip.address)
+                try:
+                    status = self.GetPublicIPStatus(publicip.address)
+                except:
+                    status = 'UNKNOWN'
                 self.show_output('PublicIP:%s:%s' % (publicip.address, status))
                 setattr(publicip, 'publicipStatus', status)
                 new_publicips.append(publicip)
@@ -133,7 +136,7 @@ class FGCPMonitor(FGCPCommand):
             new_firewalls = []
             for firewall in vsys.firewalls:
                 status = self.GetEFMStatus(vsys.vsysId, firewall.efmId)
-                self.show_output('EFM FW:%s:%s' % (firewall.efmName, status))
+                self.show_output('Firewall:%s:%s' % (firewall.efmName, status))
                 setattr(firewall, 'efmStatus', status)
                 new_firewalls.append(firewall)
             setattr(new_inventory['vsys'][name], 'firewalls', new_firewalls)
@@ -141,7 +144,7 @@ class FGCPMonitor(FGCPCommand):
             new_loadbalancers = []
             for loadbalancer in vsys.loadbalancers:
                 status = self.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
-                self.show_output('EFM SLB:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
+                self.show_output('LoadBalancer:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
                 setattr(loadbalancer, 'efmStatus', status)
                 new_loadbalancers.append(loadbalancer)
             setattr(new_inventory['vsys'][name], 'loadbalancers', new_loadbalancers)
@@ -192,7 +195,7 @@ class FGCPMonitor(FGCPCommand):
 
     def ShowSystemStatus(self, vsysName=None):
         """
-        Show the overall system status (for a particular VSYS)
+        Show the overall system status (for a particular VSystem)
         """
         self.GetSystemStatus(vsysName, 1)
 
@@ -414,13 +417,13 @@ class FGCPOperator(FGCPMonitor):
 
     def StartSystem(self, vsysName, verbose=None):
         """
-        Start VSYS and wait until all VServers and EFMs are started (TODO: define start sequence for vservers)
+        Start VSystem and wait until all VServers and EFMs are started (TODO: define start sequence for vservers)
         """
         # Get inventory of the vsys
         vsys = self.GetSystemInventory(vsysName)
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Starting VSYS %s' % vsysName)
+        self.show_output('Starting VSystem %s' % vsysName)
         # CHECKME: start firewall if necessary
         self.show_output('Start Firewalls')
         for firewall in vsys.firewalls:
@@ -437,19 +440,19 @@ class FGCPOperator(FGCPMonitor):
         self.show_output('Start VServers')
         for vserver in vsys.vservers:
             self.StartVServerAndWait(vsys.vsysId, vserver.vserverId)
-        self.show_output('Started VSYS %s' % vsysName)
+        self.show_output('Started VSystem %s' % vsysName)
         # Reset output
         self.set_verbose(old_verbose)
 
     def StopSystem(self, vsysName, verbose=None):
         """
-        Stop VSYS and wait until all VServers and EFMs are stopped (TODO: define stop sequence for vservers)
+        Stop VSystem and wait until all VServers and EFMs are stopped (TODO: define stop sequence for vservers)
         """
         # Get system inventory
         vsys = self.GetSystemInventory(vsysName)
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Stopping VSYS %s' % vsysName)
+        self.show_output('Stopping VSystem %s' % vsysName)
         # Stop all vservers
         self.show_output('Stop VServers')
         for vserver in vsys.vservers:
@@ -470,7 +473,7 @@ class FGCPOperator(FGCPMonitor):
         for firewall in vsys.firewalls:
             self.show_output(firewall.efmName)
             status = self.StopEFMAndWait(vsys.vsysId, firewall.efmId)
-        self.show_output('Stopped VSYS %s' % vsysName)
+        self.show_output('Stopped VSystem %s' % vsysName)
         # Reset output
         self.set_verbose(old_verbose)
 
@@ -523,40 +526,40 @@ class FGCPDesigner(FGCPOperator):
 
     def CreateSystem(self, vsysName, vsysdescriptorName, verbose=None):
         """
-        Create VSYS based on descriptor and wait until it's deployed
+        Create VSystem based on descriptor and wait until it's deployed
         """
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Creating VSYS %s' % vsysName)
+        self.show_output('Creating VSystem %s' % vsysName)
         # Try to find vsys or create it
         try:
             vsys = self.FindSystemByName(vsysName)
         except FGCPClientError:
             vsysdescriptor = self.FindVSYSDescriptorByName(vsysdescriptorName)
             vsysId = self.CreateVSYS(vsysdescriptor.vsysdescriptorId, vsysName)
-            self.show_output('Created VSYS %s: %s' % (vsysName, vsysId))
+            self.show_output('Created VSystem %s: %s' % (vsysName, vsysId))
             # wait until vsys deploying is done - TODO: add some timeout
             self.wait_for_status('NORMAL', 'DEPLOYING', 'GetVSYSStatus', vsysId)
-            self.show_output('Deployed VSYS %s: %s' % (vsysName, vsysId))
+            self.show_output('Deployed VSystem %s: %s' % (vsysName, vsysId))
             pass
         else:
             vsysId = vsys.vsysId
-            self.show_output('Existing VSYS %s: %s' % (vsysName, vsysId))
+            self.show_output('Existing VSystem %s: %s' % (vsysName, vsysId))
         # Reset output
         self.set_verbose(old_verbose)
         return vsysId
 
     def ConfigureSystem(self, vsysName, systemDesign, verbose=None):
         """
-        TODO: Configure VSYS based on some systemDesign - see LoadSystemDesign()
+        TODO: Configure VSystem based on some systemDesign - see LoadSystemDesign()
         """
-        print 'TODO: Configure VSYS based on some vsysDesign - see LoadSystemDesign()'
+        print 'TODO: Configure VSystem based on some vsysDesign - see LoadSystemDesign()'
         return
         # Get inventory of the vsys
         vsys = self.GetSystemInventory(vsysName)
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Configuring VSYS %s' % vsysName)
+        self.show_output('Configuring VSystem %s' % vsysName)
         # CHECKME: start firewall if necessary
         if len(vsys.firewalls) > 0:
             self.show_output('Start Firewalls')
@@ -608,35 +611,37 @@ class FGCPDesigner(FGCPOperator):
                     self.wait_for_status('STOPPED', 'DEPLOYING', 'GetEFMStatus', vsys.vsysId, efmId)
                     # update list of loadbalancers
                     vsys.loadbalancers = self.ListEFM(vsys.vsysId, "SLB")
-        self.show_output('Configured VSYS %s' % vsysName)
+        self.show_output('Configured VSystem %s' % vsysName)
         # Reset output
         self.set_verbose(old_verbose)
 
     def DestroySystem(self, vsysName, verbose=None):
         """
-        Destroy VSYS after stopping all VServers and EFMs
+        Destroy VSystem after stopping all VServers and EFMs
         """
         # Get system inventory
         vsys = self.GetSystemInventory(vsysName)
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Destroying VSYS %s' % vsysName)
-        # CHECKME: should we stop the VSYS here ?
-        # Destroy the VSYS
+        self.show_output('Destroying VSystem %s' % vsysName)
+        # CHECKME: should we stop the VSystem here ?
+        # Destroy the VSystem
         result = self.DestroyVSYS(vsys.vsysId)
         self.show_output(result)
         # TODO: wait until it's really gone ?
-        self.show_output('Destroyed VSYS %s' % vsysName)
+        self.show_output('Destroyed VSystem %s' % vsysName)
         # Reset output
         self.set_verbose(old_verbose)
 
-    def SaveSystemDesign(self, vsysName, filePath):
+    def SaveSystemDesign(self, vsysName, filePath, verbose=None):
         """
-        TODO: Save (fixed parts of) VSYS design to file
+        TODO: Save (fixed parts of) VSystem design to file
         """
         # Get system inventory
         vsys = self.GetSystemInventory(vsysName)
-        self.show_output('Saving VSYS design for %s to file %s' % (vsysName, filePath))
+        # Set output
+        old_verbose = self.set_verbose(verbose)
+        self.show_output('Saving VSystem design for %s to file %s' % (vsysName, filePath))
         # CHECKME: is description always the name correspoding to baseDescriptor ?
         seenip = {}
         # Replace addresses and other variable information
@@ -653,17 +658,20 @@ class FGCPDesigner(FGCPOperator):
         for firewall in vsys.firewalls:
             # TODO: Add FW and SLB configurations
             setattr(firewall, 'firewall', FGCPFirewall())
-            setattr(firewall.firewall, 'nat', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule())
-            setattr(firewall.firewall, 'dns', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns())
-            setattr(firewall.firewall, 'directions', self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy())
+            handler = self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId)
+            setattr(firewall.firewall, 'nat', handler.fw_nat_rule())
+            setattr(firewall.firewall, 'dns', handler.fw_dns())
+            setattr(firewall.firewall, 'directions', handler.fw_policy())
             new_firewalls.append(firewall)
         vsys.firewalls = new_firewalls
+        #from fgcp.resource import FGCPLoadBalancer
         new_loadbalancers = []
         for loadbalancer in vsys.loadbalancers:
             seenip[loadbalancer.slbVip] = loadbalancer.efmName
             #loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
             # TODO: Add FW and SLB configurations
-            setattr(loadbalancer, 'loadbalancer', self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule())
+            handler = self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId)
+            setattr(loadbalancer, 'loadbalancer', handler.slb_rule())
             new_loadbalancers.append(loadbalancer)
         vsys.loadbalancers = new_loadbalancers
         # Get mapping of diskimage id to name
@@ -694,7 +702,7 @@ class FGCPDesigner(FGCPOperator):
         # Prepare for output - FGCPElement().pformat() writes objects initialized with the right values
         lines = vsys.pformat(vsys)
         # Replace vsysId and creator everywhere (including Id's)
-        lines = lines.replace(vsys.vsysId, 'DEMO-VSYS')
+        lines = lines.replace(vsys.vsysId, 'DEMO-VSYSTEM')
         lines = lines.replace(vsys.creator, 'DEMO')
         # CHECKME: replace ip addresses with names everywhere, including firewall policies and loadbalancer rules
         for ip in seenip.keys():
@@ -706,13 +714,17 @@ class FGCPDesigner(FGCPOperator):
         f = open(filePath, 'wb')
         f.write(lines)
         f.close()
-        self.show_output('Saved VSYS design for %s to file %s' % (vsysName, filePath))
+        self.show_output('Saved VSystem design for %s to file %s' % (vsysName, filePath))
+        # Reset output
+        self.set_verbose(old_verbose)
 
-    def LoadSystemDesign(self, filePath):
+    def LoadSystemDesign(self, filePath, verbose=None):
         """
-        Load VSYS design from file, for use e.g. in ConfigureSystem()
+        Load VSystem design from file, for use e.g. in ConfigureSystem()
         """
-        self.show_output('Loading VSYS design from file %s' % filePath)
+        # Set output
+        old_verbose = self.set_verbose(verbose)
+        self.show_output('Loading VSystem design from file %s' % filePath)
         import os.path
         if not os.path.exists(filePath):
             self.show_output('File %s does not seem to exist' % filePath)
@@ -726,17 +738,21 @@ class FGCPDesigner(FGCPOperator):
             return
         # CHECKME: add line continuations before exec() !?
         try:
+            from fgcp.resource import FGCPVSystem, FGCPVServer, FGCPVNic, FGCPVDisk, FGCPPublicIP, FGCPEfm, FGCPFirewall, FGCPLoadBalancer
+            from fgcp.resource import FGCPSLBGroup, FGCPSLBTarget, FGCPSLBErrorCause, FGCPFWDirection, FGCPFWPolicy, FGCPFWDns, FGCPFWNATRule
             # See above - FGCPElement().pformat() writes objects initialized with the right values
             exec 'vsys = ' + lines.replace("\r\n", "\\\r\n")
         except:
             self.show_output('File %s seems to have some syntax errors' % filePath)
             raise
-        self.show_output('Loaded VSYS design for %s from file %s' % (vsys.vsysName, filePath))
+        self.show_output('Loaded VSystem design for %s from file %s' % (vsys.vsysName, filePath))
         try:
             found = self.FindSystemByName(vsys.vsysName)
-            self.show_output('Caution: you already have a VSYS called %s' % vsys.vsysName)
+            self.show_output('Caution: you already have a VSystem called %s' % vsys.vsysName)
         except FGCPClientError:
             pass
+        # Reset output
+        self.set_verbose(old_verbose)
         # Return system inventory
         return vsys
 
@@ -750,7 +766,7 @@ class FGCPClient(FGCPDesigner):
     from fgcp.client import FGCPClient
     client = FGCPClient('client.pem', 'uk')
 
-    # Backup all VServers in some VSYS
+    # Backup all VServers in some VSystem
     vsys = client.GetSystemInventory('Python API Demo System')
     for vserver in vsys.vservers:
         client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)

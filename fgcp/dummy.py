@@ -85,7 +85,7 @@ Test fixture:\n\
 
     def getresponse(self):
         # add some delay to make it more realistic
-        time.sleep(0.5)
+        time.sleep(0.3)
         # check if we have a response file
         self._file = os.path.join(self._path, self._testid + '.response.xml')
         if os.path.exists(self._file):

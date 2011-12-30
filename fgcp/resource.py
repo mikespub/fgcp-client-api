@@ -45,6 +45,9 @@ class FGCPElement(object):
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
 
+    def __repr__(self):
+        return '<%s>' % type(self).__name__
+
     #=========================================================================
 
     def pformat(self, what, depth=0):
@@ -87,6 +90,8 @@ class FGCPElement(object):
                 L.append('  ' * depth + '],')
             elif isinstance(what.__dict__[key], str):
                 L.append('  ' * depth + "%s='%s'," % (key, what.__dict__[key]))
+            elif isinstance(what.__dict__[key], int) or isinstance(what.__dict__[key], float):
+                L.append('  ' * depth + "%s=%s," % (key, what.__dict__[key]))
             elif what.__dict__[key] is None:
                 #L.append('  ' * depth + "%s=None," % key)
                 pass
@@ -102,18 +107,18 @@ class FGCPElement(object):
         """
         print self.pformat(self)
 
-    #=========================================================================
-
-    def reset_attr(self, what):
-        if hasattr(self, what):
-            delattr(self, what)
-
 
 class FGCPResponse(FGCPElement):
     """
     FGCP Response
     """
     _caller = None
+
+    def __repr__(self):
+        if self._caller is not None:
+            return '<%s:%s>' % (type(self).__name__, repr(self._caller))
+        else:
+            return '<%s:%s>' % (type(self).__name__, '')
 
 
 class FGCPResource(FGCPElement):
@@ -138,6 +143,7 @@ class FGCPResource(FGCPElement):
 
     #=========================================================================
 
+    """
     def create(self):
         return self.getid()
 
@@ -146,16 +152,16 @@ class FGCPResource(FGCPElement):
 
     def update(self):
         return
-
+    """
     def replace(self):
         return
-
+    """
     def destroy(self):
         return
 
     def status(self):
         return 'UNKNOWN'
-
+    """
     #def action(self, who=None, what=None, where=None, when=None, why=None, how=None):
     #    pass
 
@@ -206,6 +212,11 @@ class FGCPResource(FGCPElement):
             elif isinstance(self._parent, str):
                 return self._parent
 
+    def setparent(self, parent):
+        self._parent = parent
+        # CHECKME: set the parent's client too
+        self._client = self._parent._client
+
     def getclient(self):
         if self._client is not None:
             # CHECKME: set the caller here for use in FGCPResponseParser !?
@@ -216,6 +227,9 @@ class FGCPResource(FGCPElement):
 
     # convert *args and **kwargs from other method to dict
     def _args2dict(self, argslist=[], kwargsdict={}, allowed=None):
+        print argslist
+        print kwargsdict
+        print allowed
         tododict = {}
         if len(argslist) == 2:
             # CHECKME: we assume a key, val pair - cfr. attributeName, attributeValue etc. !?
@@ -236,7 +250,7 @@ class FGCPResource(FGCPElement):
         if len(kwargslist) > 0:
             tododict.update(kwargs)
         # TODO: sanitize dict by removing _* + the _idname, and diff the rest with current values ?
-        if len(allowed) > 0:
+        if len(allowed) > 0 and len(tododict) > 0:
             newdict = {}
             for key in allowed:
                 if key in tododict:
@@ -281,6 +295,14 @@ class FGCPResource(FGCPElement):
 
 
 class FGCPVDataCenter(FGCPResource):
+    """
+    FGCP VDataCenter
+
+    Example:
+    from fgcp.resource import FGCPVDataCenter
+    vdc = FGCPVDataCenter('client.pem', 'uk')
+    vsystems = vdc.list_vsystems()
+    """
     _idname = 'config'
 
     def __init__(self, key_file=None, region=None, verbose=0, debug=0):
@@ -446,199 +468,15 @@ class FGCPVDataCenter(FGCPResource):
     def get_system_usage(self, vsysIds=None):
         return self.getclient().GetSystemUsage(vsysIds)
 
-
-class FGCPVSysDescriptor(FGCPResource):
-    _idname = 'vsysdescriptorId'
-
-    def register(self):
-        # see VSystem register_vsysdescriptor()
-        pass
-
-    def retrieve(self, refresh=None):
-        # CHECKME: retrieve configuration here ?
-        return self.get_configuration(refresh)
-
-    def update(self):
-        #self.getclient().UpdateVSYSDescriptorAttribute(self.getid(), updateLcId, attributeName, attributeValue)
-        return
-
-    def unregister(self):
-        #return self.getclient().UnregisterVSYSDescriptor(self.getid())
-        # CHECKME: only private vsysdescriptors can be unregistered by end-users
-        return self.getclient().UnregisterPrivateVSYSDescriptor(self.getid())
-
     #=========================================================================
 
-    def list_diskimages(self, category='GENERAL'):
-        if not hasattr(self, 'diskimages'):
-            # CHECKME: reversed order of arguments here
-            setattr(self, 'diskimages', self.getclient().ListDiskImage(category, self.getid()))
-        return getattr(self, 'diskimages')
-
-    def get_diskimage(self, diskimageName):
-        # support resource, name or id
-        if isinstance(diskimageName, FGCPDiskImage):
-            return diskimageName.retrieve()
-        diskimages = self.list_diskimages()
-        for diskimage in diskimages:
-            if diskimageName == diskimage.diskimageName:
-                return diskimage
-            elif diskimageName == diskimage.diskimageId:
-                return diskimage
-        raise FGCPResourceError('ILLEGAL_DISKIMAGE', 'Invalid diskimageName %s' % diskimageName, self)
-
-    #=========================================================================
-
-    def get_configuration(self, refresh=None):
-        # CHECKME: if we already have the registrant information etc., we already retrieved the attributes
-        # CHECKME: if we already also have the vservers information, we already retrieved the configuration
-        if not refresh and hasattr(self, 'registrant'):
-            return self
-        # get configuration for this vsysdescriptor
-        config = self.getclient().GetVSYSDescriptorConfiguration(self.getid())
-        # CHECKME: copy configuration to self
-        for key in config.__dict__:
-            if key.startswith('_'):
-                continue
-            setattr(self, key, config.__dict__[key])
-        return self
-
-    #=========================================================================
-
-    def create_vsystem(self, vsysName, wait=None):
-        self.show_output('Creating VSystem %s' % vsysName)
-        vsysId = self.getclient().CreateVSYS(self.getid(), vsysName)
-        # CHECKME: invalidate list of vsystems in VDataCenter
-        if isinstance(self._parent, FGCPVDataCenter):
-            self._parent.reset_attr('vsystems')
-            if wait:
-                # get the newly created vsystem
-                vsystem = self._parent.get_vsystem(vsysName)
-                # wait for the vsystem to be ready
-                vsystem.wait_for_status(['DEPLOYING', 'RECONFIG_ING'], ['NORMAL'])
-                self.show_output('Created VSystem %s' % vsysName)
-        return vsysId
-
-
-class FGCPPublicIP(FGCPResource):
-    _idname = 'address'
-
-    def allocate(self):
-        # see VSystem allocate_publicip
+    def load_system_design(self, filePath):
+        # CHECKME: do we want this in VSystem or in VDataCenter ?
         pass
 
-    def retrieve(self, refresh=None):
-        return self.get_attributes(refresh)
-
-    def status(self):
-        status = self.getclient().GetPublicIPStatus(self.getid())
-        setattr(self, 'publicipStatus', status)
-        return status
-
-    def attach(self, wait=None):
-        self.show_output('Attaching PublicIP %s' % self.address)
-        done = self.check_status(['DETACHED'], ['ATTACHED'])
-        if done:
-            return done
-        result = self.getclient().AttachPublicIP(self.getparentid(), self.getid())
-        if wait:
-            result = self.wait_for_status(['ATTACHING'], ['ATTACHED'])
-            self.show_output('Attached PublicIP %s' % self.address)
-        return result
-
-    def detach(self, wait=None):
-        self.show_output('Detaching PublicIP %s' % self.address)
-        done = self.check_status(['ATTACHED'], ['DETACHED'])
-        if done:
-            return done
-        result = self.getclient().DetachPublicIP(self.getparentid(), self.getid())
-        if wait:
-            result = self.wait_for_status(['DETACHING'], ['DETACHED'])
-            self.show_output('Detached PublicIP %s' % self.address)
-        return result
-
-    def free(self, wait=None):
-        self.show_output('Freeing PublicIP %s' % self.address)
-        # CHECKME: this actually won't work if the publicip has already been freed
-        try:
-            done = self.check_status(['DETACHED'], ['UNDEPLOYING', 'UNDEPLOY'])
-        except:
-            done = 'GONE'
-        if done:
-            return done
-        result = self.getclient().FreePublicIP(self.getparentid(), self.getid())
-        if wait:
-            # CHECKME: we won't wait for it to be gone here
-            self.show_output('Free PublicIP %s' % self.address)
-        return result
-
-    def get_attributes(self, refresh=None):
-        # CHECKME: if we already have the v4v6Flag information, we already retrieved the attributes
-        if not refresh and hasattr(self, 'v4v6Flag'):
-            return self
-        # get attributes for this publicip
-        publicipattr = self.getclient().GetPublicIPAttributes(self.getid())
-        # CHECKME: copy configuration to self
-        for key in publicipattr.__dict__:
-            if key.startswith('_'):
-                continue
-            setattr(self, key, publicipattr.__dict__[key])
-        return self
-
-
-class FGCPAddressRange(FGCPResource):
-    _idname = None
-
-    def create_pool():
-        # see VDataCenter create_addresspool
+    def save_system_design(self, vsystem, filePath):
+        # CHECKME: do we want this in VSystem or in VDataCenter ?
         pass
-
-    def add():
-        # see VDataCenter add_addressrange
-        pass
-
-    def delete():
-        # see VDataCenter delete_addressrange
-        pass
-
-
-class FGCPDiskImage(FGCPResource):
-    _idname = 'diskimageId'
-
-    def register(self):
-        # see VServer register_diskimage
-        pass
-
-    def update(self):
-        pass
-
-    def unregister(self):
-        return self.getclient().UnregisterDiskImage(self.getid())
-
-    def list_softwares(self):
-        if not hasattr(self, 'softwares'):
-            # CHECKME: initialize to None or list here ?
-            setattr(self, 'softwares', None)
-        return getattr(self, 'softwares')
-
-    def list_servertypes(self):
-        if not hasattr(self, 'servertypes'):
-            setattr(self, 'servertypes', self.getclient().ListServerType(self.getid()))
-        return getattr(self, 'servertypes')
-
-
-class FGCPDiskImageSoftware(FGCPResource):
-    _idname = 'name'
-
-
-class FGCPServerType(FGCPResource):
-    # this is what we actually pass to CreateVServer
-    _idname = 'name'
-
-
-class FGCPServerTypeCPU(FGCPResource):
-    # CHECKME: this is used as internal response element for ListServerType
-    pass
 
 
 class FGCPVSystem(FGCPResource):
@@ -659,7 +497,7 @@ class FGCPVSystem(FGCPResource):
         result = self.getclient().DestroyVSYS(self.getid())
         # CHECKME: invalidate list of vsystems in VDataCenter
         if isinstance(self._parent, FGCPVDataCenter):
-            self._parent.reset_attr('vsystems')
+            delattr(self._parent, 'vsystems')
         return result
 
     def status(self):
@@ -749,23 +587,32 @@ class FGCPVSystem(FGCPResource):
                 return vserver
         raise FGCPResourceError('ILLEGAL_VSERVER', 'Invalid vserverName %s' % vserverName, self)
 
-    def    create_vserver(self, vserver, wait=None):
-        vserver = self.get_vserver(vserver)
+    def create_vserver(self, vserverName, servertype, diskimage, vnet, wait=None):
+        # ask the parent VDataCenter to get the right servertype and diskimage
+        servertype = self._parent.get_servertype(servertype)
+        diskimage = self._parent.get_diskimage(diskimage)
+        # get the right vnet ourselves
+        vnet = self.get_vnet(vnet)
+        # make a new vserver with the right attributes - vnet returns a string, so no vnet.getid() needed (for now ?)
+        vserver = FGCPVServer(vserverName=vserverName, vserverType=servertype.getid(), diskimageId=diskimage.getid(), networkId=vnet)
+        # set the parent of th vserver to this vsystem !
+        vserver.setparent(self)
+        # and now create it :-)
         return vserver.create(wait)
 
-    def    destroy_vserver(self, vserver, wait=None):
+    def destroy_vserver(self, vserver, wait=None):
         vserver = self.get_vserver(vserver)
         return vserver.destroy(wait)
 
-    def    start_vserver(self, vserver, wait=None):
+    def start_vserver(self, vserver, wait=None):
         vserver = self.get_vserver(vserver)
         return vserver.start(wait)
 
-    def    stop_vserver(self, vserver, wait=None, force=None):
+    def stop_vserver(self, vserver, wait=None, force=None):
         vserver = self.get_vserver(vserver)
         return vserver.stop(wait)
 
-    def    reboot_vserver(self, vserver, wait=None, force=None):
+    def reboot_vserver(self, vserver, wait=None, force=None):
         vserver = self.get_vserver(vserver)
         return vserver.reboot(wait)
 
@@ -788,20 +635,24 @@ class FGCPVSystem(FGCPResource):
                 return vdisk
         raise FGCPResourceError('ILLEGAL_VDISK', 'Invalid vdiskName %s' % vdiskName, self)
 
-    def    create_vdisk(self, vdisk, wait=None):
-        vdisk = self.get_vdisk(vdisk)
+    def create_vdisk(self, vdiskName, size, wait=None):
+        # make a new vdisk with the right attributes - note: size is in GB
+        vdisk = FGCPVDisk(vdiskName=vdiskName, size=size)
+        # set the parent of the vdisk to this vsystem !
+        vdisk.setparent(self)
+        # and now create it :-)
         return vdisk.create(wait)
 
-    def    destroy_vdisk(self, vdisk, wait=None):
+    def destroy_vdisk(self, vdisk, wait=None):
         vdisk = self.get_vdisk(vdisk)
         return vdisk.destroy(wait)
 
-    def    attach_vdisk(self, vdisk, vserver, wait=None):
+    def attach_vdisk(self, vdisk, vserver, wait=None):
         vdisk = self.get_vdisk(vdisk)
         vserver = self.get_vserver(vserver)
         return vdisk.attach(vserver, wait)
 
-    def    detach_vdisk(self, vdisk, vserver, wait=None):
+    def detach_vdisk(self, vdisk, vserver, wait=None):
         vdisk = self.get_vdisk(vdisk)
         vserver = self.get_vserver(vserver)
         return vdisk.detach(vserver, wait)
@@ -854,8 +705,14 @@ class FGCPVSystem(FGCPResource):
     def get_vnet(self, vnet):
         # support vnet
         vnets = self.list_vnets()
+        # find exact match first
         if vnet in vnets:
             return vnet
+        # find matching end if we used DMZ, SECURE1, SECURE2 here
+        if len(vnet) < 8:
+            for networkId in vnets:
+                if networkId.endswith('-%s' % vnet):
+                    return networkId
         raise FGCPResourceError('ILLEGAL_VNET', 'Invalid vnet %s' % vnet, self)
 
     def get_console_url(self, vnet):
@@ -886,7 +743,7 @@ class FGCPVSystem(FGCPResource):
             old_publicips = []
         result = self.getclient().AllocatePublicIP(self.getid())
         # CHECKME: invalidate list of publicips
-        self.reset_attr('publicips')
+        delattr(self, 'publicips')
         if wait:
             # CHECKME: we need to wait a bit before retrieving the new list !
             self.show_output('Please wait for allocation...')
@@ -1005,16 +862,6 @@ class FGCPVSystem(FGCPResource):
 
     #=========================================================================
 
-    def load_system_design(self):
-        # CHECKME: do we want this here or in the VDataCenter ?
-        pass
-
-    def save_system_design(self):
-        # CHECKME: do we want this here or in the VDataCenter ?
-        pass
-
-    #=========================================================================
-
     def register_vsysdescriptor(self, name, description, keyword):
         return self.getclient().RegisterPrivateVSYSDescriptor(self.getid(), name, description, keyword, self.vservers)
 
@@ -1025,28 +872,35 @@ class FGCPVSystem(FGCPResource):
 class FGCPVServer(FGCPResource):
     _idname = 'vserverId'
 
-    def create(self, *args, **kwargs):
-        # convert arguments to dict
-        tododict = self._args2dict(args, kwargs, ['vserverName', 'vserverType', 'diskimageId', 'vnics', 'vnetId'])
-        # TODO: set attributes based on tododict
-        for key in tododict.keys():
-            setattr(self, key, tododict[key])
-        # CHECKME: simplify vnics[0].getid() issue on create
-        if hasattr(self, 'vnics') and not hasattr(self, 'vnetId'):
-            setattr(self, 'vnetId', self.vnics[0].getid())
-        # CHECKME: what if we didn't initialize the object yet ?
-        return self.getclient().CreateVServer(self.getparentid(), self.vserverName, self.vserverType, self.diskimageId, self.vnetId)
+    def create(self, wait=None):
+        # CHECKME: simplify vnics[0].getid() issue on create by allowing networkId
+        if hasattr(self, 'vnics') and not hasattr(self, 'networkId'):
+            setattr(self, 'networkId', self.vnics[0].getid())
+        self.show_output('Creating VServer %s' % self.vserverName)
+        vserverId = self.getclient().CreateVServer(self.getparentid(), self.vserverName, self.vserverType, self.diskimageId, self.networkId)
+        # set the vserverId here too
+        setattr(self, 'vserverId', vserverId)
+         # CHECKME: invalidate list of vservers in VSystem
+        if isinstance(self._parent, FGCPVSystem):
+            delattr(self._parent, 'vservers')
+        if wait:
+            # wait for the vserver to be ready
+            self.wait_for_status(['DEPLOYING'], ['STOPPED'])
+            self.show_output('Created VServer %s' % self.vserverName)
+        return vserverId
 
     def retrieve(self, refresh=None):
         # CHECKME: retrieve configuration here ?
         return self.get_configuration(refresh)
 
     def update(self, *args, **kwargs):
+        # CHECKME: do we actually want to allow arguments here ?
+        allowed = ['vserverName', 'vserverType']
         # convert arguments to dict
-        tododict = self._args2dict(args, kwargs, ['vserverName', 'vserverType'])
+        tododict = self._args2dict(args, kwargs, allowed)
         # CHECKME: what if we updated the object attributes directly ?
         result = None
-        for key in tododict.keys():
+        for key in tododict:
             result = self.getclient().UpdateVServerAttribute(self.getparentid(), self.getid(), key, tododict[key])
         return result
 
@@ -1058,7 +912,7 @@ class FGCPVServer(FGCPResource):
         result = self.getclient().DestroyVServer(self.getparentid(), self.getid())
         # CHECKME: invalidate list of vservers in VSystem
         if isinstance(self._parent, FGCPVSystem):
-            self._parent.reset_attr('vservers')
+            delattr(self._parent, 'vservers')
         if wait:
             # CHECKME: we won't wait for it to be gone here
             self.show_output('Destroyed VServer %s' % self.vserverName)
@@ -1219,8 +1073,19 @@ class FGCPVDisk(FGCPResource):
             elif isinstance(self._parent, str):
                 return self._parent
 
-    def create(self):
-        pass
+    def create(self, wait=None):
+        self.show_output('Creating VDisk %s' % self.vdiskName)
+        vdiskId = self.getclient().CreateVDisk(self.parentid(), self.vdiskName, self.size)
+        # set the vdiskId here too
+        setattr(self, 'vdiskId', vserverId)
+         # CHECKME: invalidate list of vdisks in VSystem
+        if isinstance(self._parent, FGCPVSystem):
+            delattr(self._parent, 'vdisks')
+        if wait:
+            # wait for the vdisk to be ready
+            self.wait_for_status(['DEPLOYING'], ['NORMAL'])
+            self.show_output('Created VDisk %s' % self.vdiskName)
+        return vdiskId
 
     def retrieve(self):
         pass
@@ -1420,8 +1285,8 @@ class FGCPEfm(FGCPResource):
         pass
 
 
-class FGCPFirewall(FGCPEfm):
-    # CHECKME: this is not used as subclass of EFM, but as internal response element for GetEFMConfiguration
+class FGCPFirewall(FGCPResource):
+    # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
     pass
 
 
@@ -1434,11 +1299,16 @@ class FGCPFWDns(FGCPFirewall):
 
 
 class FGCPFWDirection(FGCPFirewall):
-    pass
+    _idname = None
+
+    def getid(self):
+        from_zone = getattr(self, 'from', '').split('-').pop()
+        to_zone = getattr(self, 'to', '').split('-').pop()
+        return '%s-%s' % (from_zone, to_zone)
 
 
 class FGCPFWPolicy(FGCPFWDirection):
-    pass
+    _idname = 'id'
 
 
 class FGCPFWLogOrder(FGCPFirewall):
@@ -1448,13 +1318,13 @@ class FGCPFWLogOrder(FGCPFirewall):
             setattr(self, key.replace('_zone', ''), kwargs[key])
 
 
-class FGCPLoadBalancer(FGCPEfm):
-    # CHECKME: this is not used as subclass of EFM, but as internal response element for GetEFMConfiguration
-    pass
+class FGCPLoadBalancer(FGCPResource):
+    # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
+    _idname = 'ipAddress'
 
 
 class FGCPSLBGroup(FGCPLoadBalancer):
-    pass
+    _idname = 'id'
 
 
 class FGCPSLBTarget(FGCPSLBGroup):
@@ -1479,6 +1349,200 @@ class FGCPSLBServerCert(FGCPLoadBalancer):
 
 class FGCPSLBCCACert(FGCPLoadBalancer):
     _idname = 'ccacertNum'
+
+
+class FGCPPublicIP(FGCPResource):
+    _idname = 'address'
+
+    def allocate(self):
+        # see VSystem allocate_publicip
+        pass
+
+    def retrieve(self, refresh=None):
+        return self.get_attributes(refresh)
+
+    def status(self):
+        status = self.getclient().GetPublicIPStatus(self.getid())
+        setattr(self, 'publicipStatus', status)
+        return status
+
+    def attach(self, wait=None):
+        self.show_output('Attaching PublicIP %s' % self.address)
+        done = self.check_status(['DETACHED'], ['ATTACHED'])
+        if done:
+            return done
+        result = self.getclient().AttachPublicIP(self.getparentid(), self.getid())
+        if wait:
+            result = self.wait_for_status(['ATTACHING'], ['ATTACHED'])
+            self.show_output('Attached PublicIP %s' % self.address)
+        return result
+
+    def detach(self, wait=None):
+        self.show_output('Detaching PublicIP %s' % self.address)
+        done = self.check_status(['ATTACHED'], ['DETACHED'])
+        if done:
+            return done
+        result = self.getclient().DetachPublicIP(self.getparentid(), self.getid())
+        if wait:
+            result = self.wait_for_status(['DETACHING'], ['DETACHED'])
+            self.show_output('Detached PublicIP %s' % self.address)
+        return result
+
+    def free(self, wait=None):
+        self.show_output('Freeing PublicIP %s' % self.address)
+        # CHECKME: this actually won't work if the publicip has already been freed
+        try:
+            done = self.check_status(['DETACHED'], ['UNDEPLOYING', 'UNDEPLOY'])
+        except:
+            done = 'GONE'
+        if done:
+            return done
+        result = self.getclient().FreePublicIP(self.getparentid(), self.getid())
+        if wait:
+            # CHECKME: we won't wait for it to be gone here
+            self.show_output('Free PublicIP %s' % self.address)
+        return result
+
+    def get_attributes(self, refresh=None):
+        # CHECKME: if we already have the v4v6Flag information, we already retrieved the attributes
+        if not refresh and hasattr(self, 'v4v6Flag'):
+            return self
+        # get attributes for this publicip
+        publicipattr = self.getclient().GetPublicIPAttributes(self.getid())
+        # CHECKME: copy configuration to self
+        for key in publicipattr.__dict__:
+            if key.startswith('_'):
+                continue
+            setattr(self, key, publicipattr.__dict__[key])
+        return self
+
+
+class FGCPAddressRange(FGCPResource):
+    _idname = None
+
+    def create_pool():
+        # see VDataCenter create_addresspool
+        pass
+
+    def add():
+        # see VDataCenter add_addressrange
+        pass
+
+    def delete():
+        # see VDataCenter delete_addressrange
+        pass
+
+
+class FGCPVSysDescriptor(FGCPResource):
+    _idname = 'vsysdescriptorId'
+
+    def register(self):
+        # see VSystem register_vsysdescriptor()
+        pass
+
+    def retrieve(self, refresh=None):
+        # CHECKME: retrieve configuration here ?
+        return self.get_configuration(refresh)
+
+    def update(self):
+        #self.getclient().UpdateVSYSDescriptorAttribute(self.getid(), updateLcId, attributeName, attributeValue)
+        return
+
+    def unregister(self):
+        #return self.getclient().UnregisterVSYSDescriptor(self.getid())
+        # CHECKME: only private vsysdescriptors can be unregistered by end-users
+        return self.getclient().UnregisterPrivateVSYSDescriptor(self.getid())
+
+    #=========================================================================
+
+    def list_diskimages(self, category='GENERAL'):
+        if not hasattr(self, 'diskimages'):
+            # CHECKME: reversed order of arguments here
+            setattr(self, 'diskimages', self.getclient().ListDiskImage(category, self.getid()))
+        return getattr(self, 'diskimages')
+
+    def get_diskimage(self, diskimageName):
+        # support resource, name or id
+        if isinstance(diskimageName, FGCPDiskImage):
+            return diskimageName.retrieve()
+        diskimages = self.list_diskimages()
+        for diskimage in diskimages:
+            if diskimageName == diskimage.diskimageName:
+                return diskimage
+            elif diskimageName == diskimage.diskimageId:
+                return diskimage
+        raise FGCPResourceError('ILLEGAL_DISKIMAGE', 'Invalid diskimageName %s' % diskimageName, self)
+
+    #=========================================================================
+
+    def get_configuration(self, refresh=None):
+        # CHECKME: if we already have the registrant information etc., we already retrieved the attributes
+        # CHECKME: if we already also have the vservers information, we already retrieved the configuration
+        if not refresh and hasattr(self, 'registrant'):
+            return self
+        # get configuration for this vsysdescriptor
+        config = self.getclient().GetVSYSDescriptorConfiguration(self.getid())
+        # CHECKME: copy configuration to self
+        for key in config.__dict__:
+            if key.startswith('_'):
+                continue
+            setattr(self, key, config.__dict__[key])
+        return self
+
+    #=========================================================================
+
+    def create_vsystem(self, vsysName, wait=None):
+        self.show_output('Creating VSystem %s' % vsysName)
+        vsysId = self.getclient().CreateVSYS(self.getid(), vsysName)
+        # CHECKME: invalidate list of vsystems in VDataCenter
+        if isinstance(self._parent, FGCPVDataCenter):
+            delattr(self._parent, 'vsystems')
+            if wait:
+                # get the newly created vsystem
+                vsystem = self._parent.get_vsystem(vsysName)
+                # wait for the vsystem to be ready
+                vsystem.wait_for_status(['DEPLOYING', 'RECONFIG_ING'], ['NORMAL'])
+                self.show_output('Created VSystem %s' % vsysName)
+        return vsysId
+
+
+class FGCPDiskImage(FGCPResource):
+    _idname = 'diskimageId'
+
+    def register(self):
+        # see VServer register_diskimage
+        pass
+
+    def update(self):
+        pass
+
+    def unregister(self):
+        return self.getclient().UnregisterDiskImage(self.getid())
+
+    def list_softwares(self):
+        if not hasattr(self, 'softwares'):
+            # CHECKME: initialize to None or list here ?
+            setattr(self, 'softwares', None)
+        return getattr(self, 'softwares')
+
+    def list_servertypes(self):
+        if not hasattr(self, 'servertypes'):
+            setattr(self, 'servertypes', self.getclient().ListServerType(self.getid()))
+        return getattr(self, 'servertypes')
+
+
+class FGCPDiskImageSoftware(FGCPResource):
+    _idname = 'name'
+
+
+class FGCPServerType(FGCPResource):
+    # this is what we actually pass to CreateVServer
+    _idname = 'name'
+
+
+class FGCPServerTypeCPU(FGCPResource):
+    # CHECKME: this is used as internal response element for ListServerType
+    pass
 
 
 class FGCPUsageInfo(FGCPResource):
