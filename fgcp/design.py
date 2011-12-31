@@ -23,10 +23,12 @@ Example: [see tests/test_resource.py for more examples]
 from fgcp.resource import FGCPVDataCenter
 vdc = FGCPVDataCenter('client.pem', 'uk')
 
-# Get VSystem Design from file and build new VSystem based on it (TODO)
-design = vdc.get_vsystem_design('fgcp_demo_system.txt')
-#design.build('My New VSystem')
-#design.save('My New VSystem', 'new_demo_system.txt')
+# Get VSystem Design from an existing vsystem or file, and build a new vsystem with it (TODO)
+design = vdc.get_vsystem_design('Demo System')
+#design.load_file('fgcp_demo_system.txt')
+#design.build_vsystem('My New Demo System')
+#design.load_vsystem('Demo System')
+design.save_file('new_demo_system.txt')
 """
 
 import time
@@ -52,14 +54,19 @@ class FGCPDesign(FGCPResource):
     """
     FGCP VSystem Design
     """
-    _idname = 'filePath'
+    _idname = 'vsysName'
+    filePath = None
+    vsysName = None
+    vsystem = None
 
-    def load(self, filePath=None):
-        if filePath is not None:
-            self.filePath = filePath
-        self.show_output('Loading VSystem design from file %s' % self.filePath)
+    def load_file(self, filePath):
+        """
+        Load VSystem Design from file
+        """
+        self.filePath = filePath
+        self.show_output('Loading VSystem Design from file %s' % self.filePath)
         import os.path
-        if not os.path.exists(self.filePath):
+        if self.filePath is None or not os.path.exists(self.filePath):
             raise FGCPDesignError('INVALID_PATH', 'File %s does not seem to exist' % self.filePath)
         f = open(self.filePath, 'r')
         lines = f.read()
@@ -74,7 +81,7 @@ class FGCPDesign(FGCPResource):
         except:
             #raise FGCPDesignError('INVALID_FORMAT', 'File %s seems to have some syntax errors' % self.filePath)
             raise
-        self.show_output('Loaded VSystem design for %s from file %s' % (vsystem.vsysName, self.filePath))
+        self.show_output('Loaded VSystem Design for %s from file %s' % (vsystem.vsysName, self.filePath))
         try:
             # check if VDataCenter already has a vsystem with the same name
             found = self._parent.get_vsystem(vsystem.vsysName)
@@ -85,67 +92,172 @@ class FGCPDesign(FGCPResource):
         vsystem.setparent(self._parent)
         # return vsystem
         self.vsystem = vsystem
-        return vsystem
+        self.vsysName = self.vsystem.vsysName
+        return self.vsystem
 
-    def build(self, vsystem=None):
-        # if we already have a vsystem in the design, see if the one we got here is different ?
-        if hasattr(self, 'vsystem'):
-            pass
+    def load_vsystem(self, vsystem):
+        """
+        Load VSystem Design from vsystem
+        """
+        # let VDataCenter find the right vsystem
+        self.vsystem = self._parent.get_vsystem(vsystem)
+        self.show_output('Loading VSystem Design from vsystem %s' % self.vsystem.vsysName)
+        # update vsystem inventory if necessary
+        self.vsystem.get_inventory()
+        self.vsysName = self.vsystem.vsysName
+        return self.vsystem
 
-    def save(self, vsystem=None, filePath=None):
-        if vsystem is not None:
-            # let VDataCenter find the right vsystem
-            self.vsystem = self._parent.get_vsystem(vsystem)
+    def build_vsystem(self, vsysName=None, filePath=None):
+        """
+        Build new VSystem based on loaded VSystem Design
+        """
         if filePath is not None:
-            self.filePath = filePath
-        self.show_output('Saving VSystem design for %s to file %s' % (vsystem.vsysName, self.filePath))
+            self.load_file(filePath)
+        # check that we have a vsystem design in memory
+        if self.vsystem is None:
+            raise FGCPDesignError('INVALID_VSYSTEM', 'No VSystem Design has been loaded')
+        if vsysName is None:
+            self.vsysName = 'New %s' % self.vsystem.vsysName
+        else:
+            self.vsysName = vsysName
+        self.show_output('Building VSystem %s based on %s' % (self.vsysName, self.vsystem.vsysName))
+        # 1. check that the base descriptor exists
+        vsysdescriptor = self._parent.get_vsysdescriptor(self.vsystem.baseDescriptor)
+        # 2. check if the new vsystem already exists
+        try:
+            new_vsystem = self._parent.get_vsystem(self.vsysName)
+        except FGCPResourceError:
+            # 3. create it if necessary
+            vsysId = vsysdescriptor.create_vsystem(self.vsysName, wait=True)
+            # retrieve the newly created vsystem
+            new_vsystem = self._parent.get_vsystem(self.vsysName)
+        # 4. boot vsystem if necessary
+        new_vsystem.boot(wait=True)
+        # 5. allocate more publicips as needed
+        self.show_output('Checking PublicIPs')
+        new_ips = len(new_vsystem.publicips)
+        orig_ips = len(self.vsystem.publicips)
+        if new_ips < orig_ips:
+            while new_ips < orig_ips:
+                new_vsystem.allocate_publicip(wait=True)
+                new_ips = len(new_vsystem.publicips)
+            # 6. attach publicips if necessary
+            for publicip in new_vsystem.publicips:
+                publicip.attach(wait=True)
+        # 7. find missing vservers based on vserverName
+        self.show_output('Checking VServers')
+        new_vservers = {}
+        for vserver in new_vsystem.vservers:
+            new_vservers[vserver.vserverName] = vserver
+        orig_vservers = {}
+        for vserver in self.vsystem.vservers:
+            orig_vservers[vserver.vserverName] = vserver
+        for vserverName in orig_vservers:
+            if vserverName in new_vservers:
+                continue
+            self.show_output('Creating VServer %s: %s' % (vserverName, orig_vservers[vserverName]))
+            servertype = orig_vservers[vserverName].vserverType
+            # note: use the diskimage name here, rather than the diskimage id
+            diskimage = orig_vservers[vserverName].diskimageName
+            # get the last part of the newtworkId as vnet (= DMZ, SECURE1, SECURE2 etc.)
+            vnet = orig_vservers[vserverName].vnics[0].getid().split('-').pop()
+            self.show_output('with parameters: %s, %s, %s, %s' % (vserverName, servertype, diskimage, vnet))
+            # 8. let the new vsystem create the vserver - it will convert the parameters correctly
+            new_vsystem.create_vserver(vserverName, servertype, diskimage, vnet, wait=True)
+        # 9. find missing vdisks based on vdiskName
+        self.show_output('Checking VDisks')
+        new_vdisks = {}
+        for vdisk in new_vsystem.vdisks:
+            new_vdisks[vdisk.vdiskName] = vdisk
+        orig_vdisks = {}
+        for vdisk in self.vsystem.vdisks:
+            orig_vdisks[vdisk.vdiskName] = vdisk
+        for vdiskName in orig_vdisks:
+            if vdiskName in new_vdisks:
+                continue
+            self.show_output('Creating VDisk %s: %s' % (vdiskName, orig_vdisks[vdiskName]))
+            size = orig_vdisks[vdiskName].size
+            self.show_output('with parameters: %s, %s' % (vdiskName, size))
+            # 10. let the new vsystem create the vdisk - it will convert the parameters correctly
+            new_vsystem.create_vdisk(vdiskName, size, wait=True)
+        # 11. find missing loadbalancers based on efmName
+        self.show_output('Checking LoadBalancers')
+        new_loadbalancers = {}
+        for loadbalancer in new_vsystem.loadbalancers:
+            new_loadbalancers[loadbalancer.efmName] = loadbalancer
+        orig_loadbalancers = {}
+        for loadbalancer in self.vsystem.loadbalancers:
+            orig_loadbalancers[loadbalancer.efmName] = loadbalancer
+        for efmName in orig_loadbalancers:
+            if efmName in new_loadbalancers:
+                continue
+            self.show_output('Creating LoadBalancer %s: %s' % (efmName, orig_loadbalancers[efmName]))
+            orig_loadbalancers[efmName].pprint()
+            slbVip = orig_loadbalancers[efmName].slbVip
+            self.show_output('with parameters: %s, %s' % (efmName, slbVip))
+            # 12. let the new vsystem create the loadbalancer - it will convert the parameters correctly
+            # CHECKME: the only way to know in which vnet this SLB is located, is via the slbVip (which is translated to the efmName in design files) ???
+            # FIXME; assume they're all in the DMZ at the moment !?
+            new_vsystem.create_loadbalancer(efmName, 'DMZ', wait=True)
+        # 13. refresh vserver and vdisk list
+        new_vsystem.get_inventory(refresh=True)
+        # TODO: attach the new vdisk to the right vserver !?
+        # TODO: remap FW and SLB rules and update them !?
+        self.show_output('Configured VSystem %s' % self.vsysName)
+
+    def save_file(self, filePath):
         """
-        TODO: Save (fixed parts of) VSystem design to file
+        Save VSystem Design to file
         """
-        # get system inventory
-        vsys = self.GetSystemInventory(vsysName)
-        # set output
-        old_verbose = self.set_verbose(verbose)
-        self.show_output('Saving VSystem design for %s to file %s' % (vsysName, filePath))
+        self.filePath = filePath
+        import os.path
+        if self.filePath is None or os.path.isdir(self.filePath):
+            raise FGCPDesignError('INVALID_PATH', 'File %s is invalid for output' % self.filePath)
+        # check that we have a vsystem design in memory
+        if self.vsystem is None:
+            raise FGCPDesignError('INVALID_VSYSTEM', 'No VSystem Design has been loaded')
+        # update vsystem inventory if necessary
+        self.vsystem.get_inventory()
+        self.show_output('Saving VSystem Design for %s to file %s' % (self.vsystem.vsysName, self.filePath))
         # CHECKME: is description always the name correspoding to baseDescriptor ?
         seenip = {}
         # replace addresses and other variable information
         idx = 1
         #new_publicips = []
-        for publicip in vsys.publicips:
+        for publicip in self.vsystem.publicips:
             seenip[publicip.address] = 'publicip.%s' % idx
             idx += 1
             #publicip.address = 'xxx.xxx.xxx.xxx'
             #new_publicips.append(publicip)
-        #vsys.publicips = new_publicips
+        #self.vsystem.publicips = new_publicips
         from fgcp.resource import FGCPFirewall
         new_firewalls = []
-        for firewall in vsys.firewalls:
-            # TODO: Add FW and SLB configurations
-            setattr(firewall, 'firewall', FGCPFirewall())
-            handler = self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId)
-            setattr(firewall.firewall, 'nat', handler.fw_nat_rule())
-            setattr(firewall.firewall, 'dns', handler.fw_dns())
-            setattr(firewall.firewall, 'directions', handler.fw_policy())
+        for firewall in self.vsystem.firewalls:
+            # in case we didn't load this from file
+            if not hasattr(firewall, 'firewall'):
+                setattr(firewall, 'firewall', FGCPFirewall())
+                setattr(firewall.firewall, 'nat', firewall.get_nat_rules())
+                setattr(firewall.firewall, 'dns', firewall.get_dns())
+                setattr(firewall.firewall, 'directions', firewall.get_policies(from_zone=None, to_zone=None))
             new_firewalls.append(firewall)
-        vsys.firewalls = new_firewalls
+        self.vsystem.firewalls = new_firewalls
         #from fgcp.resource import FGCPLoadBalancer
         new_loadbalancers = []
-        for loadbalancer in vsys.loadbalancers:
+        for loadbalancer in self.vsystem.loadbalancers:
             seenip[loadbalancer.slbVip] = loadbalancer.efmName
             #loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
-            # TODO: Add FW and SLB configurations
-            handler = self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId)
-            setattr(loadbalancer, 'loadbalancer', handler.slb_rule())
+            # in case we didn't load this from file
+            if not hasattr(loadbalancer, 'loadbalancer'):
+                setattr(loadbalancer, 'loadbalancer', loadbalancer.get_rules())
             new_loadbalancers.append(loadbalancer)
-        vsys.loadbalancers = new_loadbalancers
+        self.vsystem.loadbalancers = new_loadbalancers
         # get mapping of diskimage id to name
-        diskimages = self.ListDiskImage()
+        diskimages = self._parent.list_diskimages()
         imageid2name = {}
         for diskimage in diskimages:
             imageid2name[diskimage.diskimageId] = diskimage.diskimageName
         new_vservers = []
-        for vserver in vsys.vservers:
+        for vserver in self.vsystem.vservers:
             # CHECKME: use diskimage name as reference across regions !?
             setattr(vserver, 'diskimageName', imageid2name[vserver.diskimageId])
             #new_vnics = []
@@ -159,16 +271,16 @@ class FGCPDesign(FGCPResource):
             #    new_vdisks.append(vdisk)
             #vserver.vdisks = new_vdisks
             new_vservers.append(vserver)
-        vsys.vservers = new_vservers
+        self.vsystem.vservers = new_vservers
         #new_vdisks = []
-        #for vdisk in vsys.vdisks:
+        #for vdisk in self.vsystem.vdisks:
         #    new_vdisks.append(vdisk)
-        #vsys.vdisks = new_vdisks
+        #self.vsystem.vdisks = new_vdisks
         # Prepare for output - FGCPElement().pformat() writes objects initialized with the right values
-        lines = vsys.pformat(vsys)
+        lines = self.pformat(self.vsystem)
         # Replace vsysId and creator everywhere (including Id's)
-        lines = lines.replace(vsys.vsysId, 'DEMO-VSYSTEM')
-        lines = lines.replace(vsys.creator, 'DEMO')
+        lines = lines.replace(self.vsystem.vsysId, 'DEMO-VSYSTEM')
+        lines = lines.replace(self.vsystem.creator, 'DEMO')
         # CHECKME: replace ip addresses with names everywhere, including firewall policies and loadbalancer rules
         for ip in seenip.keys():
             lines = lines.replace(ip, seenip[ip])
@@ -176,9 +288,7 @@ class FGCPDesign(FGCPResource):
         lines = lines.replace('from=', 'from_zone=')
         lines = lines.replace('to=', 'to_zone=')
         # Write configuration to file
-        f = open(filePath, 'wb')
+        f = open(self.filePath, 'wb')
         f.write(lines)
         f.close()
-        self.show_output('Saved VSystem design for %s to file %s' % (vsysName, filePath))
-        # Reset output
-        self.set_verbose(old_verbose)
+        self.show_output('Saved VSystem Design for %s to file %s' % (self.vsystem.vsysName, self.filePath))

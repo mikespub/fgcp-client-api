@@ -17,10 +17,12 @@ Example:&nbsp;[see&nbsp;tests/test_resource.py&nbsp;for&nbsp;more&nbsp;examples]
 from&nbsp;fgcp.resource&nbsp;import&nbsp;FGCPVDataCenter<br>
 vdc&nbsp;=&nbsp;FGCPVDataCenter('client.pem',&nbsp;'uk')<br>
 &nbsp;<br>
-#&nbsp;Get&nbsp;VSystem&nbsp;Design&nbsp;from&nbsp;file&nbsp;and&nbsp;build&nbsp;new&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;it&nbsp;(TODO)<br>
-design&nbsp;=&nbsp;vdc.get_vsystem_design('fgcp_demo_system.txt')<br>
-#design.build('My&nbsp;New&nbsp;VSystem')<br>
-#design.save('My&nbsp;New&nbsp;VSystem',&nbsp;'new_demo_system.txt')</tt></p>
+#&nbsp;Get&nbsp;VSystem&nbsp;Design&nbsp;from&nbsp;an&nbsp;existing&nbsp;vsystem&nbsp;or&nbsp;file,&nbsp;and&nbsp;build&nbsp;a&nbsp;new&nbsp;vsystem&nbsp;with&nbsp;it&nbsp;(TODO)<br>
+design&nbsp;=&nbsp;vdc.get_vsystem_design('Demo&nbsp;System')<br>
+#design.load_file('fgcp_demo_system.txt')<br>
+#design.build_vsystem('My&nbsp;New&nbsp;Demo&nbsp;System')<br>
+#design.load_vsystem('Demo&nbsp;System')<br>
+design.save_file('new_demo_system.txt')</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -67,11 +69,21 @@ design&nbsp;=&nbsp;vdc.get_vsystem_design('fgcp_demo_system.txt')<br>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPDesign-build"><strong>build</strong></a>(self, vsystem<font color="#909090">=None</font>)</dt></dl>
+<dl><dt><a name="FGCPDesign-build_vsystem"><strong>build_vsystem</strong></a>(self, vsysName<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt><dd><tt>Build&nbsp;new&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;loaded&nbsp;VSystem&nbsp;Design</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesign-load"><strong>load</strong></a>(self, filePath<font color="#909090">=None</font>)</dt></dl>
+<dl><dt><a name="FGCPDesign-load_file"><strong>load_file</strong></a>(self, filePath)</dt><dd><tt>Load&nbsp;VSystem&nbsp;Design&nbsp;from&nbsp;file</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesign-save"><strong>save</strong></a>(self, vsystem<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt></dl>
+<dl><dt><a name="FGCPDesign-load_vsystem"><strong>load_vsystem</strong></a>(self, vsystem)</dt><dd><tt>Load&nbsp;VSystem&nbsp;Design&nbsp;from&nbsp;vsystem</tt></dd></dl>
+
+<dl><dt><a name="FGCPDesign-save_file"><strong>save_file</strong></a>(self, filePath)</dt><dd><tt>Save&nbsp;VSystem&nbsp;Design&nbsp;to&nbsp;file</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>filePath</strong> = None</dl>
+
+<dl><dt><strong>vsysName</strong> = None</dl>
+
+<dl><dt><strong>vsystem</strong> = None</dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">fgcp.resource.FGCPResource</a>:<br>
@@ -81,17 +93,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">fgcp.resource.F
 
 <dl><dt><a name="FGCPDesign-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPDesign-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDesign-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPDesign-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDesign-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDesign-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPDesign-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPDesign-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPDesign-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPDesign-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDesign-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDesign-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 

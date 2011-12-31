@@ -376,7 +376,7 @@ Example:&nbsp;fw_nat_rules&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nb
 <dl><dt><a name="FGCPGetEFMConfigHandler-fw_limit_policy"><strong>fw_limit_policy</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt><dd><tt>CHECKME:&nbsp;for&nbsp;network&nbsp;identifiers&nbsp;besides&nbsp;INTERNET&nbsp;and&nbsp;INTRANET,&nbsp;see&nbsp;GetVSYSConfiguration()<br>
 Usage:&nbsp;fw_limit_policy&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;firewall.efmId).<a href="#FGCPGetEFMConfigHandler-fw_limit_policy">fw_limit_policy</a>(from_zone,&nbsp;to_zone)</tt></dd></dl>
 
-<dl><dt><a name="FGCPGetEFMConfigHandler-fw_log"><strong>fw_log</strong></a>(self, num<font color="#909090">=None</font>, orders<font color="#909090">=None</font>)</dt><dd><tt>CHECKME:&nbsp;for&nbsp;network&nbsp;identifiers&nbsp;besides&nbsp;INTERNET&nbsp;and&nbsp;INTRANET,&nbsp;see&nbsp;GetVSYSConfiguration()<br>
+<dl><dt><a name="FGCPGetEFMConfigHandler-fw_log"><strong>fw_log</strong></a>(self, num<font color="#909090">=100</font>, orders<font color="#909090">=None</font>)</dt><dd><tt>CHECKME:&nbsp;for&nbsp;network&nbsp;identifiers&nbsp;besides&nbsp;INTERNET&nbsp;and&nbsp;INTRANET,&nbsp;see&nbsp;GetVSYSConfiguration()<br>
 Usage:<br>
 ipaddress&nbsp;=&nbsp;vsys.publicips[0].address<br>
 orders&nbsp;=&nbsp;[FGCPFWLogOrder(prefix='dst',&nbsp;value=ipaddress,&nbsp;from_zone=None,&nbsp;to_zone=None)]<br>

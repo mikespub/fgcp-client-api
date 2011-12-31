@@ -144,17 +144,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPAddressRange-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPAddressRange-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPAddressRange-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPAddressRange-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPAddressRange-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPAddressRange-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPAddressRange-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPAddressRange-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPAddressRange-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPAddressRange-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPAddressRange-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -205,15 +211,19 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPBackup-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPBackup-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPBackup-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPBackup-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPBackup-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPBackup-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPBackup-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPBackup-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPBackup-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPBackup-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -256,7 +266,7 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPDiskImage-unregister"><strong>unregister</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPDiskImage-update"><strong>update</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPDiskImage-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -266,13 +276,17 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPDiskImage-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPDiskImage-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImage-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPDiskImage-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImage-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImage-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPDiskImage-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPDiskImage-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImage-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
@@ -317,17 +331,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPDiskImageSoftware-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPDiskImageSoftware-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPDiskImageSoftware-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImageSoftware-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImageSoftware-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPDiskImageSoftware-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPDiskImageSoftware-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImageSoftware-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImageSoftware-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPDiskImageSoftware-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImageSoftware-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -362,17 +382,39 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPEfm-backup"><strong>backup</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPEfm-backup"><strong>backup</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-create"><strong>create</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPEfm-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-destroy"><strong>destroy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-get_backup"><strong>get_backup</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPEfm-get_backup"><strong>get_backup</strong></a>(self, backup)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-list_backups"><strong>list_backups</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPEfm-get_cert_list"><strong>get_cert_list</strong></a>(self, certCategory<font color="#909090">=None</font>, detail<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-restore"><strong>restore</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPEfm-get_config_handler"><strong>get_config_handler</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_dns"><strong>get_dns</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_error_stats"><strong>get_error_stats</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_limit_policies"><strong>get_limit_policies</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_load_stats"><strong>get_load_stats</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_log"><strong>get_log</strong></a>(self, num<font color="#909090">=100</font>, orders<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_nat_rules"><strong>get_nat_rules</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_policies"><strong>get_policies</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_rules"><strong>get_rules</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-get_update_info"><strong>get_update_info</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-list_backups"><strong>list_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-restore"><strong>restore</strong></a>(self, backup, wait<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
 
@@ -382,7 +424,9 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPEfm-stop"><strong>stop</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-update"><strong>update</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPEfm-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPEfm-update_config_handler"><strong>update_config_handler</strong></a>(self)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -397,8 +441,6 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 <dl><dt><a name="FGCPEfm-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-replace"><strong>replace</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
@@ -474,15 +516,21 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFWDirection-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFWDirection-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPFWDirection-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWDirection-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPFWDirection-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPFWDirection-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWDirection-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFWDirection-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDirection-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWDirection-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -524,17 +572,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFWDns-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFWDns-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPFWDns-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWDns-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWDns-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPFWDns-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPFWDns-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWDns-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFWDns-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWDns-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWDns-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -578,17 +632,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFWLogOrder-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFWLogOrder-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPFWLogOrder-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWLogOrder-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWLogOrder-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPFWLogOrder-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPFWLogOrder-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWLogOrder-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFWLogOrder-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWLogOrder-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWLogOrder-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -630,17 +690,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFWNATRule-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFWNATRule-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPFWNATRule-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWNATRule-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWNATRule-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPFWNATRule-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPFWNATRule-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWNATRule-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFWNATRule-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWNATRule-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWNATRule-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -687,15 +753,21 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFWPolicy-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFWPolicy-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPFWPolicy-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWPolicy-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPFWPolicy-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPFWPolicy-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWPolicy-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFWPolicy-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFWPolicy-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFWPolicy-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -736,17 +808,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFirewall-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPFirewall-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPFirewall-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPFirewall-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPFirewall-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -787,17 +865,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPLoadBalancer-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPLoadBalancer-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPLoadBalancer-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPLoadBalancer-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPLoadBalancer-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -854,17 +938,21 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPPublicIP-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPPublicIP-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPPublicIP-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPPublicIP-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPPublicIP-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPPublicIP-replace"><strong>replace</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPPublicIP-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPPublicIP-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPublicIP-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPPublicIP-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -906,17 +994,23 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPResource-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPResource-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPResource-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPResource-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPResource-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPResource-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPResource-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPResource-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPResource-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPResource-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPResource-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPResource-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1054,17 +1148,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBCCACert-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBCCACert-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBCCACert-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCCACert-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCCACert-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBCCACert-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBCCACert-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCCACert-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCCACert-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBCCACert-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCCACert-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1107,17 +1207,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBErrorCause-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBErrorCause-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBErrorCause-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorCause-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorCause-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBErrorCause-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBErrorCause-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorCause-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorCause-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorCause-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorCause-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1160,17 +1266,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBErrorPeriod-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBErrorPeriod-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBErrorPeriod-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorPeriod-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorPeriod-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBErrorPeriod-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBErrorPeriod-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorPeriod-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorPeriod-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorPeriod-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorPeriod-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1212,17 +1324,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBErrorStats-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBErrorStats-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBErrorStats-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorStats-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorStats-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBErrorStats-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBErrorStats-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorStats-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorStats-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBErrorStats-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorStats-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1264,17 +1382,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBGroup-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBGroup-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBGroup-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBGroup-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBGroup-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBGroup-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBGroup-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBGroup-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBGroup-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBGroup-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBGroup-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1316,17 +1440,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBServerCert-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBServerCert-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBServerCert-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBServerCert-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBServerCert-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBServerCert-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBServerCert-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBServerCert-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBServerCert-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBServerCert-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBServerCert-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1369,17 +1499,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPSLBTarget-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPSLBTarget-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPSLBTarget-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBTarget-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBTarget-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPSLBTarget-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPSLBTarget-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBTarget-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPSLBTarget-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSLBTarget-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPSLBTarget-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1420,17 +1556,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPServerType-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPServerType-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPServerType-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPServerType-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPServerType-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPServerType-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPServerType-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPServerType-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPServerType-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPServerType-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPServerType-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1471,17 +1613,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPServerTypeCPU-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPServerTypeCPU-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPServerTypeCPU-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeCPU-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeCPU-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPServerTypeCPU-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPServerTypeCPU-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeCPU-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeCPU-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPServerTypeCPU-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeCPU-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1522,17 +1670,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPUnknown-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPUnknown-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPUnknown-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUnknown-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUnknown-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPUnknown-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPUnknown-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUnknown-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPUnknown-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUnknown-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUnknown-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1573,17 +1727,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPUsageInfo-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPUsageInfo-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPUsageInfo-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfo-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfo-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPUsageInfo-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPUsageInfo-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfo-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfo-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfo-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfo-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1624,17 +1784,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPUsageInfoProduct-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPUsageInfoProduct-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPUsageInfoProduct-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfoProduct-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfoProduct-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPUsageInfoProduct-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPUsageInfoProduct-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfoProduct-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfoProduct-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsageInfoProduct-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfoProduct-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1698,7 +1864,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPVDataCenter-get_vsystem"><strong>get_vsystem</strong></a>(self, vsysName)</dt></dl>
 
-<dl><dt><a name="FGCPVDataCenter-get_vsystem_design"><strong>get_vsystem_design</strong></a>(self, vsystem<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt></dl>
+<dl><dt><a name="FGCPVDataCenter-get_vsystem_design"><strong>get_vsystem_design</strong></a>(self, vsystem<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-get_vsystem_usage"><strong>get_vsystem_usage</strong></a>(self, vsysIds<font color="#909090">=None</font>)</dt></dl>
 
@@ -1722,17 +1888,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPVDataCenter-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPVDataCenter-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPVDataCenter-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPVDataCenter-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVDataCenter-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1787,11 +1959,11 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVDisk-restore"><strong>restore</strong></a>(self, backup, wait<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPVDisk-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVDisk-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDisk-status"><strong>status</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPVDisk-update"><strong>update</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVDisk-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -1804,8 +1976,6 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 <dl><dt><a name="FGCPVDisk-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDisk-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPVDisk-replace"><strong>replace</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDisk-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
@@ -1850,17 +2020,23 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPVNic-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPVNic-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPVNic-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVNic-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVNic-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPVNic-replace"><strong>replace</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVNic-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVNic-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPVNic-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVNic-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVNic-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1949,8 +2125,6 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPVServer-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPVServer-replace"><strong>replace</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPVServer-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPVServer-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
@@ -2002,7 +2176,7 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVSysDescriptor-unregister"><strong>unregister</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPVSysDescriptor-update"><strong>update</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVSysDescriptor-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -2012,13 +2186,15 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPVSysDescriptor-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
+<dl><dt><a name="FGCPVSysDescriptor-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysDescriptor-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="FGCPVSysDescriptor-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVSysDescriptor-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVSysDescriptor-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPVSysDescriptor-replace"><strong>replace</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVSysDescriptor-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
@@ -2061,13 +2237,17 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVSystem-attach_vdisk"><strong>attach_vdisk</strong></a>(self, vdisk, vserver, wait<font color="#909090">=None</font>)</dt></dl>
 
+<dl><dt><a name="FGCPVSystem-boot"><strong>boot</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVSystem-create"><strong>create</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSystem-create_loadbalancer"><strong>create_loadbalancer</strong></a>(self, efmName, vnet, wait<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-create_vdisk"><strong>create_vdisk</strong></a>(self, vdiskName, size, wait<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-create_vserver"><strong>create_vserver</strong></a>(self, vserverName, servertype, diskimage, vnet, wait<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPVSystem-destroy"><strong>destroy</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+<dl><dt><a name="FGCPVSystem-destroy"><strong>destroy</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-destroy_vdisk"><strong>destroy_vdisk</strong></a>(self, vdisk, wait<font color="#909090">=None</font>)</dt></dl>
 
@@ -2115,6 +2295,8 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVSystem-show_status"><strong>show_status</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="FGCPVSystem-shutdown"><strong>shutdown</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVSystem-start"><strong>start</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-start_vserver"><strong>start_vserver</strong></a>(self, vserver, wait<font color="#909090">=None</font>)</dt></dl>
@@ -2125,7 +2307,7 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVSystem-stop_vserver"><strong>stop_vserver</strong></a>(self, vserver, wait<font color="#909090">=None</font>, force<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPVSystem-update"><strong>update</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVSystem-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -2140,8 +2322,6 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 <dl><dt><a name="FGCPVSystem-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPVSystem-replace"><strong>replace</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 

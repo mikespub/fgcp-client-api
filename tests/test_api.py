@@ -271,10 +271,10 @@ def test_vsys_efm_firewall(proxy, vsysId, efmId):
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=None)
     dns = proxy.GetEFMConfigHandler(vsysId, efmId).fw_dns()
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype='AUTO', primary=None, secondary=None)
-    fw_policy = proxy.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
+    policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log='On', directions=None)
     logs = proxy.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
-    fw_limit_policy = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
+    limit_policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
     update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()
 
 

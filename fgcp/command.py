@@ -617,7 +617,7 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         if hasattr(firewall, 'directions'):
             return firewall.directions
 
-    def fw_log(self, num=None, orders=None):
+    def fw_log(self, num=100, orders=None):
         """CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
         Usage:
         ipaddress = vsys.publicips[0].address

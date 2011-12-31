@@ -53,7 +53,7 @@ class FGCPResourceError(FGCPError):
 
 class FGCPElement(object):
     def __init__(self, **kwargs):
-        # initialize object attributes, cfr. FGCPDesigner().LoadSystemDesign
+        # initialize object attributes, cfr. FGCPDesign().load()
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
 
@@ -73,7 +73,7 @@ class FGCPElement(object):
                 L.append(self.pformat(val, depth + 1) + ',')
             L.append('  ' * depth + ']')
             return CRLF.join(L)
-        # initialize object attributes, cfr. FGCPDesigner().SaveSystemDesign
+        # initialize object attributes, cfr. FGCPDesign().save()
         L.append('  ' * depth + '%s(' % type(what).__name__)
         depth += 1
         for key in what.__dict__:
@@ -91,6 +91,9 @@ class FGCPElement(object):
                 #    L.append('  ' * depth + "%s='%s'," % (key, repr(what.__dict__[key])))
                 #else:
                 #    L.append('  ' * depth + '%s=None,' % key)
+                pass
+            # CHECKME: skip all the others, e.g. _get_handler from FW and SLB
+            elif key.startswith('_'):
                 pass
             elif isinstance(what.__dict__[key], FGCPElement):
                 L.append('  ' * depth + '%s=' % key)
@@ -149,7 +152,7 @@ class FGCPResource(FGCPElement):
     #_actions = {}
 
     def __init__(self, **kwargs):
-        # initialize object attributes, cfr. FGCPDesigner().LoadSystemDesign
+        # initialize object attributes, cfr. FGCPDesign().load()
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
         # CHECKME: special case for id=123 and/or parentid=12 ?
@@ -161,8 +164,7 @@ class FGCPResource(FGCPElement):
 
     #=========================================================================
 
-    """
-    def create(self):
+    def create(self, wait=None):
         return self.getid()
 
     def retrieve(self, refresh=None):
@@ -176,7 +178,7 @@ class FGCPResource(FGCPElement):
     """
     def destroy(self):
         return
-
+    """
     def status(self):
         return 'UNKNOWN'
     """
@@ -245,9 +247,6 @@ class FGCPResource(FGCPElement):
 
     # convert *args and **kwargs from other method to dict
     def _args2dict(self, argslist=[], kwargsdict={}, allowed=None):
-        print argslist
-        print kwargsdict
-        print allowed
         tododict = {}
         if len(argslist) == 2:
             # CHECKME: we assume a key, val pair - cfr. attributeName, attributeValue etc. !?
@@ -265,8 +264,8 @@ class FGCPResource(FGCPElement):
             else:
                 # now what ?
                 return argslist[0]
-        if len(kwargslist) > 0:
-            tododict.update(kwargs)
+        if len(kwargsdict) > 0:
+            tododict.update(kwargsdict)
         # TODO: sanitize dict by removing _* + the _idname, and diff the rest with current values ?
         if len(allowed) > 0 and len(tododict) > 0:
             newdict = {}
@@ -276,6 +275,7 @@ class FGCPResource(FGCPElement):
             tododict = newdict
         return tododict
 
+    """
     # CHECKME: no longer needed since we do it in FGCPResponseParser() based on conn._caller
     def _reparent(self, child=None, parent=None):
         if child is None:
@@ -310,6 +310,7 @@ class FGCPResource(FGCPElement):
             return child
         else:
             return child
+    """
 
 
 class FGCPVDataCenter(FGCPResource):
@@ -373,6 +374,8 @@ class FGCPVDataCenter(FGCPResource):
         if wait:
             # make sure the vsystem is stopped first
             result = vsystem.stop(wait)
+            # make sure the vsystem is shutdown first
+            result = vsystem.shutdown(wait)
         # let the vsystem handle it
         return vsystem.destroy(wait)
 
@@ -390,7 +393,7 @@ class FGCPVDataCenter(FGCPResource):
         publicips = self.list_publicips()
         for publicip in publicips:
             if publicipAddress == publicip.address:
-                return publicip
+                return publicip.retrieve()
         raise FGCPResourceError('ILLEGAL_ADDRESS', 'Invalid publicipAddress %s' % publicipAddress, self)
 
     #=========================================================================
@@ -423,9 +426,9 @@ class FGCPVDataCenter(FGCPResource):
         vsysdescriptors = self.list_vsysdescriptors()
         for vsysdescriptor in vsysdescriptors:
             if vsysdescriptorName == vsysdescriptor.vsysdescriptorName:
-                return vsysdescriptor
+                return vsysdescriptor.retrieve()
             elif vsysdescriptorName == vsysdescriptor.vsysdescriptorId:
-                return vsysdescriptor
+                return vsysdescriptor.retrieve()
         raise FGCPResourceError('ILLEGAL_VSYSDESCRIPTOR', 'Invalid vsysdescriptorName %s' % vsysdescriptorName, self)
 
     #=========================================================================
@@ -449,9 +452,9 @@ class FGCPVDataCenter(FGCPResource):
         diskimages = self.list_diskimages()
         for diskimage in diskimages:
             if diskimageName == diskimage.diskimageName:
-                return diskimage
+                return diskimage.retrieve()
             elif diskimageName == diskimage.diskimageId:
-                return diskimage
+                return diskimage.retrieve()
         raise FGCPResourceError('ILLEGAL_DISKIMAGE', 'Invalid diskimageName %s' % diskimageName, self)
 
     #=========================================================================
@@ -476,7 +479,7 @@ class FGCPVDataCenter(FGCPResource):
         servertypes = self.list_servertypes()
         for servertype in servertypes:
             if servertypeName == servertype.name:
-                return servertype
+                return servertype.retrieve()
         raise FGCPResourceError('ILLEGAL_SERVERTYPE', 'Invalid servertypeName %s' % servertypeName, self)
 
     #=========================================================================
@@ -486,9 +489,12 @@ class FGCPVDataCenter(FGCPResource):
 
     #=========================================================================
 
-    def get_vsystem_design(self, vsystem=None, filePath=None):
+    def get_vsystem_design(self, vsystem=None):
+        # get design from existing vsystem if specified
+        if vsystem is not None:
+            vsystem = self.get_vsystem(vsystem)
         from fgcp.design import FGCPDesign
-        design = FGCPDesign(vsystem=vsystem, filePath=filePath)
+        design = FGCPDesign(vsystem=vsystem)
         # set the parent of the design to this vdatacenter !
         design.setparent(self)
         return design
@@ -505,14 +511,28 @@ class FGCPVSystem(FGCPResource):
         # CHECKME: retrieve inventory here ?
         return self.get_inventory(refresh)
 
-    def update(self):
-        pass
+    def update(self, *args, **kwargs):
+        self.show_output('Updating VSystem %s' % self.vsysName)
+        allowed = ['vsysName', 'cloudCategory']
+        # convert arguments to dict
+        tododict = self._args2dict(args, kwargs, allowed)
+        # CHECKME: what if we updated the object attributes directly ?
+        result = None
+        # CHECKME: different methods for different fields
+        if 'vsysName' in tododict and tododict['vsysName'] != self.vsysName:
+            result = self.getproxy().UpdateVSYSAttribute(self.getid(), 'vsysName', tododict['vsysName'])
+        if 'cloudCategory' in tododict and tododict['cloudCategory'] != self.cloudCategory:
+            result = self.getproxy().UpdateVSYSConfiguration(self.getid(), 'CLOUD_CATEGORY', tododict['cloudCategory'])
+        self.show_output('Updated VSystem %s' % self.vsysName)
+        return result
 
-    def destroy(self, wait=None):
+    def destroy(self):
+        self.show_output('Destroying VSystem %s' % self.vsysName)
         result = self.getproxy().DestroyVSYS(self.getid())
         # CHECKME: invalidate list of vsystems in VDataCenter
         if isinstance(self._parent, FGCPVDataCenter):
             self._parent.reset_attr('vsystems')
+        self.show_output('Destroyed VSystem %s' % self.vsysName)
         return result
 
     def status(self):
@@ -520,65 +540,70 @@ class FGCPVSystem(FGCPResource):
         setattr(self, 'vsysStatus', status)
         return status
 
+    def boot(self, wait=None):
+        self.show_output('Booting VSystem %s' % self.vsysName)
+        # check if the vsystem is ready
+        todo = self.check_status(['NORMAL'], ['DEPLOYING', 'RECONFIG_ING'])
+        if todo and wait:
+            # wait for the vsystem to be ready
+            result = self.wait_for_status(['DEPLOYING', 'RECONFIG_ING'], ['NORMAL'])
+        elif todo:
+            # we're not ready and won't wait
+            return todo
+        # get system inventory if necessary
+        self.get_inventory()
+        # start all firewalls
+        for firewall in self.firewalls:
+            firewall.start(wait)
+        # attach publicip - cfr. sequence3 in java sdk
+        for publicip in self.publicips:
+            publicip.attach(wait)
+        self.show_output('Booted VSystem %s' % self.vsysName)
+        return
+
     def start(self, wait=None):
         self.show_output('Starting VSystem %s' % self.vsysName)
         # check if the vsystem is ready
-        todo = self.check_status(['NORMAL'], ['DEPLOYING', 'RECONFIG_ING'])
-        if todo:
-            if wait:
-                # wait for the vsystem to be ready
-                result = self.wait_for_status(['DEPLOYING', 'RECONFIG_ING'], ['NORMAL'])
-            else:
-                # we're not ready and won't wait
-                return todo
-        # get system inventory if necessary
-        self.get_inventory()
-        # CHECKME: don't attach publicip and start firewalls here ?
-        if wait:
-            # start all firewalls
-            for firewall in self.firewalls:
-                firewall.start(wait)
-            # attach publicip - cfr. sequence3 in java sdk
-            for publicip in self.publicips:
-                publicip.attach(wait)
-        # start all servers
+        self.boot(wait)
+        # start all vservers
         for vserver in self.vservers:
             vserver.start(wait)
         # start all loadbalancers
         for loadbalancer in self.loadbalancers:
             loadbalancer.start(wait)
-        if wait:
-            self.show_output('Started VSystem %s' % self.vsysName)
+        self.show_output('Started VSystem %s' % self.vsysName)
         return
 
     def stop(self, wait=None):
         self.show_output('Stopping VSystem %s' % self.vsysName)
         # check if the vsystem is ready
         todo = self.check_status(['NORMAL'], ['DEPLOYING', 'RECONFIG_ING'])
-        if todo:
-            if wait:
-                # wait for the vsystem to be ready
-                result = self.wait_for_status(['DEPLOYING', 'RECONFIG_ING'], ['NORMAL'])
-            else:
-                # we're not ready and won't wait
-                return todo
+        if todo and wait:
+            # wait for the vsystem to be ready
+            result = self.wait_for_status(['DEPLOYING', 'RECONFIG_ING'], ['NORMAL'])
+        elif todo:
+            # we're not ready and won't wait
+            return todo
         # get system inventory if necessary
         self.get_inventory()
         # stop all loadbalancers
         for loadbalancer in self.loadbalancers:
             loadbalancer.stop(wait)
-        # stop all servers
+        # stop all vservers
         for vserver in self.vservers:
             vserver.stop(wait)
-        # CHECKME: don't detach publicip and stop firewalls here ?
-        if wait:
-            # detach publicip - cfr. sequence3 in java sdk
-            for publicip in self.publicips:
-                publicip.detach(wait)
-            # stop all firewalls
-            for firewall in self.firewalls:
-                firewall.stop(wait)
-            self.show_output('Stopped VSystem %s' % self.vsysName)
+        self.show_output('Stopped VSystem %s' % self.vsysName)
+        return
+
+    def shutdown(self, wait=None):
+        self.show_output('Shutting down VSystem %s' % self.vsysName)
+        # detach publicip - cfr. sequence3 in java sdk
+        for publicip in self.publicips:
+            publicip.detach(wait)
+        # stop all firewalls
+        for firewall in self.firewalls:
+            firewall.stop(wait)
+        self.show_output('Shut down VSystem %s' % self.vsysName)
         return
 
     #=========================================================================
@@ -596,9 +621,9 @@ class FGCPVSystem(FGCPResource):
         vservers = self.list_vservers()
         for vserver in vservers:
             if vserverName == vserver.vserverName:
-                return vserver
+                return vserver.retrieve()
             elif vserverName == vserver.vserverId:
-                return vserver
+                return vserver.retrieve()
         raise FGCPResourceError('ILLEGAL_VSERVER', 'Invalid vserverName %s' % vserverName, self)
 
     def create_vserver(self, vserverName, servertype, diskimage, vnet, wait=None):
@@ -644,9 +669,9 @@ class FGCPVSystem(FGCPResource):
         vdisks = self.list_vdisks()
         for vdisk in vdisks:
             if vdiskName == vdisk.vdiskName:
-                return vdisk
+                return vdisk.retrieve()
             elif vdiskName == vdisk.vdiskId:
-                return vdisk
+                return vdisk.retrieve()
         raise FGCPResourceError('ILLEGAL_VDISK', 'Invalid vdiskName %s' % vdiskName, self)
 
     def create_vdisk(self, vdiskName, size, wait=None):
@@ -685,9 +710,9 @@ class FGCPVSystem(FGCPResource):
         firewalls = self.list_firewalls()
         for firewall in firewalls:
             if efmName == firewall.efmName:
-                return firewall
+                return firewall.retrieve()
             elif efmName == firewall.efmId:
-                return firewall
+                return firewall.retrieve()
         raise FGCPResourceError('ILLEGAL_FIREWALL', 'Invalid efmName %s' % efmName, self)
 
     #=========================================================================
@@ -704,10 +729,20 @@ class FGCPVSystem(FGCPResource):
         loadbalancers = self.list_loadbalancers()
         for loadbalancer in loadbalancers:
             if efmName == loadbalancer.efmName:
-                return loadbalancer
+                return loadbalancer.retrieve()
             elif efmName == loadbalancer.efmId:
-                return loadbalancer
+                return loadbalancer.retrieve()
         raise FGCPResourceError('ILLEGAL_LOADBALANCER', 'Invalid efmName %s' % efmName, self)
+
+    def create_loadbalancer(self, efmName, vnet, wait=None):
+        # get the right vnet ourselves
+        vnet = self.get_vnet(vnet)
+        # make a new loadbalancer with the right attributes - vnet returns a string, so no vnet.getid() needed (for now ?)
+        loadbalancer = FGCPEfm(efmType='SLB', efmName=efmName, networkId=vnet)
+        # set the parent of the loadbalancer to this vsystem !
+        loadbalancer.setparent(self)
+        # and now create it :-)
+        return loadbalancer.create(wait)
 
     #=========================================================================
 
@@ -719,7 +754,7 @@ class FGCPVSystem(FGCPResource):
     def get_vnet(self, vnet):
         # support vnet
         vnets = self.list_vnets()
-        # find exact match first
+        # find exact match first - this is a string
         if vnet in vnets:
             return vnet
         # find matching end if we used DMZ, SECURE1, SECURE2 here
@@ -747,7 +782,7 @@ class FGCPVSystem(FGCPResource):
         publicips = self.list_publicips()
         for publicip in publicips:
             if publicipAddress == publicip.address:
-                return publicip
+                return publicip.retrieve()
         raise FGCPResourceError('ILLEGAL_ADDRESS', 'Invalid publicipAddress %s' % publicipAddress, self)
 
     def allocate_publicip(self, wait=None):
@@ -776,7 +811,8 @@ class FGCPVSystem(FGCPResource):
                     # wait until publicip deploying is done
                     result = publicip.wait_for_status(['DEPLOYING'], ['DETACHED', 'ATTACHED'])
                     self.show_output('Allocated PublicIP %s to VSystem %s' % (publicip.address, self.vsysName))
-                    break
+                    return result
+            raise FGCPResourceError('TIMEOUT', 'Unable to retrieve PublicIP for VSystem %s' % self.vsysName, self)
         return result
 
     #=========================================================================
@@ -903,14 +939,16 @@ class FGCPVServer(FGCPResource):
         return self.get_configuration(refresh)
 
     def update(self, *args, **kwargs):
-        # CHECKME: do we actually want to allow arguments here ?
+        self.show_output('Updating VServer %s' % self.vserverName)
         allowed = ['vserverName', 'vserverType']
         # convert arguments to dict
         tododict = self._args2dict(args, kwargs, allowed)
         # CHECKME: what if we updated the object attributes directly ?
         result = None
         for key in tododict:
-            result = self.getproxy().UpdateVServerAttribute(self.getparentid(), self.getid(), key, tododict[key])
+            if tododict[key] != getattr(self, key):
+                result = self.getproxy().UpdateVServerAttribute(self.getparentid(), self.getid(), key, tododict[key])
+        self.show_output('Updated VServer %s' % self.vserverName)
         return result
 
     def destroy(self, wait=None):
@@ -934,7 +972,7 @@ class FGCPVServer(FGCPResource):
 
     def start(self, wait=None):
         self.show_output('Starting VServer %s' % self.vserverName)
-        done = self.check_status(['STOPPED', 'UNEXPECTED_STOP'], ['RUNNING'])
+        done = self.check_status(['STOPPED', 'UNEXPECTED_STOP'], ['RUNNING', 'STARTING'])
         if done:
             return done
         result = self.getproxy().StartVServer(self.getparentid(), self.getid())
@@ -945,7 +983,7 @@ class FGCPVServer(FGCPResource):
 
     def stop(self, wait=None, force=None):
         self.show_output('Stopping VServer %s' % self.vserverName)
-        done = self.check_status(['RUNNING'], ['STOPPED', 'UNEXPECTED_STOP'])
+        done = self.check_status(['RUNNING'], ['STOPPED', 'UNEXPECTED_STOP', 'STOPPING'])
         if done:
             return done
         result = self.getproxy().StopVServer(self.getparentid(), self.getid(), force)
@@ -993,7 +1031,6 @@ class FGCPVServer(FGCPResource):
         return vdisk.attach(self, wait)
 
     def detach_vdisk(self, vdisk, wait=None):
-        # let the VSystem get the right disk here
         vdisk = self.get_vdisk(vdisk)
         return vdisk.detach(self, wait)
 
@@ -1024,7 +1061,7 @@ class FGCPVServer(FGCPResource):
         if wait:
             # CHECKME: start vserver again ?
             #result = self.start(wait)
-            self.show_output('Stop Backup VServer %s' % self.vserverName)
+            self.show_output('Finish Backup VServer %s' % self.vserverName)
         return result
 
     def restore(self, backup, wait=None):
@@ -1043,7 +1080,7 @@ class FGCPVServer(FGCPResource):
         if wait:
             # CHECKME: start vserver again ?
             #result = self.start(wait)
-            self.show_output('Stop Restore VServer %s' % self.vserverName)
+            self.show_output('Finish Restore VServer %s' % self.vserverName)
         return result
 
     def cleanup_backups(self, max_num=100, max_age=None):
@@ -1083,10 +1120,10 @@ class FGCPVDisk(FGCPResource):
                 return self._parent
 
     def create(self, wait=None):
-        self.show_output('Creating VDisk %s' % self.vdiskName)
-        vdiskId = self.getproxy().CreateVDisk(self.parentid(), self.vdiskName, self.size)
+        self.show_output('Creating VDisk %s (%s GB)' % (self.vdiskName, self.size))
+        vdiskId = self.getproxy().CreateVDisk(self.getparentid(), self.vdiskName, self.size)
         # set the vdiskId here too
-        setattr(self, 'vdiskId', vserverId)
+        setattr(self, 'vdiskId', vdiskId)
          # CHECKME: invalidate list of vdisks in VSystem
         if isinstance(self._parent, FGCPVSystem):
             self._parent.reset_attr('vdisks')
@@ -1096,14 +1133,30 @@ class FGCPVDisk(FGCPResource):
             self.show_output('Created VDisk %s' % self.vdiskName)
         return vdiskId
 
-    def retrieve(self):
-        pass
+    def retrieve(self, refresh=None):
+        return self
 
-    def update(self):
-        pass
+    def update(self, *args, **kwargs):
+        self.show_output('Updating VDisk %s' % self.vdiskName)
+        allowed = ['vdiskName']
+        # convert arguments to dict
+        tododict = self._args2dict(args, kwargs, allowed)
+        # CHECKME: what if we updated the object attributes directly ?
+        result = None
+        for key in tododict:
+            if tododict[key] != getattr(self, key):
+                result = self.getproxy().UpdateVDiskAttribute(self.getparentid(), self.getid(), key, tododict[key])
+        self.show_output('Updated VDisk %s' % self.vdiskName)
+        return result
 
     def destroy(self):
-        pass
+        self.show_output('Destroying VDisk %s (%s GB)' % (self.vdiskName, self.size))
+        vdiskId = self.getproxy().DestroyVDisk(self.getparentid(), self.vdiskId)
+        # CHECKME: invalidate list of vdisks in VSystem
+        if isinstance(self._parent, FGCPVSystem):
+            self._parent.reset_attr('vdisks')
+        self.show_output('Destroyed VDisk %s' % self.vdiskName)
+        return
 
     def status(self):
         status = self.getproxy().GetVDiskStatus(self.getparentid(), self.getid())
@@ -1111,21 +1164,21 @@ class FGCPVDisk(FGCPResource):
         return status
 
     def attach(self, vserver, wait=None):
-        self.show_output('Attaching VDisk %s' % self.vdiskName)
+        self.show_output('Attaching VDisk %s to VServer %s' % (self.vdiskName, vserver.vserverName))
         done = self.check_status(['NORMAL'])
         result = self.getproxy().AttachVDisk(self.getparentid(), vserver.getid(), self.getid())
         if wait:
             result = self.wait_for_status(['ATTACHING'], ['NORMAL'])
-            self.show_output('Attached VDisk %s' % self.vdiskName)
+            self.show_output('Attached VDisk %s to VServer %s' % (self.vdiskName, vserver.vserverName))
         return result
 
     def detach(self, vserver, wait=None):
-        self.show_output('Detaching VDisk %s' % self.vdiskName)
+        self.show_output('Detaching VDisk %s from VServer %s' % (self.vdiskName, vserver.vserverName))
         done = self.check_status(['NORMAL'])
         result = self.getproxy().DetachVDisk(self.getparentid(), vserver.getid(), self.getid())
         if wait:
             result = self.wait_for_status(['DETACHING'], ['NORMAL'])
-            self.show_output('Detached VDisk %s' % self.vdiskName)
+            self.show_output('Detached VDisk %s from VServer %s' % (self.vdiskName, vserver.vserverName))
         return result
 
     #=========================================================================
@@ -1144,7 +1197,7 @@ class FGCPVDisk(FGCPResource):
         backups = self.list_backups()
         for entry in backups:
             if backup == entry.backupId:
-                return entry
+                return entry.retrieve()
         raise FGCPResourceError('ILLEGAL_BACKUP', 'Invalid backup %s' % backup, self)
 
     def backup(self, wait=None):
@@ -1159,7 +1212,7 @@ class FGCPVDisk(FGCPResource):
         if wait:
             # wait for the backup to be done
             result = self.wait_for_status(['BACKUP_ING'], ['STOPPED', 'NORMAL'])
-            self.show_output('End Backup VDisk %s' % self.vdiskName)
+            self.show_output('Finish Backup VDisk %s' % self.vdiskName)
         return result
 
     def restore(self, backup, wait=None):
@@ -1178,7 +1231,7 @@ class FGCPVDisk(FGCPResource):
         if wait:
             # wait for the backup to be done
             result = self.wait_for_status(['RESTORING'], ['STOPPED', 'NORMAL'])
-            self.show_output('End Restore VDisk %s' % self.vdiskName)
+            self.show_output('Finish Restore VDisk %s' % self.vdiskName)
         return result
 
     def cleanup_backups(self, max_num=100, max_age=None):
@@ -1223,12 +1276,26 @@ class FGCPBackup(FGCPResource):
         return timeval
 
     def restore(self, wait=None):
-        result = self.getproxy().RestoreVDisk(self.getparentid(), self.getid())
-        # CHECKME: we can't really wait here, because we're not on the vdisk level ?
+        self.show_output('Restoring Backup %s' % self.getid())
+        if isinstance(self._parent, FGCPVDisk):
+            result = self.getproxy().RestoreVDisk(self.getparentid(), self.getid())
+        elif isinstance(self._parent, FGCPEfm):
+            # grand-parent, parent and current
+            result = self.getproxy().RestoreEFM(self._parent.getparentid(), self.getparentid(), self.getid())
+        else:
+            result = 'UNKNOWN'
+        # CHECKME: we can't really wait here, because we're not on the vdisk or efm level ?
         return result
 
     def destroy(self):
-        result = self.getproxy().DestroyVDiskBackup(self.getparentid(), self.getid())
+        self.show_output('Destroying Backup %s' % self.getid())
+        if isinstance(self._parent, FGCPVDisk):
+            result = self.getproxy().DestroyVDiskBackup(self.getparentid(), self.getid())
+        elif isinstance(self._parent, FGCPEfm):
+            # grand-parent, parent and current
+            result = self.getproxy().DestroyEFMBackup(self._parent.getparentid(), self.getparentid(), self.getid())
+        else:
+            result = 'UNKNOWN'
         return result
 
 
@@ -1240,17 +1307,51 @@ class FGCPVNic(FGCPResource):
 class FGCPEfm(FGCPResource):
     _idname = 'efmId'
 
-    def create(self):
-        pass
+    def create(self, wait=None):
+        # CHECKME: we use networkId to identify the network here, although this isn't found in the normal object definition !?
+        self.show_output('Creating EFM %s %s' % (self.efmType, self.efmName))
+        efmId = self.getproxy().CreateEFM(self.getparentid(), self.efmType, self.efmName, self.networkId)
+        # set the efmId here too
+        setattr(self, 'efmId', efmId)
+         # CHECKME: invalidate list of firewalls/loadbalancers in VSystem
+        if isinstance(self._parent, FGCPVSystem):
+            if self.efmType == 'FW':
+                self._parent.reset_attr('firewalls')
+            else:
+                self._parent.reset_attr('loadbalancers')
+        if wait:
+            # wait for the EFM to be ready
+            self.wait_for_status(['DEPLOYING'], ['STOPPED'])
+            self.show_output('Created EFM %s %s' % (self.efmType, self.efmName))
+        return efmId
 
     def retrieve(self):
-        pass
+        return self
 
-    def update(self):
-        pass
+    def update(self, *args, **kwargs):
+        self.show_output('Updating EFM %s' % self.efmName)
+        allowed = ['efmName']
+        # convert arguments to dict
+        tododict = self._args2dict(args, kwargs, allowed)
+        # CHECKME: what if we updated the object attributes directly ?
+        result = None
+        for key in tododict:
+            if tododict[key] != getattr(self, key):
+                result = self.getproxy().UpdateEFMAttribute(self.getparentid(), self.getid(), key, tododict[key])
+        self.show_output('Updated EFM %s' % self.efmName)
+        return result
 
     def destroy(self):
-        pass
+        self.show_output('Destroying EFM %s %s' % (self.efmType, self.efmName))
+        efmId = self.getproxy().DestroyEFM(self.getparentid(), self.efmType, self.efmId)
+        # CHECKME: invalidate list of firewalls/loadbalancers in VSystem
+        if isinstance(self._parent, FGCPVSystem):
+            if self.efmType == 'FW':
+                self._parent.reset_attr('firewalls')
+            else:
+                self._parent.reset_attr('loadbalancers')
+        self.show_output('Destroyed EFM %s %s' % (self.efmType, self.efmName))
+        return
 
     def status(self):
         status = self.getproxy().GetEFMStatus(self.getparentid(), self.getid())
@@ -1281,17 +1382,122 @@ class FGCPEfm(FGCPResource):
 
     #=========================================================================
 
-    def list_backups(self):
-        pass
+    def list_backups(self, timeZone=None, countryCode=None):
+        if timeZone or countryCode:
+            return self.getproxy().ListEFMBackup(self.getparentid(), self.getid(), timeZone, countryCode)
+        if not hasattr(self, 'backups'):
+            setattr(self, 'backups', self.getproxy().ListEFMBackup(self.getparentid(), self.getid(), timeZone, countryCode))
+        return getattr(self, 'backups')
 
-    def get_backup(self):
-        pass
+    def get_backup(self, backup):
+        # support resource or id
+        if isinstance(backup, FGCPBackup):
+            return backup.retrieve()
+        backups = self.list_backups()
+        for entry in backups:
+            if backup == entry.backupId:
+                return entry.retrieve()
+        raise FGCPResourceError('ILLEGAL_BACKUP', 'Invalid backup %s' % backup, self)
 
-    def backup(self):
-        pass
+    def backup(self, wait=None):
+        self.show_output('Start Backup EFM %s' % self.efmName)
+        # check current status
+        done = self.check_status(['RUNNING'], ['BACKUP_ING'])
+        if not done:
+            # backup EFM now
+            result = self.getproxy().BackupEFM(self.getparentid(), self.getid())
+        else:
+            result = done
+        if wait:
+            # wait for the backup to be done
+            result = self.wait_for_status(['BACKUP_ING'], ['RUNNING'])
+            self.show_output('Finish Backup EFM %s' % self.efmName)
+        return result
 
-    def restore(self):
-        pass
+    def restore(self, backup, wait=None):
+        backup = self.get_backup(backup)
+        self.show_output('Start Restore %s for EFM %s' % (backup, self.efmName))
+        # check current status
+        done = self.check_status(['RUNNING'], ['RESTORING'])
+        if not done:
+            if isinstance(backup, FGCPResource):
+                result = self.getproxy().RestoreEFM(self.getparentid(), self.getid(), backup.getid())
+            else:
+                result = self.getproxy().RestoreEFM(self.getparentid(), self.getid(), backup)
+        else:
+            result = done
+        if wait:
+            # wait for the backup to be done
+            result = self.wait_for_status(['RESTORING'], ['RUNNING'])
+            self.show_output('Finish Restore EFM %s' % self.efmName)
+        return result
+
+    #=========================================================================
+
+    def get_config_handler(self):
+        if not hasattr(self, '_get_handler'):
+            setattr(self, '_get_handler', self.getproxy().GetEFMConfigHandler(self.getparentid(), self.getid()))
+        return getattr(self, '_get_handler')
+
+    def get_nat_rules(self):
+        return self.get_config_handler().fw_nat_rule()
+
+    def get_dns(self):
+        return self.get_config_handler().fw_dns()
+
+    def get_policies(self, from_zone=None, to_zone=None):
+        return self.get_config_handler().fw_policy(from_zone, to_zone)
+
+    def get_log(self, num=100, orders=None):
+        # FIXME: make log order builder !?
+        return self.get_config_handler().fw_log(num, orders)
+
+    def get_limit_policies(self, from_zone=None, to_zone=None):
+        return self.get_config_handler().fw_limit_policy(from_zone, to_zone)
+
+    def get_rules(self):
+        return self.get_config_handler().slb_rule()
+
+    def get_load_stats(self):
+        return self.get_config_handler().slb_load()
+
+    def get_error_stats(self):
+        return self.get_config_handler().slb_error()
+
+    def get_cert_list(self, certCategory=None, detail=None):
+        return self.get_config_handler().slb_cert_list(certCategory, detail)
+
+    def get_update_info(self):
+        if self.efmType == 'FW':
+            return self.get_config_handler().fw_update()
+        else:
+            return self.get_config_handler().slb_update()
+
+    #=========================================================================
+
+    def update_config_handler(self):
+        if not hasattr(self, '_update_handler'):
+            setattr(self, '_update_handler', self.getproxy().UpdateEFMConfigHandler(self.getparentid(), self.getid()))
+        return getattr(self, '_update_handler')
+
+    #result = firewall.update_nat_rules(rules=None)
+    #result = firewall.update_dns(dnstype='AUTO', primary=None, secondary=None)
+    #result = firewall.update_policies(log='On', directions=None)
+
+    #result = loadbalancer.update_rules(groups=None, force=None, webAccelerator=None)
+    #result = loadbalancer.clear_load_stats()
+    #result = loadbalancer.clear_error_stats()
+    #result = loadbalancer.add_cert(certNum, filePath, passphrase)
+    #result = loadbalancer.set_cert(certNum, id)
+    #result = loadbalancer.release_cert(certNum)
+    #result = loadbalancer.delete_cert(certNum, force=None)
+    #result = loadbalancer.add_cca(ccacertNum, filePath)
+    #result = loadbalancer.delete_cca(ccacertNum)
+    #result = loadbalancer.start_maintenance(id, ipAddress, time=None, unit=None)
+    #result = loadbalancer.stop_maintenance(id, ipAddress)
+
+    #result = firewall.apply_update()
+    #result = firewall.revert_update()
 
 
 class FGCPFirewall(FGCPResource):
@@ -1311,6 +1517,7 @@ class FGCPFWDirection(FGCPFirewall):
     _idname = None
 
     def getid(self):
+        # get the last part of the direction, i.e. DMZ, SECURE1, SECURE2 etc.
         from_zone = getattr(self, 'from', '').split('-').pop()
         to_zone = getattr(self, 'to', '').split('-').pop()
         return '%s-%s' % (from_zone, to_zone)
@@ -1453,9 +1660,20 @@ class FGCPVSysDescriptor(FGCPResource):
         # CHECKME: retrieve configuration here ?
         return self.get_configuration(refresh)
 
-    def update(self):
-        #self.getproxy().UpdateVSYSDescriptorAttribute(self.getid(), updateLcId, attributeName, attributeValue)
-        return
+    def update(self, *args, **kwargs):
+        self.show_output('Updating VSYSDescriptor %s' % self.vsysdescriptorName)
+        allowed = ['vsysdescriptorName', 'description', 'keyword']
+        updatename = {'vsysdescriptorName': 'updateName', 'description': 'updateDescription', 'keyword': 'updateKeyword'}
+        # convert arguments to dict
+        tododict = self._args2dict(args, kwargs, allowed)
+        # CHECKME: what if we updated the object attributes directly ?
+        result = None
+        for key in tododict:
+            if tododict[key] != getattr(self, key):
+                # CHECKME: updateLcId = 'en' here
+                result = self.getproxy().UpdateVSYSDescriptorAttribute(self.getid(), 'en', updatename[key], tododict[key])
+        self.show_output('Updated VSYSDescriptor %s' % self.vsysdescriptorName)
+        return result
 
     def unregister(self):
         #return self.getproxy().UnregisterVSYSDescriptor(self.getid())
@@ -1477,9 +1695,9 @@ class FGCPVSysDescriptor(FGCPResource):
         diskimages = self.list_diskimages()
         for diskimage in diskimages:
             if diskimageName == diskimage.diskimageName:
-                return diskimage
+                return diskimage.retrieve()
             elif diskimageName == diskimage.diskimageId:
-                return diskimage
+                return diskimage.retrieve()
         raise FGCPResourceError('ILLEGAL_DISKIMAGE', 'Invalid diskimageName %s' % diskimageName, self)
 
     #=========================================================================
@@ -1522,8 +1740,20 @@ class FGCPDiskImage(FGCPResource):
         # see VServer register_diskimage
         pass
 
-    def update(self):
-        pass
+    def update(self, *args, **kwargs):
+        self.show_output('Updating DiskImage %s' % self.diskimageName)
+        allowed = ['diskimageName', 'description']
+        updatename = {'diskimageName': 'updateName', 'description': 'updateDescription'}
+        # convert arguments to dict
+        tododict = self._args2dict(args, kwargs, allowed)
+        # CHECKME: what if we updated the object attributes directly ?
+        result = None
+        for key in tododict:
+            if tododict[key] != getattr(self, key):
+                # CHECKME: updateLcId = 'en' here
+                result = self.getproxy().UpdateDiskImageAttribute(self.getid(), 'en', updatename[key], tododict[key])
+        self.show_output('Updated DiskImage %s' % self.diskimageName)
+        return result
 
     def unregister(self):
         return self.getproxy().UnregisterDiskImage(self.getid())
