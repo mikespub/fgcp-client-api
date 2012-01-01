@@ -24,16 +24,16 @@ see http://code.google.com/p/gdata-python-client/ for download and installation
 
 
 def fgcp_run_sample(pem_file, region):
-	# Connect with your client certificate to this region
-	from fgcp.resource import FGCPVDataCenter
-	vdc = FGCPVDataCenter(pem_file, region)
+    # Connect with your client certificate to this region
+    from fgcp.resource import FGCPVDataCenter
+    vdc = FGCPVDataCenter(pem_file, region)
 
     # Do typical actions on resources
-	vsystem = vdc.get_vsystem('Demo System')
-	vsystem.show_status()
-	#for vserver in vsystem.vservers:
-	#	result = vserver.backup(wait=True)
-	#...
+    vsystem = vdc.get_vsystem('Demo System')
+    vsystem.show_status()
+    #for vserver in vsystem.vservers:
+    #	result = vserver.backup(wait=True)
+    #...
     # See tests/test_resource.py for more examples
 
 
