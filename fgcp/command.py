@@ -795,6 +795,8 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
         return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)
 
     def _convert_fw_directions(self, log, directions=None):
+        # CHECKME: for round-trip support, we need to:
+        clean_policy = ['_proxy', '_parent']
         new_directions = []
         # add default log policy to directions
         new_directions.append({'direction': {'policies': {'policy': {'log': log}}}})
@@ -832,6 +834,9 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
                 elif len(policy.id) > 3:
                     policy.id = policy.id[2:]
                 # CHECKME: dump the whole dictionary here ?
+                for key in clean_policy:
+                    if hasattr(policy, key):
+                        delattr(policy, key)
                 new_policies.append({'policy': policy.__dict__})
             # if we have anything left, add it to the new directions
             if len(new_policies) > 0:

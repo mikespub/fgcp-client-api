@@ -93,7 +93,7 @@ def test_vsystem(vsystem):
 
     status = vsystem.status()
 
-    usage = vsystem.get_usage()
+    date, usage = vsystem.get_usage()
 
     info = vsystem.get_status()
     vsystem.show_status()
@@ -112,7 +112,7 @@ def test_vsystem(vsystem):
     vserver = vsystem.get_vserver('DB1')
     test_vserver(vserver)
 
-    #vserverId = vsystem.create_vserver(vserverName='My New Server', servertype='economy', diskimage='CentOS 5.4 32bit(EN)', vnet='DMZ')
+    #vserverId = vsystem.create_vserver('My New Server', 'economy', 'CentOS 5.4 32bit(EN)', 'DMZ')
     #result = vsystem.start_vserver('My New Server', wait=True)
     #result = vsystem.stop_vserver('My New Server', wait=True)
     #result = vsystem.destroy_vserver('My New Server', wait=True)
@@ -122,6 +122,10 @@ def test_vsystem(vsystem):
         pass
     vdisk = vsystem.get_vdisk('DISK1')
     test_vdisk(vdisk)
+    #result = vsystem.create_vdisk('DISK2', size=1500, wait=True)
+    #result = vsystem.attach_vdisk('DISK2', 'My New Server', wait=True)
+    #result = vsystem.detach_vdisk('DISK2', 'My New Server', wait=True)
+    #result = vsystem.destroy_vdisk('DISK2', wait=True)
 
     test_vserver_vdisk(vserver, vdisk)
 
@@ -143,6 +147,7 @@ def test_vsystem(vsystem):
         pass
     loadbalancer = vsystem.get_loadbalancer('SLB1')
     test_loadbalancer(loadbalancer)
+    #result = vsystem.create_loadbalancer('SLB2', 'DMZ', wait=True)
 
     vnets = vsystem.list_vnets()
     for vnet in vsystem.vnets:
@@ -175,7 +180,11 @@ def test_vserver(vserver):
         break
     #result = vserver.attach_vdisk(vdisk)
     #result = vserver.detach_vdisk(vdisk)
+
     vnics = vserver.list_vnics()
+    for vnic in vnics:
+        test_vnic(vnic)
+        break
 
     backups = vserver.list_backups(timeZone=None, countryCode=None)
     for backup in backups:
@@ -196,6 +205,8 @@ def test_vdisk(vdisk):
     FGCP VDisk
     """
     vdisk.show_output('Test: %s' % vdisk)
+    status = vdisk.status()
+
     backups = vdisk.list_backups(timeZone=None, countryCode=None)
     for backup in backups:
         test_backup(backup)
@@ -222,11 +233,19 @@ def test_backup(backup):
 
 def test_vserver_vdisk(vserver, vdisk):
     """
-    FGCP VServer + FGCP VDisk Combinations
+    FGCP VServer + FGCP VDisk Combination
     """
     vserver.show_output('Test: %s + %s' % (vserver, vdisk))
     #result = vdisk.attach(vserver)
     #result = vdisk.detach(vserver)
+    pass
+
+
+def test_vnic(vnic):
+    """
+    FGCP VNic
+    """
+    vnic.show_output('Test: %s' % vnic)
     pass
 
 
@@ -236,7 +255,6 @@ def test_firewall(firewall):
     """
     firewall.show_output('Test: %s' % firewall)
     status = firewall.status()
-
     #result = firewall.start(wait=True)
     #result = firewall.stop(wait=True)
 
@@ -295,16 +313,18 @@ def test_loadbalancer(loadbalancer):
     error_stats = loadbalancer.get_error_stats()
     #result = loadbalancer.clear_error_stats()
 
-    cert_list = loadbalancer.get_cert_list(certCategory=None, detail=None)
-    #result = loadbalancer.add_cert(certNum=10, filePath="server.pfx", passphrase='changeit')
-    #result = loadbalancer.set_cert(certNum=10, id)
+    servercerts = loadbalancer.list_servercerts(detail=None)
+    #result = loadbalancer.add_cert(certNum=5, filePath="server.pfx", passphrase='changeit')
+    #result = loadbalancer.set_cert(certNum=5, groupId=10)
     #result = loadbalancer.release_cert(certNum=10)
     #result = loadbalancer.delete_cert(certNum=10, force=None)
+    ccacerts = loadbalancer.list_ccacerts(detail=None)
     #result = loadbalancer.add_cca(ccacertNum=101, filePath='cacert.crt')
     #result = loadbalancer.delete_cca(ccacertNum=101)
+    cert_list = loadbalancer.get_cert_list(certCategory=None, detail=None)
 
-    #result = loadbalancer.start_maintenance(id, ipAddress, time=None, unit=None)
-    #result = loadbalancer.stop_maintenance(id, ipAddress)
+    #result = loadbalancer.start_maintenance(groupId=10, ipAddress='192.168.0.13', time=None, unit=None)
+    #result = loadbalancer.stop_maintenance(groupId=10, ipAddress='192.168.0.13')
 
     update_info = loadbalancer.get_update_info()
     #result = loadbalancer.apply_update()
@@ -371,6 +391,7 @@ def test_design(design):
     vsystem = design.load_vsystem('Demo System')
     #result = design.build_vsystem('My New VSystem')
     design.save_file('new_demo_system.txt')
+    design.load_file('new_demo_system.txt')
 
 
 if __name__ == "__main__":
