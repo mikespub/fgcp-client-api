@@ -476,6 +476,9 @@ class FGCPResponseParser:
             if isinstance(info, list):
                 # CHECKME: use grand-parent for the child now !
                 info.append(self.xmlelement_to_object(subelem, parent))
+            elif hasattr(info, key) and key == 'status':
+                # special case to avoid overlap with status() method
+                setattr(info, '_status', self.xmlelement_to_object(subelem, info))
             elif hasattr(info, key) and getattr(info, key) is not None:
                 #print "OOPS ! " + key + " child is already in " + repr(info)
                 # convert to list !?

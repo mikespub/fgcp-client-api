@@ -450,7 +450,11 @@ class FGCPCommand(FGCPProxyServer):
         loadbalancers = proxy.ListEFM(vsys.vsysId, "SLB")
         """
         result = self.do_action('ListEFM', {'vsysId': vsysId, 'efmType': efmType})
-        return result.efms
+        # CHECKME: return child firewall or loadbalancer objects
+        child_efms = []
+        for efm in result.efms:
+            child_efms.append(efm.get_child_object())
+        return child_efms
 
     def GetEFMConfiguration(self, vsysId, efmId, configurationName, configurationXML=None):
         """Generic method for all GetEFMConfiguration methods"""
@@ -458,7 +462,8 @@ class FGCPCommand(FGCPProxyServer):
             result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName})
         else:
             result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName}, {'name': 'configurationXMLFilePath', 'body': configurationXML})
-        return result.efm
+        # CHECKME: return child firewall or loadbalancer object
+        return result.efm.get_child_object()
 
     def GetEFMConfigHandler(self, vsysId, efmId):
         """Handler for specific GetEFMConfiguration methods, see FGCPGetEFMConfigHandler for details
@@ -499,7 +504,8 @@ class FGCPCommand(FGCPProxyServer):
         Usage: efmattr = proxy.GetEFMAttributes(vsys.vsysId, loadbalancer.efmId)
         """
         result = self.do_action('GetEFMAttributes', {'vsysId': vsysId, 'efmId': efmId})
-        return result.efm
+        # CHECKME: return child firewall or loadbalancer object
+        return result.efm.get_child_object()
 
     def UpdateEFMAttribute(self, vsysId, efmId, attributeName, attributeValue):
         result = self.do_action('UpdateEFMAttribute', {'vsysId': vsysId, 'efmId': efmId, 'attributeName': attributeName, 'attributeValue': attributeValue})
@@ -595,17 +601,17 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         """
         Usage: fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
         """
-        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE').firewall
+        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE')
         if hasattr(firewall, 'nat'):
             # CHECKME: remove <rules> part first
-            if isinstance(firewall.nat, list) and len(firewall.nat) > 0:
+            if isinstance(firewall.nat, list) and len(firewall.nat) == 1:
                 return firewall.nat[0]
 
     def fw_dns(self):
         """
         Usage: fw_dns = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_dns()
         """
-        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS').firewall
+        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_DNS')
         if hasattr(firewall, 'dns'):
             return firewall.dns
 
@@ -614,7 +620,7 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         Usage: fw_policies = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(from_zone, to_zone)
         """
         configurationXML = self._proxy._get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
-        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML).firewall
+        firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML)
         if hasattr(firewall, 'directions') and isinstance(firewall.directions, list):
             #return firewall.directions
             # CHECKME: filter out all general rules with id='50000' ?
@@ -645,7 +651,7 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         """
         orders = self._convert_fw_log_orders(orders)
         configurationXML = self._proxy._get_configurationXML('firewall_log', {'num': num, 'orders': orders})
-        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML).firewall
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LOG', configurationXML)
 
     def _convert_fw_log_orders(self, orders=None):
         if orders is None or len(orders) < 1:
@@ -660,13 +666,16 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         Usage: fw_limit_policy = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_limit_policy(from_zone, to_zone)
         """
         configurationXML = self._proxy._get_configurationXML('firewall_limit_policy', {'from': from_zone, 'to': to_zone})
-        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML).firewall
+        result = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_LIMIT_POLICY', configurationXML)
+        # CHECKME: remove <directions> part first
+        if isinstance(result, list) and len(result) == 1:
+            return result[0]
 
     def slb_rule(self):
         """
         Usage: slb_rule = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_rule()
         """
-        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE').loadbalancer
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE')
 
     def slb_try_getaction(self, action):
         try:
@@ -683,28 +692,28 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         Usage: slb_load_stats = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_load()
         """
         # CHECKME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-        #stats = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
+        #stats = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadStatistics
         result = self.slb_try_getaction('SLB_LOAD_STATISTICS')
-        if result is not None and len(result.loadbalancer.loadStatistics) > 0:
+        if result is not None and hasattr(result, 'loadStatistics') and len(result.loadStatistics) == 1:
             # CHECKME: remove <groups> part first
-            return result.loadbalancer.loadStatistics[0]
+            return result.loadStatistics[0]
 
     def slb_error(self):
         """
         Usage: slb_error_stats = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_error()
         """
         # CHECKME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-        #return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
+        #return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').errorStatistics
         result = self.slb_try_getaction('SLB_ERROR_STATISTICS')
-        if result is not None:
-            return result.loadbalancer.errorStatistics
+        if result is not None and hasattr(result, 'errorStatistics'):
+            return result.errorStatistics
 
     def slb_cert_list(self, certCategory=None, detail=None):
         """
         Usage: slb_cert_list = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_cert_list()
         """
         configurationXML = self._proxy._get_configurationXML('loadbalancer_certificate_list', {'certCategory': certCategory, 'detail': detail})
-        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML).loadbalancer
+        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_CERTIFICATE_LIST', configurationXML)
 
     def efm_update(self):
         """
@@ -716,13 +725,13 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         """
         Usage: fw_update = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_update()
         """
-        return self.efm_update().firewall
+        return self.efm_update()
 
     def slb_update(self):
         """
         Usage: slb_update = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_update()
         """
-        return self.efm_update().loadbalancer
+        return self.efm_update()
 
 
 class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
@@ -839,9 +848,7 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
         """
         # TODO: add loadbalancer group builder
         # round-trip support
-        print groups
         groups = self._convert_slb_groups(groups)
-        print groups
         configurationXML = self._proxy._get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
         return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE', configurationXML)
 

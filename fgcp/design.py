@@ -234,11 +234,12 @@ class FGCPDesign(FGCPResource):
         new_firewalls = []
         for firewall in self.vsystem.firewalls:
             # in case we didn't load this from file
-            if getattr(firewall, 'firewall', None) is None:
-                setattr(firewall, 'firewall', FGCPFirewall())
-                setattr(firewall.firewall, 'nat', firewall.get_nat_rules())
-                setattr(firewall.firewall, 'dns', firewall.get_dns())
-                setattr(firewall.firewall, 'directions', firewall.get_policies(from_zone=None, to_zone=None))
+            if getattr(firewall, 'nat', None) is None:
+                firewall.get_nat_rules()
+            if getattr(firewall, 'dns', None) is None:
+                firewall.get_dns()
+            if getattr(firewall, 'directions', None) is None:
+                firewall.get_policies(from_zone=None, to_zone=None)
             new_firewalls.append(firewall)
         self.vsystem.firewalls = new_firewalls
         #from fgcp.resource import FGCPLoadBalancer
@@ -247,8 +248,8 @@ class FGCPDesign(FGCPResource):
             seenip[loadbalancer.slbVip] = loadbalancer.efmName
             #loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
             # in case we didn't load this from file
-            if getattr(loadbalancer, 'loadbalancer', None) is None:
-                setattr(loadbalancer, 'loadbalancer', loadbalancer.get_rules())
+            if getattr(loadbalancer, 'groups', None) is None:
+                loadbalancer.get_rules()
             new_loadbalancers.append(loadbalancer)
         self.vsystem.loadbalancers = new_loadbalancers
         # get mapping of diskimage id to name

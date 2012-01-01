@@ -42,6 +42,7 @@ class FGCPMonitor(FGCPCommand):
     """
     FGCP Monitoring Methods
     """
+    _vdc = None
 
     def FindSystemByName(self, vsysName):
         """

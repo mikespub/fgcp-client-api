@@ -52,14 +52,18 @@ for&nbsp;vserver&nbsp;in&nbsp;vsystem.vservers:<br>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPBackup">FGCPBackup</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPDiskImage">FGCPDiskImage</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>
-</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWDirection">FGCPFWDirection</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWDirection">FGCPFWDirection</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWDns">FGCPFWDns</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWLogOrder">FGCPFWLogOrder</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWNATRule">FGCPFWNATRule</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWPolicy">FGCPFWPolicy</a>
-</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPImageSoftware">FGCPImageSoftware</a>
-</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPPublicIP">FGCPPublicIP</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSLBCCACert">FGCPSLBCCACert</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSLBCause">FGCPSLBCause</a>
@@ -349,75 +353,23 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPEfm-add_cca"><strong>add_cca</strong></a>(self, ccacertNum, filePath)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-add_cert"><strong>add_cert</strong></a>(self, certNum, filePath, passphrase)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-add_group"><strong>add_group</strong></a>(self, **kwargs)</dt><dd><tt>Usage:<br>
-loadbalancer&nbsp;=&nbsp;vsystem.get_loadbalancer('SLB1')<br>
-vserver1&nbsp;=&nbsp;vsystem.get_vserver('WebApp1')<br>
-vserver2&nbsp;=&nbsp;vsystem.get_vserver('WebApp2')<br>
-#&nbsp;add&nbsp;single&nbsp;group<br>
-loadbalancer.<a href="#FGCPEfm-add_group">add_group</a>(id=10,&nbsp;protocol='http',&nbsp;targets=[vserver1,&nbsp;vserver2])</tt></dd></dl>
-
-<dl><dt><a name="FGCPEfm-add_nat_rule"><strong>add_nat_rule</strong></a>(self, **kwargs)</dt><dd><tt>#&nbsp;CHECKME:&nbsp;def&nbsp;<a href="#FGCPEfm-add_nat_rule">add_nat_rule</a>(self,&nbsp;...)&nbsp;?&nbsp;Cfr.&nbsp;in&nbsp;firewall&nbsp;below</tt></dd></dl>
-
 <dl><dt><a name="FGCPEfm-apply_update"><strong>apply_update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-backup"><strong>backup</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-clear_error_stats"><strong>clear_error_stats</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-clear_load_stats"><strong>clear_load_stats</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPEfm-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-delete_cca"><strong>delete_cca</strong></a>(self, ccacertNum)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-delete_cert"><strong>delete_cert</strong></a>(self, certNum, force<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-delete_group"><strong>delete_group</strong></a>(self, id)</dt><dd><tt>Usage:<br>
-loadbalancer&nbsp;=&nbsp;vsystem.get_loadbalancer('SLB1')<br>
-#&nbsp;get&nbsp;all&nbsp;groups<br>
-rules&nbsp;=&nbsp;loadbalancer.<a href="#FGCPEfm-get_rules">get_rules</a>()<br>
-for&nbsp;group&nbsp;in&nbsp;rules.groups:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;group.protocol&nbsp;!=&nbsp;'http':<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>
-&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;delete&nbsp;single&nbsp;group<br>
-&nbsp;&nbsp;&nbsp;&nbsp;loadbalancer.<a href="#FGCPEfm-delete_group">delete_group</a>(group.id)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;break</tt></dd></dl>
 
 <dl><dt><a name="FGCPEfm-destroy"><strong>destroy</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-get_backup"><strong>get_backup</strong></a>(self, backup)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-get_cert_list"><strong>get_cert_list</strong></a>(self, certCategory<font color="#909090">=None</font>, detail<font color="#909090">=None</font>)</dt></dl>
+<dl><dt><a name="FGCPEfm-get_child_object"><strong>get_child_object</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-get_config_handler"><strong>get_config_handler</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-get_dns"><strong>get_dns</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_error_stats"><strong>get_error_stats</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_limit_policies"><strong>get_limit_policies</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_load_stats"><strong>get_load_stats</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_log"><strong>get_log</strong></a>(self, num<font color="#909090">=100</font>, orders<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_nat_rules"><strong>get_nat_rules</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_policies"><strong>get_policies</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-get_rules"><strong>get_rules</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPEfm-get_update_info"><strong>get_update_info</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-initialize_config"><strong>initialize_config</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPEfm-list_backups"><strong>list_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-release_cert"><strong>release_cert</strong></a>(self, certNum)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-restore"><strong>restore</strong></a>(self, backup, wait<font color="#909090">=None</font>)</dt></dl>
 
@@ -425,35 +377,11 @@ for&nbsp;group&nbsp;in&nbsp;rules.groups:<br>
 
 <dl><dt><a name="FGCPEfm-revert_update"><strong>revert_update</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPEfm-set_cert"><strong>set_cert</strong></a>(self, certNum, id)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-set_dns"><strong>set_dns</strong></a>(self, dnstype<font color="#909090">='AUTO'</font>, primary<font color="#909090">=None</font>, secondary<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-set_nat_rules"><strong>set_nat_rules</strong></a>(self, rules<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-set_policies"><strong>set_policies</strong></a>(self, log<font color="#909090">='On'</font>, policies<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-set_rules"><strong>set_rules</strong></a>(self, groups<font color="#909090">=None</font>, force<font color="#909090">=None</font>, webAccelerator<font color="#909090">=None</font>)</dt><dd><tt>Usage:<br>
-loadbalancer&nbsp;=&nbsp;vsystem.get_loadbalancer('SLB1')<br>
-#&nbsp;get&nbsp;all&nbsp;groups<br>
-rules&nbsp;=&nbsp;loadbalancer.<a href="#FGCPEfm-get_rules">get_rules</a>()<br>
-#&nbsp;adapt&nbsp;the&nbsp;group&nbsp;list<br>
-new_groups&nbsp;=&nbsp;[]<br>
-for&nbsp;group&nbsp;in&nbsp;rules.groups:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...<br>
-&nbsp;&nbsp;&nbsp;&nbsp;new_groups.append(group)<br>
-#&nbsp;update&nbsp;all&nbsp;groups<br>
-result&nbsp;=&nbsp;loadbalancer.<a href="#FGCPEfm-set_rules">set_rules</a>(groups=new_groups,&nbsp;force=None,&nbsp;webAccelerator=None)</tt></dd></dl>
-
 <dl><dt><a name="FGCPEfm-start"><strong>start</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-start_maintenance"><strong>start_maintenance</strong></a>(self, id, ipAddress, time<font color="#909090">=None</font>, unit<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-status"><strong>status</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-stop"><strong>stop</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPEfm-stop_maintenance"><strong>stop_maintenance</strong></a>(self, id, ipAddress)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
 
@@ -908,15 +836,38 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPFirewall">class <strong>FGCPFirewall</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPFirewall">class <strong>FGCPFirewall</strong></a>(<a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPFirewall">FGCPFirewall</a></dd>
+<dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPFirewall-get_dns"><strong>get_dns</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_limit_policies"><strong>get_limit_policies</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_log"><strong>get_log</strong></a>(self, num<font color="#909090">=100</font>, orders<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_nat_rules"><strong>get_nat_rules</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_policies"><strong>get_policies</strong></a>(self, from_zone<font color="#909090">=None</font>, to_zone<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-list_nat_rules"><strong>list_nat_rules</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-list_policies"><strong>list_policies</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-set_dns"><strong>set_dns</strong></a>(self, dnstype<font color="#909090">='AUTO'</font>, primary<font color="#909090">=None</font>, secondary<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-set_nat_rules"><strong>set_nat_rules</strong></a>(self, rules<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-set_policies"><strong>set_policies</strong></a>(self, log<font color="#909090">='On'</font>, policies<font color="#909090">=None</font>)</dt></dl>
+
 <hr>
 Data and other attributes defined here:<br>
 <dl><dt><strong>backout</strong> = None</dl>
@@ -933,6 +884,8 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>dns</strong> = None</dl>
 
+<dl><dt><strong>efmType</strong> = 'FW'</dl>
+
 <dl><dt><strong>firmUpdateExist</strong> = None</dl>
 
 <dl><dt><strong>latestVersion</strong> = None</dl>
@@ -941,9 +894,59 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>nat</strong> = None</dl>
 
-<dl><dt><strong>status</strong> = None</dl>
-
 <dl><dt><strong>updateDate</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPFirewall-apply_update"><strong>apply_update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-backup"><strong>backup</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_backup"><strong>get_backup</strong></a>(self, backup)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_child_object"><strong>get_child_object</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_config_handler"><strong>get_config_handler</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-get_update_info"><strong>get_update_info</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-list_backups"><strong>list_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-restore"><strong>restore</strong></a>(self, backup, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-revert_update"><strong>revert_update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-start"><strong>start</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-stop"><strong>stop</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPFirewall-update_config_handler"><strong>update_config_handler</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><strong>backups</strong> = None</dl>
+
+<dl><dt><strong>creator</strong> = None</dl>
+
+<dl><dt><strong>efmId</strong> = None</dl>
+
+<dl><dt><strong>efmName</strong> = None</dl>
+
+<dl><dt><strong>firewall</strong> = None</dl>
+
+<dl><dt><strong>loadbalancer</strong> = None</dl>
+
+<dl><dt><strong>slbVip</strong> = None</dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -953,10 +956,6 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFirewall-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
-<dl><dt><a name="FGCPFirewall-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPFirewall-destroy"><strong>destroy</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPFirewall-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
@@ -965,13 +964,9 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPFirewall-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
 
-<dl><dt><a name="FGCPFirewall-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
-
 <dl><dt><a name="FGCPFirewall-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
-
-<dl><dt><a name="FGCPFirewall-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1072,15 +1067,84 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPLoadBalancer">class <strong>FGCPLoadBalancer</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPLoadBalancer">class <strong>FGCPLoadBalancer</strong></a>(<a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a></dd>
+<dd><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a></dd>
 <dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
 <dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPLoadBalancer-add_cca"><strong>add_cca</strong></a>(self, ccacertNum, filePath)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-add_cert"><strong>add_cert</strong></a>(self, certNum, filePath, passphrase)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-add_group"><strong>add_group</strong></a>(self, **kwargs)</dt><dd><tt>Usage:<br>
+loadbalancer&nbsp;=&nbsp;vsystem.get_loadbalancer('SLB1')<br>
+vserver1&nbsp;=&nbsp;vsystem.get_vserver('WebApp1')<br>
+vserver2&nbsp;=&nbsp;vsystem.get_vserver('WebApp2')<br>
+#&nbsp;add&nbsp;single&nbsp;group<br>
+loadbalancer.<a href="#FGCPLoadBalancer-add_group">add_group</a>(id=10,&nbsp;protocol='http',&nbsp;targets=[vserver1,&nbsp;vserver2])</tt></dd></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-clear_error_stats"><strong>clear_error_stats</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-clear_load_stats"><strong>clear_load_stats</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-delete_cca"><strong>delete_cca</strong></a>(self, ccacertNum)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-delete_cert"><strong>delete_cert</strong></a>(self, certNum, force<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-delete_group"><strong>delete_group</strong></a>(self, groupId)</dt><dd><tt>Usage:<br>
+loadbalancer&nbsp;=&nbsp;vsystem.get_loadbalancer('SLB1')<br>
+#&nbsp;list&nbsp;all&nbsp;groups<br>
+groups&nbsp;=&nbsp;loadbalancer.<a href="#FGCPLoadBalancer-list_groups">list_groups</a>()<br>
+for&nbsp;group&nbsp;in&nbsp;groups:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;group.protocol&nbsp;!=&nbsp;'http':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;delete&nbsp;single&nbsp;group<br>
+&nbsp;&nbsp;&nbsp;&nbsp;loadbalancer.<a href="#FGCPLoadBalancer-delete_group">delete_group</a>(group.id)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;break</tt></dd></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_cert_list"><strong>get_cert_list</strong></a>(self, certCategory<font color="#909090">=None</font>, detail<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_error_stats"><strong>get_error_stats</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_group"><strong>get_group</strong></a>(self, groupId)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_load_stats"><strong>get_load_stats</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_rules"><strong>get_rules</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-list_ccacerts"><strong>list_ccacerts</strong></a>(self, detail<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-list_groups"><strong>list_groups</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-list_servercerts"><strong>list_servercerts</strong></a>(self, detail<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-release_cert"><strong>release_cert</strong></a>(self, certNum)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-set_cert"><strong>set_cert</strong></a>(self, certNum, groupId)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-set_rules"><strong>set_rules</strong></a>(self, groups<font color="#909090">=None</font>, force<font color="#909090">=None</font>, webAccelerator<font color="#909090">=None</font>)</dt><dd><tt>Usage:<br>
+loadbalancer&nbsp;=&nbsp;vsystem.get_loadbalancer('SLB1')<br>
+#&nbsp;get&nbsp;all&nbsp;rules<br>
+rules&nbsp;=&nbsp;loadbalancer.<a href="#FGCPLoadBalancer-get_rules">get_rules</a>()<br>
+#&nbsp;adapt&nbsp;the&nbsp;group&nbsp;list<br>
+new_groups&nbsp;=&nbsp;[]<br>
+for&nbsp;group&nbsp;in&nbsp;rules.groups:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;new_groups.append(group)<br>
+#&nbsp;update&nbsp;all&nbsp;rules<br>
+result&nbsp;=&nbsp;loadbalancer.<a href="#FGCPLoadBalancer-set_rules">set_rules</a>(groups=new_groups,&nbsp;force=None,&nbsp;webAccelerator=None)</tt></dd></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-start_maintenance"><strong>start_maintenance</strong></a>(self, groupId, ipAddress, time<font color="#909090">=None</font>, unit<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-stop_maintenance"><strong>stop_maintenance</strong></a>(self, groupId, ipAddress)</dt></dl>
+
 <hr>
 Data and other attributes defined here:<br>
 <dl><dt><strong>backout</strong> = None</dl>
@@ -1094,6 +1158,8 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>configUpdateExist</strong> = None</dl>
 
 <dl><dt><strong>currentVersion</strong> = None</dl>
+
+<dl><dt><strong>efmType</strong> = 'SLB'</dl>
 
 <dl><dt><strong>errorStatistics</strong> = None</dl>
 
@@ -1113,11 +1179,61 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>srcType</strong> = None</dl>
 
-<dl><dt><strong>status</strong> = None</dl>
-
 <dl><dt><strong>updateDate</strong> = None</dl>
 
 <dl><dt><strong>webAccelerator</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><a name="FGCPLoadBalancer-apply_update"><strong>apply_update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-backup"><strong>backup</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_backup"><strong>get_backup</strong></a>(self, backup)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_child_object"><strong>get_child_object</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_config_handler"><strong>get_config_handler</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-get_update_info"><strong>get_update_info</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-list_backups"><strong>list_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-restore"><strong>restore</strong></a>(self, backup, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-retrieve"><strong>retrieve</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-revert_update"><strong>revert_update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-start"><strong>start</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-status"><strong>status</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-stop"><strong>stop</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPLoadBalancer-update_config_handler"><strong>update_config_handler</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>:<br>
+<dl><dt><strong>backups</strong> = None</dl>
+
+<dl><dt><strong>creator</strong> = None</dl>
+
+<dl><dt><strong>efmId</strong> = None</dl>
+
+<dl><dt><strong>efmName</strong> = None</dl>
+
+<dl><dt><strong>firewall</strong> = None</dl>
+
+<dl><dt><strong>loadbalancer</strong> = None</dl>
+
+<dl><dt><strong>slbVip</strong> = None</dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
@@ -1127,10 +1243,6 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPLoadBalancer-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
 
-<dl><dt><a name="FGCPLoadBalancer-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="FGCPLoadBalancer-destroy"><strong>destroy</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPLoadBalancer-getid"><strong>getid</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
@@ -1139,13 +1251,9 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPLoadBalancer-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
 
-<dl><dt><a name="FGCPLoadBalancer-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
-
 <dl><dt><a name="FGCPLoadBalancer-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
-
-<dl><dt><a name="FGCPLoadBalancer-update"><strong>update</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
@@ -1705,14 +1813,6 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPSLBGroup-add_target"><strong>add_target</strong></a>(self, **kwargs)</dt></dl>
-
-<dl><dt><a name="FGCPSLBGroup-get_target"><strong>get_target</strong></a>(self, serverId)</dt></dl>
-
-<dl><dt><a name="FGCPSLBGroup-list_causes"><strong>list_causes</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="FGCPSLBGroup-list_targets"><strong>list_targets</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPSLBGroup-set_defaults"><strong>set_defaults</strong></a>(self)</dt></dl>
 
 <hr>

@@ -78,7 +78,7 @@ class FGCPElement(object):
         depth += 1
         for key in what.__dict__:
             # TODO: skip _caller and _parent for output later ?
-            if key == '_caller' or key == '_parent':
+            if key == '_caller' or key == '_parent' or key == '_status':
                 if isinstance(what.__dict__[key], FGCPResource):
                     L.append('  ' * depth + "%s='%s'," % (key, repr(what.__dict__[key])))
                 elif isinstance(what.__dict__[key], str):
@@ -237,7 +237,8 @@ class FGCPResource(FGCPElement):
     def setparent(self, parent):
         self._parent = parent
         # CHECKME: set the proxy to the parent's proxy too
-        self._proxy = self._parent._proxy
+        if parent is not None and hasattr(parent, '_proxy'):
+            self._proxy = parent._proxy
 
     def getproxy(self):
         if self._proxy is not None:
@@ -248,7 +249,7 @@ class FGCPResource(FGCPElement):
     def merge_attr(self, partial):
         # set missing parts of self with information from partial - do not overwrite
         for key in partial.__dict__:
-            if key.startswith('_'):
+            if key.startswith('_') and key != '_status':
                 continue
             if getattr(self, key, None) is None:
                 setattr(self, key, partial.__dict__[key])
@@ -792,7 +793,7 @@ class FGCPVSystem(FGCPResource):
         # get the right vnet ourselves
         vnet = self.get_vnet(vnet)
         # make a new loadbalancer with the right attributes - vnet returns a string, so no vnet.getid() needed (for now ?)
-        loadbalancer = FGCPEfm(efmType='SLB', efmName=efmName, networkId=vnet)
+        loadbalancer = FGCPLoadBalancer(efmName=efmName, networkId=vnet)
         # set the parent of the loadbalancer to this vsystem !
         loadbalancer.setparent(self)
         # and now create it :-)
@@ -918,11 +919,11 @@ class FGCPVSystem(FGCPResource):
         # get status of firewalls
         for firewall in self.firewalls:
             status = firewall.status()
-            self.show_output('EFM FW:%s:%s' % (firewall.efmName, status))
+            self.show_output('Firewall:%s:%s' % (firewall.efmName, status))
         # get status of loadbalancers
         for loadbalancer in self.loadbalancers:
             status = loadbalancer.status()
-            self.show_output('EFM SLB:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
+            self.show_output('LoadBalancer:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
         # get status of vservers (excl. firewalls and loadbalancers)
         seenId = {}
         for vserver in self.vservers:
@@ -1534,182 +1535,23 @@ class FGCPEfm(FGCPResource):
 
     #=========================================================================
 
-    def initialize_config(self):
-        if self.efmType == 'FW' and getattr(self, 'firewall', None) is None:
-            self.firewall = FGCPFirewall()
-            self.firewall.setparent(self)
-        elif self.efmType == 'SLB' and getattr(self, 'loadbalancer', None) is None:
-            self.loadbalancer = FGCPLoadBalancer()
-            self.loadbalancer.setparent(self)
-
     def get_config_handler(self):
-        # CHECKME: get firewall or loadbalancer directly from config_handler, instead of getting filtered info like firewall.nat[0] etc. ?
         if getattr(self, '_get_handler', None) is None:
-            self.initialize_config()
             setattr(self, '_get_handler', self.getproxy().GetEFMConfigHandler(self.getparentid(), self.getid()))
         return getattr(self, '_get_handler')
 
-    def get_nat_rules(self):
-        # CHECKME: get firewall directly from config_handler ?
-        nat_rules = self.get_config_handler().fw_nat_rule()
-        # CHECKME: merge answer with current firewall ?
-        setattr(self.firewall, 'nat', nat_rules)
-        return nat_rules
-
-    def get_dns(self):
-        dns = self.get_config_handler().fw_dns()
-        # CHECKME: merge answer with current firewall ?
-        setattr(self.firewall, 'dns', dns)
-        return dns
-
-    def get_policies(self, from_zone=None, to_zone=None):
-        if from_zone or to_zone:
-            return self.get_config_handler().fw_policy(from_zone, to_zone)
-        directions = self.get_config_handler().fw_policy()
-        # CHECKME: merge answer with current firewall ?
-        setattr(self.firewall, 'directions', directions)
-        return directions
-
-    def get_log(self, num=100, orders=None):
-        # FIXME: make log order builder !?
-        return self.get_config_handler().fw_log(num, orders)
-
-    def get_limit_policies(self, from_zone=None, to_zone=None):
-        return self.get_config_handler().fw_limit_policy(from_zone, to_zone)
-
-    def get_rules(self):
-        # CHECKME: get loadbalancer directly from config_handler ?
-        rules = self.get_config_handler().slb_rule()
-        # CHECKME: merge answer with current loadbalancer ?
-        self.loadbalancer.merge_attr(rules)
-        return rules
-
-    def get_load_stats(self):
-        load_stats = self.get_config_handler().slb_load()
-        return load_stats
-
-    def get_error_stats(self):
-        error_stats = self.get_config_handler().slb_error()
-        return error_stats
-
-    def get_cert_list(self, certCategory=None, detail=None):
-        if certCategory or detail:
-            return self.get_config_handler().slb_cert_list(certCategory, detail)
-        cert_list = self.get_config_handler().slb_cert_list()
-        # CHECKME: merge answer with current loadbalancer ?
-        self.loadbalancer.merge_attr(cert_list)
-        return cert_list
-
-    def get_update_info(self):
-        if self.efmType == 'FW':
-            update_info = self.get_config_handler().fw_update()
-            # CHECKME: merge answer with current firewall ?
-            self.firewall.merge_attr(update_info)
-            return update_info
-        else:
-            update_info = self.get_config_handler().slb_update()
-            # CHECKME: merge answer with current loadbalancer ?
-            self.loadbalancer.merge_attr(update_info)
-            return update_info
-
-    #=========================================================================
-
     def update_config_handler(self):
         if getattr(self, '_update_handler', None) is None:
-            self.initialize_config()
             setattr(self, '_update_handler', self.getproxy().UpdateEFMConfigHandler(self.getparentid(), self.getid()))
         return getattr(self, '_update_handler')
 
-    def set_nat_rules(self, rules=None):
-        return self.update_config_handler().fw_nat_rule(rules)
+    #=========================================================================
 
-    # CHECKME: def add_nat_rule(self, ...) ? Cfr. in firewall below
-    def add_nat_rule(self, **kwargs):
-        if getattr(self, 'firewall', None) is None or getattr(self.firewall, 'nat', None) is None:
-            self.get_nat_rules()
-
-    def set_dns(self, dnstype='AUTO', primary=None, secondary=None):
-        return self.update_config_handler().fw_dns(dnstype, primary, secondary)
-
-    def set_policies(self, log='On', policies=None):
-        return self.update_config_handler().fw_policy(log, policies)
-
-    def set_rules(self, groups=None, force=None, webAccelerator=None):
-        """Usage:
-        loadbalancer = vsystem.get_loadbalancer('SLB1')
-        # get all groups
-        rules = loadbalancer.get_rules()
-        # adapt the group list
-        new_groups = []
-        for group in rules.groups:
-            ...
-            new_groups.append(group)
-        # update all groups
-        result = loadbalancer.set_rules(groups=new_groups, force=None, webAccelerator=None)
-        """
-        return self.update_config_handler().slb_rule(groups, force, webAccelerator)
-
-    # CHECKME: def add_slb_group(self, ...) here ? Cfr. in loadbalancer below
-    def add_group(self, **kwargs):
-        """Usage:
-        loadbalancer = vsystem.get_loadbalancer('SLB1')
-        vserver1 = vsystem.get_vserver('WebApp1')
-        vserver2 = vsystem.get_vserver('WebApp2')
-        # add single group
-        loadbalancer.add_group(id=10, protocol='http', targets=[vserver1, vserver2])
-        """
-        if getattr(self, 'loadbalancer', None) is None or getattr(self.loadbalancer, 'groups', None) is None:
-            self.get_rules()
-        self.loadbalancer._add_group(**kwargs)
-        if len(self.loadbalancer.groups) > 0:
-            return self.set_rules(groups=self.loadbalancer.groups, webAccelerator=self.loadbalancer.webAccelerator)
-
-    def delete_group(self, id):
-        """Usage:
-        loadbalancer = vsystem.get_loadbalancer('SLB1')
-        # get all groups
-        rules = loadbalancer.get_rules()
-        for group in rules.groups:
-            if group.protocol != 'http':
-                continue
-            # delete single group
-            loadbalancer.delete_group(group.id)
-            break
-        """
-        if getattr(self, 'loadbalancer', None) is None or getattr(self.loadbalancer, 'groups', None) is None:
-            self.get_rules()
-        self.loadbalancer._delete_group(id)
-        return self.set_rules(groups=self.loadbalancer.groups, webAccelerator=self.loadbalancer.webAccelerator)
-
-    def clear_load_stats(self):
-        return self.update_config_handler().slb_load_clear()
-
-    def clear_error_stats(self):
-        return self.update_config_handler().slb_error_clear()
-
-    def add_cert(self, certNum, filePath, passphrase):
-        return self.update_config_handler().slb_cert_add(certNum, filePath, passphrase)
-
-    def set_cert(self, certNum, id):
-        return self.update_config_handler().slb_cert_set(certNum, id)
-
-    def release_cert(self, certNum):
-        return self.update_config_handler().slb_cert_release(certNum)
-
-    def delete_cert(self, certNum, force=None):
-        return self.update_config_handler().slb_cert_delete(certNum, force)
-
-    def add_cca(self, ccacertNum, filePath):
-        return self.update_config_handler().slb_cca_add(ccacertNum, filePath)
-
-    def delete_cca(self, ccacertNum):
-        return self.update_config_handler().slb_cca_delete(ccacertNum)
-
-    def start_maintenance(self, id, ipAddress, time=None, unit=None):
-        return self.update_config_handler().slb_start_maint(id, ipAddress, time, unit)
-
-    def stop_maintenance(self, id, ipAddress):
-        return self.update_config_handler().slb_stop_maint(id, ipAddress)
+    def get_update_info(self):
+        update_info = self.get_config_handler().fw_update()
+        # CHECKME: merge answer with current firewall/loadbalancer ?
+        self.merge_attr(update_info)
+        return update_info
 
     def apply_update(self):
         return self.update_config_handler().efm_update()
@@ -1717,11 +1559,52 @@ class FGCPEfm(FGCPResource):
     def revert_update(self):
         return self.update_config_handler().efm_backout()
 
+    #=========================================================================
 
-class FGCPFirewall(FGCPResource):
+    def get_child_object(self):
+        # CHECKME: get child firewall or loadbalancer object and merge EFM attributes
+        if isinstance(self, FGCPFirewall) or isinstance(self, FGCPLoadBalancer):
+            # we're already a firewall or loadbalancer
+            return self
+        if self.efmType == 'FW':
+            if getattr(self, 'firewall', None) is None:
+                # create new firewall
+                setattr(self, 'firewall', FGCPFirewall())
+            # check if we have the right child object
+            if not isinstance(self.firewall, FGCPFirewall):
+                # return whatever this is, e.g. str for logs or list for limit_policies
+                return self.firewall
+            # set attributes of EFM in firewall
+            for key in self.__dict__:
+                if key == 'firewall':
+                    continue
+                setattr(self.firewall, key, self.__dict__[key])
+            # move one step up in the hierarchy
+            self.firewall.setparent(self._parent)
+            # return firewall
+            return self.firewall
+        elif self.efmType == 'SLB':
+            if getattr(self, 'loadbalancer', None) is None:
+                # create new loadbalancer
+                setattr(self, 'loadbalancer', FGCPLoadBalancer())
+            if not isinstance(self.loadbalancer, FGCPLoadBalancer):
+                # return whatever this is, e.g. ???
+                return self.loadbalancer
+            # set attributes of EFM in loadbalancer
+            for key in self.__dict__:
+                if key == 'loadbalancer':
+                    continue
+                setattr(self.loadbalancer, key, self.__dict__[key])
+            # move one step up in the hierarchy
+            self.loadbalancer.setparent(self._parent)
+            # return loadbalancer
+            return self.loadbalancer
+
+
+class FGCPFirewall(FGCPEfm):
+    efmType = 'FW'
     # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
-    _idname = None
-    status = None
+    _status = None
     nat = None
     dns = None
     directions = None
@@ -1735,9 +1618,58 @@ class FGCPFirewall(FGCPResource):
     backout = None
     currentVersion = None
 
-    def _list_directions(self):
-        # CHECKME: call get_policies() if needed ?
-        return getattr(self, 'directions', [])
+    def list_nat_rules(self):
+        if self.nat is None:
+            self.get_nat_rules()
+        return self.nat
+
+    def get_nat_rules(self):
+        # CHECKME: merge answer with current firewall ?
+        self.nat = self.get_config_handler().fw_nat_rule()
+        if self.nat is None:
+            self.nat = []
+        return self.nat
+
+    def set_nat_rules(self, rules=None):
+        result = self.update_config_handler().fw_nat_rule(rules)
+        return result
+
+    def _add_nat_rule(self, **kwargs):
+        if getattr(self, 'nat', None) is None:
+            self.get_nat_rules()
+        #nat_rule = FGCPNATRule(publicIp='80.70.163.172', snapt='true', privateIp='192.168.0.211')
+        nat_rule = FGCPNATRule(**kwargs)
+        # set the parent of the nat_rule to this firewall
+        #nat_rule.setparent(self)
+        self.nat.append(nat_rule)
+        # TODO: send update to proxy
+
+    def get_dns(self):
+        # CHECKME: merge answer with current firewall ?
+        self.dns = self.get_config_handler().fw_dns()
+        return self.dns
+
+    def set_dns(self, dnstype='AUTO', primary=None, secondary=None):
+        result = self.update_config_handler().fw_dns(dnstype, primary, secondary)
+        self.dns = None
+        return result
+
+    def list_policies(self):
+        if self.directions is None:
+            self.get_policies()
+        return self.directions
+
+    def get_policies(self, from_zone=None, to_zone=None):
+        if from_zone or to_zone:
+            return self.get_config_handler().fw_policy(from_zone, to_zone)
+        # CHECKME: merge answer with current firewall ?
+        self.directions = self.get_config_handler().fw_policy()
+        return self.directions
+
+    def set_policies(self, log='On', policies=None):
+        result = self.update_config_handler().fw_policy(log, policies)
+        self.directions = None
+        return result
 
     def _add_direction(self, **kwargs):
         if self.directions is None:
@@ -1747,21 +1679,18 @@ class FGCPFirewall(FGCPResource):
         # set the parent of the direction to this firewall
         #direction.setparent(self)
         self.directions.append(direction)
+        # TODO: send update to proxy
 
-    def _list_nat_rules(self):
-        # CHECKME: call get_nat_rules() if needed ?
-        return getattr(self, 'nat', [])
+    def get_log(self, num=100, orders=None):
+        # FIXME: make log order builder !?
+        return self.get_config_handler().fw_log(num, orders)
 
-    def _add_nat_rule(self, **kwargs):
-        #nat_rule = FGCPNATRule(publicIp='80.70.163.172', snapt='true', privateIp='192.168.0.211')
-        nat_rule = FGCPNATRule(**kwargs)
-        # set the parent of the nat_rule to this firewall
-        #nat_rule.setparent(self)
-        self.nat.append(nat_rule)
+    def get_limit_policies(self, from_zone=None, to_zone=None):
+        return self.get_config_handler().fw_limit_policy(from_zone, to_zone)
 
 
 class FGCPFWNATRule(FGCPResource):
-    _idname = None
+    _idname = 'publicIp'
     publicIp = None
     privateIp = None
     snapt = None
@@ -1832,11 +1761,11 @@ class FGCPFWLogOrder(FGCPResource):
             setattr(self, key.replace('_zone', ''), kwargs[key])
 
 
-class FGCPLoadBalancer(FGCPResource):
-    # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
-    _idname = 'ipAddress'
+class FGCPLoadBalancer(FGCPEfm):
+    efmType = 'SLB'
     ipAddress = None
-    status = None
+    # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
+    _status = None
     webAccelerator = None
     groups = None
     loadStatistics = None
@@ -1854,42 +1783,179 @@ class FGCPLoadBalancer(FGCPResource):
     backout = None
     currentVersion = None
 
-    def _list_groups(self):
-        # CHECKME: call get_rules() if needed ?
-        return getattr(self, 'groups', [])
-
-    def _get_group(self, id):
-        id = str(id)
-        for group in self._list_groups():
-            if group.id == id:
-                return group
-
-    def _add_group(self, **kwargs):
+    def get_rules(self):
+        # CHECKME: get loadbalancer directly from config_handler ?
+        rules = self.get_config_handler().slb_rule()
+        # CHECKME: merge answer with current loadbalancer ?
+        self.merge_attr(rules)
         if self.groups is None:
             self.groups = []
+        return rules
+
+    def set_rules(self, groups=None, force=None, webAccelerator=None):
+        """Usage:
+        loadbalancer = vsystem.get_loadbalancer('SLB1')
+        # get all rules
+        rules = loadbalancer.get_rules()
+        # adapt the group list
+        new_groups = []
+        for group in rules.groups:
+            ...
+            new_groups.append(group)
+        # update all rules
+        result = loadbalancer.set_rules(groups=new_groups, force=None, webAccelerator=None)
+        """
+        result = self.update_config_handler().slb_rule(groups, force, webAccelerator)
+        # CHECKME: invalidate list of groups to be sure
+        self.groups = None
+        return result
+
+    def list_groups(self):
+        if self.groups is None:
+            self.get_rules()
+        return self.groups
+
+    def get_group(self, groupId):
+        # support resource or id
+        if isinstance(groupId, FGCPSLBGroup):
+            return groupId.retrieve()
+        if not isinstance(groupId, str):
+            groupId = str(groupId)
+        groups = self.list_groups()
+        for group in groups:
+            if groupId == group.id:
+                return group.retrieve()
+        raise FGCPResourceError('ILLEGAL_SLB_GROUP', 'Invalid groupId %s' % groupId, self)
+
+    def add_group(self, **kwargs):
+        """Usage:
+        loadbalancer = vsystem.get_loadbalancer('SLB1')
+        vserver1 = vsystem.get_vserver('WebApp1')
+        vserver2 = vsystem.get_vserver('WebApp2')
+        # add single group
+        loadbalancer.add_group(id=10, protocol='http', targets=[vserver1, vserver2])
+        """
+        if self.groups is None:
+            self.get_rules()
         #group = FGCPSLBGroup(id=10, protocol='http', port1=80, targets=[], ...)
         group = FGCPSLBGroup(**kwargs)
         # set the parent of the group to this loadbalancer
         #group.setparent(self)
         # CHECKME: set default values depending on protocol
         group.set_defaults()
+        if len(group.targets) < 1:
+            raise FGCPResourceError('ILLEGAL_SLB_GROUP', 'You need to specify at least one target vserver for this group', self)
         self.groups.append(group)
+        if len(self.groups) > 0:
+            result = self.set_rules(groups=self.groups, webAccelerator=self.webAccelerator)
+            # CHECKME: invalidate list of groups to be sure
+            self.groups = None
+            return result
 
-    def _delete_group(self, id):
-        id = str(id)
+    def _add_group_target(self, groupId, serverId):
+        pass
+
+    def _delete_group_target(self, groupId, serverId):
+        pass
+
+    def delete_group(self, groupId):
+        """Usage:
+        loadbalancer = vsystem.get_loadbalancer('SLB1')
+        # list all groups
+        groups = loadbalancer.list_groups()
+        for group in groups:
+            if group.protocol != 'http':
+                continue
+            # delete single group
+            loadbalancer.delete_group(group.id)
+            break
+        """
+        groupId = self.get_group(groupId).id
         new_groups = []
-        for group in self._list_groups():
-            if group.id != id:
+        for group in self.list_groups():
+            if groupId != group.id:
                 new_groups.append(group)
         self.groups = new_groups
+        result = self.set_rules(groups=self.groups, webAccelerator=self.webAccelerator)
+        # CHECKME: invalidate list of groups to be sure
+        self.groups = None
+        return result
 
-    def _list_servercerts(self):
-        # CHECKME: call get_cert_list() if needed ?
-        return getattr(self, 'servercerts', [])
+    def get_load_stats(self):
+        load_stats = self.get_config_handler().slb_load()
+        return load_stats
 
-    def _list_ccacerts(self):
-        # CHECKME: call get_cert_list() if needed ?
-        return getattr(self, 'ccacerts', [])
+    def clear_load_stats(self):
+        return self.update_config_handler().slb_load_clear()
+
+    def get_error_stats(self):
+        error_stats = self.get_config_handler().slb_error()
+        return error_stats
+
+    def clear_error_stats(self):
+        return self.update_config_handler().slb_error_clear()
+
+    def list_servercerts(self, detail=None):
+        if detail:
+            return self.get_config_handler().slb_cert_list('server', detail)
+        if self.servercerts is None:
+            self.get_cert_list()
+        return self.servercerts
+
+    def get_cert_list(self, certCategory=None, detail=None):
+        if certCategory or detail:
+            return self.get_config_handler().slb_cert_list(certCategory, detail)
+        cert_list = self.get_config_handler().slb_cert_list()
+        # CHECKME: merge answer with current loadbalancer ?
+        self.merge_attr(cert_list)
+        if self.servercerts is None:
+            self.servercerts = []
+        if self.ccacerts is None:
+            self.ccacerts = []
+        return cert_list
+
+    def add_cert(self, certNum, filePath, passphrase):
+        result = self.update_config_handler().slb_cert_add(certNum, filePath, passphrase)
+        # CHECKME: invalidate list of servercerts to be sure
+        self.servercerts = None
+        return result
+
+    def set_cert(self, certNum, groupId):
+        return self.update_config_handler().slb_cert_set(certNum, groupId)
+
+    def release_cert(self, certNum):
+        return self.update_config_handler().slb_cert_release(certNum)
+
+    def delete_cert(self, certNum, force=None):
+        result = self.update_config_handler().slb_cert_delete(certNum, force)
+        # CHECKME: invalidate list of servercerts to be sure
+        self.servercerts = None
+        return result
+
+    def list_ccacerts(self, detail=None):
+        if detail:
+            return self.get_config_handler().slb_cert_list('cca', detail)
+        if self.ccacerts is None:
+            self.get_cert_list()
+        return self.ccacerts
+
+    def add_cca(self, ccacertNum, filePath):
+        result = self.update_config_handler().slb_cca_add(ccacertNum, filePath)
+        # CHECKME: invalidate list of ccacerts to be sure
+        self.ccacerts = None
+        return result
+
+    def delete_cca(self, ccacertNum):
+        result = self.update_config_handler().slb_cca_delete(ccacertNum)
+        # CHECKME: invalidate list of ccacerts to be sure
+        self.ccacerts = None
+        return result
+
+    def start_maintenance(self, groupId, ipAddress, time=None, unit=None):
+        return self.update_config_handler().slb_start_maint(groupId, ipAddress, time, unit)
+
+    def stop_maintenance(self, groupId, ipAddress):
+        return self.update_config_handler().slb_stop_maint(groupId, ipAddress)
 
 
 class FGCPSLBGroup(FGCPResource):
@@ -1955,15 +2021,15 @@ class FGCPSLBGroup(FGCPResource):
         self.id = str(self.id)
         self.targets = new_targets
 
-    def list_targets(self):
+    def _list_targets(self):
         return getattr(self, 'targets', [])
 
-    def get_target(self, serverId):
-        for target in self.list_targets():
+    def _get_target(self, serverId):
+        for target in self._list_targets():
             if target.serverId == serverId:
                 return target
 
-    def add_target(self, **kwargs):
+    def _add_target(self, **kwargs):
         if self.targets is None:
             self.targets = []
         #target = FGCPSLBTarget(serverId=serverId, port1=port1, port2=port2)
@@ -1972,7 +2038,16 @@ class FGCPSLBGroup(FGCPResource):
         #target.setparent(self)
         self.targets.append(target)
 
-    def list_causes(self):
+    def _delete_target(self, serverId):
+        serverId = self._get_target(serverId).serverId
+        targets = self._list_targets()
+        new_targets = []
+        for target in targets:
+            if serverId != target.serverId:
+                new_targets.append(target)
+        self.targets = new_targets
+
+    def _list_causes(self):
         return getattr(self, 'causes', [])
 
 
@@ -1983,6 +2058,7 @@ class FGCPSLBTarget(FGCPResource):
     serverName = None
     port1 = None
     port2 = None
+    # CHECKME: this returns an attribute 'status' which may be in conflict with the default status() method !
     status = None
     peak = None
     now = None
@@ -1991,6 +2067,7 @@ class FGCPSLBTarget(FGCPResource):
 class FGCPSLBCause(FGCPResource):
     _idname = 'cat'
     cat = None
+    # CHECKME: this returns an attribute 'status' which may be in conflict with the default status() method !
     status = None
     before = None
     current = None
