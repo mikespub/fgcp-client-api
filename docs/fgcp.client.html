@@ -18,7 +18,12 @@ from&nbsp;fgcp.client&nbsp;import&nbsp;<a href="#FGCPClient">FGCPClient</a><br>
 client&nbsp;=&nbsp;<a href="#FGCPClient">FGCPClient</a>('client.pem',&nbsp;'uk')<br>
 &nbsp;<br>
 #&nbsp;Call&nbsp;custom&nbsp;client&nbsp;methods<br>
-client.ShowSystemStatus()</tt></p>
+client.ShowSystemStatus()<br>
+&nbsp;<br>
+The&nbsp;client&nbsp;methods&nbsp;below&nbsp;are&nbsp;organized&nbsp;by&nbsp;client&nbsp;role,&nbsp;i.e.&nbsp;Monitor,&nbsp;Operator,&nbsp;Designer&nbsp;and&nbsp;Client.<br>
+&nbsp;<br>
+Note:&nbsp;with&nbsp;version&nbsp;1.0.x&nbsp;and&nbsp;later&nbsp;of&nbsp;the&nbsp;library,&nbsp;most&nbsp;of&nbsp;these&nbsp;client&nbsp;methods&nbsp;can&nbsp;now&nbsp;directly&nbsp;be<br>
+replaced&nbsp;by&nbsp;corresponding&nbsp;resource&nbsp;actions.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -100,59 +105,124 @@ for&nbsp;vsys&nbsp;in&nbsp;vsystems:<br>
 </dl>
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPDesigner">FGCPDesigner</a>:<br>
-<dl><dt><a name="FGCPClient-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Configure&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPClient-LoadSystemDesign">LoadSystemDesign</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>Configure&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPClient-LoadSystemDesign">LoadSystemDesign</a>()<br>
+&nbsp;<br>
+#design&nbsp;=&nbsp;vdc.get_vsystem_design()<br>
+#design.load_file(filePath)<br>
+design.build_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed<br>
+&nbsp;<br>
+vsysId&nbsp;=&nbsp;vdc.create_vsystem(vsysName,&nbsp;vsysdescriptorName,&nbsp;wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSystem&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
+<dl><dt><a name="FGCPClient-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSystem&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs<br>
+&nbsp;<br>
+vdc.destroy_vsystem(vsysName,&nbsp;wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName</tt></dd></dl>
+<dl><dt><a name="FGCPClient-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName<br>
+&nbsp;<br>
+diskimage&nbsp;=&nbsp;vdc.get_diskimage(diskimageName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-FindServerTypeByName"><strong>FindServerTypeByName</strong></a>(self, name)</dt><dd><tt>Find&nbsp;ServerType&nbsp;by&nbsp;name&nbsp;-&nbsp;CHECKME:&nbsp;do&nbsp;we&nbsp;actually&nbsp;need&nbsp;this&nbsp;for&nbsp;<a href="#FGCPClient-CreateVServer">CreateVServer</a>()&nbsp;?</tt></dd></dl>
+<dl><dt><a name="FGCPClient-FindServerTypeByName"><strong>FindServerTypeByName</strong></a>(self, name)</dt><dd><tt>Find&nbsp;ServerType&nbsp;by&nbsp;name<br>
+&nbsp;<br>
+servertype&nbsp;=&nbsp;vdc.get_servertype(name)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-FindVSYSDescriptorByName"><strong>FindVSYSDescriptorByName</strong></a>(self, vsysdescriptorName)</dt><dd><tt>Find&nbsp;VSYSDescriptor&nbsp;by&nbsp;vsysdescriptorName</tt></dd></dl>
+<dl><dt><a name="FGCPClient-FindVSYSDescriptorByName"><strong>FindVSYSDescriptorByName</strong></a>(self, vsysdescriptorName)</dt><dd><tt>Find&nbsp;VSYSDescriptor&nbsp;by&nbsp;vsysdescriptorName<br>
+&nbsp;<br>
+vsysdescriptor&nbsp;=&nbsp;vdc.get_vsysdescriptor(vsysdescriptorName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Load&nbsp;VSystem&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPClient-ConfigureSystem">ConfigureSystem</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPClient-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Load&nbsp;VSystem&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPClient-ConfigureSystem">ConfigureSystem</a>()<br>
+&nbsp;<br>
+design&nbsp;=&nbsp;vdc.get_vsystem_design()<br>
+design.load_file(filePath)<br>
+#design.build_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSystem&nbsp;design&nbsp;to&nbsp;file</tt></dd></dl>
+<dl><dt><a name="FGCPClient-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSystem&nbsp;design&nbsp;to&nbsp;file<br>
+&nbsp;<br>
+design&nbsp;=&nbsp;vdc.get_vsystem_design()<br>
+design.load_vsystem(vsysName)<br>
+design.save_file(filePath)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:<br>
-<dl><dt><a name="FGCPClient-AttachPublicIPAndWait"><strong>AttachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Attach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;attached</tt></dd></dl>
+<dl><dt><a name="FGCPClient-AttachPublicIPAndWait"><strong>AttachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Attach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;attached<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;publicip.attach(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-BackupVDiskAndWait"><strong>BackupVDiskAndWait</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Take&nbsp;Backup&nbsp;of&nbsp;VDisk&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;finished&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-BackupVDiskAndWait"><strong>BackupVDiskAndWait</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Take&nbsp;Backup&nbsp;of&nbsp;VDisk&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;finished&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vdisk.backup(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.backup(wait=True)<br>
+for&nbsp;vdisk&nbsp;in&nbsp;vserver.list_vdisks():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;vdisk.backup(wait=True)<br>
+result&nbsp;=&nbsp;vserver.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space</tt></dd></dl>
+<dl><dt><a name="FGCPClient-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vdisk.cleanup_backups(max_num=100,&nbsp;max_age=None)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached</tt></dd></dl>
+<dl><dt><a name="FGCPClient-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;publicip.detach(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;loadbalancer.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)<br>
+&nbsp;<br>
+vsystem.boot(wait=True)<br>
+vsystem.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;loadbalancer.stop(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)<br>
+&nbsp;<br>
+vsystem.stop(wait=True)<br>
+vsystem.shutdown(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+<dl><dt><a name="FGCPClient-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.stop(wait=True,&nbsp;force=None)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-check_status"><strong>check_status</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;other&nbsp;than&nbsp;pass_status</tt></dd></dl>
+<dl><dt><a name="FGCPClient-check_status"><strong>check_status</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;other&nbsp;than&nbsp;pass_status<br>
+&nbsp;<br>
+Obsolete&nbsp;-&nbsp;included&nbsp;in&nbsp;resource&nbsp;actions</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-wait_for_status"><strong>wait_for_status</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-wait_for_status"><strong>wait_for_status</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)<br>
+&nbsp;<br>
+Obsolete&nbsp;-&nbsp;included&nbsp;in&nbsp;resource&nbsp;actions</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>:<br>
-<dl><dt><a name="FGCPClient-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPClient-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName<br>
+&nbsp;<br>
+vsystem&nbsp;=&nbsp;vdc.get_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)<br>
+&nbsp;<br>
+vsystems&nbsp;=&nbsp;vdc.list_vsystems()<br>
+inventory&nbsp;=&nbsp;vsystem.get_inventory()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+status&nbsp;=&nbsp;vsystem.get_status()</tt></dd></dl>
 
-<dl><dt><a name="FGCPClient-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPClient-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+vdc.show_vsystem_status()<br>
+vsystem.<a href="#FGCPClient-show_status">show_status</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-getvdc"><strong>getvdc</strong></a>(self)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -360,6 +430,8 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 
 <dl><dt><strong>locale</strong> = 'en'</dl>
 
+<dl><dt><strong>region</strong> = 'de'</dl>
+
 <dl><dt><strong>timezone</strong> = 'Central European Time'</dl>
 
 <dl><dt><strong>uri</strong> = '/ovissapi/endpoint'</dl>
@@ -445,59 +517,124 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPDesigner-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Configure&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPDesigner-LoadSystemDesign">LoadSystemDesign</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ConfigureSystem"><strong>ConfigureSystem</strong></a>(self, vsysName, systemDesign, verbose<font color="#909090">=None</font>)</dt><dd><tt>Configure&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;some&nbsp;systemDesign&nbsp;-&nbsp;see&nbsp;<a href="#FGCPDesigner-LoadSystemDesign">LoadSystemDesign</a>()<br>
+&nbsp;<br>
+#design&nbsp;=&nbsp;vdc.get_vsystem_design()<br>
+#design.load_file(filePath)<br>
+design.build_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CreateSystem"><strong>CreateSystem</strong></a>(self, vsysName, vsysdescriptorName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;VSystem&nbsp;based&nbsp;on&nbsp;descriptor&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;deployed<br>
+&nbsp;<br>
+vsysId&nbsp;=&nbsp;vdc.create_vsystem(vsysName,&nbsp;vsysdescriptorName,&nbsp;wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSystem&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-DestroySystem"><strong>DestroySystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Destroy&nbsp;VSystem&nbsp;after&nbsp;stopping&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs<br>
+&nbsp;<br>
+vdc.destroy_vsystem(vsysName,&nbsp;wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-FindDiskImageByName"><strong>FindDiskImageByName</strong></a>(self, diskimageName)</dt><dd><tt>Find&nbsp;DiskImage&nbsp;by&nbsp;diskimageName<br>
+&nbsp;<br>
+diskimage&nbsp;=&nbsp;vdc.get_diskimage(diskimageName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-FindServerTypeByName"><strong>FindServerTypeByName</strong></a>(self, name)</dt><dd><tt>Find&nbsp;ServerType&nbsp;by&nbsp;name&nbsp;-&nbsp;CHECKME:&nbsp;do&nbsp;we&nbsp;actually&nbsp;need&nbsp;this&nbsp;for&nbsp;<a href="#FGCPDesigner-CreateVServer">CreateVServer</a>()&nbsp;?</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-FindServerTypeByName"><strong>FindServerTypeByName</strong></a>(self, name)</dt><dd><tt>Find&nbsp;ServerType&nbsp;by&nbsp;name<br>
+&nbsp;<br>
+servertype&nbsp;=&nbsp;vdc.get_servertype(name)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-FindVSYSDescriptorByName"><strong>FindVSYSDescriptorByName</strong></a>(self, vsysdescriptorName)</dt><dd><tt>Find&nbsp;VSYSDescriptor&nbsp;by&nbsp;vsysdescriptorName</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-FindVSYSDescriptorByName"><strong>FindVSYSDescriptorByName</strong></a>(self, vsysdescriptorName)</dt><dd><tt>Find&nbsp;VSYSDescriptor&nbsp;by&nbsp;vsysdescriptorName<br>
+&nbsp;<br>
+vsysdescriptor&nbsp;=&nbsp;vdc.get_vsysdescriptor(vsysdescriptorName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Load&nbsp;VSystem&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPDesigner-ConfigureSystem">ConfigureSystem</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-LoadSystemDesign"><strong>LoadSystemDesign</strong></a>(self, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Load&nbsp;VSystem&nbsp;design&nbsp;from&nbsp;file,&nbsp;for&nbsp;use&nbsp;e.g.&nbsp;in&nbsp;<a href="#FGCPDesigner-ConfigureSystem">ConfigureSystem</a>()<br>
+&nbsp;<br>
+design&nbsp;=&nbsp;vdc.get_vsystem_design()<br>
+design.load_file(filePath)<br>
+#design.build_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>TODO:&nbsp;Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSystem&nbsp;design&nbsp;to&nbsp;file</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-SaveSystemDesign"><strong>SaveSystemDesign</strong></a>(self, vsysName, filePath, verbose<font color="#909090">=None</font>)</dt><dd><tt>Save&nbsp;(fixed&nbsp;parts&nbsp;of)&nbsp;VSystem&nbsp;design&nbsp;to&nbsp;file<br>
+&nbsp;<br>
+design&nbsp;=&nbsp;vdc.get_vsystem_design()<br>
+design.load_vsystem(vsysName)<br>
+design.save_file(filePath)</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPOperator">FGCPOperator</a>:<br>
-<dl><dt><a name="FGCPDesigner-AttachPublicIPAndWait"><strong>AttachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Attach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;attached</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-AttachPublicIPAndWait"><strong>AttachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Attach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;attached<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;publicip.attach(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-BackupVDiskAndWait"><strong>BackupVDiskAndWait</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Take&nbsp;Backup&nbsp;of&nbsp;VDisk&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;finished&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-BackupVDiskAndWait"><strong>BackupVDiskAndWait</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Take&nbsp;Backup&nbsp;of&nbsp;VDisk&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;finished&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vdisk.backup(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.backup(wait=True)<br>
+for&nbsp;vdisk&nbsp;in&nbsp;vserver.list_vdisks():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;vdisk.backup(wait=True)<br>
+result&nbsp;=&nbsp;vserver.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vdisk.cleanup_backups(max_num=100,&nbsp;max_age=None)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;publicip.detach(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;loadbalancer.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)<br>
+&nbsp;<br>
+vsystem.boot(wait=True)<br>
+vsystem.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;loadbalancer.stop(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)<br>
+&nbsp;<br>
+vsystem.stop(wait=True)<br>
+vsystem.shutdown(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.stop(wait=True,&nbsp;force=None)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-check_status"><strong>check_status</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;other&nbsp;than&nbsp;pass_status</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-check_status"><strong>check_status</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;other&nbsp;than&nbsp;pass_status<br>
+&nbsp;<br>
+Obsolete&nbsp;-&nbsp;included&nbsp;in&nbsp;resource&nbsp;actions</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-wait_for_status"><strong>wait_for_status</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-wait_for_status"><strong>wait_for_status</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)<br>
+&nbsp;<br>
+Obsolete&nbsp;-&nbsp;included&nbsp;in&nbsp;resource&nbsp;actions</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>:<br>
-<dl><dt><a name="FGCPDesigner-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName<br>
+&nbsp;<br>
+vsystem&nbsp;=&nbsp;vdc.get_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)<br>
+&nbsp;<br>
+vsystems&nbsp;=&nbsp;vdc.list_vsystems()<br>
+inventory&nbsp;=&nbsp;vsystem.get_inventory()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+status&nbsp;=&nbsp;vsystem.get_status()</tt></dd></dl>
 
-<dl><dt><a name="FGCPDesigner-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPDesigner-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+vdc.show_vsystem_status()<br>
+vsystem.<a href="#FGCPDesigner-show_status">show_status</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPDesigner-getvdc"><strong>getvdc</strong></a>(self)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -705,6 +842,8 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 
 <dl><dt><strong>locale</strong> = 'en'</dl>
 
+<dl><dt><strong>region</strong> = 'de'</dl>
+
 <dl><dt><strong>timezone</strong> = 'Central European Time'</dl>
 
 <dl><dt><strong>uri</strong> = '/ovissapi/endpoint'</dl>
@@ -730,13 +869,25 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPMonitor-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName<br>
+&nbsp;<br>
+vsystem&nbsp;=&nbsp;vdc.get_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)<br>
+&nbsp;<br>
+vsystems&nbsp;=&nbsp;vdc.list_vsystems()<br>
+inventory&nbsp;=&nbsp;vsystem.get_inventory()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+status&nbsp;=&nbsp;vsystem.get_status()</tt></dd></dl>
 
-<dl><dt><a name="FGCPMonitor-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPMonitor-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+vdc.show_vsystem_status()<br>
+vsystem.<a href="#FGCPMonitor-show_status">show_status</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPMonitor-getvdc"><strong>getvdc</strong></a>(self)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -944,6 +1095,8 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 
 <dl><dt><strong>locale</strong> = 'en'</dl>
 
+<dl><dt><strong>region</strong> = 'de'</dl>
+
 <dl><dt><strong>timezone</strong> = 'Central European Time'</dl>
 
 <dl><dt><strong>uri</strong> = '/ovissapi/endpoint'</dl>
@@ -970,41 +1123,84 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FGCPOperator-AttachPublicIPAndWait"><strong>AttachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Attach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;attached</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-AttachPublicIPAndWait"><strong>AttachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Attach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;attached<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;publicip.attach(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-BackupVDiskAndWait"><strong>BackupVDiskAndWait</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Take&nbsp;Backup&nbsp;of&nbsp;VDisk&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;finished&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-BackupVDiskAndWait"><strong>BackupVDiskAndWait</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Take&nbsp;Backup&nbsp;of&nbsp;VDisk&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;finished&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vdisk.backup(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-BackupVServerAndRestart"><strong>BackupVServerAndRestart</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Backup&nbsp;all&nbsp;VDisks&nbsp;of&nbsp;a&nbsp;VServer&nbsp;and&nbsp;restart&nbsp;the&nbsp;VServer&nbsp;(this&nbsp;might&nbsp;take&nbsp;a&nbsp;while)<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.backup(wait=True)<br>
+for&nbsp;vdisk&nbsp;in&nbsp;vserver.list_vdisks():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;vdisk.backup(wait=True)<br>
+result&nbsp;=&nbsp;vserver.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-CleanupBackups"><strong>CleanupBackups</strong></a>(self, vsysId, vdiskId<font color="#909090">=None</font>)</dt><dd><tt>Clean&nbsp;up&nbsp;old&nbsp;VDisk&nbsp;backups&nbsp;e.g.&nbsp;to&nbsp;minimize&nbsp;disk&nbsp;space<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vdisk.cleanup_backups(max_num=100,&nbsp;max_age=None)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-DetachPublicIPAndWait"><strong>DetachPublicIPAndWait</strong></a>(self, vsysId, publicIp)</dt><dd><tt>Detach&nbsp;PublicIP&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;detached<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;publicip.detach(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StartEFMAndWait"><strong>StartEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Start&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;loadbalancer.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StartSystem"><strong>StartSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Start&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;started&nbsp;(TODO:&nbsp;define&nbsp;start&nbsp;sequence&nbsp;for&nbsp;vservers)<br>
+&nbsp;<br>
+vsystem.boot(wait=True)<br>
+vsystem.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StartVServerAndWait"><strong>StartVServerAndWait</strong></a>(self, vsysId, vserverId)</dt><dd><tt>Start&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;running<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.start(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StopEFMAndWait"><strong>StopEFMAndWait</strong></a>(self, vsysId, efmId)</dt><dd><tt>Stop&nbsp;EFM&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;loadbalancer.stop(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StopSystem"><strong>StopSystem</strong></a>(self, vsysName, verbose<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VSystem&nbsp;and&nbsp;wait&nbsp;until&nbsp;all&nbsp;VServers&nbsp;and&nbsp;EFMs&nbsp;are&nbsp;stopped&nbsp;(TODO:&nbsp;define&nbsp;stop&nbsp;sequence&nbsp;for&nbsp;vservers)<br>
+&nbsp;<br>
+vsystem.stop(wait=True)<br>
+vsystem.shutdown(wait=True)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-StopVServerAndWait"><strong>StopVServerAndWait</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt><dd><tt>Stop&nbsp;VServer&nbsp;and&nbsp;wait&nbsp;until&nbsp;it's&nbsp;stopped<br>
+&nbsp;<br>
+result&nbsp;=&nbsp;vserver.stop(wait=True,&nbsp;force=None)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-check_status"><strong>check_status</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;other&nbsp;than&nbsp;pass_status</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-check_status"><strong>check_status</strong></a>(self, done_status, pass_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;to&nbsp;see&nbsp;if&nbsp;we&nbsp;get&nbsp;done_status,&nbsp;or&nbsp;something&nbsp;other&nbsp;than&nbsp;pass_status<br>
+&nbsp;<br>
+Obsolete&nbsp;-&nbsp;included&nbsp;in&nbsp;resource&nbsp;actions</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-wait_for_status"><strong>wait_for_status</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-wait_for_status"><strong>wait_for_status</strong></a>(self, done_status, wait_status, status_method, *args)</dt><dd><tt>Call&nbsp;status_method(*args)&nbsp;repeatedly&nbsp;until&nbsp;we&nbsp;get&nbsp;done_status&nbsp;(or&nbsp;something&nbsp;else&nbsp;than&nbsp;wait_status)<br>
+&nbsp;<br>
+Obsolete&nbsp;-&nbsp;included&nbsp;in&nbsp;resource&nbsp;actions</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.client.html#FGCPMonitor">FGCPMonitor</a>:<br>
-<dl><dt><a name="FGCPOperator-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-FindSystemByName"><strong>FindSystemByName</strong></a>(self, vsysName)</dt><dd><tt>Find&nbsp;VSystem&nbsp;by&nbsp;vsysName<br>
+&nbsp;<br>
+vsystem&nbsp;=&nbsp;vdc.get_vsystem(vsysName)</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetSystemInventory"><strong>GetSystemInventory</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;VSystem&nbsp;inventory&nbsp;(by&nbsp;vsysName)<br>
+&nbsp;<br>
+vsystems&nbsp;=&nbsp;vdc.list_vsystems()<br>
+inventory&nbsp;=&nbsp;vsystem.get_inventory()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-GetSystemStatus"><strong>GetSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, verbose<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+status&nbsp;=&nbsp;vsystem.get_status()</tt></dd></dl>
 
-<dl><dt><a name="FGCPOperator-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)</tt></dd></dl>
+<dl><dt><a name="FGCPOperator-ShowSystemStatus"><strong>ShowSystemStatus</strong></a>(self, vsysName<font color="#909090">=None</font>, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt><dd><tt>Show&nbsp;the&nbsp;overall&nbsp;system&nbsp;status&nbsp;(for&nbsp;a&nbsp;particular&nbsp;VSystem)<br>
+&nbsp;<br>
+vdc.show_vsystem_status()<br>
+vsystem.<a href="#FGCPOperator-show_status">show_status</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPOperator-getvdc"><strong>getvdc</strong></a>(self)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPCommand">fgcp.command.FGCPCommand</a>:<br>
@@ -1211,6 +1407,8 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <dl><dt><strong>key_file</strong> = 'client.pem'</dl>
 
 <dl><dt><strong>locale</strong> = 'en'</dl>
+
+<dl><dt><strong>region</strong> = 'de'</dl>
 
 <dl><dt><strong>timezone</strong> = 'Central European Time'</dl>
 

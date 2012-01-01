@@ -265,8 +265,8 @@ def test_vsys_efm_backup(proxy, vsysId, efmId, backupId):
     """
     Extended Function Module (EFM) Backup
     """
-    #result = proxy.RestoreEFM(vsysId, efmId, backup.backupId)
-    #result = proxy.DestroyEFMBackup(vsysId, efmId, backup.backupId)
+    #result = proxy.RestoreEFM(vsysId, efmId, backupId)
+    #result = proxy.DestroyEFMBackup(vsysId, efmId, backupId)
     pass
 
 

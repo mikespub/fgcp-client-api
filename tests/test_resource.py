@@ -129,12 +129,12 @@ def test_vsystem(vsystem):
 
     test_vserver_vdisk(vserver, vdisk)
 
-    publicips = vsystem.list_publicips()
-    for publicip in vsystem.publicips:
+    loadbalancers = vsystem.list_loadbalancers()
+    for loadbalancer in vsystem.loadbalancers:
         pass
-    publicip = vsystem.get_publicip(publicips[0].address)
-    test_publicip(publicip)
-    #result = vsystem.allocate_publicip(wait=True)
+    loadbalancer = vsystem.get_loadbalancer('SLB1')
+    test_loadbalancer(loadbalancer)
+    #result = vsystem.create_loadbalancer('SLB2', 'DMZ', wait=True)
 
     firewalls = vsystem.list_firewalls()
     for firewall in vsystem.firewalls:
@@ -142,12 +142,12 @@ def test_vsystem(vsystem):
     firewall = vsystem.get_firewall('Firewall')
     test_firewall(firewall)
 
-    loadbalancers = vsystem.list_loadbalancers()
-    for loadbalancer in vsystem.loadbalancers:
+    publicips = vsystem.list_publicips()
+    for publicip in vsystem.publicips:
         pass
-    loadbalancer = vsystem.get_loadbalancer('SLB1')
-    test_loadbalancer(loadbalancer)
-    #result = vsystem.create_loadbalancer('SLB2', 'DMZ', wait=True)
+    publicip = vsystem.get_publicip(publicips[0].address)
+    test_publicip(publicip)
+    #result = vsystem.allocate_publicip(wait=True)
 
     vnets = vsystem.list_vnets()
     for vnet in vsystem.vnets:

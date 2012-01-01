@@ -25,6 +25,11 @@ client = FGCPClient('client.pem', 'uk')
 
 # Call custom client methods
 client.ShowSystemStatus()
+
+The client methods below are organized by client role, i.e. Monitor, Operator, Designer and Client.
+
+Note: with version 1.0.x and later of the library, most of these client methods can now directly be
+replaced by corresponding resource actions.
 """
 
 import time
@@ -44,169 +49,88 @@ class FGCPMonitor(FGCPCommand):
     """
     _vdc = None
 
+    def getvdc(self):
+        if self._vdc is None:
+            # get a new VDataCenter object
+            from fgcp.resource import FGCPVDataCenter
+            self._vdc = FGCPVDataCenter()
+            # link it to the current client
+            self._vdc._proxy = self
+            # cosmetic for repr(vdc)
+            self._vdc.config = '%s:%s' % (self.region, self.key_file)
+        return self._vdc
+
     def FindSystemByName(self, vsysName):
         """
         Find VSystem by vsysName
+
+        vsystem = vdc.get_vsystem(vsysName)
         """
-        vsystems = self.ListVSYS()
-        if len(vsystems) < 1:
-            raise FGCPClientError('RESOURCE_NOT_FOUND', 'No VSystems are defined')
-        for vsys in vsystems:
-            if vsysName == vsys.vsysName:
-                return vsys
-        raise FGCPClientError('ILLEGAL_VSYS_ID', 'Invalid vsysName %s' % vsysName)
+        vdc = self.getvdc()
+        return vdc.get_vsystem(vsysName)
 
     def GetSystemInventory(self, vsysName=None):
         """
         Get VSystem inventory (by vsysName)
+
+        vsystems = vdc.list_vsystems()
+        inventory = vsystem.get_inventory()
         """
+        vdc = self.getvdc()
         if vsysName is None:
-            vsystems = self.ListVSYS()
-        else:
-            vsystems = []
-            vsystems.append(self.FindSystemByName(vsysName))
-        if len(vsystems) < 1:
-            self.show_output('No VSystems are defined')
-            return
-        inventory = {}
-        inventory['vsys'] = {}
-        for vsys in vsystems:
-            # get configuration for this vsys
-            vsys = self.GetVSYSConfiguration(vsys.vsysId)
-            # CHECKME: set vsys as parent for next commands ?
-            self._caller = vsys
-            setattr(vsys, 'firewalls', self.ListEFM(vsys.vsysId, "FW"))
-            setattr(vsys, 'loadbalancers', self.ListEFM(vsys.vsysId, "SLB"))
-            # CHECKME: remove firewalls and loadbalancers from vservers list
-            seenId = {}
-            if hasattr(vsys, 'firewalls'):
-                for firewall in vsys.firewalls:
-                    seenId[firewall.efmId] = 1
-            if hasattr(vsys, 'loadbalancers'):
-                for loadbalancer in vsys.loadbalancers:
-                    seenId[loadbalancer.efmId] = 1
-            todo = []
-            if hasattr(vsys, 'vservers'):
-                for vserver in vsys.vservers:
-                    # skip servers we've already seen, i.e. firewalls and loadbalancers
-                    if vserver.vserverId in seenId:
-                        continue
-                    todo.append(vserver)
-            setattr(vsys, 'vservers', todo)
-            if not hasattr(vsys, 'vdisks'):
-                setattr(vsys, 'vdisks', [])
-            if not hasattr(vsys, 'publicips'):
-                setattr(vsys, 'publicips', [])
-            inventory['vsys'][vsys.vsysName] = vsys
-            # TODO: transform vsys ?
-        #publicips = self.ListPublicIP()
-        # TODO: add vsysdescriptors, diskimages etc. ?
-        if vsysName is None:
+            inventory = {}
+            inventory['vsys'] = {}
+            vsystems = vdc.list_vsystems()
+            if len(vsystems) < 1:
+                self.show_output('No VSystems are defined')
+                return
+            for vsystem in vsystems:
+                inventory['vsys'][vsystem.vsysName] = vsystem.get_inventory()
             return inventory
         else:
-            return inventory['vsys'][vsysName]
+            vsystem = vdc.get_vsystem(vsysName)
+            return vsystem.get_inventory()
 
     def GetSystemStatus(self, vsysName=None, verbose=None):
         """
         Get the overall system status (for a particular VSystem)
+
+        status = vsystem.get_status()
         """
+        vdc = self.getvdc()
         # set output
         old_verbose = self.set_verbose(verbose)
         if vsysName is None:
             self.show_output('Show System Status for all VSystems')
-            inventory = self.GetSystemInventory()
-        else:
-            self.show_output('Show System Status for VSystem %s' % vsysName)
             inventory = {}
             inventory['vsys'] = {}
-            inventory['vsys'][vsysName] = self.GetSystemInventory(vsysName)
-        if inventory is None or len(inventory['vsys']) < 1:
-            self.show_output('No VSystems are defined')
-            return
-        # CHECKME: keep track of status in new_inventory
-        new_inventory = inventory
-        for name, vsys in inventory['vsys'].iteritems():
-            # get status of vsys overall
-            status = self.GetVSYSStatus(vsys.vsysId)
-            self.show_output('VSystem:%s:%s' % (vsys.vsysName, status))
-            setattr(new_inventory['vsys'][name], 'vsysStatus', status)
-            # get status of public ips
-            new_publicips = []
-            for publicip in vsys.publicips:
-                try:
-                    status = self.GetPublicIPStatus(publicip.address)
-                except:
-                    status = 'UNKNOWN'
-                self.show_output('PublicIP:%s:%s' % (publicip.address, status))
-                setattr(publicip, 'publicipStatus', status)
-                new_publicips.append(publicip)
-            setattr(new_inventory['vsys'][name], 'publicips', new_publicips)
-            # get status of firewalls
-            new_firewalls = []
-            for firewall in vsys.firewalls:
-                status = self.GetEFMStatus(vsys.vsysId, firewall.efmId)
-                self.show_output('Firewall:%s:%s' % (firewall.efmName, status))
-                setattr(firewall, 'efmStatus', status)
-                new_firewalls.append(firewall)
-            setattr(new_inventory['vsys'][name], 'firewalls', new_firewalls)
-            # get status of loadbalancers
-            new_loadbalancers = []
-            for loadbalancer in vsys.loadbalancers:
-                status = self.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
-                self.show_output('LoadBalancer:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
-                setattr(loadbalancer, 'efmStatus', status)
-                new_loadbalancers.append(loadbalancer)
-            setattr(new_inventory['vsys'][name], 'loadbalancers', new_loadbalancers)
-            # get status of vservers (excl. firewalls and loadbalancers)
-            new_vservers = []
-            seenId = {}
-            for vserver in vsys.vservers:
-                status = self.GetVServerStatus(vsys.vsysId, vserver.vserverId)
-                self.show_output('VServer:%s:%s:%s' % (vserver.vserverName, vserver.vnics[0].privateIp, status))
-                setattr(vserver, 'vserverStatus', status)
-                # get status of attached disks
-                new_vdisks = []
-                for vdisk in vserver.vdisks:
-                    status = self.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
-                    self.show_output(':VDisk:%s:%s' % (vdisk.vdiskName, status))
-                    seenId[vdisk.vdiskId] = 1
-                    setattr(vdisk, 'vdiskStatus', status)
-                    new_vdisks.append(vdisk)
-                vserver.vdisks = new_vdisks
-                new_vservers.append(vserver)
-            setattr(new_inventory['vsys'][name], 'vservers', new_vservers)
-            # get status of unattached disks
-            todo = []
-            new_vdisks = []
-            for vdisk in vsys.vdisks:
-                # skip disks we've already seen, i.e. attached to a server
-                if vdisk.vdiskId in seenId:
-                    new_vdisks.append(vdisk)
-                    continue
-                todo.append(vdisk)
-            if len(todo) > 0:
-                self.show_output('Unattached Disks')
-                for vdisk in todo:
-                    status = self.GetVDiskStatus(vsys.vsysId, vdisk.vdiskId)
-                    self.show_output(':VDisk:%s:%s' % (vdisk.vdiskName, status))
-                    seenId[vdisk.vdiskId] = 1
-                    setattr(vdisk, 'vdiskStatus', status)
-                    new_vdisks.append(vdisk)
-            setattr(new_inventory['vsys'][name], 'vdisks', new_vdisks)
-            self.show_output('.')
+            vsystems = vdc.list_vsystems()
+            if len(vsystems) < 1:
+                self.show_output('No VSystems are defined')
+                return
+            for vsystem in vsystems:
+                inventory['vsys'][vsystem.vsysName] = vsystem.get_status()
+        else:
+            vsystem = vdc.get_vsystem(vsysName)
+            inventory = vsystem.get_status()
         # reset output
         self.set_verbose(old_verbose)
-        # return inventory with updated status for each component
-        if vsysName is None:
-            return new_inventory
-        else:
-            return new_inventory['vsys'][vsysName]
+        # return inventory with status
+        return inventory
 
-    def ShowSystemStatus(self, vsysName=None):
+    def ShowSystemStatus(self, vsysName=None, sep='\t'):
         """
         Show the overall system status (for a particular VSystem)
+
+        vdc.show_vsystem_status()
+        vsystem.show_status()
         """
-        self.GetSystemStatus(vsysName, 1)
+        vdc = self.getvdc()
+        if vsysName is None:
+            vdc.show_vsystem_status(sep)
+        else:
+            vsystem = vdc.get_vsystem(vsysName)
+            vsystem.show_status(sep)
 
 
 class FGCPOperator(FGCPMonitor):
@@ -216,6 +140,8 @@ class FGCPOperator(FGCPMonitor):
     def check_status(self, done_status, pass_status, status_method, *args):
         """
         Call status_method(*args) to see if we get done_status, or something other than pass_status
+
+        Obsolete - included in resource actions
         """
         if not hasattr(self, status_method):
             raise FGCPClientError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
@@ -243,6 +169,8 @@ class FGCPOperator(FGCPMonitor):
     def wait_for_status(self, done_status, wait_status, status_method, *args):
         """
         Call status_method(*args) repeatedly until we get done_status (or something else than wait_status)
+
+        Obsolete - included in resource actions
         """
         if not hasattr(self, status_method):
             raise FGCPClientError('ILLEGAL_METHOD', 'Invalid method %s for checking status' % status_method)
@@ -272,217 +200,167 @@ class FGCPOperator(FGCPMonitor):
     def StartVServerAndWait(self, vsysId, vserverId):
         """
         Start VServer and wait until it's running
+
+        result = vserver.start(wait=True)
         """
-        # check current status
-        status = self.check_status('RUNNING', ['STOPPED', 'UNEXPECTED_STOP'], 'GetVServerStatus', vsysId, vserverId)
-        if status is not None:
-            return status
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        vserver = vsystem.get_vserver(vserverId)
         # start vserver
-        result = self.StartVServer(vsysId, vserverId)
-        # wait until starting is done - TODO: add some timeout
-        status = self.wait_for_status('RUNNING', 'STARTING', 'GetVServerStatus', vsysId, vserverId)
+        status = vserver.start(wait=True)
         return status
 
     def StopVServerAndWait(self, vsysId, vserverId, force=None):
         """
         Stop VServer and wait until it's stopped
+
+        result = vserver.stop(wait=True, force=None)
         """
-        # check current status
-        status = self.check_status(['STOPPED', 'UNEXPECTED_STOP'], 'RUNNING', 'GetVServerStatus', vsysId, vserverId)
-        if status is not None:
-            return status
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        vserver = vsystem.get_vserver(vserverId)
         # stop vserver
-        result = self.StopVServer(vsysId, vserverId, force)
-        # wait until stopping is done - TODO: add some timeout
-        status = self.wait_for_status(['STOPPED', 'UNEXPECTED_STOP'], 'STOPPING', 'GetVServerStatus', vsysId, vserverId)
+        status = vserver.stop(wait=True, force=force)
         return status
 
     def StartEFMAndWait(self, vsysId, efmId):
         """
         Start EFM and wait until it's running
+
+        result = loadbalancer.start(wait=True)
         """
-        # check current status
-        status = self.check_status('RUNNING', ['STOPPED', 'UNEXPECTED_STOP'], 'GetEFMStatus', vsysId, efmId)
-        if status is not None:
-            return status
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        try:
+            efm = vsystem.get_loadbalancer(efmId)
+        except:
+            efm = vsystem.get_firewall(efmId)
         # start efm
-        result = self.StartEFM(vsysId, efmId)
-        # wait until starting is done - TODO: add some timeout
-        status = self.wait_for_status('RUNNING', 'STARTING', 'GetEFMStatus', vsysId, efmId)
+        status = efm.start(wait=True)
         return status
 
     def StopEFMAndWait(self, vsysId, efmId):
         """
         Stop EFM and wait until it's stopped
+
+        result = loadbalancer.stop(wait=True)
         """
-        # check current status
-        status = self.check_status(['STOPPED', 'UNEXPECTED_STOP'], 'RUNNING', 'GetEFMStatus', vsysId, efmId)
-        if status is not None:
-            return status
-        # CHECKME: for firewalls, we need to detach the publicIPs first !?
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        try:
+            efm = vsystem.get_loadbalancer(efmId)
+        except:
+            efm = vsystem.get_firewall(efmId)
         # stop efm
-        result = self.StopEFM(vsysId, efmId)
-        # wait until stopping is done - TODO: add some timeout
-        status = self.wait_for_status(['STOPPED', 'UNEXPECTED_STOP'], 'STOPPING', 'GetEFMStatus', vsysId, efmId)
+        status = efm.stop(wait=True)
         return status
 
     def AttachPublicIPAndWait(self, vsysId, publicIp):
         """
         Attach PublicIP and wait until it's attached
+
+        result = publicip.attach(wait=True)
         """
-        # check current status
-        status = self.check_status('ATTACHED', 'DETACHED', 'GetPublicIPStatus', publicIp)
-        if status is not None:
-            return status
-        # attach publicIP
-        result = self.AttachPublicIP(vsysId, publicIp)
-        # wait until attaching is done - TODO: add some timeout
-        status = self.wait_for_status('ATTACHED', 'ATTACHING', 'GetPublicIPStatus', publicIp)
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        ip = vsystem.get_publicip(publicIp)
+        # attach publicip
+        status = ip.attach(wait=True)
         return status
 
     def DetachPublicIPAndWait(self, vsysId, publicIp):
         """
         Detach PublicIP and wait until it's detached
+
+        result = publicip.detach(wait=True)
         """
-        # check current status
-        status = self.check_status('DETACHED', 'ATTACHED', 'GetPublicIPStatus', publicIp)
-        if status is not None:
-            return status
-        # detach publicIP
-        result = self.DetachPublicIP(vsysId, publicIp)
-        # wait until detaching is done - TODO: add some timeout
-        status = self.wait_for_status('DETACHED', 'DETACHING', 'GetPublicIPStatus', publicIp)
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        ip = vsystem.get_publicip(publicIp)
+        # detach publicip
+        status = ip.detach(wait=True)
         return status
 
     def BackupVDiskAndWait(self, vsysId, vdiskId):
         """
         Take Backup of VDisk and wait until it's finished (this might take a while)
+
+        result = vdisk.backup(wait=True)
         """
-        # check current status - CHECKME: we don't return here !
-        status = self.check_status('N/A', ['STOPPED', 'NORMAL'], 'GetVDiskStatus', vsysId, vdiskId)
-        if status is not None:
-            return status
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        vdisk = vsystem.get_vdisk(vdiskId)
         # backup vdisk
-        result = self.BackupVDisk(vsysId, vdiskId)
-        # wait until backup is done - TODO: add some timeout
-        status = self.wait_for_status(['STOPPED', 'NORMAL'], 'BACKUP_ING', 'GetVDiskStatus', vsysId, vdiskId)
+        status = vdisk.backup(wait=True)
         return status
 
     def BackupVServerAndRestart(self, vsysId, vserverId):
         """
         Backup all VDisks of a VServer and restart the VServer (this might take a while)
+
+        result = vserver.backup(wait=True)
+        for vdisk in vserver.list_vdisks():
+            result = vdisk.backup(wait=True)
+        result = vserver.start(wait=True)
         """
-        # stop server and wait
-        status = self.StopVServerAndWait(vsysId, vserverId)
-        if status != 'STOPPED':
-            print 'Unable to stop vserver: %s' % status
-            return status
-        # get server configuration
-        vserver = self.GetVServerConfiguration(vsysId, vserverId)
-        todo = []
-        # the system disk has the same id as the server
-        todo.append(vserver.vserverId)
-        if vserver.vdisks != '':
-            # add other disks if necessary
-            for vdisk in vserver.vdisks:
-                todo.append(vdisk.vdiskId)
-        # backup the different disks
-        for vdiskId in todo:
-            status = self.BackupVDiskAndWait(vsysId, vdiskId)
-            if status != 'STOPPED' and status != 'NORMAL':
-                print 'Unable to backup vdisk %s: %s' % (vdiskId, status)
-                return status
-        # start server and wait
-        status = self.StartVServerAndWait(vsysId, vserverId)
-        if status != 'RUNNING':
-            print 'Unable to start vserver: %s' % status
-            return status
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
+        vserver = vsystem.get_vserver(vserverId)
+        # stop server and backup system disk
+        status = vserver.backup(wait=True)
+        # backup other vdisks
+        for vdisk in vserver.list_vdisks():
+            status = vdisk.backup(wait=True)
+        # start server
+        status = vserver.start(wait=True)
         return status
 
     # TODO: set expiration date + max. number
     def CleanupBackups(self, vsysId, vdiskId=None):
         """
         Clean up old VDisk backups e.g. to minimize disk space
+
+        result = vdisk.cleanup_backups(max_num=100, max_age=None)
         """
-        todo = []
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysId)
         if vdiskId is None:
-            vdisks = self.ListVDisk(vsysId)
+            vdisks = vsystem.list_vdisks()
             for vdisk in vdisks:
-                todo.append(vdisk.vdiskId)
+                vdisk.cleanup_backups()
         else:
-            todo.append(vdiskId)
-        for vdiskId in todo:
-            backups = self.ListVDiskBackup(vsysId, vdiskId)
-            if len(backups) > 10:
-                # Sort list of dictionaries: http://stackoverflow.com/questions/652291/sorting-a-list-of-dictionary-values-by-date-in-python
-                #from operator import itemgetter
-                #backups.sort(key=itemgetter('timeval'), reverse=True)
-                # Sort list of objects: http://stackoverflow.com/questions/2338531/python-sorting-a-list-of-objects
-                from operator import attrgetter
-                backups.sort(key=attrgetter('timeval'), reverse=True)
-                # TODO: remove oldest backup(s) ?
-                backup = backups.pop()
-                #self.DestroyVDiskBackup(vsysId, backup['backupId'])
+            vdisk = vsystem.get_vdisk(vdiskId)
+            vdisk.cleanup_backups()
 
     def StartSystem(self, vsysName, verbose=None):
         """
         Start VSystem and wait until all VServers and EFMs are started (TODO: define start sequence for vservers)
+
+        vsystem.boot(wait=True)
+        vsystem.start(wait=True)
         """
-        # Get inventory of the vsys
-        vsys = self.GetSystemInventory(vsysName)
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysName)
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Starting VSystem %s' % vsysName)
-        # CHECKME: start firewall if necessary
-        self.show_output('Start Firewalls')
-        for firewall in vsys.firewalls:
-            self.StartEFMAndWait(vsys.vsysId, firewall.efmId)
-        # CHECKME: attach publicip if necessary
-        self.show_output('Attach PublicIPs')
-        for publicip in vsys.publicips:
-            self.AttachPublicIPAndWait(vsys.vsysId, publicip.address)
-        # CHECKME: start loadbalancers if necessary
-        self.show_output('Start Loadbalancers')
-        for loadbalancer in vsys.loadbalancers:
-            self.StartEFMAndWait(vsys.vsysId, loadbalancer.efmId)
-        # CHECKME: start servers if necessary
-        self.show_output('Start VServers')
-        for vserver in vsys.vservers:
-            self.StartVServerAndWait(vsys.vsysId, vserver.vserverId)
-        self.show_output('Started VSystem %s' % vsysName)
+        vsystem.boot(wait=True)
+        vsystem.start(wait=True)
         # Reset output
         self.set_verbose(old_verbose)
 
     def StopSystem(self, vsysName, verbose=None):
         """
         Stop VSystem and wait until all VServers and EFMs are stopped (TODO: define stop sequence for vservers)
+
+        vsystem.stop(wait=True)
+        vsystem.shutdown(wait=True)
         """
-        # Get system inventory
-        vsys = self.GetSystemInventory(vsysName)
+        vdc = self.getvdc()
+        vsystem = vdc.get_vsystem(vsysName)
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Stopping VSystem %s' % vsysName)
-        # Stop all vservers
-        self.show_output('Stop VServers')
-        for vserver in vsys.vservers:
-            self.show_output(vserver.vserverName)
-            status = self.StopVServerAndWait(vsys.vsysId, vserver.vserverId)
-        # Stop all loadbalancers
-        self.show_output('Stop Loadbalancers')
-        for loadbalancer in vsys.loadbalancers:
-            self.show_output(loadbalancer.efmName)
-            status = self.StopEFMAndWait(vsys.vsysId, loadbalancer.efmId)
-        # Detach publicip - cfr. sequence3 in java sdk
-        self.show_output('Detach PublicIPs')
-        for publicip in vsys.publicips:
-            self.show_output(publicip.address)
-            status = self.DetachPublicIPAndWait(vsys.vsysId, publicip.address)
-        # Stop all firewalls
-        self.show_output('Stop Firewalls')
-        for firewall in vsys.firewalls:
-            self.show_output(firewall.efmName)
-            status = self.StopEFMAndWait(vsys.vsysId, firewall.efmId)
-        self.show_output('Stopped VSystem %s' % vsysName)
+        vsystem.stop(wait=True)
+        vsystem.shutdown(wait=True)
         # Reset output
         self.set_verbose(old_verbose)
 
@@ -494,276 +372,113 @@ class FGCPDesigner(FGCPOperator):
     def FindDiskImageByName(self, diskimageName):
         """
         Find DiskImage by diskimageName
+
+        diskimage = vdc.get_diskimage(diskimageName)
         """
-        # CHECKME: is baseDescriptor always = vsysDescriptorId ?
-        #diskimages = self.ListDiskImage('GENERAL', vsys.baseDescriptor)
-        diskimages = self.ListDiskImage()
-        if len(diskimages) < 1:
-            raise FGCPClientError('RESOURCE_NOT_FOUND', 'No diskimages are defined')
-        for diskimage in diskimages:
-            if diskimageName == diskimage.diskimageName:
-                return diskimage
-        raise FGCPClientError('ILLEGAL_NAME', 'Invalid diskimageName')
+        vdc = self.getvdc()
+        diskimage = vdc.get_diskimage(diskimageName)
+        return diskimage
 
     def FindVSYSDescriptorByName(self, vsysdescriptorName):
         """
         Find VSYSDescriptor by vsysdescriptorName
+
+        vsysdescriptor = vdc.get_vsysdescriptor(vsysdescriptorName)
         """
-        vsysdescriptors = self.ListVSYSDescriptor()
-        if len(vsysdescriptors) < 1:
-            raise FGCPClientError('RESOURCE_NOT_FOUND', 'No vsysdescriptors are defined')
-        for vsysdescriptor in vsysdescriptors:
-            if vsysdescriptorName == vsysdescriptor.vsysdescriptorName:
-                return vsysdescriptor
-        raise FGCPClientError('ILLEGAL_NAME', 'Invalid vsysdescriptorName')
+        vdc = self.getvdc()
+        vsysdescriptor = vdc.get_vsysdescriptor(vsysdescriptorName)
+        return vsysdescriptor
 
     def FindServerTypeByName(self, name):
         """
-        Find ServerType by name - CHECKME: do we actually need this for CreateVServer() ?
+        Find ServerType by name
+
+        servertype = vdc.get_servertype(name)
         """
+        #vdc = self.getvdc()
+        #servertype = vdc.get_servertype(name)
         return name
-        # CHECKME: do all diskimages have the same servertypes (for now) ?
-        # pick some random diskimage to get its servertypes ?
-        diskimage = self.ListDiskImage().pop()
-        servertypes = self.ListServerType(diskimage.diskimageId)
-        if len(servertypes) < 1:
-            raise FGCPClientError('RESOURCE_NOT_FOUND', 'No servertypes are defined')
-        for servertype in servertypes:
-            if name == servertype.name:
-                return servertype
-        raise FGCPClientError('ILLEGAL_NAME', 'Invalid servertype name')
 
     def CreateSystem(self, vsysName, vsysdescriptorName, verbose=None):
         """
         Create VSystem based on descriptor and wait until it's deployed
+
+        vsysId = vdc.create_vsystem(vsysName, vsysdescriptorName, wait=True)
         """
+        vdc = self.getvdc()
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Creating VSystem %s' % vsysName)
-        # Try to find vsys or create it
-        try:
-            vsys = self.FindSystemByName(vsysName)
-        except FGCPClientError:
-            vsysdescriptor = self.FindVSYSDescriptorByName(vsysdescriptorName)
-            vsysId = self.CreateVSYS(vsysdescriptor.vsysdescriptorId, vsysName)
-            self.show_output('Created VSystem %s: %s' % (vsysName, vsysId))
-            # wait until vsys deploying is done - TODO: add some timeout
-            self.wait_for_status('NORMAL', 'DEPLOYING', 'GetVSYSStatus', vsysId)
-            self.show_output('Deployed VSystem %s: %s' % (vsysName, vsysId))
-            pass
-        else:
-            vsysId = vsys.vsysId
-            self.show_output('Existing VSystem %s: %s' % (vsysName, vsysId))
+        # Create VSystem
+        vsysId = vdc.create_vsystem(vsysName, vsysdescriptorName, wait=True)
         # Reset output
         self.set_verbose(old_verbose)
         return vsysId
 
-    def ConfigureSystem(self, vsysName, systemDesign, verbose=None):
-        """
-        TODO: Configure VSystem based on some systemDesign - see LoadSystemDesign()
-        """
-        print 'TODO: Configure VSystem based on some vsysDesign - see LoadSystemDesign()'
-        return
-        # Get inventory of the vsys
-        vsys = self.GetSystemInventory(vsysName)
-        # Set output
-        old_verbose = self.set_verbose(verbose)
-        self.show_output('Configuring VSystem %s' % vsysName)
-        # CHECKME: start firewall if necessary
-        if len(vsys.firewalls) > 0:
-            self.show_output('Start Firewalls')
-            for firewall in vsys.firewalls:
-                self.StartEFMAndWait(vsys.vsysId, firewall.efmId)
-        # CHECKME: allocate publicip if necessary
-        if len(vsys.publicips) < 1:
-            self.show_output('Allocate PublicIP')
-            self.AllocatePublicIP(vsys.vsysId)
-            # CHECKME: we need to wait a bit before retrieving the new list !
-            time.sleep(30)
-            # update list of publicips
-            vsys.publicips = self.ListPublicIP(vsys.vsysId)
-            if len(vsys.publicips) > 0:
-                publicip = vsys.publicips[0]
-                # wait until publicip deploying is done - TODO: add some timeout
-                self.wait_for_status(['DETACHED', 'ATTACHED'], 'DEPLOYING', 'GetPublicIPStatus', publicip.address)
-        # CHECKME: attach publicip if necessary
-        self.show_output('Attach PublicIPs')
-        for publicip in vsys.publicips:
-            self.AttachPublicIPAndWait(vsys.vsysId, publicip.address)
-
-        # TODO: add vserver etc. based on configuration
-        if len(vsys.vservers) < len(vsys.vnets):
-            diskimage = self.FindDiskImageByName('CentOS 5.4 32bit(EN)')
-            print diskimage.diskimageName
-            # CHECKME: do we actually need this for CreateVServer ?
-            servertype = self.FindServerTypeByName('economy')
-            print servertype
-            # TODO CreateVServer
-            self.show_output('Create VServers')
-            idx = 1
-            for vnetId in vsys.vnets:
-                print vnetId
-                # CHECKME: add vservers to the network zone
-                vserverId = self.CreateVServer(vsys.vsysId, 'Server%s' % idx, 'economy', diskimage.diskimageId, vnetId)
-                # wait until vserver deploying is done - TODO: add some timeout
-                status = self.wait_for_status('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsys.vsysId, vserverId)
-                idx += 1
-                vserverId = self.CreateVServer(vsys.vsysId, 'Server%s' % idx, 'economy', diskimage.diskimageId, vnetId)
-                # wait until vserver deploying is done - TODO: add some timeout
-                status = self.wait_for_status('STOPPED', 'DEPLOYING', 'GetVServerStatus', vsys.vsysId, vserverId)
-                idx += 1
-                # CHECKME: add loadbalancer to the DMZ
-                if vnetId.endswith('-DMZ') and len(vsys.loadbalancers) < 1:
-                    self.show_output('Create Loadbalancer')
-                    efmId = self.CreateEFM(vsys.vsysId, 'SLB', 'LoadBalancer', vnetId)
-                    # wait until efm deploying is done - TODO: add some timeout
-                    self.wait_for_status('STOPPED', 'DEPLOYING', 'GetEFMStatus', vsys.vsysId, efmId)
-                    # update list of loadbalancers
-                    vsys.loadbalancers = self.ListEFM(vsys.vsysId, "SLB")
-        self.show_output('Configured VSystem %s' % vsysName)
-        # Reset output
-        self.set_verbose(old_verbose)
-
     def DestroySystem(self, vsysName, verbose=None):
         """
         Destroy VSystem after stopping all VServers and EFMs
-        """
-        # Get system inventory
-        vsys = self.GetSystemInventory(vsysName)
-        # Set output
-        old_verbose = self.set_verbose(verbose)
-        self.show_output('Destroying VSystem %s' % vsysName)
-        # CHECKME: should we stop the VSystem here ?
-        # Destroy the VSystem
-        result = self.DestroyVSYS(vsys.vsysId)
-        self.show_output(result)
-        # TODO: wait until it's really gone ?
-        self.show_output('Destroyed VSystem %s' % vsysName)
-        # Reset output
-        self.set_verbose(old_verbose)
 
-    def SaveSystemDesign(self, vsysName, filePath, verbose=None):
+        vdc.destroy_vsystem(vsysName, wait=True)
         """
-        TODO: Save (fixed parts of) VSystem design to file
-        """
-        # Get system inventory
-        vsys = self.GetSystemInventory(vsysName)
+        vdc = self.getvdc()
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Saving VSystem design for %s to file %s' % (vsysName, filePath))
-        # CHECKME: is description always the name correspoding to baseDescriptor ?
-        seenip = {}
-        # Replace addresses and other variable information
-        idx = 1
-        #new_publicips = []
-        for publicip in vsys.publicips:
-            seenip[publicip.address] = 'publicip.%s' % idx
-            idx += 1
-            #publicip.address = 'xxx.xxx.xxx.xxx'
-            #new_publicips.append(publicip)
-        #vsys.publicips = new_publicips
-        from fgcp.resource import FGCPFirewall
-        new_firewalls = []
-        for firewall in vsys.firewalls:
-            # TODO: Add FW and SLB configurations
-            setattr(firewall, 'firewall', FGCPFirewall())
-            handler = self.GetEFMConfigHandler(vsys.vsysId, firewall.efmId)
-            setattr(firewall.firewall, 'nat', handler.fw_nat_rule())
-            setattr(firewall.firewall, 'dns', handler.fw_dns())
-            setattr(firewall.firewall, 'directions', handler.fw_policy())
-            new_firewalls.append(firewall)
-        vsys.firewalls = new_firewalls
-        #from fgcp.resource import FGCPLoadBalancer
-        new_loadbalancers = []
-        for loadbalancer in vsys.loadbalancers:
-            seenip[loadbalancer.slbVip] = loadbalancer.efmName
-            #loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
-            # TODO: Add FW and SLB configurations
-            handler = self.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId)
-            setattr(loadbalancer, 'loadbalancer', handler.slb_rule())
-            new_loadbalancers.append(loadbalancer)
-        vsys.loadbalancers = new_loadbalancers
-        # Get mapping of diskimage id to name
-        diskimages = self.ListDiskImage()
-        imageid2name = {}
-        for diskimage in diskimages:
-            imageid2name[diskimage.diskimageId] = diskimage.diskimageName
-        new_vservers = []
-        for vserver in vsys.vservers:
-            # CHECKME: use diskimage name as reference across regions !?
-            setattr(vserver, 'diskimageName', imageid2name[vserver.diskimageId])
-            #new_vnics = []
-            for vnic in vserver.vnics:
-                seenip[vnic.privateIp] = vserver.vserverName
-                #vnic.privateIp = 'xxx.xxx.xxx.xxx'
-                #new_vnics.append(vnic)
-            #vserver.vnics = new_vnics
-            #new_vdisks = []
-            #for vdisk in vserver.vdisks:
-            #    new_vdisks.append(vdisk)
-            #vserver.vdisks = new_vdisks
-            new_vservers.append(vserver)
-        vsys.vservers = new_vservers
-        #new_vdisks = []
-        #for vdisk in vsys.vdisks:
-        #    new_vdisks.append(vdisk)
-        #vsys.vdisks = new_vdisks
-        # Prepare for output - FGCPElement().pformat() writes objects initialized with the right values
-        lines = vsys.pformat(vsys)
-        # Replace vsysId and creator everywhere (including Id's)
-        lines = lines.replace(vsys.vsysId, 'DEMO-VSYSTEM')
-        lines = lines.replace(vsys.creator, 'DEMO')
-        # CHECKME: replace ip addresses with names everywhere, including firewall policies and loadbalancer rules
-        for ip in seenip.keys():
-            lines = lines.replace(ip, seenip[ip])
-        # CHECKME: fix from=... issue for firewall policies
-        lines = lines.replace('from=', 'from_zone=')
-        lines = lines.replace('to=', 'to_zone=')
-        # Write configuration to file
-        f = open(filePath, 'wb')
-        f.write(lines)
-        f.close()
-        self.show_output('Saved VSystem design for %s to file %s' % (vsysName, filePath))
+        # Destroy VSystem
+        vdc.destroy_vsystem(vsysName, wait=True)
         # Reset output
         self.set_verbose(old_verbose)
 
     def LoadSystemDesign(self, filePath, verbose=None):
         """
         Load VSystem design from file, for use e.g. in ConfigureSystem()
+
+        design = vdc.get_vsystem_design()
+        design.load_file(filePath)
+        #design.build_vsystem(vsysName)
+        """
+        vdc = self.getvdc()
+        # Set output
+        old_verbose = self.set_verbose(verbose)
+        # Load system design from file
+        design = vdc.get_vsystem_design()
+        design.load_file(filePath)
+        # Reset output
+        self.set_verbose(old_verbose)
+        # Return system design
+        return design
+
+    def ConfigureSystem(self, vsysName, systemDesign, verbose=None):
+        """
+        Configure VSystem based on some systemDesign - see LoadSystemDesign()
+
+        #design = vdc.get_vsystem_design()
+        #design.load_file(filePath)
+        design.build_vsystem(vsysName)
         """
         # Set output
         old_verbose = self.set_verbose(verbose)
-        self.show_output('Loading VSystem design from file %s' % filePath)
-        import os.path
-        if not os.path.exists(filePath):
-            self.show_output('File %s does not seem to exist' % filePath)
-            return
-        f = open(filePath, 'r')
-        lines = f.read()
-        f.close()
-        # Check if we have something we need, i.e. a FGCPSys() instance
-        if not lines.startswith('FGCPVSystem('):
-            self.show_output('File %s does not seem to start with FGCPSystem(' % filePath)
-            return
-        # CHECKME: add line continuations before exec() !?
-        try:
-            from fgcp.resource import FGCPVSystem, FGCPVServer, FGCPVNic, FGCPVDisk, FGCPPublicIP, FGCPEfm, FGCPFirewall, FGCPLoadBalancer
-            from fgcp.resource import FGCPSLBGroup, FGCPSLBTarget, FGCPSLBErrorCause, FGCPFWDirection, FGCPFWPolicy, FGCPFWDns, FGCPFWNATRule
-            # See above - FGCPElement().pformat() writes objects initialized with the right values
-            exec 'vsys = ' + lines.replace("\r\n", "\\\r\n")
-        except:
-            self.show_output('File %s seems to have some syntax errors' % filePath)
-            raise
-        self.show_output('Loaded VSystem design for %s from file %s' % (vsys.vsysName, filePath))
-        try:
-            found = self.FindSystemByName(vsys.vsysName)
-            self.show_output('Caution: you already have a VSystem called %s' % vsys.vsysName)
-        except FGCPClientError:
-            pass
+        # Build VSystem
+        systemDesign.build_vsystem(vsysName)
         # Reset output
         self.set_verbose(old_verbose)
-        # Return system inventory
-        return vsys
+
+    def SaveSystemDesign(self, vsysName, filePath, verbose=None):
+        """
+        Save (fixed parts of) VSystem design to file
+
+        design = vdc.get_vsystem_design()
+        design.load_vsystem(vsysName)
+        design.save_file(filePath)
+        """
+        vdc = self.getvdc()
+        # Set output
+        old_verbose = self.set_verbose(verbose)
+        # Save system design to file
+        design = vdc.get_vsystem_design()
+        design.load_vsystem(vsysName)
+        design.save_file(filePath)
+        # Reset output
+        self.set_verbose(old_verbose)
 
 
 class FGCPClient(FGCPDesigner):

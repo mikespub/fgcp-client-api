@@ -13,21 +13,16 @@ via command-line scripts, web interfaces etc. as you prefer.
 
 .. code:: python
 
-	# Get FGCP client with your certificate in region 'uk'
-	from fgcp.client import FGCPClient
-	client = FGCPClient('client.pem', 'uk')
+	# Connect with your client certificate to region 'uk'
+	from fgcp.resource import FGCPVDataCenter
+	vdc = FGCPVDataCenter('client.pem', 'uk')
 
-	# Backup all VServers in some VSYS
-	vsys = client.GetSystemInventory('Python API Demo System')
-	for vserver in vsys.vservers:
-			client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
-	client.CleanupBackups(vsys.vsysId)
-
-	# Note: you can also use all API commands from FGCPCommand()
-	vsyss = client.ListVSYS()
-	for vsys in vsyss:
-			vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
-			...
+	# Do typical resource actions
+	vsystem = vdc.get_vsystem('Python API Demo System')
+	vsystem.show_status()
+	for vserver in vsystem.vservers:
+		result = vserver.backup(wait=True)
+	...
 
 Note: this client API library provides higher-level Client Methods, intermediate Resource Actions and lower-level API Commands.
 

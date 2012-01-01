@@ -60,6 +60,7 @@ class FGCPConnection:
     """
     host = 'api.globalcloud.de.fujitsu.com'         # updated based on region argument
     key_file = 'client.pem'                         # updated based on key_file argument
+    region = 'de'                                   # updated based on region argument
     locale = 'en'                                   # TODO: make configurable to 'en' or 'jp' ?
     timezone = 'Central European Time'              # updated based on time.tzname[0] or time.timezone
     verbose = 0                                     # normal script output for users:
@@ -101,6 +102,7 @@ class FGCPConnection:
         openssl pkcs12 -in UserCert.p12 -out client.pem -nodes
         """
         self.key_file = key_file
+        self.region = region
         if region in self._regions:
             self.host = self._regions[region]
         self.verbose = verbose
@@ -127,6 +129,7 @@ class FGCPConnection:
             if self._conn is not None and self.host != self._regions[region]:
                 self.close()
             self.host = self._regions[region]
+            self.region = region
 
     def set_conn(self, conn):
         # CHECKME: set connection from elsewhere, e.g. for integration with Apache Libcloud or running on Google App Engine

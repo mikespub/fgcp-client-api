@@ -12,5 +12,208 @@ for vsys in vsystems:
     vsysconfig = api_proxy.GetVSYSConfiguration(vsys.vsysId)
     for vserver in vsysconfig.vservers:
         status = api_proxy.GetVServerStatus(vsys.vsysId, vserver.vserverId)
-    ...</pre><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>. </p><h2><a name="Virtual_Data_Center_(VDC)"></a>Virtual Data Center (VDC)<a href="#Virtual_Data_Center_(VDC)" class="section_anchor"></a></h2><ul><li>client = FGCPCommand(key_file=&#x27;client.pem&#x27;, region=&#x27;de&#x27;, verbose=0, debug=0) </li><li>client.GetSystemUsage(vsysIds=None) </li></ul><h2><a name="Virtual_System_Descriptor_(VSYSDescriptor)"></a>Virtual System Descriptor (VSYSDescriptor)<a href="#Virtual_System_Descriptor_(VSYSDescriptor)" class="section_anchor"></a></h2><ul><li>client.ListVSYSDescriptor() </li><li>client.RegisterPrivateVSYSDescriptor(vsysId, name, description, keyword, vservers) </li><li>client.UnregisterPrivateVSYSDescriptor(vsysDescriptorId) </li><li>client.UnregisterVSYSDescriptor(vsysDescriptorId) </li><li>client.GetVSYSDescriptorAttributes(vsysDescriptorId) </li><li>client.UpdateVSYSDescriptorAttribute(vsysDescriptorId, updateLcId, attributeName, attributeValue) </li><li>client.GetVSYSDescriptorConfiguration(vsysDescriptorId) </li></ul><h2><a name="Virtual_System_(VSYS)"></a>Virtual System (VSYS)<a href="#Virtual_System_(VSYS)" class="section_anchor"></a></h2><ul><li>client.ListVSYS() </li><li>client.CreateVSYS(vsysDescriptorId, vsysName) </li><li>client.DestroyVSYS(vsysId) </li><li>client.GetVSYSAttributes(vsysId) </li><li>client.UpdateVSYSAttribute(vsysId, attributeName, attributeValue) </li><li>client.GetVSYSConfiguration(vsysId) </li><li>client.UpdateVSYSConfiguration(vsysId, configurationName, configurationValue) </li><li>client.GetVSYSStatus(vsysId) </li></ul><h2><a name="Virtual_Server_(VServer)"></a>Virtual Server (VServer)<a href="#Virtual_Server_(VServer)" class="section_anchor"></a></h2><ul><li>client.ListVServer(vsysId) </li><li>client.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId) </li><li>client.StartVServer(vsysId, vserverId) </li><li>client.StopVServer(vsysId, vserverId, force=None) </li><li>client.DestroyVServer(vsysId, vserverId) </li><li>client.GetVServerAttributes(vsysId, vserverId) </li><li>client.UpdateVServerAttribute(vsysId, vserverId, attributeName, attributeValue) </li><li>client.GetVServerConfiguration(vsysId, vserverId) </li><li>client.GetVServerInitialPassword(vsysId, vserverId) </li><li>client.GetVServerStatus(vsysId, vserverId) </li></ul><h2><a name="Virtual_Disk_(VDisk)"></a>Virtual Disk (VDisk)<a href="#Virtual_Disk_(VDisk)" class="section_anchor"></a></h2><ul><li>client.ListVDisk(vsysId) </li><li>client.CreateVDisk(vsysId, vdiskName, size) </li><li>client.AttachVDisk(vsysId, vserverId, vdiskId) </li><li>client.DetachVDisk(vsysId, vserverId, vdiskId) </li><li>client.DestroyVDisk(vsysId, vdiskId) </li><li>client.GetVDiskAttributes(vsysId, vdiskId) </li><li>client.UpdateVDiskAttribute(vsysId, vdiskId, attributeName, attributeValue) </li><li>client.GetVDiskStatus(vsysId, vdiskId) </li><li>client.ListVDiskBackup(vsysId, vdiskId, timeZone=None, countryCode=None) </li><li>client.BackupVDisk(vsysId, vdiskId) </li><li>client.RestoreVDisk(vsysId, backupId) </li><li>client.DestroyVDiskBackup(vsysId, backupId) </li></ul><h2><a name="Public_IP_(PublicIP)"></a>Public IP (PublicIP)<a href="#Public_IP_(PublicIP)" class="section_anchor"></a></h2><ul><li>client.ListPublicIP(vsysId=None) </li><li>client.AllocatePublicIP(vsysId) </li><li>client.AttachPublicIP(vsysId, publicIp) </li><li>client.DetachPublicIP(vsysId, publicIp) </li><li>client.FreePublicIP(vsysId, publicIp) </li><li>client.GetPublicIPAttributes(publicIp) </li><li>client.GetPublicIPStatus(publicIp) </li></ul><h2><a name="Virtual_Network_Interface_(VNIC)"></a>Virtual Network Interface (VNIC)<a href="#Virtual_Network_Interface_(VNIC)" class="section_anchor"></a></h2><h2><a name="Virtual_Network_(VNet)"></a>Virtual Network (VNet)<a href="#Virtual_Network_(VNet)" class="section_anchor"></a></h2><h2><a name="Address_Range_(_AddressRange_)"></a>Address Range (AddressRange)<a href="#Address_Range_(_AddressRange_)" class="section_anchor"></a></h2><ul><li>client.GetAddressRange() </li><li>client.CreateAddressPool(pipFrom=None, pipTo=None) </li><li>client.AddAddressRange(pipFrom, pipTo) </li><li>client.DeleteAddressRange(pipFrom, pipTo) </li></ul><h2><a name="Disk_Image_(_DiskImage_)"></a>Disk Image (DiskImage)<a href="#Disk_Image_(_DiskImage_)" class="section_anchor"></a></h2><ul><li>client.ListDiskImage(serverCategory=None, vsysDescriptorId=None) </li><li>client.RegisterPrivateDiskImage(vserverId, name, description) </li><li>client.UnregisterDiskImage(diskImageId) </li><li>client.GetDiskImageAttributes(diskImageId) </li><li>client.UpdateDiskImageAttribute(diskImageId, updateLcId, attributeName, attributeValue) </li></ul><h2><a name="Server_Type_(_ServerType_)"></a>Server Type (ServerType)<a href="#Server_Type_(_ServerType_)" class="section_anchor"></a></h2><ul><li>client.ListServerType(diskImageId) </li></ul><h2><a name="Extended_Function_Module_(EFM)"></a>Extended Function Module (EFM)<a href="#Extended_Function_Module_(EFM)" class="section_anchor"></a></h2><ul><li>client.ListEFM(vsysId, efmType) </li><li>client.CreateEFM(vsysId, efmType, efmName, networkId) </li><li>client.StartEFM(vsysId, efmId) </li><li>client.StopEFM(vsysId, efmId) </li><li>client.DestroyEFM(vsysId, efmId) </li><li>client.GetEFMAttributes(vsysId, efmId) </li><li>client.GetEFMConfigHandler(vsysId, efmId) </li><li>client.GetEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None) </li><li>client.UpdateEFMAttribute(vsysId, efmId, attributeName, attributeValue) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId) </li><li>client.UpdateEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None, filePath=None) </li><li>client.GetEFMStatus(vsysId, efmId) </li><li>client.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None) </li><li>client.BackupEFM(vsysId, efmId) </li><li>client.RestoreEFM(vsysId, efmId, backupId) </li><li>client.DestroyEFMBackup(vsysId, efmId, backupId) </li><li>client.GetEFMConfigHandler(vsysId, efmId).efm_update() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).efm_update() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).efm_backout() </li></ul><h2><a name="EFM_Firewall_(FW)"></a>EFM Firewall (FW)<a href="#EFM_Firewall_(FW)" class="section_anchor"></a></h2><ul><li>client.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=None) </li><li>client.GetEFMConfigHandler(vsysId, efmId).fw_dns() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype=&#x27;AUTO&#x27;, primary=None, secondary=None) </li><li>client.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log=&#x27;On&#x27;, directions=None) </li><li>client.GetEFMConfigHandler(vsysId, efmId).fw_log(num=None, orders=None) </li><li>client.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None) </li><li>client.GetEFMConfigHandler(vsysId, efmId).fw_update() </li></ul><h2><a name="EFM_Load_Balancer_(SLB)"></a>EFM Load Balancer (SLB)<a href="#EFM_Load_Balancer_(SLB)" class="section_anchor"></a></h2><ul><li>client.GetEFMConfigHandler(vsysId, efmId).slb_rule() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=None, force=None, webAccelerator=None) </li><li>client.GetEFMConfigHandler(vsysId, efmId).slb_load() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_load_clear() </li><li>client.GetEFMConfigHandler(vsysId, efmId).slb_error() </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_error_clear() </li><li>client.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=None, detail=None) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_add(certNum, filePath, passphrase) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_set(certNum, id) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_release(certNum) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_delete(certNum, force=None) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_add(ccacertNum, filePath) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_delete(ccacertNum) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_start_maint(id, ipAddress, time=None, unit=None) </li><li>client.UpdateEFMConfigHandler(vsysId, efmId).slb_stop_maint(id, ipAddress) </li><li>client.GetEFMConfigHandler(vsysId, efmId).slb_update() </li></ul><h2><a name="Other_(SSL-VPN)"></a>Other (SSL-VPN)<a href="#Other_(SSL-VPN)" class="section_anchor"></a></h2><ul><li>client.StandByConsole(vsysId, networkId) </li></ul><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>. </p>
+    ...</pre><p><ul><li><a href="#API_Commands_for_the_Fujitsu_Global_Cloud_Platform_(FGCP)">API Commands for the Fujitsu Global Cloud Platform (FGCP)</a></li><ul><li><a href="#Virtual_Data_Center_(VDC)">Virtual Data Center (VDC)</a></li><li><a href="#Virtual_System_(VSYS)">Virtual System (VSYS)</a></li><li><a href="#Virtual_Server_(VServer)">Virtual Server (VServer)</a></li><li><a href="#Virtual_Disk_(VDisk)">Virtual Disk (VDisk)</a></li><li><a href="#Virtual_Disk_Backup">Virtual Disk Backup</a></li><li><a href="#Virtual_Network_Interface_(VNIC)">Virtual Network Interface (VNIC)</a></li><li><a href="#Extended_Function_Module_(EFM)">Extended Function Module (EFM)</a></li><li><a href="#EFM_Firewall_(FW)">EFM Firewall (FW)</a></li><li><a href="#EFM_LoadBalancer_(SLB)">EFM LoadBalancer (SLB)</a></li><li><a href="#Virtual_Network_(VNet)">Virtual Network (VNet)</a></li><li><a href="#Public_IP_(PublicIP)">Public IP (PublicIP)</a></li><li><a href="#Address_Range_(_AddressRange_)">Address Range ( AddressRange )</a></li><li><a href="#Virtual_System_Descriptor_(VSYSDescriptor)">Virtual System Descriptor (VSYSDescriptor)</a></li><li><a href="#Disk_Image_(_DiskImage_)">Disk Image ( DiskImage )</a></li><li><a href="#Server_Type_(_ServerType_)">Server Type ( ServerType )</a></li><li><a href="#Other_(SSL-VPN)">Other (SSL-VPN)</a></li></ul></ul> </p><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>. </p><hr/><h2><a name="Virtual_Data_Center_(VDC)"></a>Virtual Data Center (VDC)<a href="#Virtual_Data_Center_(VDC)" class="section_anchor"></a></h2><pre class="prettyprint">from fgcp.command import FGCPCommand
+proxy = FGCPCommand(key_file=&#x27;client.pem&#x27;, region=&#x27;de&#x27;)
+
+date, usage = proxy.GetSystemUsage()
+
+vsystems = proxy.ListVSYS()
+for vsys in vsystems:
+	test_vsys(proxy, vsys.vsysId)
+	break
+
+publicips = proxy.ListPublicIP(None)
+for publicip in publicips:
+	test_publicip(proxy, publicip.address)
+	break
+
+test_addressrange(proxy)
+
+vsysdescriptors = proxy.ListVSYSDescriptor()
+for vsysdescriptor in vsysdescriptors:
+	test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
+	break
+
+diskimages = proxy.ListDiskImage()
+for diskimage in diskimages:
+	test_diskimage(proxy, diskimage.diskimageId)
+	break</pre><hr/><h2><a name="Virtual_System_(VSYS)"></a>Virtual System (VSYS)<a href="#Virtual_System_(VSYS)" class="section_anchor"></a></h2><pre class="prettyprint">vsys_attr = proxy.GetVSYSAttributes(vsysId)
+vsysName = vsys_attr.vsysName
+result = proxy.UpdateVSYSAttribute(vsysId, &#x27;vsysName&#x27;, vsysName)
+try:
+	cloudCategory = vsys_attr.cloudCategory
+	#result = proxy.UpdateVSYSConfiguration(vsysId, &#x27;CLOUD_CATEGORY&#x27;, cloudCategory)
+except:
+	pass
+
+status = proxy.GetVSYSStatus(vsysId)
+
+vservers = proxy.ListVServer(vsysId)
+for vserver in vservers:
+	test_vsys_vserver(proxy, vsysId, vserver.vserverId)
+	break
+
+#result = proxy.CreateVDisk(vsysId, vdiskName, size)
+vdisks = proxy.ListVDisk(vsysId)
+for vdisk in vdisks:
+	test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
+	break
+
+#result = proxy.AllocatePublicIP(vsysId)
+publicips = proxy.ListPublicIP(vsysId)
+for publicip in publicips:
+	test_vsys_publicip(proxy, vsysId, publicip.address)
+	break
+
+vsys_config = proxy.GetVSYSConfiguration(vsysId)
+for networkId in vsys_config.vnets:
+	test_vsys_vnet(proxy, vsysId, networkId)
+	break
+
+efmType = &#x27;FW&#x27;
+#result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
+firewalls = proxy.ListEFM(vsysId, efmType)
+for firewall in firewalls:
+	test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
+	test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
+	break
+
+efmType = &#x27;SLB&#x27;
+#result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
+loadbalancers = proxy.ListEFM(vsysId, efmType)
+for loadbalancer in loadbalancers:
+	test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
+	test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
+	break
+
+#result = proxy.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId)
+
+# only allowed on private vsysdescriptors
+name = &#x27;My New VSYS Template&#x27;
+description = &#x27;This is a 3-tier web application database template&#x27;
+keyword = &#x27;3-tier web application database&#x27;
+vservers = proxy.ListVServer(vsysId)
+#result = proxy.RegisterPrivateVSYSDescriptor(vsysId, name, description, keyword, vservers)
+
+#result = proxy.DestroyVSYS(vsysId)</pre><hr/><h2><a name="Virtual_Server_(VServer)"></a>Virtual Server (VServer)<a href="#Virtual_Server_(VServer)" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.StartVServer(vsysId, vserverId)
+#result = proxy.StopVServer(vsysId, vserverId, force=None)
+
+vserver_attr = proxy.GetVServerAttributes(vsysId, vserverId)
+vserverName = vserver_attr.vserverName
+result = proxy.UpdateVServerAttribute(vsysId, vserverId, &#x27;vserverName&#x27;, vserverName)
+try:
+	vserverType = vserver_attr.vserverType
+	result = proxy.UpdateVServerAttribute(vsysId, vserverId, &#x27;vserverType&#x27;, vserverType)
+except:
+	pass
+
+status = proxy.GetVServerStatus(vsysId, vserverId)
+password = proxy.GetVServerInitialPassword(vsysId, vserverId)
+
+vserver_config = proxy.GetVServerConfiguration(vsysId, vserverId)
+
+for vdisk in vserver_config.vdisks:
+	test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
+	break
+
+for vnic in vserver_config.vnics:
+	test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
+	break
+
+#result = proxy.RegisterPrivateDiskImage(vserverId, name, description)
+
+#result = proxy.DestroyVServer(vsysId, vserverId)</pre><hr/><h2><a name="Virtual_Disk_(VDisk)"></a>Virtual Disk (VDisk)<a href="#Virtual_Disk_(VDisk)" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.AttachVDisk(vsysId, vserverId, vdiskId)
+#result = proxy.DetachVDisk(vsysId, vserverId, vdiskId)
+#test_vsys_vdisk(vsysId, vdiskId)</pre><pre class="prettyprint">proxy.GetVDiskAttributes(vsysId, vdiskId)
+#result = proxy.UpdateVDiskAttribute(vsysId, vdiskId, &#x27;vdiskName&#x27;, vdisk.vdiskName)
+proxy.GetVDiskStatus(vsysId, vdiskId)
+
+#result = proxy.BackupVDisk(vsysId, vdiskId)
+backups = proxy.ListVDiskBackup(vsysId, vdiskId)
+for backup in backups:
+	test_vsys_backup(proxy, vsysId, backup.backupId)
+	break
+
+#result = proxy.DestroyVDisk(vsysId, vdiskId)</pre><hr/><h2><a name="Virtual_Disk_Backup"></a>Virtual Disk Backup<a href="#Virtual_Disk_Backup" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.RestoreVDisk(vsysId, backupId)
+#result = proxy.DestroyVDiskBackup(vsysId, backupId)</pre><hr/><h2><a name="Virtual_Network_Interface_(VNIC)"></a>Virtual Network Interface (VNIC)<a href="#Virtual_Network_Interface_(VNIC)" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="Extended_Function_Module_(EFM)"></a>Extended Function Module (EFM)<a href="#Extended_Function_Module_(EFM)" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.StartEFM(vsysId, efmId)
+#result = proxy.StopEFM(vsysId, efmId)
+
+efm_attr = proxy.GetEFMAttributes(vsysId, efmId)
+efmName = efm_attr.efmName
+result = proxy.UpdateEFMAttribute(vsysId, efmId, &#x27;efmName&#x27;, efmName)
+get_handler = proxy.GetEFMConfigHandler(vsysId, efmId)
+#config = proxy.GetEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None)
+update_handler = proxy.UpdateEFMConfigHandler(vsysId, efmId)
+#result = proxy.UpdateEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None, filePath=None)
+status = proxy.GetEFMStatus(vsysId, efmId)
+update_info = proxy.GetEFMConfigHandler(vsysId, efmId).efm_update()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).efm_update()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).efm_backout()
+
+#result = proxy.BackupEFM(vsysId, efmId)
+backups = proxy.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None)
+for backup in backups:
+	test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
+	break
+
+#result = proxy.DestroyEFM(vsysId, efmId)</pre><pre class="prettyprint">#result = proxy.RestoreEFM(vsysId, efmId, backupId)
+#result = proxy.DestroyEFMBackup(vsysId, efmId, backupId)</pre><hr/><h2><a name="EFM_Firewall_(FW)"></a>EFM Firewall (FW)<a href="#EFM_Firewall_(FW)" class="section_anchor"></a></h2><pre class="prettyprint">nat_rules = proxy.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=nat_rules)
+dns = proxy.GetEFMConfigHandler(vsysId, efmId).fw_dns()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype=&#x27;AUTO&#x27;, primary=None, secondary=None)
+policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log=&#x27;On&#x27;, directions=policies)
+logs = proxy.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
+limit_policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
+update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()</pre><hr/><h2><a name="EFM_LoadBalancer_(SLB)"></a>EFM LoadBalancer (SLB)<a href="#EFM_LoadBalancer_(SLB)" class="section_anchor"></a></h2><pre class="prettyprint">rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=rules.groups, force=None, webAccelerator=None)
+load_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_load()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_load_clear()
+error_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_error()
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_error_clear()
+cert_list = proxy.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=None, detail=None)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_add(certNum, filePath, passphrase)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_set(certNum, id)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_release(certNum)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_delete(certNum, force=None)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_add(ccacertNum, filePath)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_delete(ccacertNum)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_start_maint(id, ipAddress, time=None, unit=None)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_stop_maint(id, ipAddress)
+update_info = proxy.GetEFMConfigHandler(vsysId, efmId).slb_update()</pre><hr/><h2><a name="Virtual_Network_(VNet)"></a>Virtual Network (VNet)<a href="#Virtual_Network_(VNet)" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="Public_IP_(PublicIP)"></a>Public IP (PublicIP)<a href="#Public_IP_(PublicIP)" class="section_anchor"></a></h2><pre class="prettyprint">publicip_attr = proxy.GetPublicIPAttributes(publicipAddress)
+status = proxy.GetPublicIPStatus(publicipAddress)</pre><pre class="prettyprint">#result = proxy.AttachPublicIP(vsysId, publicipAddress)
+#result = proxy.DetachPublicIP(vsysId, publicipAddress)
+#result = proxy.FreePublicIP(vsysId, publicipAddress)
+#test_publicip(publicipAddress)</pre><hr/><h2><a name="Address_Range_(_AddressRange_)"></a>Address Range (AddressRange)<a href="#Address_Range_(_AddressRange_)" class="section_anchor"></a></h2><pre class="prettyprint">addressranges = proxy.GetAddressRange()
+#result = proxy.CreateAddressPool(pipFrom=None, pipTo=None)
+#result = proxy.AddAddressRange(pipFrom, pipTo)
+#result = proxy.DeleteAddressRange(pipFrom, pipTo)</pre><hr/><h2><a name="Virtual_System_Descriptor_(VSYSDescriptor)"></a>Virtual System Descriptor (VSYSDescriptor)<a href="#Virtual_System_Descriptor_(VSYSDescriptor)" class="section_anchor"></a></h2><pre class="prettyprint">vsysdescriptor_attr = proxy.GetVSYSDescriptorAttributes(vsysdescriptorId)
+# only allowed on private vsysdescriptors
+vsysdescriptorName = vsysdescriptor_attr.vsysdescriptorName
+description = vsysdescriptor_attr.description
+keyword = vsysdescriptor_attr.keyword
+#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, &#x27;en&#x27;, &#x27;updateName&#x27;, vsysdescriptorName)
+#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, &#x27;en&#x27;, &#x27;updateDescription&#x27;, description)
+#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, &#x27;en&#x27;, &#x27;updateKeyword&#x27;, keyword)
+vsysdescriptor_config = proxy.GetVSYSDescriptorConfiguration(vsysdescriptorId)
+
+#result = proxy.CreateVSYS(vsysdescriptorId, vsysdescriptorName)
+
+diskimages = proxy.ListDiskImage(&#x27;GENERAL&#x27;, vsysdescriptorId)
+#for diskimage in diskimages:
+#    test_diskimage(proxy, diskimage.diskimageId)
+
+#result = proxy.UnregisterPrivateVSYSDescriptor(vsysdescriptorId)
+#result = proxy.UnregisterVSYSDescriptor(vsysdescriptorId)</pre><hr/><h2><a name="Disk_Image_(_DiskImage_)"></a>Disk Image (DiskImage)<a href="#Disk_Image_(_DiskImage_)" class="section_anchor"></a></h2><pre class="prettyprint">diskimage_attr = proxy.GetDiskImageAttributes(diskimageId)
+# only allowed on private diskimages
+diskimageName = diskimage_attr.diskimageName
+#result = proxy.UpdateDiskImageAttribute(diskimageId, &#x27;en&#x27;, &#x27;updateName&#x27;, diskimageName)
+description = diskimage_attr.description
+#result = proxy.UpdateDiskImageAttribute(diskimageId, &#x27;en&#x27;, &#x27;updateDescription&#x27;, description)
+#result = proxy.UnregisterDiskImage(diskimageId)
+
+servertypes = proxy.ListServerType(diskimageId)
+for servertype in servertypes:
+	test_diskimage_servertype(proxy, diskimageId, servertype.name)
+	break</pre><hr/><h2><a name="Server_Type_(_ServerType_)"></a>Server Type (ServerType)<a href="#Server_Type_(_ServerType_)" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="Other_(SSL-VPN)"></a>Other (SSL-VPN)<a href="#Other_(SSL-VPN)" class="section_anchor"></a></h2><pre class="prettyprint">console_url = proxy.StandByConsole(vsysId, networkId)</pre><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>. </p>
  <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>

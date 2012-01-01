@@ -2525,7 +2525,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPVDataCenter-list_vsystems"><strong>list_vsystems</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="FGCPVDataCenter-show_vsystem_status"><strong>show_vsystem_status</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVDataCenter-show_vsystem_status"><strong>show_vsystem_status</strong></a>(self, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-show_vsystem_usage"><strong>show_vsystem_usage</strong></a>(self, vsysNames<font color="#909090">=None</font>)</dt></dl>
 
@@ -2534,6 +2534,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <hr>
 Data and other attributes defined here:<br>
 <dl><dt><strong>addressranges</strong> = None</dl>
+
+<dl><dt><strong>config</strong> = None</dl>
 
 <dl><dt><strong>diskimages</strong> = None</dl>
 
@@ -3081,7 +3083,7 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVSystem-get_publicip"><strong>get_publicip</strong></a>(self, publicipAddress)</dt></dl>
 
-<dl><dt><a name="FGCPVSystem-get_status"><strong>get_status</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVSystem-get_status"><strong>get_status</strong></a>(self, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-get_usage"><strong>get_usage</strong></a>(self)</dt></dl>
 
@@ -3109,7 +3111,7 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVSystem-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPVSystem-show_status"><strong>show_status</strong></a>(self)</dt></dl>
+<dl><dt><a name="FGCPVSystem-show_status"><strong>show_status</strong></a>(self, sep<font color="#909090">='<font color="#c040c0">\t</font>'</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-shutdown"><strong>shutdown</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
 

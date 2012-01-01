@@ -17,7 +17,10 @@
 """
 Test Client Methods - please check the source code of this file to see how the client methods can used
 
-The test functions are organised by client role, i.e. monitor, operator, designer and client
+The client methods below are organized by client role, i.e. Monitor, Operator, Designer and Client.
+
+Note: with version 1.0.x and later of the library, most of these client methods can now directly be
+replaced by corresponding resource actions.
 """
 
 
@@ -52,7 +55,7 @@ def test_monitor(key_file, region, vsysName, debug):
     vsys = client.FindSystemByName(vsysName)
     vsys = client.GetSystemInventory(vsysName)
     vsys = client.GetSystemStatus(vsysName)
-    client.ShowSystemStatus(vsysName)
+    client.ShowSystemStatus(vsysName, ':')
 
 
 def test_operator(key_file, region, vsysName, debug):

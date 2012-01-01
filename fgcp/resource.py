@@ -329,6 +329,7 @@ class FGCPVDataCenter(FGCPResource):
     FGCP VDataCenter
     """
     _idname = 'config'
+    config = None
     vsystems = None
     publicips = None
     addressranges = None
@@ -526,9 +527,9 @@ class FGCPVDataCenter(FGCPResource):
             for product in usageinfo.products:
                 print '  %s:\t%s %s' % (product.productName, product.usedPoints, product.unitName)
 
-    def show_vsystem_status(self):
+    def show_vsystem_status(self, sep='\t'):
         for vsystem in self.list_vsystems():
-            vsystem.show_status()
+            vsystem.show_status(sep)
 
     #=========================================================================
 
@@ -906,33 +907,33 @@ class FGCPVSystem(FGCPResource):
             setattr(self, 'publicips', [])
         return self
 
-    def get_status(self):
+    def get_status(self, sep='\t'):
         self.show_output('Status Overview for VSystem %s' % self.vsysName)
         # get system inventory if necessary
         self.get_inventory()
         status = self.status()
-        self.show_output('VSystem:%s:%s' % (self.vsysName, status))
+        self.show_output(sep.join(['VSystem', self.vsysName, status]))
         # get status of public ips
         for publicip in self.publicips:
             status = publicip.status()
-            self.show_output('PublicIP:%s:%s' % (publicip.address, status))
+            self.show_output(sep.join(['PublicIP', publicip.address, status]))
         # get status of firewalls
         for firewall in self.firewalls:
             status = firewall.status()
-            self.show_output('Firewall:%s:%s' % (firewall.efmName, status))
+            self.show_output(sep.join(['Firewall', firewall.efmName, status]))
         # get status of loadbalancers
         for loadbalancer in self.loadbalancers:
             status = loadbalancer.status()
-            self.show_output('LoadBalancer:%s:%s:%s' % (loadbalancer.efmName, loadbalancer.slbVip, status))
+            self.show_output(sep.join(['LoadBalancer', loadbalancer.efmName, loadbalancer.slbVip, status]))
         # get status of vservers (excl. firewalls and loadbalancers)
         seenId = {}
         for vserver in self.vservers:
             status = vserver.status()
-            self.show_output('VServer:%s:%s:%s' % (vserver.vserverName, vserver.vnics[0].privateIp, status))
+            self.show_output(sep.join(['VServer', vserver.vserverName, vserver.vnics[0].privateIp, status]))
             # get status of attached disks
             for vdisk in vserver.vdisks:
                 status = vdisk.status()
-                self.show_output(':VDisk:%s:%s' % (vdisk.vdiskName, status))
+                self.show_output(sep.join(['', 'VDisk', vdisk.vdiskName, status]))
                 seenId[vdisk.vdiskId] = 1
         # get status of unattached disks
         todo = []
@@ -948,15 +949,16 @@ class FGCPVSystem(FGCPResource):
                 if vdisk.vdiskId in seenId:
                     continue
                 status = vdisk.status()
-                self.show_output(':VDisk:%s:%s' % (vdisk.vdiskName, status))
+                self.show_output(sep.join(['', 'VDisk', vdisk.vdiskName, status]))
                 seenId[vdisk.vdiskId] = 1
         self.show_output('.')
+        return self
 
-    def show_status(self):
+    def show_status(self, sep='\t'):
         # set output to 1, i.e. don't show the status in the API command
         old_verbose = self._proxy.set_verbose(1)
         # get system status
-        self.get_status()
+        self.get_status(sep)
         # reset output
         self._proxy.set_verbose(old_verbose)
 
@@ -1323,7 +1325,7 @@ class FGCPVDisk(FGCPResource):
         return result
 
     def cleanup_backups(self, max_num=100, max_age=None):
-        self.show_output('Start cleaning backups for VDisk %s' % self.vdiskName)
+        self.show_output('TODO: Start cleaning backups for VDisk %s' % self.vdiskName)
         self.list_backups()
         if len(self.backups) < 1:
             return
@@ -1338,7 +1340,7 @@ class FGCPVDisk(FGCPResource):
         #for backup in todo:
         #    backup.pprint()
         #    backup.destroy()
-        self.show_output('Stop cleaning backups for VDisk %s' % self.vdiskName)
+        self.show_output('TODO: Stop cleaning backups for VDisk %s' % self.vdiskName)
 
 
 class FGCPBackup(FGCPResource):

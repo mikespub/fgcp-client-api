@@ -20,71 +20,21 @@ using XML-RPC API Version 2011-01-31
 
 Requirements: this module uses gdata.tlslite.utils to create the key signature,
 see http://code.google.com/p/gdata-python-client/ for download and installation
-
-Caution: this is a development work in progress - please do not use
-for productive systems without adequate testing...
 """
 
 
 def fgcp_run_sample(pem_file, region):
-    """
-    >>> from fgcp.client import FGCPClient
-    >>> client = FGCPClient('client.pem', 'test')
-    >>> client.ShowSystemStatus('Python API Demo System')
-    Show System Status for VSYS Python API Demo System
-    VSYS:Python API Demo System:NORMAL
-    PublicIP:80.70.163.238:ATTACHED
-    EFM FW:Firewall:RUNNING
-    EFM SLB:LoadBalancer:192.168.3.211:RUNNING
-    VServer:Server1:192.168.3.12:RUNNING
-    VServer:Server2:192.168.3.13:RUNNING
-    VServer:Server3:192.168.4.12:RUNNING
-    VServer:Server4:192.168.4.13:RUNNING
-    .
-    >>> vsystems = client.ListVSYS()
-    >>> for vsys in vsystems:
-    ...     vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
-    ...     print 'VSystem %s has %d servers' % (vsysconfig.vsysName, len(vsysconfig.vservers))
-    ...
-    VSystem Python API Demo System has 6 servers
-    VSystem Demo System has 5 servers
-    """
-    # Get FGCP Client with your certificate in this region
-    from fgcp.client import FGCPClient
-    client = FGCPClient(pem_file, region)
-    # Hint: set debug=1 to dump the FGCP Response for further development
-    #client = FGCPClient(pem_file, region, debug=1)
-    client.ShowSystemStatus()
-    #
-    # Backup all VServers in some VSYS
-    #vsys = client.GetSystemInventory('Python API Demo System')
-    #for vserver in vsys.vservers:
-    #    client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
-    #client.CleanupBackups(vsys.vsysId)
-    #
-    # Create and start a complete VSYS based on an existing configuration
-    #client.set_verbose(2) # show output and status checks during script execution
-    #vsysdesign = client.LoadSystemDesign('fgcp_demo_system.txt')
-    #client.CreateSystem('Python API Demo System', vsysdesign.baseDescriptor)
-    #client.ConfigureSystem('Python API Demo System', vsysdesign)
-    #client.StartSystem('Python API Demo System')
-    #
-    # Stop and destroy a complete VSYS
-    #client.StopSystem('Python API Demo System')
-    #client.DestroySystem('Python API Demo System')
-    #
-    # Note: you can also use all API commands from FGCPCommand()
-    #vsystems = client.ListVSYS()
-    #for vsys in vsystems:
-    #    vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
-    #    ...
-    #vsysdescriptors = client.ListVSYSDescriptor()
-    #for vsysdescriptor in vsysdescriptors:
-    #    if vsysdescriptor.vsysdescriptorName == '2-tier Skeleton':
-    #        vsysId = client.CreateVSYS(vsysdescriptor.vsysdescriptorId, 'Python API Demo System')
-    #        print 'New VSYS Created: %s' % vsysId
-    #        break
-    exit()
+	# Connect with your client certificate to this region
+	from fgcp.resource import FGCPVDataCenter
+	vdc = FGCPVDataCenter(pem_file, region)
+
+    # Do typical actions on resources
+	vsystem = vdc.get_vsystem('Demo System')
+	vsystem.show_status()
+	#for vserver in vsystem.vservers:
+	#	result = vserver.backup(wait=True)
+	#...
+    # See tests/test_resource.py for more examples
 
 
 def fgcp_show_usage(name='fgcp_demo.py'):
@@ -92,10 +42,17 @@ def fgcp_show_usage(name='fgcp_demo.py'):
 
 Usage: %s [pem_file] [region]
 
-from fgcp.client import FGCPClient
-client = FGCPClient('client.pem', 'uk')
-vsystem = client.GetSystemInventory('Python API Demo System')
-# ...
+# Connect with your client certificate to region 'uk'
+from fgcp.resource import FGCPVDataCenter
+
+# Do typical actions on resources
+vdc = FGCPVDataCenter('client.pem', 'uk')
+vsystem = vdc.get_vsystem('Demo System')
+vsystem.show_status()
+#for vserver in vsystem.vservers:
+#	result = vserver.backup(wait=True)
+#...
+# See tests/test_resource.py for more examples
 
 Requirements: this module uses gdata.tlslite.utils to create the key signature,
 see http://code.google.com/p/gdata-python-client/ for download and installation
