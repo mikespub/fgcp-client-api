@@ -397,6 +397,8 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;
 
 <dl><dt><a name="FGCPGetEFMConfigHandler-slb_rule"><strong>slb_rule</strong></a>(self)</dt><dd><tt>Usage:&nbsp;slb_rule&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;loadbalancer.efmId).<a href="#FGCPGetEFMConfigHandler-slb_rule">slb_rule</a>()</tt></dd></dl>
 
+<dl><dt><a name="FGCPGetEFMConfigHandler-slb_try_getaction"><strong>slb_try_getaction</strong></a>(self, action)</dt></dl>
+
 <dl><dt><a name="FGCPGetEFMConfigHandler-slb_update"><strong>slb_update</strong></a>(self)</dt><dd><tt>Usage:&nbsp;slb_update&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;loadbalancer.efmId).<a href="#FGCPGetEFMConfigHandler-slb_update">slb_update</a>()</tt></dd></dl>
 
 <hr>
@@ -432,8 +434,8 @@ fw_nat_rules&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;firewall.ef
 proxy.UpdateEFMConfigHandler(vsys.vsysId,&nbsp;firewall.efmId).<a href="#FGCPUpdateEFMConfigHandler-fw_nat_rule">fw_nat_rule</a>(fw_nat_rules)</tt></dd></dl>
 
 <dl><dt><a name="FGCPUpdateEFMConfigHandler-fw_policy"><strong>fw_policy</strong></a>(self, log<font color="#909090">='On'</font>, directions<font color="#909090">=None</font>)</dt><dd><tt>Usage:<br>
-directions&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;firewall.efmId).<a href="#FGCPUpdateEFMConfigHandler-fw_policy">fw_policy</a>()<br>
-proxy.UpdateEFMConfigHandler(vsys.vsysId,&nbsp;firewall.efmId).<a href="#FGCPUpdateEFMConfigHandler-fw_policy">fw_policy</a>(log,&nbsp;directions)<br>
+policies&nbsp;=&nbsp;proxy.GetEFMConfigHandler(vsys.vsysId,&nbsp;firewall.efmId).<a href="#FGCPUpdateEFMConfigHandler-fw_policy">fw_policy</a>()<br>
+proxy.UpdateEFMConfigHandler(vsys.vsysId,&nbsp;firewall.efmId).<a href="#FGCPUpdateEFMConfigHandler-fw_policy">fw_policy</a>('On',&nbsp;policies)<br>
 &nbsp;<br>
 Warning:&nbsp;this&nbsp;overrides&nbsp;the&nbsp;complete&nbsp;firewall&nbsp;configuration,&nbsp;so&nbsp;you&nbsp;need&nbsp;to&nbsp;specify&nbsp;all&nbsp;the&nbsp;policies&nbsp;at&nbsp;once&nbsp;!</tt></dd></dl>
 
@@ -462,6 +464,8 @@ Warning:&nbsp;this&nbsp;overrides&nbsp;the&nbsp;complete&nbsp;loadbalancer&nbsp;
 <dl><dt><a name="FGCPUpdateEFMConfigHandler-slb_start_maint"><strong>slb_start_maint</strong></a>(self, id, ipAddress, time<font color="#909090">=None</font>, unit<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUpdateEFMConfigHandler-slb_stop_maint"><strong>slb_stop_maint</strong></a>(self, id, ipAddress)</dt></dl>
+
+<dl><dt><a name="FGCPUpdateEFMConfigHandler-slb_try_updateaction"><strong>slb_try_updateaction</strong></a>(self, action)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.command.html#FGCPGenericEFMHandler">FGCPGenericEFMHandler</a>:<br>

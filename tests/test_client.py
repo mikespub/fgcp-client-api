@@ -114,7 +114,8 @@ def test_designer(key_file, region, vsysName, debug):
     #client.CreateSystem(vsysName, vsysdescriptorName, verbose=1)
     #vsysDesign = client.LoadSystemDesign(filePath, verbose=1)
     #client.ConfigureSystem(vsysName, vsysDesign, verbose=1)
-    client.SaveSystemDesign(vsysName, filePath)
+    client.LoadSystemDesign(vsysName, filePath)
+    #client.SaveSystemDesign(vsysName, filePath)
     #client.StopSystem(vsysName, verbose=1)
     #client.DestroySystem(vsysName, verbose=1)
 

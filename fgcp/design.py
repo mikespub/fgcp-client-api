@@ -234,7 +234,7 @@ class FGCPDesign(FGCPResource):
         new_firewalls = []
         for firewall in self.vsystem.firewalls:
             # in case we didn't load this from file
-            if not hasattr(firewall, 'firewall'):
+            if getattr(firewall, 'firewall', None) is None:
                 setattr(firewall, 'firewall', FGCPFirewall())
                 setattr(firewall.firewall, 'nat', firewall.get_nat_rules())
                 setattr(firewall.firewall, 'dns', firewall.get_dns())
@@ -247,7 +247,7 @@ class FGCPDesign(FGCPResource):
             seenip[loadbalancer.slbVip] = loadbalancer.efmName
             #loadbalancer.slbVip = 'xxx.xxx.xxx.xxx'
             # in case we didn't load this from file
-            if not hasattr(loadbalancer, 'loadbalancer'):
+            if getattr(loadbalancer, 'loadbalancer', None) is None:
                 setattr(loadbalancer, 'loadbalancer', loadbalancer.get_rules())
             new_loadbalancers.append(loadbalancer)
         self.vsystem.loadbalancers = new_loadbalancers

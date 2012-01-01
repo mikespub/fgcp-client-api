@@ -33,9 +33,9 @@ for vsys in vsystems:
     ...
 """
 
-from fgcp.connection import FGCPProxyServer
-
 from fgcp import FGCPError
+
+from fgcp.connection import FGCPProxyServer, FGCPResponseError
 
 
 class FGCPCommandError(FGCPError):
@@ -590,6 +590,7 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
 
     Example: fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
     """
+    # CHECKME: pass back the complete firewall or loadbalancer response instead of filtering it out here ?
     def fw_nat_rule(self):
         """
         Usage: fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
@@ -614,8 +615,26 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         """
         configurationXML = self._proxy._get_configurationXML('firewall_policy', {'from': from_zone, 'to': to_zone})
         firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_POLICY', configurationXML).firewall
-        if hasattr(firewall, 'directions'):
-            return firewall.directions
+        if hasattr(firewall, 'directions') and isinstance(firewall.directions, list):
+            #return firewall.directions
+            # CHECKME: filter out all general rules with id='50000' ?
+            return self._filter_fw_policies(firewall.directions)
+
+    def _filter_fw_policies(self, directions=[]):
+        new_directions = []
+        for direction in directions:
+            if getattr(direction, 'policies', None) is None:
+                continue
+            new_policies = []
+            for policy in direction.policies:
+                # CHECKME: filter out all general rules with id='50000' ?
+                if getattr(policy, 'id', None) == '50000':
+                    continue
+                new_policies.append(policy)
+            if len(new_policies) > 0:
+                direction.policies = new_policies
+                new_directions.append(direction)
+        return new_directions
 
     def fw_log(self, num=100, orders=None):
         """CHECKME: for network identifiers besides INTERNET and INTRANET, see GetVSYSConfiguration()
@@ -649,24 +668,36 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         """
         return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE').loadbalancer
 
+    def slb_try_getaction(self, action):
+        try:
+            return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, action)
+        except FGCPResponseError:
+            import sys
+            e = sys.exc_info()[1]
+            if e.status == 'NONE_LB_RULE':
+                return
+            raise
+
     def slb_load(self):
         """
         Usage: slb_load_stats = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_load()
         """
-        # FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-        stats = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
-        # CHECKME: remove <groups> part first
-        if len(stats) > 0:
-            return stats[0]
-        else:
-            return []
+        # CHECKME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
+        #stats = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS').loadbalancer.loadStatistics
+        result = self.slb_try_getaction('SLB_LOAD_STATISTICS')
+        if result is not None and len(result.loadbalancer.loadStatistics) > 0:
+            # CHECKME: remove <groups> part first
+            return result.loadbalancer.loadStatistics[0]
 
     def slb_error(self):
         """
         Usage: slb_error_stats = proxy.GetEFMConfigHandler(vsys.vsysId, loadbalancer.efmId).slb_error()
         """
-        # FIXME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
-        return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
+        # CHECKME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
+        #return self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS').loadbalancer.errorStatistics
+        result = self.slb_try_getaction('SLB_ERROR_STATISTICS')
+        if result is not None:
+            return result.loadbalancer.errorStatistics
 
     def slb_cert_list(self, certCategory=None, detail=None):
         """
@@ -713,17 +744,24 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 
     def _convert_fw_nat_rules(self, rules=None):
         # CHECKME: for round-trip support, we need to:
+        clean_rule = ['_proxy', '_parent']
         if rules is None or len(rules) < 1:
             # this resets the NAT and SNAPT rules
             return ''
         elif len(rules) == 1:
             # single rule: use {'rule': {'publicIp': '80.70.163.172', 'snapt': 'true', 'privateIp': '192.168.0.211'}}
             rule = rules[0]
+            for key in clean_rule:
+                if hasattr(rule, key):
+                    delattr(rule, key)
             return {'rule': rule.__dict__}
         else:
             # multiple rules: use [{'rule': {...}}, {'rule': {...}}, ...]
             new_rules = []
             for rule in rules:
+                for key in clean_rule:
+                    if hasattr(rule, key):
+                        delattr(rule, key)
                 new_rules.append({'rule': rule.__dict__})
             return new_rules
 
@@ -736,8 +774,8 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
 
     def fw_policy(self, log='On', directions=None):
         """Usage:
-        directions = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy()
-        proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy(log, directions)
+        policies = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy()
+        proxy.UpdateEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_policy('On', policies)
 
         Warning: this overrides the complete firewall configuration, so you need to specify all the policies at once !
         """
@@ -759,7 +797,7 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
             new_direction = {'direction': {}}
             # b. replace 'UU62ICIP-AQYOXXRXS-N-INTERNET' by 'INTERNET' in each from and to
             # CHECKME: direction.from is restricted, so we use getattr() here instead !?
-            if not hasattr(direction, 'from'):
+            if not hasattr(direction, 'from') or getattr(direction, 'from') is None:
                 pass
             elif getattr(direction, 'from').endswith('-INTERNET'):
                 new_direction['direction']['from'] = 'INTERNET'
@@ -767,7 +805,7 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
                 new_direction['direction']['from'] = 'INTRANET'
             else:
                 new_direction['direction']['from'] = getattr(direction, 'from')
-            if not hasattr(direction, 'to'):
+            if not hasattr(direction, 'to') or getattr(direction, 'to') is None:
                 pass
             elif direction.to.endswith('-INTERNET'):
                 new_direction['direction']['to'] = 'INTERNET'
@@ -801,7 +839,9 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
         """
         # TODO: add loadbalancer group builder
         # round-trip support
+        print groups
         groups = self._convert_slb_groups(groups)
+        print groups
         configurationXML = self._proxy._get_configurationXML('loadbalancer_rule', {'groups': groups, 'force': force, 'webAccelerator': webAccelerator})
         return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_RULE', configurationXML)
 
@@ -810,34 +850,50 @@ class FGCPUpdateEFMConfigHandler(FGCPGenericEFMHandler):
         if groups is None:
             return new_groups
         # CHECKME: for round-trip support, we need to:
+        clean_group = ['causes', '_proxy', '_parent', 'targets']
+        clean_target = ['ipAddress', 'serverName', '_proxy', '_parent']
         for group in groups:
             # a. add {'group': {...}} for each {id, protocol, ..., targets}
-            new_group = {'group': group.__dict__}
+            new_group = {'group': {}}
             # b. CHECKME: remove causes ?
-            if 'causes' in new_group['group']:
-                del new_group['group']['causes']
+            for key in group.__dict__:
+                if key not in clean_group:
+                    new_group['group'][key] = group.__dict__[key]
             new_targets = []
             # c. add {'target': {...}} for each target
-            for target in new_group['group']['targets']:
-                new_target = {'target': target.__dict__}
+            for target in group.targets:
+                new_target = {'target': {}}
                 # d. remove ipAddress and serverName from each target
-                if 'ipAddress' in new_target['target']:
-                    del new_target['target']['ipAddress']
-                if 'serverName' in new_target['target']:
-                    del new_target['target']['serverName']
+                for key in target.__dict__:
+                    if key not in clean_target:
+                        new_target['target'][key] = target.__dict__[key]
                 new_targets.append(new_target)
             # ...
             # if we have anything left, add it to the new groups
-            if len(new_targets) > 0:
-                new_group['group']['targets'] = new_targets
-                new_groups.append(new_group)
+            #if len(new_targets) > 0:
+            new_group['group']['targets'] = new_targets
+            new_groups.append(new_group)
         return new_groups
 
+    def slb_try_updateaction(self, action):
+        try:
+            return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, action)
+        except FGCPResponseError:
+            import sys
+            e = sys.exc_info()[1]
+            if e.status == 'NONE_LB_RULE':
+                return
+            raise
+
     def slb_load_clear(self):
-        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS_CLEAR')
+        # CHECKME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
+        #return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_LOAD_STATISTICS_CLEAR')
+        return self.slb_try_updateaction('SLB_LOAD_STATISTICS_CLEAR')
 
     def slb_error_clear(self):
-        return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS_CLEAR')
+        # CHECKME: this generates an exception with status NONE_LB_RULE if no SLB rules are defined
+        #return self._proxy.UpdateEFMConfiguration(self.vsysId, self.efmId, 'SLB_ERROR_STATISTICS_CLEAR')
+        return self.slb_try_updateaction('SLB_ERROR_STATISTICS_CLEAR')
 
     def slb_start_maint(self, id, ipAddress, time=None, unit=None):
         configurationXML = self._proxy._get_configurationXML('loadbalancer_start_maintenance', {'id': id, 'ipAddress': ipAddress, 'time': time, 'unit': unit})

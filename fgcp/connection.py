@@ -232,7 +232,10 @@ class FGCPConnection:
             L.append('')
             for attachment in attachments:
                 if 'body' not in attachment:
-                    attachment['body'] = open(attachment['filename'], 'rb').read()
+                    if os.path.exists(attachment['filename']):
+                        attachment['body'] = open(attachment['filename'], 'rb').read()
+                    else:
+                        raise FGCPResponseError('INVALID_PATH', 'Attachment file %s does not exist' % attachment['filename'])
                 elif 'filename' not in attachment:
                     attachment['filename'] = 'extra.xml'
                 L.append('--BOUNDARY')
@@ -332,7 +335,7 @@ class FGCPConnection:
 
         # analyze XML-RPC response
         resp = FGCPResponseParser().parse_data(data, self)
-        if self.debug > 2:
+        if self.debug > 1:
             print 'FGCP Response for %s:' % action
             resp.pprint()
         # CHECKME: raise exception whenever we don't have SUCCESS
@@ -361,11 +364,12 @@ class FGCPResponseParser:
         'publicip': FGCPPublicIP,
         'addressrange': FGCPAddressRange,
         'diskimage': FGCPDiskImage,
-        'software': FGCPDiskImageSoftware,
+        'software': FGCPImageSoftware,
         'servertype': FGCPServerType,
         'cpu': FGCPServerTypeCPU,
         'vsys': FGCPVSystem,
         'vserver': FGCPVServer,
+        'image': FGCPVServerImage,
         'vdisk': FGCPVDisk,
         'backup': FGCPBackup,
         'vnic': FGCPVNic,
@@ -380,7 +384,7 @@ class FGCPResponseParser:
         'group': FGCPSLBGroup,
         'target': FGCPSLBTarget,
         'errorStatistics': FGCPSLBErrorStats,
-        'cause': FGCPSLBErrorCause,
+        'cause': FGCPSLBCause,
         'period': FGCPSLBErrorPeriod,
         'servercert': FGCPSLBServerCert,
         'ccacert': FGCPSLBCCACert,
@@ -472,7 +476,7 @@ class FGCPResponseParser:
             if isinstance(info, list):
                 # CHECKME: use grand-parent for the child now !
                 info.append(self.xmlelement_to_object(subelem, parent))
-            elif hasattr(info, key):
+            elif hasattr(info, key) and getattr(info, key) is not None:
                 #print "OOPS ! " + key + " child is already in " + repr(info)
                 # convert to list !?
                 child = getattr(info, key)

@@ -1,0 +1,14 @@
+
+ <html><head><title>Test Server for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Test Server for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The dummy Test Server can be used for local library tests, without needing access or registration to the Fujitsu Global Cloud Platform. You will not be able to update any resources though...</strong> </p><pre class="prettyprint">Example: [see tests/test_*.py for more examples]
+
+# Connect without client certificate to region &#x27;test&#x27;
+from fgcp.resource import FGCPVDataCenter
+vdc = FGCPVDataCenter(&#x27;client.pem&#x27;, &#x27;test&#x27;)
+
+# Do typical resource actions - updates are not supported here
+vsystem = vdc.get_vsystem(&#x27;Demo System&#x27;)
+vsystem.show_status()
+for vserver in vsystem.vservers:
+    #result = vserver.backup(wait=True)
+...</pre><p>Note: this client API library provides higher-level <a href="ClientMethods.html">Client Methods</a>, intermediate <a href="ResourceActions.html">Resource Actions</a> and lower-level <a href="APICommands.html">API Commands</a>. </p>
+ <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>

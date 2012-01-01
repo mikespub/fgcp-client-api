@@ -44,15 +44,18 @@ def test_vdatacenter(vdc):
 
     vdc.show_output('Test: %s' % vdc)
     status = vdc.status()
+    #vdc.show_vsystem_status()
 
-    usage = vdc.get_vsystem_usage()
+    date, usagelist = vdc.get_vsystem_usage(vsysNames=None)
+    #vdc.show_vsystem_usage(vsysNames=None)
 
     vsystems = vdc.list_vsystems()
     #vsystem = vdc.get_vsystem('Python API Demo System')
     vsystem = vdc.get_vsystem('Demo System')
     test_vsystem(vsystem)
-    #vsysId = vdc.create_vsystem('Python API Demo System', '2-tier Skeleton', wait=None)
-    #result = vdc.destroy_vsystem('Python API Demo System', wait=None)
+
+    #vsysId = vdc.create_vsystem('Python API Demo System', '2-tier Skeleton', wait=True)
+    #result = vdc.destroy_vsystem('Python API Demo System', wait=True)
 
     publicips = vdc.list_publicips()
     publicip = vdc.get_publicip(publicips[0].address)
@@ -95,8 +98,8 @@ def test_vsystem(vsystem):
     info = vsystem.get_status()
     vsystem.show_status()
 
-    #result = vsystem.start(wait=None)
-    #result = vsystem.stop(wait=None, force=None)
+    #result = vsystem.start(wait=True)
+    #result = vsystem.stop(wait=True, force=None)
 
     #result = vsystem.update(vsysName='New Demo System', cloudCategory='PUBLIC')
 
@@ -108,10 +111,11 @@ def test_vsystem(vsystem):
     #vserver = vsystem.get_vserver('Server1')
     vserver = vsystem.get_vserver('DB1')
     test_vserver(vserver)
+
     #vserverId = vsystem.create_vserver(vserverName='My New Server', servertype='economy', diskimage='CentOS 5.4 32bit(EN)', vnet='DMZ')
-    #result = vsystem.start_vserver('My New Server', wait=None)
-    #result = vsystem.stop_vserver('My New Server', wait=None)
-    #result = vsystem.destroy_vserver('My New Server', wait=None)
+    #result = vsystem.start_vserver('My New Server', wait=True)
+    #result = vsystem.stop_vserver('My New Server', wait=True)
+    #result = vsystem.destroy_vserver('My New Server', wait=True)
 
     vdisks = vsystem.list_vdisks()
     for vdisk in vsystem.vdisks:
@@ -126,7 +130,7 @@ def test_vsystem(vsystem):
         pass
     publicip = vsystem.get_publicip(publicips[0].address)
     test_publicip(publicip)
-    #result = vsystem.allocate_publicip(wait=None)
+    #result = vsystem.allocate_publicip(wait=True)
 
     firewalls = vsystem.list_firewalls()
     for firewall in vsystem.firewalls:
@@ -149,7 +153,7 @@ def test_vsystem(vsystem):
     #vsystem.vsysName = 'Copy of %s' % vsystem.vsysName
     #result = vsystem.create()
 
-    #result = vsystem.detroy(wait=None)
+    #result = vsystem.detroy(wait=True)
 
 
 def test_vserver(vserver):
@@ -158,8 +162,10 @@ def test_vserver(vserver):
     """
     vserver.show_output('Test: %s' % vserver)
     status = vserver.status()
-    #result = vserver.start(wait=None)
-    #result = vserver.stop(wait=None, force=None)
+
+    #result = vserver.start(wait=True)
+    #result = vserver.stop(wait=True, force=None)
+
     #result = vserver.update(vserverName='New Server', vserverType='economy')
 
     config = vserver.get_configuration()
@@ -175,14 +181,14 @@ def test_vserver(vserver):
     for backup in backups:
         test_backup(backup)
         break
-    #result = vserver.backup(wait=None)
+    #result = vserver.backup(wait=True)
 
     initialpwd = vserver.get_password()
 
     #vserver.vserverName = 'Copy of %s' % vserver.vserverName
     #result = vserver.create()
 
-    #result = vserver.detroy(wait=None)
+    #result = vserver.detroy(wait=True)
 
 
 def test_vdisk(vdisk):
@@ -194,13 +200,14 @@ def test_vdisk(vdisk):
     for backup in backups:
         test_backup(backup)
         break
-    #result = vdisk.backup(wait=None)
+    #result = vdisk.backup(wait=True)
+
     #result = vdisk.update(vdiskName='New Disk')
 
     #vdisk.vdiskName = 'Copy of %s' % vdisk.vdiskName
     #result = vdisk.create()
 
-    #result = vdisk.detroy(wait=None)
+    #result = vdisk.detroy(wait=True)
 
 
 def test_backup(backup):
@@ -225,25 +232,31 @@ def test_vserver_vdisk(vserver, vdisk):
 
 def test_firewall(firewall):
     """
-    FGCP Firewall - TODO: update configuration actions
+    FGCP Firewall
     """
     firewall.show_output('Test: %s' % firewall)
     status = firewall.status()
-    #result = firewall.start(wait=None)
-    #result = firewall.stop(wait=None)
 
-    #result = firewall.update(efmName='New Firewall')
+    #result = firewall.start(wait=True)
+    #result = firewall.stop(wait=True)
+
+    #efmName = firewall.efmName
+    #result = firewall.update(efmName=efmName)
 
     backups = firewall.list_backups(timeZone=None, countryCode=None)
-    #result = firewall.backup(wait=None)
+    #result = firewall.backup(wait=True)
 
     nat_rules = firewall.get_nat_rules()
-    #result = firewall.update_nat_rules(rules=None)
+    #result = firewall.set_nat_rules(rules=nat_rules)
+
     dns = firewall.get_dns()
-    #result = firewall.update_dns(dnstype='AUTO', primary=None, secondary=None)
+    #result = firewall.set_dns(dnstype='AUTO', primary=None, secondary=None)
+
     policies = firewall.get_policies(from_zone=None, to_zone=None)
-    #result = firewall.update_policies(log='On', directions=None)
+    #result = firewall.set_policies(log='On', policies=policies)
+
     logs = firewall.get_log(num=10, orders=None)
+
     limit_policies = firewall.get_limit_policies(from_zone=None, to_zone=None)
 
     update_info = firewall.get_update_info()
@@ -253,43 +266,42 @@ def test_firewall(firewall):
 
 def test_loadbalancer(loadbalancer):
     """
-    FGCP LoadBalancer - TODO: update configuration actions
+    FGCP LoadBalancer
     """
     loadbalancer.show_output('Test: %s' % loadbalancer)
     status = loadbalancer.status()
-    #result = loadbalancer.start(wait=None)
-    #result = loadbalancer.stop(wait=None)
 
-    #result = loadbalancer.update(efmName='New LoadBalancer')
+    #result = loadbalancer.start(wait=True)
+    #result = loadbalancer.stop(wait=True)
+
+    #efmName = loadbalancer.efmName
+    #result = loadbalancer.update(efmName=efmName)
 
     backups = loadbalancer.list_backups(timeZone=None, countryCode=None)
     for backup in backups:
         test_backup(backup)
         break
-    #result = loadbalancer.backup(wait=None)
+    #result = loadbalancer.backup(wait=True)
 
-    try:
-        rules = loadbalancer.get_rules()
-    except:
-        pass
-    #result = loadbalancer.update_rules(groups=None, force=None, webAccelerator=None)
-    try:
-        load_stats = loadbalancer.get_load_stats()
-    except:
-        pass
+    rules = loadbalancer.get_rules()
+    #result = loadbalancer.set_rules(groups=rules.groups, force=None, webAccelerator=None)
+    #vserver1 = vsystem.get_vserver('WebApp1')
+    #vserver2 = vsystem.get_vserver('WebApp2')
+    #loadbalancer.add_group(id=10, protocol='http', targets=[vserver1, vserver2])
+    #loadbalancer.delete_group(id=20)
+
+    load_stats = loadbalancer.get_load_stats()
     #result = loadbalancer.clear_load_stats()
-    try:
-        error_stats = loadbalancer.get_error_stats()
-    except:
-        pass
+    error_stats = loadbalancer.get_error_stats()
     #result = loadbalancer.clear_error_stats()
+
     cert_list = loadbalancer.get_cert_list(certCategory=None, detail=None)
-    #result = loadbalancer.add_cert(certNum, filePath, passphrase)
-    #result = loadbalancer.set_cert(certNum, id)
-    #result = loadbalancer.release_cert(certNum)
-    #result = loadbalancer.delete_cert(certNum, force=None)
-    #result = loadbalancer.add_cca(ccacertNum, filePath)
-    #result = loadbalancer.delete_cca(ccacertNum)
+    #result = loadbalancer.add_cert(certNum=10, filePath="server.pfx", passphrase='changeit')
+    #result = loadbalancer.set_cert(certNum=10, id)
+    #result = loadbalancer.release_cert(certNum=10)
+    #result = loadbalancer.delete_cert(certNum=10, force=None)
+    #result = loadbalancer.add_cca(ccacertNum=101, filePath='cacert.crt')
+    #result = loadbalancer.delete_cca(ccacertNum=101)
 
     #result = loadbalancer.start_maintenance(id, ipAddress, time=None, unit=None)
     #result = loadbalancer.stop_maintenance(id, ipAddress)
@@ -305,9 +317,9 @@ def test_publicip(publicip):
     """
     publicip.show_output('Test: %s' % publicip)
     status = publicip.status()
-    #result = publicip.attach(wait=None)
-    #result = publicip.detach(wait=None)
-    #result = publicip.free(wait=None)
+    #result = publicip.attach(wait=True)
+    #result = publicip.detach(wait=True)
+    #result = publicip.free(wait=True)
 
 
 def test_addressrange(addressrange):
@@ -326,7 +338,7 @@ def test_vsysdescriptor(vsysdescriptor):
     """
     vsysdescriptor.show_output('Test: %s' % vsysdescriptor)
     diskimages = vsysdescriptor.list_diskimages()
-    #vsysId = vsysdescriptor.create_vsystem('Python API Demo System', wait=None)
+    #vsysId = vsysdescriptor.create_vsystem('Python API Demo System', wait=True)
 
     #vsysdescriptor.update(vsysdescriptorName='New VSYSDescriptor', description='This is a new vsysdescriptor', keyword='2-tier Skeleton')
 
@@ -355,8 +367,8 @@ def test_design(design):
     FGCP VSystem Design
     """
     design.show_output('Test: %s' % design)
-    vsystem = design.load_file('fgcp_demo_system.txt')
-    #vsystem = design.load_vsystem('Demo System')
+    #vsystem = design.load_file('fgcp_demo_system.txt')
+    vsystem = design.load_vsystem('Demo System')
     #result = design.build_vsystem('My New VSystem')
     design.save_file('new_demo_system.txt')
 

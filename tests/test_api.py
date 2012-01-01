@@ -45,31 +45,28 @@ def test_api_command(key_file, region):
     proxy.debug = 1    # 1 = show the API commands being sent, 2 = dump the response objects (99 = save test fixtures)
 
     date, usage = proxy.GetSystemUsage()
-    #print 'Usage Report on %s' % date
-    #for entry in usage:
-    #    #entry.pprint()
-    #    print
-    #    print 'VSystem %s [%s]' % (entry.vsysName, entry.vsysId)
-    #    for product in entry.products:
-    #        print '  %s: %s %s' % (product.productName, product.usedPoints, product.unitName)
 
     vsystems = proxy.ListVSYS()
     for vsys in vsystems:
         test_vsys(proxy, vsys.vsysId)
+        break
 
     publicips = proxy.ListPublicIP(None)
     for publicip in publicips:
         test_publicip(proxy, publicip.address)
+        break
 
     test_addressrange(proxy)
 
     vsysdescriptors = proxy.ListVSYSDescriptor()
     for vsysdescriptor in vsysdescriptors:
         test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
+        break
 
     diskimages = proxy.ListDiskImage()
     for diskimage in diskimages:
         test_diskimage(proxy, diskimage.diskimageId)
+        break
 
 
 def test_vsys(proxy, vsysId):
@@ -83,7 +80,7 @@ def test_vsys(proxy, vsysId):
     result = proxy.UpdateVSYSAttribute(vsysId, 'vsysName', vsysName)
     try:
         cloudCategory = vsys_attr.cloudCategory
-        result = proxy.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
+        #result = proxy.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
     except:
         pass
 
@@ -92,20 +89,24 @@ def test_vsys(proxy, vsysId):
     vservers = proxy.ListVServer(vsysId)
     for vserver in vservers:
         test_vsys_vserver(proxy, vsysId, vserver.vserverId)
+        break
 
     #result = proxy.CreateVDisk(vsysId, vdiskName, size)
     vdisks = proxy.ListVDisk(vsysId)
     for vdisk in vdisks:
         test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
+        break
 
     #result = proxy.AllocatePublicIP(vsysId)
     publicips = proxy.ListPublicIP(vsysId)
     for publicip in publicips:
         test_vsys_publicip(proxy, vsysId, publicip.address)
+        break
 
     vsys_config = proxy.GetVSYSConfiguration(vsysId)
     for networkId in vsys_config.vnets:
         test_vsys_vnet(proxy, vsysId, networkId)
+        break
 
     efmType = 'FW'
     #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
@@ -113,6 +114,7 @@ def test_vsys(proxy, vsysId):
     for firewall in firewalls:
         test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
         test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
+        break
 
     efmType = 'SLB'
     #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
@@ -120,6 +122,7 @@ def test_vsys(proxy, vsysId):
     for loadbalancer in loadbalancers:
         test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
         test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
+        break
 
     #result = proxy.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId)
 
@@ -155,9 +158,11 @@ def test_vsys_vserver(proxy, vsysId, vserverId):
 
     for vdisk in vserver_config.vdisks:
         test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
+        break
 
     for vnic in vserver_config.vnics:
         test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
+        break
 
     #result = proxy.RegisterPrivateDiskImage(vserverId, name, description)
 
@@ -193,6 +198,7 @@ def test_vsys_vdisk(proxy, vsysId, vdiskId):
     backups = proxy.ListVDiskBackup(vsysId, vdiskId)
     for backup in backups:
         test_vsys_backup(proxy, vsysId, backup.backupId)
+        break
 
 
 def test_vsys_backup(proxy, vsysId, backupId):
@@ -239,9 +245,9 @@ def test_vsys_efm_generic(proxy, vsysId, efmId):
     efm_attr = proxy.GetEFMAttributes(vsysId, efmId)
     efmName = efm_attr.efmName
     result = proxy.UpdateEFMAttribute(vsysId, efmId, 'efmName', efmName)
-    #handler = proxy.GetEFMConfigHandler(vsysId, efmId)
+    get_handler = proxy.GetEFMConfigHandler(vsysId, efmId)
     #config = proxy.GetEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None)
-    #handler = proxy.UpdateEFMConfigHandler(vsysId, efmId)
+    update_handler = proxy.UpdateEFMConfigHandler(vsysId, efmId)
     #result = proxy.UpdateEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None, filePath=None)
     status = proxy.GetEFMStatus(vsysId, efmId)
     update_info = proxy.GetEFMConfigHandler(vsysId, efmId).efm_update()
@@ -252,6 +258,7 @@ def test_vsys_efm_generic(proxy, vsysId, efmId):
     backups = proxy.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None)
     for backup in backups:
         test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
+        break
 
 
 def test_vsys_efm_backup(proxy, vsysId, efmId, backupId):
@@ -268,11 +275,11 @@ def test_vsys_efm_firewall(proxy, vsysId, efmId):
     Extended Function Module (EFM) Firewall
     """
     nat_rules = proxy.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
-    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=nat_rules)
     dns = proxy.GetEFMConfigHandler(vsysId, efmId).fw_dns()
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype='AUTO', primary=None, secondary=None)
     policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
-    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log='On', directions=None)
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log='On', directions=policies)
     logs = proxy.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
     limit_policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
     update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()
@@ -282,20 +289,11 @@ def test_vsys_efm_loadbalancer(proxy, vsysId, efmId):
     """
     Extended Function Module (EFM) LoadBalancer
     """
-    try:
-        rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
-    except:
-        pass
-    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=None, force=None, webAccelerator=None)
-    try:
-        load_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_load()
-    except:
-        pass
+    rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
+    #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=rules.groups, force=None, webAccelerator=None)
+    load_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_load()
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_load_clear()
-    try:
-        error_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_error()
-    except:
-        pass
+    error_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_error()
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_error_clear()
     cert_list = proxy.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=None, detail=None)
     #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cert_add(certNum, filePath, passphrase)
@@ -366,6 +364,7 @@ def test_diskimage(proxy, diskimageId):
     servertypes = proxy.ListServerType(diskimageId)
     for servertype in servertypes:
         test_diskimage_servertype(proxy, diskimageId, servertype.name)
+        break
 
 
 def test_diskimage_servertype(proxy, diskimageId, servertypeName):

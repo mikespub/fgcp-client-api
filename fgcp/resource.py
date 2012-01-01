@@ -23,14 +23,12 @@ Example: [see tests/test_resource.py for more examples]
 from fgcp.resource import FGCPVDataCenter
 vdc = FGCPVDataCenter('client.pem', 'uk')
 
-# Do typical resource actions
+# Do typical actions on resources
 vsystem = vdc.get_vsystem('Python API Demo System')
 vsystem.show_status()
 for vserver in vsystem.vservers:
     result = vserver.backup(wait=True)
 ...
-
-TODO: review class inheritance vs. composition
 """
 
 import time
@@ -63,6 +61,8 @@ class FGCPElement(object):
     #=========================================================================
 
     def pformat(self, what, depth=0):
+        #if what is None:
+        #    return '  ' * depth + 'None'
         if isinstance(what, str):
             return '  ' * depth + "'%s'" % what
         CRLF = '\r\n'
@@ -126,7 +126,7 @@ class FGCPElement(object):
 
     def reset_attr(self, what):
         if hasattr(self, what):
-            delattr(self, what)
+            setattr(self, what, None)
 
 
 class FGCPResponse(FGCPElement):
@@ -156,8 +156,10 @@ class FGCPResource(FGCPElement):
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
         # CHECKME: special case for id=123 and/or parentid=12 ?
-        if hasattr(self, 'id') and self._idname is not None and not hasattr(self, self._idname):
-            setattr(self, self._idname, getattr(self, 'id'))
+        if hasattr(self, 'id') and self._idname is not None:
+            # CHECKME: set the _idname to the 'id' value
+            if self._idname != 'id' and getattr(self, self._idname, None) is None:
+                setattr(self, self._idname, getattr(self, 'id'))
 
     def __repr__(self):
         return '<%s:%s>' % (type(self).__name__, self.getid())
@@ -222,7 +224,7 @@ class FGCPResource(FGCPElement):
     #=========================================================================
 
     def getid(self):
-        if self._idname is not None and hasattr(self, self._idname):
+        if self._idname is not None and getattr(self, self._idname, None) is not None:
             return getattr(self, self._idname)
 
     def getparentid(self):
@@ -242,6 +244,14 @@ class FGCPResource(FGCPElement):
             # CHECKME: set the caller here for use in FGCPResponseParser !?
             self._proxy._caller = self
             return self._proxy
+
+    def merge_attr(self, partial):
+        # set missing parts of self with information from partial - do not overwrite
+        for key in partial.__dict__:
+            if key.startswith('_'):
+                continue
+            if getattr(self, key, None) is None:
+                setattr(self, key, partial.__dict__[key])
 
     #=========================================================================
 
@@ -318,6 +328,12 @@ class FGCPVDataCenter(FGCPResource):
     FGCP VDataCenter
     """
     _idname = 'config'
+    vsystems = None
+    publicips = None
+    addressranges = None
+    vsysdescriptors = None
+    diskimages = None
+    servertypes = None
 
     def __init__(self, key_file=None, region=None, verbose=0, debug=0):
         """
@@ -344,7 +360,7 @@ class FGCPVDataCenter(FGCPResource):
     #=========================================================================
 
     def list_vsystems(self):
-        if not hasattr(self, 'vsystems'):
+        if getattr(self, 'vsystems', None) is None:
             setattr(self, 'vsystems', self.getproxy().ListVSYS())
         return getattr(self, 'vsystems')
 
@@ -377,12 +393,12 @@ class FGCPVDataCenter(FGCPResource):
             # make sure the vsystem is shutdown first
             result = vsystem.shutdown(wait)
         # let the vsystem handle it
-        return vsystem.destroy(wait)
+        return vsystem.destroy()
 
     #=========================================================================
 
     def list_publicips(self):
-        if not hasattr(self, 'publicips'):
+        if getattr(self, 'publicips', None) is None:
             setattr(self, 'publicips', self.getproxy().ListPublicIP())
         return getattr(self, 'publicips')
 
@@ -399,7 +415,7 @@ class FGCPVDataCenter(FGCPResource):
     #=========================================================================
 
     def list_addressranges(self):
-        if not hasattr(self, 'addressranges'):
+        if getattr(self, 'addressranges', None) is None:
             setattr(self, 'addressranges', self.getproxy().GetAddressRange())
         return getattr(self, 'addressranges')
 
@@ -415,7 +431,7 @@ class FGCPVDataCenter(FGCPResource):
     #=========================================================================
 
     def list_vsysdescriptors(self):
-        if not hasattr(self, 'vsysdescriptors'):
+        if getattr(self, 'vsysdescriptors', None) is None:
             setattr(self, 'vsysdescriptors', self.getproxy().ListVSYSDescriptor())
         return getattr(self, 'vsysdescriptors')
 
@@ -437,7 +453,7 @@ class FGCPVDataCenter(FGCPResource):
         # CHECKME: reversed order of arguments here
         # get all diskimages
         if vsysdescriptor is None:
-            if not hasattr(self, 'diskimages'):
+            if getattr(self, 'diskimages', None) is None:
                 setattr(self, 'diskimages', self.getproxy().ListDiskImage())
             return getattr(self, 'diskimages')
         # get specific diskimages for this vsysdescriptor
@@ -461,7 +477,7 @@ class FGCPVDataCenter(FGCPResource):
 
     def list_servertypes(self, diskimage=None):
         # CHECKME: all diskimages support the same servertypes at the moment !?
-        if hasattr(self, 'servertypes'):
+        if getattr(self, 'servertypes', None) is not None:
             return getattr(self, 'servertypes')
         # pick the first diskimage that's available
         if diskimage is None:
@@ -484,8 +500,34 @@ class FGCPVDataCenter(FGCPResource):
 
     #=========================================================================
 
-    def get_vsystem_usage(self, vsysIds=None):
+    def get_vsystem_usage(self, vsysNames=None):
+        if vsysNames is None:
+            return self.getproxy().GetSystemUsage()
+        vsysIds = []
+        if isinstance(vsysNames, str):
+            vsysNames = [vsysNames]
+        for vsysName in vsysNames:
+            vsystem = self.get_vsystem(vsysName)
+            vsysIds.append(vsystem.vsysId)
+        if len(vsysIds) > 0:
+            vsysIds = ' '.join(vsysIds)
+        else:
+            vsysIds = None
         return self.getproxy().GetSystemUsage(vsysIds)
+
+    def show_vsystem_usage(self, vsysNames=None):
+        date, usagelist = self.get_vsystem_usage(vsysNames)
+        print 'Usage Report on %s' % date
+        for usageinfo in usagelist:
+            #entry.pprint()
+            print
+            print 'VSystem: %s [%s]' % (usageinfo.vsysName, usageinfo.vsysId)
+            for product in usageinfo.products:
+                print '  %s:\t%s %s' % (product.productName, product.usedPoints, product.unitName)
+
+    def show_vsystem_status(self):
+        for vsystem in self.list_vsystems():
+            vsystem.show_status()
 
     #=========================================================================
 
@@ -502,6 +544,18 @@ class FGCPVDataCenter(FGCPResource):
 
 class FGCPVSystem(FGCPResource):
     _idname = 'vsysId'
+    vsysId = None
+    vsysName = None
+    description = None
+    baseDescriptor = None
+    creator = None
+    cloudCategory = None
+    vservers = None
+    vdisks = None
+    vnets = None
+    publicips = None
+    firewalls = None
+    loadbalancers = None
 
     def create(self):
         # CHECKME: do we want this too ?
@@ -609,7 +663,7 @@ class FGCPVSystem(FGCPResource):
     #=========================================================================
 
     def list_vservers(self):
-        if not hasattr(self, 'vservers'):
+        if getattr(self, 'vservers', None) is None:
             # FIXME: remove firewalls and loadbalancers here too !?
             setattr(self, 'vservers', self.getproxy().ListVServer(self.getid()))
         return getattr(self, 'vservers')
@@ -658,7 +712,7 @@ class FGCPVSystem(FGCPResource):
     #=========================================================================
 
     def list_vdisks(self):
-        if not hasattr(self, 'vdisks'):
+        if getattr(self, 'vdisks', None) is None:
             setattr(self, 'vdisks', self.getproxy().ListVDisk(self.getid()))
         return getattr(self, 'vdisks')
 
@@ -699,7 +753,7 @@ class FGCPVSystem(FGCPResource):
     #=========================================================================
 
     def list_firewalls(self):
-        if not hasattr(self, 'firewalls'):
+        if getattr(self, 'firewalls', None) is None:
             setattr(self, 'firewalls', self.getproxy().ListEFM(self.getid(), "FW"))
         return getattr(self, 'firewalls')
 
@@ -718,7 +772,7 @@ class FGCPVSystem(FGCPResource):
     #=========================================================================
 
     def list_loadbalancers(self):
-        if not hasattr(self, 'loadbalancers'):
+        if getattr(self, 'loadbalancers', None) is None:
             setattr(self, 'loadbalancers', self.getproxy().ListEFM(self.getid(), "SLB"))
         return getattr(self, 'loadbalancers')
 
@@ -747,7 +801,7 @@ class FGCPVSystem(FGCPResource):
     #=========================================================================
 
     def list_vnets(self):
-        if not hasattr(self, 'vnets'):
+        if getattr(self, 'vnets', None) is None:
             self.retrieve()
         return getattr(self, 'vnets')
 
@@ -771,7 +825,7 @@ class FGCPVSystem(FGCPResource):
     #=========================================================================
 
     def list_publicips(self):
-        if not hasattr(self, 'publicips'):
+        if getattr(self, 'publicips', None) is None:
             setattr(self, 'publicips', self.getproxy().ListPublicIP(self.getid()))
         return getattr(self, 'publicips')
 
@@ -819,7 +873,7 @@ class FGCPVSystem(FGCPResource):
 
     def get_inventory(self, refresh=None):
         # CHECKME: if we already have the firewall information, we already retrieved the configuration
-        if not refresh and hasattr(self, 'firewalls'):
+        if not refresh and getattr(self, 'firewalls', None) is not None:
             return self
         # get configuration for this vsystem
         vsysconfig = self.getproxy().GetVSYSConfiguration(self.getid())
@@ -845,9 +899,9 @@ class FGCPVSystem(FGCPResource):
                 continue
             todo.append(vserver)
         setattr(self, 'vservers', todo)
-        if not hasattr(self, 'vdisks'):
+        if getattr(self, 'vdisks', None) is None:
             setattr(self, 'vdisks', [])
-        if not hasattr(self, 'publicips'):
+        if getattr(self, 'publicips', None) is None:
             setattr(self, 'publicips', [])
         return self
 
@@ -916,10 +970,19 @@ class FGCPVSystem(FGCPResource):
 
 class FGCPVServer(FGCPResource):
     _idname = 'vserverId'
+    vserverId = None
+    vserverName = None
+    vserverType = None
+    diskimageId = None
+    creator = None
+    vdisks = None
+    vnics = None
+    image = None
+    backups = None
 
     def create(self, wait=None):
         # CHECKME: simplify vnics[0].getid() issue on create by allowing networkId
-        if hasattr(self, 'vnics') and not hasattr(self, 'networkId'):
+        if getattr(self, 'networkId') is None and getattr(self, 'vnics', None) is not None:
             setattr(self, 'networkId', self.vnics[0].getid())
         self.show_output('Creating VServer %s' % self.vserverName)
         vserverId = self.getproxy().CreateVServer(self.getparentid(), self.vserverName, self.vserverType, self.diskimageId, self.networkId)
@@ -946,7 +1009,7 @@ class FGCPVServer(FGCPResource):
         # CHECKME: what if we updated the object attributes directly ?
         result = None
         for key in tododict:
-            if tododict[key] != getattr(self, key):
+            if tododict[key] != getattr(self, key, None):
                 result = self.getproxy().UpdateVServerAttribute(self.getparentid(), self.getid(), key, tododict[key])
         self.show_output('Updated VServer %s' % self.vserverName)
         return result
@@ -1001,7 +1064,7 @@ class FGCPVServer(FGCPResource):
 
     def get_configuration(self, refresh=None):
         # CHECKME: if we already have the vnics information, we already retrieved the configuration
-        if not refresh and hasattr(self, 'vnics'):
+        if not refresh and getattr(self, 'vnics', None) is not None:
             return self
         # get configuration for this vserver
         config = self.getproxy().GetVServerConfiguration(self.getparentid(), self.getid())
@@ -1018,7 +1081,7 @@ class FGCPVServer(FGCPResource):
     #=========================================================================
 
     def list_vdisks(self):
-        if not hasattr(self, 'vdisks'):
+        if getattr(self, 'vdisks', None) is None:
             self.retrieve()
         return getattr(self, 'vdisks')
 
@@ -1040,7 +1103,7 @@ class FGCPVServer(FGCPResource):
         if timeZone or countryCode:
             # Note: the system disk has the same id as the vserver
             return self.getproxy().ListVDiskBackup(self.getparentid(), self.getid(), timeZone, countryCode)
-        if not hasattr(self, 'backups'):
+        if getattr(self, 'backups', None) is None:
             # Note: the system disk has the same id as the vserver
             setattr(self, 'backups', self.getproxy().ListVDiskBackup(self.getparentid(), self.getid(), timeZone, countryCode))
         return getattr(self, 'backups')
@@ -1094,7 +1157,7 @@ class FGCPVServer(FGCPResource):
     #=========================================================================
 
     def list_vnics(self):
-        if not hasattr(self, 'vnics'):
+        if getattr(self, 'vnics', None) is None:
             self.retrieve()
         return getattr(self, 'vnics')
 
@@ -1104,8 +1167,32 @@ class FGCPVServer(FGCPResource):
         return self.getproxy().RegisterPrivateDiskImage(self.getid(), name, description)
 
 
+class FGCPVServerImage(FGCPResource):
+    _idname = 'id'
+    id = None
+    cpuBit = None
+    numOfMaxDisk = None
+    numOfMaxNic = None
+    serverApplication = None
+    serverCategory = None
+    softwares = None
+    sysvolSize = None
+
+    def list_softwares(self):
+        if getattr(self, 'softwares', None) is None:
+            # CHECKME: initialize to None or list here ?
+            setattr(self, 'softwares', [])
+        return getattr(self, 'softwares')
+
+
 class FGCPVDisk(FGCPResource):
     _idname = 'vdiskId'
+    vdiskId = None
+    vdiskName = None
+    size = None
+    attachedTo = None
+    creator = None
+    backups = None
 
     def getparentid(self):
         # CHECKME: the parent of a vdisk may be a vserver or a vsystem, so we need to override this
@@ -1144,7 +1231,7 @@ class FGCPVDisk(FGCPResource):
         # CHECKME: what if we updated the object attributes directly ?
         result = None
         for key in tododict:
-            if tododict[key] != getattr(self, key):
+            if tododict[key] != getattr(self, key, None):
                 result = self.getproxy().UpdateVDiskAttribute(self.getparentid(), self.getid(), key, tododict[key])
         self.show_output('Updated VDisk %s' % self.vdiskName)
         return result
@@ -1186,7 +1273,7 @@ class FGCPVDisk(FGCPResource):
     def list_backups(self, timeZone=None, countryCode=None):
         if timeZone or countryCode:
             return self.getproxy().ListVDiskBackup(self.getparentid(), self.getid(), timeZone, countryCode)
-        if not hasattr(self, 'backups'):
+        if getattr(self, 'backups', None) is None:
             setattr(self, 'backups', self.getproxy().ListVDiskBackup(self.getparentid(), self.getid(), timeZone, countryCode))
         return getattr(self, 'backups')
 
@@ -1255,6 +1342,8 @@ class FGCPVDisk(FGCPResource):
 
 class FGCPBackup(FGCPResource):
     _idname = 'backupId'
+    backupId = None
+    backupTime = None
 
     def getparentid(self):
         # CHECKME: the parent of a backup is a vdisk, and we need to get the vsystem
@@ -1302,10 +1391,21 @@ class FGCPBackup(FGCPResource):
 class FGCPVNic(FGCPResource):
     _idname = 'networkId'
     # CHECKME: or use privateIp ?
+    networkId = None
+    privateIp = None
+    nicNo = None
 
 
 class FGCPEfm(FGCPResource):
     _idname = 'efmId'
+    efmId = None
+    efmName = None
+    efmType = None
+    creator = None
+    firewall = None
+    loadbalancer = None
+    slbVip = None
+    backups = None
 
     def create(self, wait=None):
         # CHECKME: we use networkId to identify the network here, although this isn't found in the normal object definition !?
@@ -1336,7 +1436,7 @@ class FGCPEfm(FGCPResource):
         # CHECKME: what if we updated the object attributes directly ?
         result = None
         for key in tododict:
-            if tododict[key] != getattr(self, key):
+            if tododict[key] != getattr(self, key, None):
                 result = self.getproxy().UpdateEFMAttribute(self.getparentid(), self.getid(), key, tododict[key])
         self.show_output('Updated EFM %s' % self.efmName)
         return result
@@ -1385,7 +1485,7 @@ class FGCPEfm(FGCPResource):
     def list_backups(self, timeZone=None, countryCode=None):
         if timeZone or countryCode:
             return self.getproxy().ListEFMBackup(self.getparentid(), self.getid(), timeZone, countryCode)
-        if not hasattr(self, 'backups'):
+        if getattr(self, 'backups', None) is None:
             setattr(self, 'backups', self.getproxy().ListEFMBackup(self.getparentid(), self.getid(), timeZone, countryCode))
         return getattr(self, 'backups')
 
@@ -1434,19 +1534,41 @@ class FGCPEfm(FGCPResource):
 
     #=========================================================================
 
+    def initialize_config(self):
+        if self.efmType == 'FW' and getattr(self, 'firewall', None) is None:
+            self.firewall = FGCPFirewall()
+            self.firewall.setparent(self)
+        elif self.efmType == 'SLB' and getattr(self, 'loadbalancer', None) is None:
+            self.loadbalancer = FGCPLoadBalancer()
+            self.loadbalancer.setparent(self)
+
     def get_config_handler(self):
-        if not hasattr(self, '_get_handler'):
+        # CHECKME: get firewall or loadbalancer directly from config_handler, instead of getting filtered info like firewall.nat[0] etc. ?
+        if getattr(self, '_get_handler', None) is None:
+            self.initialize_config()
             setattr(self, '_get_handler', self.getproxy().GetEFMConfigHandler(self.getparentid(), self.getid()))
         return getattr(self, '_get_handler')
 
     def get_nat_rules(self):
-        return self.get_config_handler().fw_nat_rule()
+        # CHECKME: get firewall directly from config_handler ?
+        nat_rules = self.get_config_handler().fw_nat_rule()
+        # CHECKME: merge answer with current firewall ?
+        setattr(self.firewall, 'nat', nat_rules)
+        return nat_rules
 
     def get_dns(self):
-        return self.get_config_handler().fw_dns()
+        dns = self.get_config_handler().fw_dns()
+        # CHECKME: merge answer with current firewall ?
+        setattr(self.firewall, 'dns', dns)
+        return dns
 
     def get_policies(self, from_zone=None, to_zone=None):
-        return self.get_config_handler().fw_policy(from_zone, to_zone)
+        if from_zone or to_zone:
+            return self.get_config_handler().fw_policy(from_zone, to_zone)
+        directions = self.get_config_handler().fw_policy()
+        # CHECKME: merge answer with current firewall ?
+        setattr(self.firewall, 'directions', directions)
+        return directions
 
     def get_log(self, num=100, orders=None):
         # FIXME: make log order builder !?
@@ -1456,65 +1578,211 @@ class FGCPEfm(FGCPResource):
         return self.get_config_handler().fw_limit_policy(from_zone, to_zone)
 
     def get_rules(self):
-        return self.get_config_handler().slb_rule()
+        # CHECKME: get loadbalancer directly from config_handler ?
+        rules = self.get_config_handler().slb_rule()
+        # CHECKME: merge answer with current loadbalancer ?
+        self.loadbalancer.merge_attr(rules)
+        return rules
 
     def get_load_stats(self):
-        return self.get_config_handler().slb_load()
+        load_stats = self.get_config_handler().slb_load()
+        return load_stats
 
     def get_error_stats(self):
-        return self.get_config_handler().slb_error()
+        error_stats = self.get_config_handler().slb_error()
+        return error_stats
 
     def get_cert_list(self, certCategory=None, detail=None):
-        return self.get_config_handler().slb_cert_list(certCategory, detail)
+        if certCategory or detail:
+            return self.get_config_handler().slb_cert_list(certCategory, detail)
+        cert_list = self.get_config_handler().slb_cert_list()
+        # CHECKME: merge answer with current loadbalancer ?
+        self.loadbalancer.merge_attr(cert_list)
+        return cert_list
 
     def get_update_info(self):
         if self.efmType == 'FW':
-            return self.get_config_handler().fw_update()
+            update_info = self.get_config_handler().fw_update()
+            # CHECKME: merge answer with current firewall ?
+            self.firewall.merge_attr(update_info)
+            return update_info
         else:
-            return self.get_config_handler().slb_update()
+            update_info = self.get_config_handler().slb_update()
+            # CHECKME: merge answer with current loadbalancer ?
+            self.loadbalancer.merge_attr(update_info)
+            return update_info
 
     #=========================================================================
 
     def update_config_handler(self):
-        if not hasattr(self, '_update_handler'):
+        if getattr(self, '_update_handler', None) is None:
+            self.initialize_config()
             setattr(self, '_update_handler', self.getproxy().UpdateEFMConfigHandler(self.getparentid(), self.getid()))
         return getattr(self, '_update_handler')
 
-    #result = firewall.update_nat_rules(rules=None)
-    #result = firewall.update_dns(dnstype='AUTO', primary=None, secondary=None)
-    #result = firewall.update_policies(log='On', directions=None)
+    def set_nat_rules(self, rules=None):
+        return self.update_config_handler().fw_nat_rule(rules)
 
-    #result = loadbalancer.update_rules(groups=None, force=None, webAccelerator=None)
-    #result = loadbalancer.clear_load_stats()
-    #result = loadbalancer.clear_error_stats()
-    #result = loadbalancer.add_cert(certNum, filePath, passphrase)
-    #result = loadbalancer.set_cert(certNum, id)
-    #result = loadbalancer.release_cert(certNum)
-    #result = loadbalancer.delete_cert(certNum, force=None)
-    #result = loadbalancer.add_cca(ccacertNum, filePath)
-    #result = loadbalancer.delete_cca(ccacertNum)
-    #result = loadbalancer.start_maintenance(id, ipAddress, time=None, unit=None)
-    #result = loadbalancer.stop_maintenance(id, ipAddress)
+    # CHECKME: def add_nat_rule(self, ...) ? Cfr. in firewall below
+    def add_nat_rule(self, **kwargs):
+        if getattr(self, 'firewall', None) is None or getattr(self.firewall, 'nat', None) is None:
+            self.get_nat_rules()
 
-    #result = firewall.apply_update()
-    #result = firewall.revert_update()
+    def set_dns(self, dnstype='AUTO', primary=None, secondary=None):
+        return self.update_config_handler().fw_dns(dnstype, primary, secondary)
+
+    def set_policies(self, log='On', policies=None):
+        return self.update_config_handler().fw_policy(log, policies)
+
+    def set_rules(self, groups=None, force=None, webAccelerator=None):
+        """Usage:
+        loadbalancer = vsystem.get_loadbalancer('SLB1')
+        # get all groups
+        rules = loadbalancer.get_rules()
+        # adapt the group list
+        new_groups = []
+        for group in rules.groups:
+            ...
+            new_groups.append(group)
+        # update all groups
+        result = loadbalancer.set_rules(groups=new_groups, force=None, webAccelerator=None)
+        """
+        return self.update_config_handler().slb_rule(groups, force, webAccelerator)
+
+    # CHECKME: def add_slb_group(self, ...) here ? Cfr. in loadbalancer below
+    def add_group(self, **kwargs):
+        """Usage:
+        loadbalancer = vsystem.get_loadbalancer('SLB1')
+        vserver1 = vsystem.get_vserver('WebApp1')
+        vserver2 = vsystem.get_vserver('WebApp2')
+        # add single group
+        loadbalancer.add_group(id=10, protocol='http', targets=[vserver1, vserver2])
+        """
+        if getattr(self, 'loadbalancer', None) is None or getattr(self.loadbalancer, 'groups', None) is None:
+            self.get_rules()
+        self.loadbalancer._add_group(**kwargs)
+        if len(self.loadbalancer.groups) > 0:
+            return self.set_rules(groups=self.loadbalancer.groups, webAccelerator=self.loadbalancer.webAccelerator)
+
+    def delete_group(self, id):
+        """Usage:
+        loadbalancer = vsystem.get_loadbalancer('SLB1')
+        # get all groups
+        rules = loadbalancer.get_rules()
+        for group in rules.groups:
+            if group.protocol != 'http':
+                continue
+            # delete single group
+            loadbalancer.delete_group(group.id)
+            break
+        """
+        if getattr(self, 'loadbalancer', None) is None or getattr(self.loadbalancer, 'groups', None) is None:
+            self.get_rules()
+        self.loadbalancer._delete_group(id)
+        return self.set_rules(groups=self.loadbalancer.groups, webAccelerator=self.loadbalancer.webAccelerator)
+
+    def clear_load_stats(self):
+        return self.update_config_handler().slb_load_clear()
+
+    def clear_error_stats(self):
+        return self.update_config_handler().slb_error_clear()
+
+    def add_cert(self, certNum, filePath, passphrase):
+        return self.update_config_handler().slb_cert_add(certNum, filePath, passphrase)
+
+    def set_cert(self, certNum, id):
+        return self.update_config_handler().slb_cert_set(certNum, id)
+
+    def release_cert(self, certNum):
+        return self.update_config_handler().slb_cert_release(certNum)
+
+    def delete_cert(self, certNum, force=None):
+        return self.update_config_handler().slb_cert_delete(certNum, force)
+
+    def add_cca(self, ccacertNum, filePath):
+        return self.update_config_handler().slb_cca_add(ccacertNum, filePath)
+
+    def delete_cca(self, ccacertNum):
+        return self.update_config_handler().slb_cca_delete(ccacertNum)
+
+    def start_maintenance(self, id, ipAddress, time=None, unit=None):
+        return self.update_config_handler().slb_start_maint(id, ipAddress, time, unit)
+
+    def stop_maintenance(self, id, ipAddress):
+        return self.update_config_handler().slb_stop_maint(id, ipAddress)
+
+    def apply_update(self):
+        return self.update_config_handler().efm_update()
+
+    def revert_update(self):
+        return self.update_config_handler().efm_backout()
 
 
 class FGCPFirewall(FGCPResource):
     # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
-    pass
-
-
-class FGCPFWNATRule(FGCPFirewall):
-    pass
-
-
-class FGCPFWDns(FGCPFirewall):
-    pass
-
-
-class FGCPFWDirection(FGCPFirewall):
     _idname = None
+    status = None
+    nat = None
+    dns = None
+    directions = None
+    log = None
+    category = None
+    latestVersion = None
+    comment = None
+    firmUpdateExist = None
+    configUpdateExist = None
+    updateDate = None
+    backout = None
+    currentVersion = None
+
+    def _list_directions(self):
+        # CHECKME: call get_policies() if needed ?
+        return getattr(self, 'directions', [])
+
+    def _add_direction(self, **kwargs):
+        if self.directions is None:
+            self.directions = []
+        #direction = FGCPFWDirection(from_zone='INTERNET', to_zone='DMZ', policies=[])
+        direction = FGCPFWDirection(**kwargs)
+        # set the parent of the direction to this firewall
+        #direction.setparent(self)
+        self.directions.append(direction)
+
+    def _list_nat_rules(self):
+        # CHECKME: call get_nat_rules() if needed ?
+        return getattr(self, 'nat', [])
+
+    def _add_nat_rule(self, **kwargs):
+        #nat_rule = FGCPNATRule(publicIp='80.70.163.172', snapt='true', privateIp='192.168.0.211')
+        nat_rule = FGCPNATRule(**kwargs)
+        # set the parent of the nat_rule to this firewall
+        #nat_rule.setparent(self)
+        self.nat.append(nat_rule)
+
+
+class FGCPFWNATRule(FGCPResource):
+    _idname = None
+    publicIp = None
+    privateIp = None
+    snapt = None
+
+
+class FGCPFWDns(FGCPResource):
+    _idname = 'type'
+    type = None
+    primary = None
+    secondary = None
+
+
+class FGCPFWDirection(FGCPResource):
+    # CHECKME: this has an attribute 'from' which causes problems for Python !
+    _idname = None
+    from_zone = None
+    to_zone = None
+    policies = None
+    acceptable = None
+    maxPolicyNum = None
+    prefix = None
 
     def getid(self):
         # get the last part of the direction, i.e. DMZ, SECURE1, SECURE2 etc.
@@ -1522,12 +1790,42 @@ class FGCPFWDirection(FGCPFirewall):
         to_zone = getattr(self, 'to', '').split('-').pop()
         return '%s-%s' % (from_zone, to_zone)
 
+    def _list_policies(self):
+        return getattr(self, 'policies', [])
 
-class FGCPFWPolicy(FGCPFWDirection):
+    def _add_policy(self, **kwargs):
+        if self.policies is None:
+            self.policies = []
+        #policy = FGCPFWPolicy(id=123, action='Accept', ...)
+        policy = FGCPFWPolicy(**kwargs)
+        # set the parent of the policy to this direction
+        #direction.setparent(self)
+        self.policies.append(policy)
+
+
+class FGCPFWPolicy(FGCPResource):
     _idname = 'id'
+    id = None
+    action = None
+    dst = None
+    dstPort = None
+    dstService = None
+    dstType = None
+    log = None
+    protocol = None
+    src = None
+    srcPort = None
+    srcType = None
 
 
-class FGCPFWLogOrder(FGCPFirewall):
+class FGCPFWLogOrder(FGCPResource):
+    _idname = 'prefix'
+    # CHECKME: this has an attribute 'from' which causes problems for Python !
+    prefix = None
+    value = None
+    from_zone = None
+    to_zone = None
+
     def __init__(self, **kwargs):
         for key in kwargs:
             # CHECKME: replace from_zone and to_zone, because from=... is restricted
@@ -1537,38 +1835,213 @@ class FGCPFWLogOrder(FGCPFirewall):
 class FGCPLoadBalancer(FGCPResource):
     # CHECKME: this returns an attribute 'status' which is in conflict with the default status() method !
     _idname = 'ipAddress'
+    ipAddress = None
+    status = None
+    webAccelerator = None
+    groups = None
+    loadStatistics = None
+    errorStatistics = None
+    servercerts = None
+    ccacerts = None
+    srcPort = None
+    srcType = None
+    category = None
+    latestVersion = None
+    comment = None
+    firmUpdateExist = None
+    configUpdateExist = None
+    updateDate = None
+    backout = None
+    currentVersion = None
+
+    def _list_groups(self):
+        # CHECKME: call get_rules() if needed ?
+        return getattr(self, 'groups', [])
+
+    def _get_group(self, id):
+        id = str(id)
+        for group in self._list_groups():
+            if group.id == id:
+                return group
+
+    def _add_group(self, **kwargs):
+        if self.groups is None:
+            self.groups = []
+        #group = FGCPSLBGroup(id=10, protocol='http', port1=80, targets=[], ...)
+        group = FGCPSLBGroup(**kwargs)
+        # set the parent of the group to this loadbalancer
+        #group.setparent(self)
+        # CHECKME: set default values depending on protocol
+        group.set_defaults()
+        self.groups.append(group)
+
+    def _delete_group(self, id):
+        id = str(id)
+        new_groups = []
+        for group in self._list_groups():
+            if group.id != id:
+                new_groups.append(group)
+        self.groups = new_groups
+
+    def _list_servercerts(self):
+        # CHECKME: call get_cert_list() if needed ?
+        return getattr(self, 'servercerts', [])
+
+    def _list_ccacerts(self):
+        # CHECKME: call get_cert_list() if needed ?
+        return getattr(self, 'ccacerts', [])
 
 
-class FGCPSLBGroup(FGCPLoadBalancer):
+class FGCPSLBGroup(FGCPResource):
     _idname = 'id'
+    id = None
+    protocol = None
+    port1 = None
+    port2 = None
+    certNum = None
+    balanceType = None
+    monitorType = None
+    maxConnection = None
+    uniqueType = None
+    uniqueRetention = None
+    interval = None
+    timeout = None
+    retryCount = None
+    recoveryAction = None
+    targets = None
+    causes = None
+
+    def set_defaults(self):
+        # CHECKME: set default values depending on protocol
+        if self.protocol is None:
+            self.protocol = 'http'
+        defaults = {'port2': None, 'targets': [], 'interval': 60, 'timeout': 10, 'retryCount': 3, 'monitorType': 'ping', 'balanceType': 'round-robin', 'recoveryAction': 'switch-back'}
+        if self.protocol == 'http+https':
+            defaults['uniqueType'] = 'By IP address'
+            defaults['uniqueRetention'] = 90
+            defaults['maxConnection'] = 10000
+            defaults['port1'] = 80
+            defaults['port2'] = 443
+        elif self.protocol == 'https':
+            defaults['uniqueType'] = 'By connection'
+            defaults['maxConnection'] = 10000
+            defaults['port1'] = 443
+        elif self.protocol == 'http':
+            defaults['uniqueType'] = 'By connection'
+            defaults['maxConnection'] = 58000
+            defaults['port1'] = 80
+        else:
+            defaults['uniqueType'] = 'By connection'
+            defaults['maxConnection'] = 58000
+        for key in defaults:
+            if getattr(self, key, None) is None:
+                setattr(self, key, defaults[key])
+        new_targets = []
+        for target in self.targets:
+            if isinstance(target, str):
+                # TODO: find the right serverId
+                target = FGCPSLBTarget(serverId=target)
+                # set the parent of the target to this group
+                #target.setparent(self)
+            elif isinstance(target, FGCPVServer):
+                target = FGCPSLBTarget(serverId=target.vserverId)
+                # set the parent of the target to this group
+                #target.setparent(self)
+            if getattr(target, 'port1', None) is None:
+                setattr(target, 'port1', self.port1)
+            if getattr(target, 'port2', None) is None:
+                setattr(target, 'port2', self.port2)
+            new_targets.append(target)
+        self.id = str(self.id)
+        self.targets = new_targets
+
+    def list_targets(self):
+        return getattr(self, 'targets', [])
+
+    def get_target(self, serverId):
+        for target in self.list_targets():
+            if target.serverId == serverId:
+                return target
+
+    def add_target(self, **kwargs):
+        if self.targets is None:
+            self.targets = []
+        #target = FGCPSLBTarget(serverId=serverId, port1=port1, port2=port2)
+        target = FGCPSLBTarget(**kwargs)
+        # set the parent of the target to this group
+        #target.setparent(self)
+        self.targets.append(target)
+
+    def list_causes(self):
+        return getattr(self, 'causes', [])
 
 
-class FGCPSLBTarget(FGCPSLBGroup):
-    pass
+class FGCPSLBTarget(FGCPResource):
+    _idname = 'serverId'
+    serverId = None
+    ipAddress = None
+    serverName = None
+    port1 = None
+    port2 = None
+    status = None
+    peak = None
+    now = None
 
 
-class FGCPSLBErrorStats(FGCPLoadBalancer):
-    pass
+class FGCPSLBCause(FGCPResource):
+    _idname = 'cat'
+    cat = None
+    status = None
+    before = None
+    current = None
+    today = None
+    total = None
+    yesterday = None
+    filePath = None
 
 
-class FGCPSLBErrorCause(FGCPSLBErrorStats):
-    pass
+class FGCPSLBErrorStats(FGCPResource):
+    _idname = None
+    period = None
+    groups = None
+
+    def list_groups(self):
+        return getattr(self, 'groups', [])
 
 
-class FGCPSLBErrorPeriod(FGCPSLBErrorStats):
-    pass
+class FGCPSLBErrorPeriod(FGCPResource):
+    _idname = None
+    before = None
+    current = None
+    today = None
+    yesterday = None
 
 
-class FGCPSLBServerCert(FGCPLoadBalancer):
+class FGCPSLBServerCert(FGCPResource):
     _idname = 'certNum'
+    certNum = None
+    subject = None
+    issuer = None
+    validity = None
+    groupId = None
+    detail = None
 
 
-class FGCPSLBCCACert(FGCPLoadBalancer):
+class FGCPSLBCCACert(FGCPResource):
     _idname = 'ccacertNum'
+    ccacertNum = None
+    subject = None
+    description = None
+    issuer = None
+    validity = None
+    detail = None
 
 
 class FGCPPublicIP(FGCPResource):
     _idname = 'address'
+    address = None
+    v4v6Flag = None
+    vsysId = None
 
     def allocate(self):
         # see VSystem allocate_publicip
@@ -1621,7 +2094,7 @@ class FGCPPublicIP(FGCPResource):
 
     def get_attributes(self, refresh=None):
         # CHECKME: if we already have the v4v6Flag information, we already retrieved the attributes
-        if not refresh and hasattr(self, 'v4v6Flag'):
+        if not refresh and getattr(self, 'v4v6Flag', None) is not None:
             return self
         # get attributes for this publicip
         publicipattr = self.getproxy().GetPublicIPAttributes(self.getid())
@@ -1634,7 +2107,11 @@ class FGCPPublicIP(FGCPResource):
 
 
 class FGCPAddressRange(FGCPResource):
+    # CHECKME: this has an attribute 'from' which causes problems for Python !
     _idname = None
+    from_ip = None
+    to_ip = None
+    range = None
 
     def create_pool():
         # see VDataCenter create_addresspool
@@ -1651,6 +2128,14 @@ class FGCPAddressRange(FGCPResource):
 
 class FGCPVSysDescriptor(FGCPResource):
     _idname = 'vsysdescriptorId'
+    vsysdescriptorId = None
+    vsysdescriptorName = None
+    description = None
+    keyword = None
+    creatorName = None
+    registrant = None
+    vservers = None
+    diskimages = None
 
     def register(self):
         # see VSystem register_vsysdescriptor()
@@ -1669,7 +2154,7 @@ class FGCPVSysDescriptor(FGCPResource):
         # CHECKME: what if we updated the object attributes directly ?
         result = None
         for key in tododict:
-            if tododict[key] != getattr(self, key):
+            if tododict[key] != getattr(self, key, None):
                 # CHECKME: updateLcId = 'en' here
                 result = self.getproxy().UpdateVSYSDescriptorAttribute(self.getid(), 'en', updatename[key], tododict[key])
         self.show_output('Updated VSYSDescriptor %s' % self.vsysdescriptorName)
@@ -1683,7 +2168,7 @@ class FGCPVSysDescriptor(FGCPResource):
     #=========================================================================
 
     def list_diskimages(self, category='GENERAL'):
-        if not hasattr(self, 'diskimages'):
+        if getattr(self, 'diskimages', None) is None:
             # CHECKME: reversed order of arguments here
             setattr(self, 'diskimages', self.getproxy().ListDiskImage(category, self.getid()))
         return getattr(self, 'diskimages')
@@ -1702,10 +2187,17 @@ class FGCPVSysDescriptor(FGCPResource):
 
     #=========================================================================
 
+    def list_vservers(self):
+        if getattr(self, 'vservers', None) is None:
+            self.retrieve()
+        return getattr(self, 'vservers')
+
+    #=========================================================================
+
     def get_configuration(self, refresh=None):
         # CHECKME: if we already have the registrant information etc., we already retrieved the attributes
         # CHECKME: if we already also have the vservers information, we already retrieved the configuration
-        if not refresh and hasattr(self, 'registrant'):
+        if not refresh and getattr(self, 'registrant', None) is not None:
             return self
         # get configuration for this vsysdescriptor
         config = self.getproxy().GetVSYSDescriptorConfiguration(self.getid())
@@ -1735,6 +2227,17 @@ class FGCPVSysDescriptor(FGCPResource):
 
 class FGCPDiskImage(FGCPResource):
     _idname = 'diskimageId'
+    diskimageId = None
+    diskimageName = None
+    description = None
+    creatorName = None
+    licenseInfo = None
+    osName = None
+    osType = None
+    registrant = None
+    size = None
+    softwares = None
+    servertypes = None
 
     def register(self):
         # see VServer register_diskimage
@@ -1749,7 +2252,7 @@ class FGCPDiskImage(FGCPResource):
         # CHECKME: what if we updated the object attributes directly ?
         result = None
         for key in tododict:
-            if tododict[key] != getattr(self, key):
+            if tododict[key] != getattr(self, key, None):
                 # CHECKME: updateLcId = 'en' here
                 result = self.getproxy().UpdateDiskImageAttribute(self.getid(), 'en', updatename[key], tododict[key])
         self.show_output('Updated DiskImage %s' % self.diskimageName)
@@ -1759,37 +2262,84 @@ class FGCPDiskImage(FGCPResource):
         return self.getproxy().UnregisterDiskImage(self.getid())
 
     def list_softwares(self):
-        if not hasattr(self, 'softwares'):
+        if getattr(self, 'softwares', None) is None:
             # CHECKME: initialize to None or list here ?
-            setattr(self, 'softwares', None)
+            setattr(self, 'softwares', [])
         return getattr(self, 'softwares')
 
     def list_servertypes(self):
-        if not hasattr(self, 'servertypes'):
+        if getattr(self, 'servertypes', None) is None:
             setattr(self, 'servertypes', self.getproxy().ListServerType(self.getid()))
         return getattr(self, 'servertypes')
 
 
-class FGCPDiskImageSoftware(FGCPResource):
+class FGCPImageSoftware(FGCPResource):
     _idname = 'name'
+    name = None
+    license = None
+    category = None
+    id = None
+    officialVersion = None
+    patch = None
+    support = None
+    version = None
 
 
 class FGCPServerType(FGCPResource):
     # this is what we actually pass to CreateVServer
     _idname = 'name'
+    name = None
+    chargeType = None
+    comment = None
+    cpu = None
+    expectedUsage = None
+    id = None
+    label = None
+    memory = None
+    price = None
+    productId = None
+    productName = None
+    disks = None
+
+    def list_disks(self):
+        # CHEKCME: currently unused ?
+        if getattr(self, 'disks', None) is None:
+            setattr(self, 'disks', [])
+        return getattr(self, 'disks')
 
 
 class FGCPServerTypeCPU(FGCPResource):
-    # CHECKME: this is used as internal response element for ListServerType
-    pass
+    _idname = None
+    cpuArch = None
+    cpuPerf = None
+    numOfCpu = None
+
+
+class FGCPServerTypeDisk(FGCPResource):
+    # CHEKCME: currently unused ?
+    _idname = None
+    diskSize = None
+    diskType = None
+    diskUsage = None
 
 
 class FGCPUsageInfo(FGCPResource):
     _idname = 'vsysId'
+    vsysId = None
+    vsysName = None
+    products = None
+
+    def list_products(self):
+        if getattr(self, 'products', None) is None:
+            setattr(self, 'products', [])
+        return getattr(self, 'products')
 
 
 class FGCPUsageInfoProduct(FGCPResource):
     _idname = 'productName'
+    productName = None
+    unitName = None
+    usedPoints = None
 
 
 class FGCPUnknown(FGCPResource):

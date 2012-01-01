@@ -1,0 +1,18 @@
+
+ <html><head><title>Client API library for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Client API library for the Fujitsu Global Cloud Platform (FGCP)</h1><p>using XML-RPC API Version 2011-01-31 <hr/></p><h2><a name="Using_this_library"></a>Using this library<a href="#Using_this_library" class="section_anchor"></a></h2><p>If you already have access to the Fujitsu Global Cloud Platform (FGCP), have a look at the demo script: </p><blockquote><tt>Usage: fgcp_demo.py [pem_file] [region]</tt> 
+</blockquote><p>If not, register on one of the Service Portals from the list below. Afterwards, you can access your resources via command-line scripts, web interfaces etc. as you prefer. </p><pre class="prettyprint"># Get FGCP client with your certificate in region &#x27;uk&#x27;
+from fgcp.client import FGCPClient
+client = FGCPClient(&#x27;client.pem&#x27;, &#x27;uk&#x27;)
+
+# Backup all VServers in some VSYS
+vsys = client.GetSystemInventory(&#x27;Python API Demo System&#x27;)
+for vserver in vsys.vservers:
+	client.BackupVServerAndRestart(vsys.vsysId, vserver.vserverId)
+client.CleanupBackups(vsys.vsysId)
+
+# Note: you can also use all API commands from FGCPCommand()
+vsyss = client.ListVSYS()
+for vsys in vsyss:
+	vsysconfig = client.GetVSYSConfiguration(vsys.vsysId)
+	...</pre><p>Note: this client API library provides higher-level <a href="ClientMethods.html">Client Methods</a>, intermediate <a href="ResourceActions.html">Resource Actions</a> and lower-level <a href="APICommands.html">API Commands</a>. <hr/></p><h2><a name="Fujitsu_Global_Cloud_Platform_(FGCP)"></a>Fujitsu Global Cloud Platform (FGCP)<a href="#Fujitsu_Global_Cloud_Platform_(FGCP)" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_client_api.png" /> </p><p>Service Portal <ul><li>for Australia and New Zealand: <a href="http://globalcloud.fujitsu.com.au/" rel="nofollow">http://globalcloud.fujitsu.com.au/</a> </li><li>for Central Europe (CEMEA&amp;I): <a href="http://globalcloud.de.fujitsu.com/" rel="nofollow">http://globalcloud.de.fujitsu.com/</a> </li><li>for Japan: <a href="http://oviss.jp.fujitsu.com/" rel="nofollow">http://oviss.jp.fujitsu.com/</a> </li><li>for Singapore, Malaysia, Indonesia, Thailand and Vietnam: <a href="http://globalcloud.sg.fujitsu.com/" rel="nofollow">http://globalcloud.sg.fujitsu.com/</a> </li><li>for the UK and Ireland: <a href="http://globalcloud.uk.fujitsu.com/" rel="nofollow">http://globalcloud.uk.fujitsu.com/</a> </li><li>for the Americas: <a href="http://globalcloud.us.fujitsu.com/" rel="nofollow">http://globalcloud.us.fujitsu.com/</a> </li></ul></p><hr/><h2><a name="Requirements"></a>Requirements<a href="#Requirements" class="section_anchor"></a></h2><p>This module uses gdata.tlslite.utils to create the key signature, see <a href="http://code.google.com/p/gdata-python-client/" rel="nofollow">http://code.google.com/p/gdata-python-client/</a> for download and installation </p><p>Note: to convert your .p12 or .pfx file to unencrypted PEM format, you can use the following &#x27;openssl&#x27; command: </p><pre class="prettyprint">openssl pkcs12 -in UserCert.p12 -out client.pem -nodes</pre>
+ <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
