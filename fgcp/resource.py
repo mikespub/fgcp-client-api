@@ -61,59 +61,62 @@ class FGCPElement(object):
     #=========================================================================
 
     def pformat(self, what, depth=0):
+        prefix = '  ' * depth
         #if what is None:
-        #    return '  ' * depth + 'None'
+        #    return '%sNone' % prefix
         if isinstance(what, str):
-            return '  ' * depth + "'%s'" % what
+            return "%s'%s'" % (prefix, what)
         CRLF = '\r\n'
         L = []
         if isinstance(what, list):
-            L.append('  ' * depth + '[')
+            L.append('%s[' % prefix)
             for val in what:
                 L.append(self.pformat(val, depth + 1) + ',')
-            L.append('  ' * depth + ']')
+            L.append('%s]' % prefix)
             return CRLF.join(L)
         # initialize object attributes, cfr. FGCPDesign().save()
-        L.append('  ' * depth + '%s(' % type(what).__name__)
+        L.append('%s%s(' % (prefix, type(what).__name__))
         depth += 1
+        prefix = '  ' * depth
         for key in what.__dict__:
             # TODO: skip _caller and _parent for output later ?
             if key == '_caller' or key == '_parent' or key == '_status':
                 if isinstance(what.__dict__[key], FGCPResource):
-                    L.append('  ' * depth + "%s='%s'," % (key, repr(what.__dict__[key])))
+                    L.append("%s%s='%s'," % (prefix, key, repr(what.__dict__[key])))
                 elif isinstance(what.__dict__[key], str):
-                    L.append('  ' * depth + "%s='%s'," % (key, what.__dict__[key]))
+                    L.append("%s%s='%s'," % (prefix, key, what.__dict__[key]))
                 else:
-                    L.append('  ' * depth + '%s=%s,' % (key, what.__dict__[key]))
+                    L.append('%s%s=%s,' % (prefix, key, what.__dict__[key]))
             # TODO: skip _proxy for output later ?
             elif key == '_proxy':
                 #if what.__dict__[key] is not None:
-                #    L.append('  ' * depth + "%s='%s'," % (key, repr(what.__dict__[key])))
+                #    L.append("%s%s='%s'," % (prefix, key, repr(what.__dict__[key])))
                 #else:
-                #    L.append('  ' * depth + '%s=None,' % key)
+                #    L.append('%s%s=None,' % (prefix, key))
                 pass
             # CHECKME: skip all the others, e.g. _get_handler from FW and SLB
             elif key.startswith('_'):
                 pass
             elif isinstance(what.__dict__[key], FGCPElement):
-                L.append('  ' * depth + '%s=' % key)
+                L.append('%s%s=' % (prefix, key))
                 L.append(self.pformat(what.__dict__[key], depth + 1) + ',')
             elif isinstance(what.__dict__[key], list):
-                L.append('  ' * depth + '%s=[' % key)
+                L.append('%s%s=[' % (prefix, key))
                 for val in what.__dict__[key]:
                     L.append(self.pformat(val, depth + 1) + ',')
-                L.append('  ' * depth + '],')
+                L.append('%s],' % prefix)
             elif isinstance(what.__dict__[key], str):
-                L.append('  ' * depth + "%s='%s'," % (key, what.__dict__[key]))
+                L.append("%s%s='%s'," % (prefix, key, what.__dict__[key]))
             elif isinstance(what.__dict__[key], int) or isinstance(what.__dict__[key], float):
-                L.append('  ' * depth + "%s=%s," % (key, what.__dict__[key]))
+                L.append("%s%s=%s," % (prefix, key, what.__dict__[key]))
             elif what.__dict__[key] is None:
-                #L.append('  ' * depth + "%s=None," % key)
+                #L.append("%s%s=None," % (prefix, key))
                 pass
             else:
-                L.append('  ' * depth + "%s='?%s?'," % (key, what.__dict__[key]))
+                L.append("%s%s='?%s?'," % (prefix, key, what.__dict__[key]))
         depth -= 1
-        L.append('  ' * depth + ')')
+        prefix = '  ' * depth
+        L.append('%s)' % prefix)
         return CRLF.join(L)
 
     def pprint(self):

@@ -1,0 +1,294 @@
+# FGCPVSystem
+baseDescriptor: 2-tier_Skeleton_de_001
+cloudCategory: BOTH
+creator: DEMO
+description: 2-tier Skeleton
+firewalls:
+  - # FGCPFirewall
+    backout: false
+    backups:
+      - # FGCPBackup
+        backupId: 3
+        backupTime: Dec 23, 2011 10:04:55 PM
+      - # FGCPBackup
+        backupId: 2
+        backupTime: Jun 2, 2011 1:10:28 PM
+    category: FW
+    comment: 
+    configUpdateExist: false
+    creator: DEMO
+    currentVersion: 3.0
+    directions:
+      - # FGCPFWDirection
+        from: DEMO-VSYSTEM-N-DMZ
+        policies:
+          - # FGCPFWPolicy
+            action: Accept
+            dst: any
+            dstPort: any
+            dstService: NONE
+            dstType: IP
+            id: 45999
+            log: Off
+            protocol: tcp-udp
+            src: any
+            srcPort: any
+            srcType: IP
+        to: DEMO-VSYSTEM-N-INTERNET
+      - # FGCPFWDirection
+        from: DEMO-VSYSTEM-N-DMZ
+        policies:
+          - # FGCPFWPolicy
+            action: Accept
+            dst: DB1
+            dstPort: 3306
+            dstService: NONE
+            dstType: IP
+            id: 10306
+            log: Off
+            protocol: tcp
+            src: any
+            srcPort: any
+            srcType: IP
+        to: DEMO-VSYSTEM-N-SECURE1
+      - # FGCPFWDirection
+        from: DEMO-VSYSTEM-N-INTERNET
+        policies:
+          - # FGCPFWPolicy
+            action: Accept
+            dst: publicip.1
+            dstPort: 22
+            dstService: NONE
+            dstType: IP
+            id: 35022
+            log: On
+            protocol: tcp
+            src: any
+            srcPort: any
+            srcType: IP
+          - # FGCPFWPolicy
+            action: Accept
+            dst: publicip.1
+            dstPort: 80
+            dstService: NONE
+            dstType: IP
+            id: 35080
+            log: Off
+            protocol: tcp
+            src: any
+            srcPort: any
+            srcType: IP
+        to: DEMO-VSYSTEM-N-DMZ
+      - # FGCPFWDirection
+        from: DEMO-VSYSTEM-N-SECURE1
+        policies:
+          - # FGCPFWPolicy
+            action: Accept
+            dst: any
+            dstPort: 22
+            dstService: NONE
+            dstType: IP
+            id: 12022
+            log: Off
+            protocol: tcp
+            src: any
+            srcPort: any
+            srcType: IP
+        to: DEMO-VSYSTEM-N-DMZ
+      - # FGCPFWDirection
+        from: DEMO-VSYSTEM-N-SECURE1
+        policies:
+          - # FGCPFWPolicy
+            action: Accept
+            dst: any
+            dstPort: any
+            dstService: NONE
+            dstType: IP
+            id: 46999
+            log: Off
+            protocol: tcp-udp
+            src: any
+            srcPort: any
+            srcType: IP
+        to: DEMO-VSYSTEM-N-INTERNET
+    dns: {
+      # FGCPFWDns,
+      primary: 80.70.163.10,
+      secondary: ,
+      type: AUTO,
+    }
+    efmId: DEMO-VSYSTEM-S-0001
+    efmName: Firewall
+    efmStatus: RUNNING
+    efmType: FW
+    firmUpdateExist: false
+    latestVersion: 3.0
+    nat:
+      - # FGCPFWNATRule
+        privateIp: SLB1
+        publicIp: publicip.1
+        snapt: true
+loadbalancers:
+  - # FGCPLoadBalancer
+    _status: RUNNING
+    backout: false
+    backups:
+      - # FGCPBackup
+        backupId: 5
+        backupTime: Dec 23, 2011 10:13:06 PM
+    category: SLB
+    ccacerts: 
+    comment: 
+    configUpdateExist: false
+    creator: DEMO
+    currentVersion: 2.0
+    efmId: DEMO-VSYSTEM-S-0002
+    efmName: SLB1
+    efmStatus: RUNNING
+    efmType: SLB
+    firmUpdateExist: false
+    groups:
+      - # FGCPSLBGroup
+        balanceType: minimum-connection-strict
+        causes:
+          - # FGCPSLBCause
+            _status: default
+            cat: HIGH_STRESS
+          - # FGCPSLBCause
+            _status: customize
+            cat: LIMIT_ACCESS
+          - # FGCPSLBCause
+            _status: customize
+            cat: MAINTE
+          - # FGCPSLBCause
+            _status: customize
+            cat: SERVER_STOP
+          - # FGCPSLBCause
+            _status: default
+            cat: SYSTEM
+        id: 10
+        interval: 60
+        maxConnection: 10000
+        monitorType: ping
+        port1: 80
+        protocol: http
+        recoveryAction: switch-back
+        retryCount: 3
+        targets:
+          - # FGCPSLBTarget
+            ipAddress: WebApp1
+            port1: 80
+            serverId: DEMO-VSYSTEM-S-0003
+            serverName: WebApp1
+          - # FGCPSLBTarget
+            ipAddress: WebApp2
+            port1: 80
+            serverId: DEMO-VSYSTEM-S-0006
+            serverName: WebApp2
+        timeout: 10
+        uniqueType: By connection
+      - # FGCPSLBGroup
+        balanceType: round-robin
+        id: 20
+        interval: 60
+        maxConnection: 58000
+        monitorType: ping
+        port1: 22
+        protocol: tcp
+        recoveryAction: switch-back
+        retryCount: 3
+        targets:
+          - # FGCPSLBTarget
+            ipAddress: WebApp1
+            port1: 22
+            serverId: DEMO-VSYSTEM-S-0003
+            serverName: WebApp1
+          - # FGCPSLBTarget
+            ipAddress: WebApp2
+            port1: 22
+            serverId: DEMO-VSYSTEM-S-0006
+            serverName: WebApp2
+        timeout: 10
+        uniqueType: By connection
+    ipAddress: SLB1
+    latestVersion: 2.0
+    servercerts: 
+    slbVip: SLB1
+    webAccelerator: false
+publicips:
+  - # FGCPPublicIP
+    address: publicip.1
+    publicipStatus: ATTACHED
+    v4v6Flag: IPv4
+    vsysId: DEMO-VSYSTEM
+vdisks:
+  - # FGCPVDisk
+    attachedTo: DEMO-VSYSTEM-S-0005
+    backups: 
+    creator: DEMO
+    size: 100.0
+    vdiskId: DEMO-VSYSTEM-D-0001
+    vdiskName: DISK1
+    vdiskStatus: NORMAL
+vnets:
+  - DEMO-VSYSTEM-N-DMZ
+  - DEMO-VSYSTEM-N-SECURE1
+vservers:
+  - # FGCPVServer
+    creator: DEMO
+    diskimageId: IMG_f36620_M15GX18N755IWW
+    diskimageName: CentOS 5.4 32bit(EN)
+    vdisks: 
+    vnics:
+      - # FGCPVNic
+        networkId: DEMO-VSYSTEM-N-DMZ
+        nicNo: 0
+        privateIp: WebApp1
+    vserverId: DEMO-VSYSTEM-S-0003
+    vserverName: WebApp1
+    vserverStatus: RUNNING
+    vserverType: economy
+  - # FGCPVServer
+    backups:
+      - # FGCPBackup
+        backupId: 0003
+        backupTime: Dec 28, 2011 6:51:39 PM
+        timeval: 1325094699.0
+    creator: DEMO
+    diskimageId: IMG_f36620_5ERF3849UO
+    diskimageName: CentOS 5.4 64bit(EN)
+    vdisks:
+      - # FGCPVDisk
+        attachedTo: DEMO-VSYSTEM-S-0005
+        backups: 
+        creator: DEMO
+        size: 100.0
+        vdiskId: DEMO-VSYSTEM-D-0001
+        vdiskName: DISK1
+        vdiskStatus: NORMAL
+    vnics:
+      - # FGCPVNic
+        networkId: DEMO-VSYSTEM-N-SECURE1
+        nicNo: 0
+        privateIp: DB1
+    vserverId: DEMO-VSYSTEM-S-0005
+    vserverName: DB1
+    vserverStatus: RUNNING
+    vserverType: advanced
+  - # FGCPVServer
+    creator: DEMO
+    diskimageId: IMG_f36620_GNFDMQHXLE68
+    diskimageName: CentOS 32bit Upgraded Image
+    vdisks: 
+    vnics:
+      - # FGCPVNic
+        networkId: DEMO-VSYSTEM-N-DMZ
+        nicNo: 0
+        privateIp: WebApp2
+    vserverId: DEMO-VSYSTEM-S-0006
+    vserverName: WebApp2
+    vserverStatus: RUNNING
+    vserverType: economy
+vsysId: DEMO-VSYSTEM
+vsysName: Demo System
+vsysStatus: NORMAL

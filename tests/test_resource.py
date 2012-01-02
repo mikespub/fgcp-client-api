@@ -392,6 +392,8 @@ def test_design(design):
     #result = design.build_vsystem('My New VSystem')
     design.save_file('new_demo_system.txt')
     design.load_file('new_demo_system.txt')
+    #design.save_file('new_demo_system.yaml', 'yaml')
+    #design.load_file('new_demo_system.yaml')
 
 
 if __name__ == "__main__":

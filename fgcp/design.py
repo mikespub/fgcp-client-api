@@ -34,7 +34,7 @@ design.save_file('new_demo_system.txt')
 import time
 
 from fgcp import FGCPError
-from fgcp.resource import FGCPResource, FGCPResourceError
+from fgcp.resource import FGCPElement, FGCPResource, FGCPResourceError
 
 
 class FGCPDesignError(FGCPError):
@@ -59,6 +59,112 @@ class FGCPDesign(FGCPResource):
     vsysName = None
     vsystem = None
 
+    def from_code(self, lines):
+        # CHECKME: add line continuations before exec() !?
+        try:
+            # Note: FGCPElement().pformat() writes objects initialized with the right values
+            exec 'from fgcp.resource import *\nvsystem = ' + lines.replace("\r\n", "\\\r\n")
+        except:
+            #raise FGCPDesignError('INVALID_FORMAT', 'File %s seems to have some syntax errors' % self.filePath)
+            raise
+        return vsystem
+
+    def to_code(self, what):
+        # FGCPElement().pformat() writes objects initialized with the right values
+        return self.pformat(what)
+
+    def from_yaml(self, lines):
+        # TODO: import from yaml :-)
+        from fgcp.resource import FGCPVSystem
+        return FGCPVSystem(vsysName='TODO: import from yaml', description='This library does not support importing from yaml files yet')
+
+    def to_yaml(self, what, depth=0, suffix=''):
+        if isinstance(what, FGCPResource):
+            # convert to dict recursively first
+            what = self.to_var(what)
+        L = []
+        prefix = '  ' * depth
+        # See http://yaml.org/spec/1.1/
+        # Mapping of ...
+        if isinstance(what, dict):
+            keylist = what.keys()
+            keylist.sort()
+            for key in keylist:
+                if key == '_class':
+                    L.append('%s# %s%s' % (prefix, what[key], suffix))
+                # ... mappings
+                elif isinstance(what[key], dict):
+                    L.append('%s%s: {' % (prefix, key))
+                    # CHECKME: add , after each entry !
+                    L.append(self.to_yaml(what[key], depth + 1, ','))
+                    L.append('%s}%s' % (prefix, suffix))
+                # ... sequences
+                elif isinstance(what[key], list):
+                    L.append('%s%s:' % (prefix, key))
+                    L.append(self.to_yaml(what[key], depth + 1))
+                    # CHECKME: no suffix here ???
+                # ... scalars
+                else:
+                    L.append('%s%s: %s%s' % (prefix, key, what[key], suffix))
+        # Sequence of ...
+        elif isinstance(what, list):
+            if len(what) == 0:
+                return
+            # ... mappings
+            elif isinstance(what[0], dict):
+                for item in what:
+                    if '_class' in item:
+                        L.append('%s- # %s' % (prefix, item['_class']))
+                        del item['_class']
+                    else:
+                        L.append('%s-' % prefix)
+                    L.append(self.to_yaml(item, depth + 1))
+            # ... sequences
+            elif isinstance(what[0], list):
+                for item in what:
+                    L.append('%s- [' % prefix)
+                    # CHECKME: add , after each entry
+                    for entry in item:
+                        L.append(self.to_yaml(entry, depth + 1) + ',')
+                    L.append('%s]' % prefix)
+            # ... scalars
+            else:
+                for item in what:
+                    L.append('%s- %s' % (prefix, item))
+        # Scalar
+        else:
+            L.append('%s%s' % (prefix, what))
+        return '\r\n'.join(L)
+
+    def to_var(self, what):
+        if isinstance(what, FGCPElement):
+            # convert to dict and add _class
+            new_what = {'_class': type(what).__name__}
+            keylist = what.__dict__.keys()
+            for key in keylist:
+                # skip internal attributes
+                if key.startswith('_') and key != '_status':
+                    continue
+                new_what[key] = self.to_var(what.__dict__[key])
+            return new_what
+        elif isinstance(what, dict):
+            new_what = {}
+            keylist = what.keys()
+            for key in keylist:
+                # skip internal keys
+                #if key.startswith('_'):
+                #    continue
+                new_what[key] = self.to_var(what[key])
+            return new_what
+        elif isinstance(what, list):
+            new_what = []
+            for item in what:
+                new_what.append(self.to_var(item))
+            return new_what
+        else:
+            # str, int, float etc. are returned as is
+            return what
+
     def load_file(self, filePath):
         """
         Load VSystem Design from file
@@ -71,16 +177,16 @@ class FGCPDesign(FGCPResource):
         f = open(self.filePath, 'r')
         lines = f.read()
         f.close()
-        # check if we have something we need, i.e. a FGCPSys() instance
-        if not lines.startswith('FGCPVSystem('):
+        # check if we have something we need, i.e. a FGCPSys() instance or # FGCPVSystem comment line
+        if lines.startswith('FGCPVSystem('):
+            format = 'txt'
+            vsystem = self.from_code(lines)
+        elif lines.startswith('#'):
+            format = 'yaml'
+            # TODO :-)
+            vsystem = self.from_yaml(lines)
+        else:
             raise FGCPDesignError('INVALID_FORMAT', 'File %s does not seem to start with FGCPSystem(' % self.filePath)
-        # CHECKME: add line continuations before exec() !?
-        try:
-            # Note: FGCPElement().pformat() writes objects initialized with the right values
-            exec 'from fgcp.resource import *\nvsystem = ' + lines.replace("\r\n", "\\\r\n")
-        except:
-            #raise FGCPDesignError('INVALID_FORMAT', 'File %s seems to have some syntax errors' % self.filePath)
-            raise
         self.show_output('Loaded VSystem Design for %s from file %s' % (vsystem.vsysName, self.filePath))
         try:
             # check if VDataCenter already has a vsystem with the same name
@@ -205,7 +311,7 @@ class FGCPDesign(FGCPResource):
         # TODO: remap FW and SLB rules and update them !?
         self.show_output('Configured VSystem %s' % self.vsysName)
 
-    def save_file(self, filePath):
+    def save_file(self, filePath, format='txt'):
         """
         Save VSystem Design to file
         """
@@ -278,7 +384,10 @@ class FGCPDesign(FGCPResource):
         #    new_vdisks.append(vdisk)
         #self.vsystem.vdisks = new_vdisks
         # Prepare for output - FGCPElement().pformat() writes objects initialized with the right values
-        lines = self.pformat(self.vsystem)
+        if format == 'txt':
+            lines = self.to_code(self.vsystem)
+        else:
+            lines = self.to_yaml(self.vsystem)
         # Replace vsysId and creator everywhere (including Id's)
         lines = lines.replace(self.vsystem.vsysId, 'DEMO-VSYSTEM')
         lines = lines.replace(self.vsystem.creator, 'DEMO')
@@ -286,8 +395,9 @@ class FGCPDesign(FGCPResource):
         for ip in seenip.keys():
             lines = lines.replace(ip, seenip[ip])
         # CHECKME: fix from=... issue for firewall policies
-        lines = lines.replace('from=', 'from_zone=')
-        lines = lines.replace('to=', 'to_zone=')
+        if format == 'txt':
+            lines = lines.replace('from=', 'from_zone=')
+            lines = lines.replace('to=', 'to_zone=')
         # Write configuration to file
         f = open(self.filePath, 'wb')
         f.write(lines)
