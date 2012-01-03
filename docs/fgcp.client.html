@@ -385,7 +385,7 @@ Usage:&nbsp;proxy.<a href="#FGCPClient-UpdateEFMConfigHandler">UpdateEFMConfigHa
 
 <hr>
 Methods inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><a name="FGCPClient-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPClient-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>, conn<font color="#909090">=None</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -423,8 +423,6 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
-
-<dl><dt><strong>host</strong> = 'api.globalcloud.de.fujitsu.com'</dl>
 
 <dl><dt><strong>key_file</strong> = 'client.pem'</dl>
 
@@ -797,7 +795,7 @@ Usage:&nbsp;proxy.<a href="#FGCPDesigner-UpdateEFMConfigHandler">UpdateEFMConfig
 
 <hr>
 Methods inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><a name="FGCPDesigner-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPDesigner-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>, conn<font color="#909090">=None</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -835,8 +833,6 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
-
-<dl><dt><strong>host</strong> = 'api.globalcloud.de.fujitsu.com'</dl>
 
 <dl><dt><strong>key_file</strong> = 'client.pem'</dl>
 
@@ -1050,7 +1046,7 @@ Usage:&nbsp;proxy.<a href="#FGCPMonitor-UpdateEFMConfigHandler">UpdateEFMConfigH
 
 <hr>
 Methods inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><a name="FGCPMonitor-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPMonitor-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>, conn<font color="#909090">=None</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -1088,8 +1084,6 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
-
-<dl><dt><strong>host</strong> = 'api.globalcloud.de.fujitsu.com'</dl>
 
 <dl><dt><strong>key_file</strong> = 'client.pem'</dl>
 
@@ -1363,7 +1357,7 @@ Usage:&nbsp;proxy.<a href="#FGCPOperator-UpdateEFMConfigHandler">UpdateEFMConfig
 
 <hr>
 Methods inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><a name="FGCPOperator-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
+<dl><dt><a name="FGCPOperator-__init__"><strong>__init__</strong></a>(self, key_file<font color="#909090">='client.pem'</font>, region<font color="#909090">='de'</font>, verbose<font color="#909090">=0</font>, debug<font color="#909090">=0</font>, conn<font color="#909090">=None</font>)</dt><dd><tt>Use&nbsp;the&nbsp;same&nbsp;PEM&nbsp;file&nbsp;for&nbsp;SSL&nbsp;client&nbsp;certificate&nbsp;and&nbsp;RSA&nbsp;key&nbsp;signature<br>
 &nbsp;<br>
 Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
 the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
@@ -1401,8 +1395,6 @@ Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConne
 <dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
-
-<dl><dt><strong>host</strong> = 'api.globalcloud.de.fujitsu.com'</dl>
 
 <dl><dt><strong>key_file</strong> = 'client.pem'</dl>
 

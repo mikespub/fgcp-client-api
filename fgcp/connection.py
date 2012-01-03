@@ -33,7 +33,6 @@ for vsys in vsystems:
     ...
 """
 
-import httplib
 import time
 import base64
 import os.path
@@ -58,7 +57,6 @@ class FGCPConnection:
     """
     FGCP XML-RPC Connection
     """
-    host = 'api.globalcloud.de.fujitsu.com'         # updated based on region argument
     key_file = 'client.pem'                         # updated based on key_file argument
     region = 'de'                                   # updated based on region argument
     locale = 'en'                                   # TODO: make configurable to 'en' or 'jp' ?
@@ -77,22 +75,12 @@ class FGCPConnection:
     uri = '/ovissapi/endpoint'                      # fixed value for the API version
     api_version = '2011-01-31'                      # fixed value for the API version
     user_agent = 'OViSS-API-CLIENT'                 # fixed value for the API version
-    _regions = {
-        'au': 'api.globalcloud.fujitsu.com.au',     # for Australia and New Zealand
-        'de': 'api.globalcloud.de.fujitsu.com',     # for Central Europe, Middle East, Eastern Europe, Africa & India (CEMEA&I)
-        'jp': 'api.oviss.jp.fujitsu.com',           # for Japan
-        'sg': 'api.globalcloud.sg.fujitsu.com',     # for Singapore, Malaysia, Indonesia, Thailand and Vietnam
-        'uk': 'api.globalcloud.uk.fujitsu.com',     # for the UK and Ireland (UK&I)
-        'us': 'api.globalcloud.us.fujitsu.com',     # for the Americas
-        'test': 'test',                             # for local client tests with test fixtures
-        #'fake': 'fake',                            # for local client tests with fake updates etc. ?
-    }
 
-    _conn = None                                    # actual httplib.HTTPSConnection() or FGCPTestServer()
+    _conn = None                                    # actual httplib.HTTPSConnection() or FGCPTestServerWithFixtures() or ...
     _caller = None                                  # which FGCPResource() is calling
     _testid = None                                  # test identifier for fixtures
 
-    def __init__(self, key_file='client.pem', region='de', verbose=0, debug=0):
+    def __init__(self, key_file='client.pem', region='de', verbose=0, debug=0, conn=None):
         """
         Use the same PEM file for SSL client certificate and RSA key signature
 
@@ -103,10 +91,10 @@ class FGCPConnection:
         """
         self.key_file = key_file
         self.region = region
-        if region in self._regions:
-            self.host = self._regions[region]
         self.verbose = verbose
         self.debug = debug
+        if conn is not None:
+            self._conn = conn
         # Note: the timezone doesn't seem to matter for the API server,
         # as long as the expires value is set to the current time
         self.timezone = time.tzname[0]
@@ -121,15 +109,13 @@ class FGCPConnection:
         self._key = None
 
     def __repr__(self):
-        return '<%s:%s>' % (self.__class__.__name__, self.host)
+        return '<%s:%s>' % (self.__class__.__name__, self.region)
 
     def set_region(self, region):
-        if region in self._regions:
-            # reset connection if necessary
-            if self._conn is not None and self.host != self._regions[region]:
-                self.close()
-            self.host = self._regions[region]
-            self.region = region
+        # reset connection if necessary
+        if self.region != region:
+            self.close()
+        self.region = region
 
     def set_conn(self, conn):
         # CHECKME: set connection from elsewhere, e.g. for integration with Apache Libcloud or running on Google App Engine
@@ -137,19 +123,15 @@ class FGCPConnection:
 
     def connect(self):
         if self._conn is None:
-            if self.host == 'test':
-                # use dummy Test API server for testing
-                from fgcp.dummy import FGCPTestServerWithFixtures
-                self._conn = FGCPTestServerWithFixtures()
-            else:
-                # use the same PEM file for cert and key
-                self._conn = httplib.HTTPSConnection(self.host, key_file=self.key_file, cert_file=self.key_file)
+            # get the right server connection
+            from fgcp.server import FGCPGetServerConnection
+            self._conn = FGCPGetServerConnection(key_file=self.key_file, region=self.region)
 
     def send(self, method, uri, body, headers):
         # initialize connection if necessary
         self.connect()
         # set testid if necessary
-        if self.host == 'test':
+        if self.region == 'test':
             self._conn.set_testid(self._testid)
         # send HTTPS request
         self._conn.request(method, uri, body, headers)
@@ -164,8 +146,9 @@ class FGCPConnection:
         return resp.read()
 
     def close(self):
-        self._conn.close()
-        self._conn = None
+        if self._conn is not None:
+            self._conn.close()
+            self._conn = None
 
     def get_headers(self, attachments=None):
         if attachments is None:
@@ -194,7 +177,7 @@ class FGCPConnection:
         return sig
 
     def get_body(self, action, params=None, attachments=None):
-        if self.host == 'test':
+        if self.region == 'test':
             # sanitize accesskeyid and signature for test fixtures
             acc = '...'
             sig = '...'
@@ -203,7 +186,7 @@ class FGCPConnection:
             sig = self.get_signature(acc)
         CRLF = '\r\n'
         L = []
-        if self.host == 'test' or self.debug > 0:
+        if self.region == 'test' or self.debug > 0:
             self._testid = action
         L.append('<?xml version="1.0" encoding="UTF-8"?>')
         L.append('<OViSSRequest>')
@@ -246,7 +229,7 @@ class FGCPConnection:
                 L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (attachment['name'], attachment['filename']))
                 L.append('')
                 L.append(attachment['body'])
-                if self.host == 'test' or self.debug > 0:
+                if self.region == 'test' or self.debug > 0:
                     self._testid += '.%s' % attachment['filename']
             L.append('--BOUNDARY--')
             body = CRLF.join(L)
@@ -267,7 +250,7 @@ class FGCPConnection:
         elif isinstance(value, str):
             # <prefix>proto</prefix>
             L.append('  ' * depth + '<%s>%s</%s>' % (key, value, key))
-            if self.host == 'test' or self.debug > 0:
+            if self.region == 'test' or self.debug > 0:
                 self._testid += '.%s' % value
         elif isinstance(value, dict):
             # <order>
@@ -300,7 +283,7 @@ class FGCPConnection:
         else:
             # <prefix>proto</prefix>
             L.append('  ' * depth + '<%s>%s</%s>' % (key, value, key))
-            if self.host == 'test' or self.debug > 0:
+            if self.region == 'test' or self.debug > 0:
                 self._testid += '.%s' % value
         return CRLF.join(L)
 
@@ -314,8 +297,8 @@ class FGCPConnection:
         if self.debug > 10:
             print 'Saving request for %s' % self._testid
             if not hasattr(self, '_tester'):
-                # use dummy Test API server for saving tests too
-                from fgcp.dummy import FGCPTestServerWithFixtures
+                # use test API server for saving tests too
+                from fgcp.server import FGCPTestServerWithFixtures
                 setattr(self, '_tester', FGCPTestServerWithFixtures())
             self._tester.save_request(self._testid, body)
         elif self.debug > 2:
@@ -337,7 +320,12 @@ class FGCPConnection:
             print data
 
         # analyze XML-RPC response
-        resp = FGCPResponseParser().parse_data(data, self)
+        try:
+            resp = FGCPResponseParser().parse_data(data, self)
+        except:
+            print 'Invalid XML-RPC Response:'
+            print data
+            raise
         if self.debug > 1:
             print 'FGCP Response for %s:' % action
             resp.pprint()

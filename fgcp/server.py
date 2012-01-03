@@ -15,7 +15,7 @@
 #  limitations under the License.
 
 """
-Dummy Fujitsu Global Cloud Platform (FGCP) API Server(s) for local tests
+Fujitsu Global Cloud Platform (FGCP) API Server(s)
 
 Example: [see tests/test_*.py for more examples]
 
@@ -33,20 +33,148 @@ for vserver in vsystem.vservers:
 Note: you need to unzip the file 'fixtures.zip' in tests/fixtures first
 """
 
+import httplib
 import time
 import os.path
 import re
 
 from fgcp import FGCPError
 
+FGCP_REGIONS = {
+    'au': 'api.globalcloud.fujitsu.com.au',     # for Australia and New Zealand
+    'de': 'api.globalcloud.de.fujitsu.com',     # for Central Europe, Middle East, Eastern Europe, Africa & India (CEMEA&I)
+    'jp': 'api.oviss.jp.fujitsu.com',           # for Japan
+    'sg': 'api.globalcloud.sg.fujitsu.com',     # for Singapore, Malaysia, Indonesia, Thailand and Vietnam
+    'uk': 'api.globalcloud.uk.fujitsu.com',     # for the UK and Ireland (UK&I)
+    'us': 'api.globalcloud.us.fujitsu.com',     # for the Americas
+    'test': 'test',                             # for local client tests with test fixtures
+    #'fake': 'fake',                            # for local client tests with fake updates etc. ?
+    'relay': 'relay',                           # for remote connection via relay API server
+}
 
-class FGCPDummyError(FGCPError):
+
+class FGCPServerError(FGCPError):
     pass
 
 
-class FGCPTestServerWithFixtures:
+def FGCPGetServerConnection(key_file='client.pem', region='de'):
+    if region == 'test':
+        # connect to test API server for local testing
+        return FGCPTestServerWithFixtures()
+    elif region.startswith('relay='):
+        # TODO: connect to relay API server for remote connection
+        endpoint = region.split('=').pop()
+        from urlparse import urlparse
+        url = urlparse(endpoint)
+        # TODO: secure access to relay server in some other way, e.g. Basic Auth, OAuth, ...
+        if url.scheme == 'https':
+            return FGCPRelayServer(url.hostname, port=url.port, path=url.path)
+        else:
+            return FGCPUnsecureRelayServer(url.hostname, port=url.port, path=url.path)
+    elif region in FGCP_REGIONS:
+        # connect to real API server
+        host = FGCP_REGIONS[region]
+        # use the same PEM file for cert and key
+        return FGCPRealServer(host, key_file=key_file, cert_file=key_file)
+    else:
+        raise FGCPServerError('INVALID_REGION', 'Region %s does not exist' % region)
+
+
+class FGCPRealServer(httplib.HTTPSConnection):
     """
-    Test API server for local tests - updates are not supported
+    Connect to the real API server for the Fujitsu Global Cloud Platform in this region
+    """
+    pass
+
+
+class FGCPRelayServer(httplib.HTTPSConnection):
+    """
+    Connect via some relay API server for remote connections, e.g. for Google App Engine
+    """
+    _relay_host = None
+    _relay_port = None
+    _relay_path = None
+
+    def __init__(self, host, port=None, path=None, strict=None):
+        # TODO: we do not support key_file and cert_file here, so we connect via a relay server
+        self._relay_host = host
+        self._relay_port = port
+        self._relay_path = path
+        httplib.HTTPSConnection.__init__(self, host, port=port, strict=strict)
+
+    def connect(self):
+        return httplib.HTTPSConnection.connect(self)
+
+    def request(self, method, url, body=None, headers={}):
+        # TODO: fix request
+        return httplib.HTTPSConnection.request(self, method, self._relay_path, body, headers)
+
+    def getresponse(self):
+        # TODO: fix response
+        # TODO: fix response.read()
+        return httplib.HTTPSConnection.getresponse(self)
+
+
+class FGCPUnsecureRelayServer(httplib.HTTPConnection):
+    """
+    Connect via some relay API server for remote connections, e.g. for localhost
+    """
+    _relay_host = None
+    _relay_port = None
+    _relay_path = None
+
+    def __init__(self, host, port=None, path=None, strict=None):
+        # TODO: we do not support key_file and cert_file here, so we connect via a relay server
+        self._relay_host = host
+        self._relay_port = port
+        self._relay_path = path
+        httplib.HTTPConnection.__init__(self, host, port=port)
+
+    def connect(self):
+        return httplib.HTTPConnection.connect(self)
+
+    def request(self, method, url, body=None, headers={}):
+        # TODO: fix request
+        return httplib.HTTPConnection.request(self, method, self._relay_path, body, headers)
+
+    def getresponse(self):
+        # TODO: fix response
+        # TODO: fix response.read()
+        return httplib.HTTPConnection.getresponse(self)
+
+
+class FGCPTestServer:
+    status = 200
+    reason = 'OK'
+    _testid = None
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def request(self, method, uri, body, headers):
+        pass
+
+    def getresponse(self):
+        return self
+
+    def read(self):
+        return """<?xml version="1.0" encoding="UTF-8"?>
+<Response xmlns="http://apioviss.jp.fujitsu.com">
+  <responseMessage>Processing was completed.</responseMessage>
+  <responseStatus>SUCCESS</responseStatus>
+</Response>
+"""
+
+    def close(self):
+        pass
+
+    def set_testid(self, testid):
+        self._testid = testid
+
+
+class FGCPTestServerWithFixtures(FGCPTestServer):
+    """
+    Connect to this test API server for local tests - updates are not supported
 
     >>> from fgcp.client import FGCPClient
     >>> client = FGCPClient('client.pem', 'test')
@@ -63,31 +191,28 @@ class FGCPTestServerWithFixtures:
     .
 
     """
-    status = 200
-    reason = 'OK'
     _path = 'tests/fixtures'
     _file = None
-    _testid = None
 
     def __init__(self, *args, **kwargs):
         self._path = os.path.join('tests', 'fixtures')
         if not os.path.isdir(self._path):
-            raise FGCPDummyError('INVALID_PATH', 'Path %s does not exist' % self._path)
+            raise FGCPServerError('INVALID_PATH', 'Path %s does not exist' % self._path)
 
     def request(self, method, uri, body, headers):
         if self._testid is None:
-            raise FGCPDummyError('INVALID_PATH', 'Invalid test identifier')
+            raise FGCPServerError('INVALID_PATH', 'Invalid test identifier')
         # check if we have a request file
         self._file = os.path.join(self._path, '%s.request.xml' % self._testid)
         if not os.path.isfile(self._file):
             print body
-            raise FGCPDummyError('INVALID_PATH', 'File %s does not exist' % self._file)
+            raise FGCPServerError('INVALID_PATH', 'File %s does not exist' % self._file)
         # compare body with request file
         f = open(self._file, 'rb')
         data = f.read()
         f.close()
         if data != body:
-            raise FGCPDummyError('INVALID_REQUEST', 'Request for test %s does not match test fixture:\n\
+            raise FGCPServerError('INVALID_REQUEST', 'Request for test %s does not match test fixture:\n\
 Current body:\n\
 ====\n\
 %s\n\
@@ -125,11 +250,6 @@ Test fixture:\n\
 
     #=========================================================================
 
-    def set_testid(self, testid):
-        self._testid = testid
-
-    #=========================================================================
-
     def save_request(self, testid, body):
         # sanitize accesskeyid and signature for test fixtures
         p = re.compile('<AccessKeyId>[^<]+</AccessKeyId>')
@@ -152,8 +272,21 @@ Test fixture:\n\
         f.close()
 
 
-class FGCPFakeServerWithRegistry:
-    pass
+class FGCPTestServerWithRegistry(FGCPTestServer):
+    _vdc = None
+
+    def __init__(self, filePath='fgcp_demo_system.txt'):
+        if not os.path.isfile(filePath):
+            raise FGCPServerError('INVALID_PATH', 'File %s does not exist' % filePath)
+        # create registry with dummy VDataCenter
+        from fgcp.resource import FGCPVDataCenter
+        self._vdc = FGCPVDataCenter()
+        self._vdc.vsystems = []
+        # load demo vsystem from file
+        design = self._vdc.get_vsystem_design()
+        design.load_file(filePath)
+        # save demo vsystem in registry
+        self._vdc.vsystems.append(design.vsystem)
 
 
 if __name__ == "__main__":
