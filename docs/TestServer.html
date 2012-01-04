@@ -1,14 +1,15 @@
 
- <html><head><title>Test Server for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Test Server for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The dummy Test Server can be used for local library tests, without needing access or registration to the Fujitsu Global Cloud Platform. You will not be able to update any resources though...</strong> </p><pre class="prettyprint">Example: [see tests/test_*.py for more examples]
+ <html><head><title>Test Server for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Test Server for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The FGCP Test Server can be used for local library tests, without needing access or registration to the Fujitsu Global Cloud Platform. You will not be able to update any resources though...</strong> </p><p>In order to use this Test Server, you simply specify that you want to connect to the region <strong>&#x27;test&#x27;</strong> in your scripts, instead of using a real region &#x27;uk&#x27;, &#x27;de&#x27; etc. For instance, the test scripts available under the tests/ directory are all configured to use the Test Server. </p><pre class="prettyprint">Example: [see tests/test_*.py for more examples]
 
-# Connect without client certificate to region &#x27;test&#x27;
+# Connect without valid client certificate to region &#x27;test&#x27;
 from fgcp.resource import FGCPVDataCenter
 vdc = FGCPVDataCenter(&#x27;client.pem&#x27;, &#x27;test&#x27;)
 
-# Do typical resource actions - updates are not supported here
+# Do typical actions on resources - updates are not supported here
 vsystem = vdc.get_vsystem(&#x27;Demo System&#x27;)
 vsystem.show_status()
-for vserver in vsystem.vservers:
-    #result = vserver.backup(wait=True)
-...</pre><p>Note: this client API library provides higher-level <a href="ClientMethods.html">Client Methods</a>, intermediate <a href="ResourceActions.html">Resource Actions</a> and lower-level <a href="APICommands.html">API Commands</a>. </p>
- <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
+#for vserver in vsystem.vservers:
+#    result = vserver.backup(wait=True)
+#...
+# See tests/test_resource.py for more examples</pre><p>Note: this client API library also provides a <a href="RelayServer.html">Relay Server</a> in case your current script environment does not support connections with client certificates, like e.g. on Google App Engine. </p><p><img src="http://mikespub.net/fgcp_conn_yuml.png" /> </p>
+ <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>

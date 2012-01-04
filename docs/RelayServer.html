@@ -1,0 +1,16 @@
+
+ <html><head><title>Relay Server for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Relay Server for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The FGCP Relay Server can be used when your current script environment does not support connections with client certificates, like e.g. on Google App Engine.</strong> </p><p>In order to use this Relay Server, you will need to have a <strong>relay script</strong> running on some other server, so that it can establish the client certificate connection for you. A basic example is provided in the tests/cgi-bin/ directory. </p><p>Then you can simply specify that you want to connect to the region <strong>&#x27;relay=https://...&#x27;</strong> in your scripts, instead of using a real region &#x27;uk&#x27;, &#x27;de&#x27; etc. </p><pre class="prettyprint">Example: [see tests/test_*.py for more examples]
+
+# Connect with your client certificate to region &#x27;relay=http://...&#x27;
+from fgcp.resource import FGCPVDataCenter
+relay = &#x27;http://127.0.0.1:8000/cgi-bin/fgcp_relay.py&#x27;
+vdc = FGCPVDataCenter(&#x27;client.pem&#x27;, &#x27;relay=%s&#x27; % relay)
+
+# Do typical actions on resources
+vsystem = vdc.get_vsystem(&#x27;Demo System&#x27;)
+vsystem.show_status()
+#for vserver in vsystem.vservers:
+#    result = vserver.backup(wait=True)
+#...
+# See tests/test_resource.py for more examples</pre><p>Note: this client API library also provides a <a href="TestServer.html">Test Server</a> for local library tests, without needing access or registration to the Fujitsu Global Cloud Platform. </p><p><img src="http://mikespub.net/fgcp_conn_yuml.png" /> </p>
+ <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
