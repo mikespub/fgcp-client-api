@@ -25,7 +25,6 @@ def fgcp_resource_walker(key_file, region):
     """
     Test resource actions using test server (or generate .xml test fixtures using real API server)
     """
-    region = 'test'
     verbose = 1     # 1 = show any user output the library might generate (nothing much except vsystem.show_status())
     debug = 0       # 1 = show the API commands being sent, 2 = dump the response objects (99 = save test fixtures)
 
@@ -402,5 +401,7 @@ if __name__ == "__main__":
     parent = os.path.dirname(os.path.dirname(__file__))
     sys.path.append(parent)
     pem_file = 'client.pem'
-    region = 'de'
+    #region = 'de'
+    region = 'test'
+    #region = 'relay=http://localhost:8000/cgi-bin/fgcp_relay.py'
     fgcp_resource_walker(pem_file, region)

@@ -1,0 +1,278 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module tests.start_relay_server</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="tests.html"><font color="#ffffff">tests</font></a>.start_relay_server</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="http://code.google.com/p/fgcp-client-api/source/browse/tests/start_relay_server.py">start_relay_server.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;is&nbsp;a&nbsp;really&nbsp;basic&nbsp;CGI&nbsp;server&nbsp;that&nbsp;allows&nbsp;you&nbsp;to&nbsp;test&nbsp;the&nbsp;really&nbsp;basic<br>
+Relay&nbsp;CGI&nbsp;script,&nbsp;by&nbsp;specifying&nbsp;the&nbsp;following&nbsp;region&nbsp;in&nbsp;your&nbsp;scripts:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;region='relay=<a href="http://localhost:8000/cgi-bin/fgcp_relay.py">http://localhost:8000/cgi-bin/fgcp_relay.py</a>'<br>
+&nbsp;<br>
+In&nbsp;order&nbsp;to&nbsp;use&nbsp;this&nbsp;CGI&nbsp;server&nbsp;for&nbsp;relay&nbsp;testing,&nbsp;you&nbsp;need&nbsp;to&nbsp;adapt&nbsp;the&nbsp;lines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pem_file&nbsp;=&nbsp;'../client.pem'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;region&nbsp;=&nbsp;'de'<br>
+at&nbsp;the&nbsp;bottom&nbsp;of&nbsp;this&nbsp;script,&nbsp;and&nbsp;specify&nbsp;your&nbsp;own&nbsp;certificate&nbsp;and<br>
+region&nbsp;there</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="CGIHTTPServer.html">CGIHTTPServer</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="CGIHTTPServer.html#CGIHTTPRequestHandler">CGIHTTPServer.CGIHTTPRequestHandler</a>(<a href="SimpleHTTPServer.html#SimpleHTTPRequestHandler">SimpleHTTPServer.SimpleHTTPRequestHandler</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="tests.start_relay_server.html#FGCPRelayHTTPRequestHandler">FGCPRelayHTTPRequestHandler</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="tests.start_relay_server.html#FGCPRelayConfig">FGCPRelayConfig</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPRelayConfig">class <strong>FGCPRelayConfig</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>The&nbsp;actual&nbsp;relay&nbsp;configuration&nbsp;is&nbsp;specified&nbsp;at&nbsp;startup<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>key_file</strong> = 'client.pem'</dl>
+
+<dl><dt><strong>region</strong> = 'uk'</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPRelayHTTPRequestHandler">class <strong>FGCPRelayHTTPRequestHandler</strong></a>(<a href="CGIHTTPServer.html#CGIHTTPRequestHandler">CGIHTTPServer.CGIHTTPRequestHandler</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Override&nbsp;the&nbsp;default&nbsp;<a href="CGIHTTPServer.html#CGIHTTPRequestHandler">CGIHTTPRequestHandler</a>&nbsp;to&nbsp;run&nbsp;the&nbsp;relay&nbsp;script&nbsp;here<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="tests.start_relay_server.html#FGCPRelayHTTPRequestHandler">FGCPRelayHTTPRequestHandler</a></dd>
+<dd><a href="CGIHTTPServer.html#CGIHTTPRequestHandler">CGIHTTPServer.CGIHTTPRequestHandler</a></dd>
+<dd><a href="SimpleHTTPServer.html#SimpleHTTPRequestHandler">SimpleHTTPServer.SimpleHTTPRequestHandler</a></dd>
+<dd><a href="BaseHTTPServer.html#BaseHTTPRequestHandler">BaseHTTPServer.BaseHTTPRequestHandler</a></dd>
+<dd><a href="SocketServer.html#StreamRequestHandler">SocketServer.StreamRequestHandler</a></dd>
+<dd><a href="SocketServer.html#BaseRequestHandler">SocketServer.BaseRequestHandler</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-do_POST"><strong>do_POST</strong></a>(self)</dt><dd><tt>Version&nbsp;of&nbsp;<a href="#FGCPRelayHTTPRequestHandler-do_POST">do_POST</a>()&nbsp;that&nbsp;runs&nbsp;the&nbsp;relay&nbsp;script&nbsp;in&nbsp;place</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-is_cgi"><strong>is_cgi</strong></a>(self)</dt><dd><tt>Version&nbsp;of&nbsp;<a href="#FGCPRelayHTTPRequestHandler-is_cgi">is_cgi</a>()&nbsp;that&nbsp;only&nbsp;supports&nbsp;the&nbsp;relay&nbsp;CGI&nbsp;script</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-run_cgi_local"><strong>run_cgi_local</strong></a>(self)</dt><dd><tt>Version&nbsp;of&nbsp;<a href="#FGCPRelayHTTPRequestHandler-run_cgi">run_cgi</a>()&nbsp;that&nbsp;runs&nbsp;the&nbsp;relay&nbsp;script&nbsp;in&nbsp;place</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-send_head"><strong>send_head</strong></a>(self)</dt><dd><tt>Version&nbsp;of&nbsp;<a href="#FGCPRelayHTTPRequestHandler-send_head">send_head</a>()&nbsp;that&nbsp;only&nbsp;supports&nbsp;CGI&nbsp;scripts</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="CGIHTTPServer.html#CGIHTTPRequestHandler">CGIHTTPServer.CGIHTTPRequestHandler</a>:<br>
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-is_executable"><strong>is_executable</strong></a>(self, path)</dt><dd><tt>Test&nbsp;whether&nbsp;argument&nbsp;path&nbsp;is&nbsp;an&nbsp;executable&nbsp;file.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-is_python"><strong>is_python</strong></a>(self, path)</dt><dd><tt>Test&nbsp;whether&nbsp;argument&nbsp;path&nbsp;is&nbsp;a&nbsp;Python&nbsp;script.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-run_cgi"><strong>run_cgi</strong></a>(self)</dt><dd><tt>Execute&nbsp;a&nbsp;CGI&nbsp;script.</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="CGIHTTPServer.html#CGIHTTPRequestHandler">CGIHTTPServer.CGIHTTPRequestHandler</a>:<br>
+<dl><dt><strong>cgi_directories</strong> = ['/cgi-bin', '/htbin']</dl>
+
+<dl><dt><strong>have_fork</strong> = False</dl>
+
+<dl><dt><strong>have_popen2</strong> = True</dl>
+
+<dl><dt><strong>have_popen3</strong> = True</dl>
+
+<dl><dt><strong>rbufsize</strong> = 0</dl>
+
+<hr>
+Methods inherited from <a href="SimpleHTTPServer.html#SimpleHTTPRequestHandler">SimpleHTTPServer.SimpleHTTPRequestHandler</a>:<br>
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-copyfile"><strong>copyfile</strong></a>(self, source, outputfile)</dt><dd><tt>Copy&nbsp;all&nbsp;data&nbsp;between&nbsp;two&nbsp;file&nbsp;objects.<br>
+&nbsp;<br>
+The&nbsp;SOURCE&nbsp;argument&nbsp;is&nbsp;a&nbsp;file&nbsp;object&nbsp;open&nbsp;for&nbsp;reading<br>
+(or&nbsp;anything&nbsp;with&nbsp;a&nbsp;read()&nbsp;method)&nbsp;and&nbsp;the&nbsp;DESTINATION<br>
+argument&nbsp;is&nbsp;a&nbsp;file&nbsp;object&nbsp;open&nbsp;for&nbsp;writing&nbsp;(or<br>
+anything&nbsp;with&nbsp;a&nbsp;write()&nbsp;method).<br>
+&nbsp;<br>
+The&nbsp;only&nbsp;reason&nbsp;for&nbsp;overriding&nbsp;this&nbsp;would&nbsp;be&nbsp;to&nbsp;change<br>
+the&nbsp;block&nbsp;size&nbsp;or&nbsp;perhaps&nbsp;to&nbsp;replace&nbsp;newlines&nbsp;by&nbsp;CRLF<br>
+--&nbsp;note&nbsp;however&nbsp;that&nbsp;this&nbsp;the&nbsp;default&nbsp;server&nbsp;uses&nbsp;this<br>
+to&nbsp;copy&nbsp;binary&nbsp;data&nbsp;as&nbsp;well.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-do_GET"><strong>do_GET</strong></a>(self)</dt><dd><tt>Serve&nbsp;a&nbsp;GET&nbsp;request.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-do_HEAD"><strong>do_HEAD</strong></a>(self)</dt><dd><tt>Serve&nbsp;a&nbsp;HEAD&nbsp;request.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-guess_type"><strong>guess_type</strong></a>(self, path)</dt><dd><tt>Guess&nbsp;the&nbsp;type&nbsp;of&nbsp;a&nbsp;file.<br>
+&nbsp;<br>
+Argument&nbsp;is&nbsp;a&nbsp;PATH&nbsp;(a&nbsp;filename).<br>
+&nbsp;<br>
+Return&nbsp;value&nbsp;is&nbsp;a&nbsp;string&nbsp;of&nbsp;the&nbsp;form&nbsp;type/subtype,<br>
+usable&nbsp;for&nbsp;a&nbsp;MIME&nbsp;Content-type&nbsp;header.<br>
+&nbsp;<br>
+The&nbsp;default&nbsp;implementation&nbsp;looks&nbsp;the&nbsp;file's&nbsp;extension<br>
+up&nbsp;in&nbsp;the&nbsp;table&nbsp;self.<strong>extensions_map</strong>,&nbsp;using&nbsp;application/octet-stream<br>
+as&nbsp;a&nbsp;default;&nbsp;however&nbsp;it&nbsp;would&nbsp;be&nbsp;permissible&nbsp;(if<br>
+slow)&nbsp;to&nbsp;look&nbsp;inside&nbsp;the&nbsp;data&nbsp;to&nbsp;make&nbsp;a&nbsp;better&nbsp;guess.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-list_directory"><strong>list_directory</strong></a>(self, path)</dt><dd><tt>Helper&nbsp;to&nbsp;produce&nbsp;a&nbsp;directory&nbsp;listing&nbsp;(absent&nbsp;index.html).<br>
+&nbsp;<br>
+Return&nbsp;value&nbsp;is&nbsp;either&nbsp;a&nbsp;file&nbsp;object,&nbsp;or&nbsp;None&nbsp;(indicating&nbsp;an<br>
+error).&nbsp;&nbsp;In&nbsp;either&nbsp;case,&nbsp;the&nbsp;headers&nbsp;are&nbsp;sent,&nbsp;making&nbsp;the<br>
+interface&nbsp;the&nbsp;same&nbsp;as&nbsp;for&nbsp;<a href="#FGCPRelayHTTPRequestHandler-send_head">send_head</a>().</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-translate_path"><strong>translate_path</strong></a>(self, path)</dt><dd><tt>Translate&nbsp;a&nbsp;/-separated&nbsp;PATH&nbsp;to&nbsp;the&nbsp;local&nbsp;filename&nbsp;syntax.<br>
+&nbsp;<br>
+Components&nbsp;that&nbsp;mean&nbsp;special&nbsp;things&nbsp;to&nbsp;the&nbsp;local&nbsp;file&nbsp;system<br>
+(e.g.&nbsp;drive&nbsp;or&nbsp;directory&nbsp;names)&nbsp;are&nbsp;ignored.&nbsp;&nbsp;(XXX&nbsp;They&nbsp;should<br>
+probably&nbsp;be&nbsp;diagnosed.)</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="SimpleHTTPServer.html#SimpleHTTPRequestHandler">SimpleHTTPServer.SimpleHTTPRequestHandler</a>:<br>
+<dl><dt><strong>extensions_map</strong> = {'': 'application/octet-stream', '.a': 'application/octet-stream', '.ai': 'application/postscript', '.aif': 'audio/x-aiff', '.aifc': 'audio/x-aiff', '.aiff': 'audio/x-aiff', '.au': 'audio/basic', '.avi': 'video/x-msvideo', '.bat': 'text/plain', '.bcpio': 'application/x-bcpio', ...}</dl>
+
+<dl><dt><strong>server_version</strong> = 'SimpleHTTP/0.6'</dl>
+
+<hr>
+Methods inherited from <a href="BaseHTTPServer.html#BaseHTTPRequestHandler">BaseHTTPServer.BaseHTTPRequestHandler</a>:<br>
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-address_string"><strong>address_string</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;client&nbsp;address&nbsp;formatted&nbsp;for&nbsp;logging.<br>
+&nbsp;<br>
+This&nbsp;version&nbsp;looks&nbsp;up&nbsp;the&nbsp;full&nbsp;hostname&nbsp;using&nbsp;gethostbyaddr(),<br>
+and&nbsp;tries&nbsp;to&nbsp;find&nbsp;a&nbsp;name&nbsp;that&nbsp;contains&nbsp;at&nbsp;least&nbsp;one&nbsp;dot.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-date_time_string"><strong>date_time_string</strong></a>(self, timestamp<font color="#909090">=None</font>)</dt><dd><tt>Return&nbsp;the&nbsp;current&nbsp;date&nbsp;and&nbsp;time&nbsp;formatted&nbsp;for&nbsp;a&nbsp;message&nbsp;header.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-end_headers"><strong>end_headers</strong></a>(self)</dt><dd><tt>Send&nbsp;the&nbsp;blank&nbsp;line&nbsp;ending&nbsp;the&nbsp;MIME&nbsp;headers.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-handle"><strong>handle</strong></a>(self)</dt><dd><tt>Handle&nbsp;multiple&nbsp;requests&nbsp;if&nbsp;necessary.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-handle_one_request"><strong>handle_one_request</strong></a>(self)</dt><dd><tt>Handle&nbsp;a&nbsp;single&nbsp;HTTP&nbsp;request.<br>
+&nbsp;<br>
+You&nbsp;normally&nbsp;don't&nbsp;need&nbsp;to&nbsp;override&nbsp;this&nbsp;method;&nbsp;see&nbsp;the&nbsp;class<br>
+__doc__&nbsp;string&nbsp;for&nbsp;information&nbsp;on&nbsp;how&nbsp;to&nbsp;handle&nbsp;specific&nbsp;HTTP<br>
+commands&nbsp;such&nbsp;as&nbsp;GET&nbsp;and&nbsp;POST.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-log_date_time_string"><strong>log_date_time_string</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;current&nbsp;time&nbsp;formatted&nbsp;for&nbsp;logging.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-log_error"><strong>log_error</strong></a>(self, *args)</dt><dd><tt>Log&nbsp;an&nbsp;error.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;called&nbsp;when&nbsp;a&nbsp;request&nbsp;cannot&nbsp;be&nbsp;fulfilled.&nbsp;&nbsp;By<br>
+default&nbsp;it&nbsp;passes&nbsp;the&nbsp;message&nbsp;on&nbsp;to&nbsp;<a href="#FGCPRelayHTTPRequestHandler-log_message">log_message</a>().<br>
+&nbsp;<br>
+Arguments&nbsp;are&nbsp;the&nbsp;same&nbsp;as&nbsp;for&nbsp;<a href="#FGCPRelayHTTPRequestHandler-log_message">log_message</a>().<br>
+&nbsp;<br>
+XXX&nbsp;This&nbsp;should&nbsp;go&nbsp;to&nbsp;the&nbsp;separate&nbsp;error&nbsp;log.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-log_message"><strong>log_message</strong></a>(self, format, *args)</dt><dd><tt>Log&nbsp;an&nbsp;arbitrary&nbsp;message.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;used&nbsp;by&nbsp;all&nbsp;other&nbsp;logging&nbsp;functions.&nbsp;&nbsp;Override<br>
+it&nbsp;if&nbsp;you&nbsp;have&nbsp;specific&nbsp;logging&nbsp;wishes.<br>
+&nbsp;<br>
+The&nbsp;first&nbsp;argument,&nbsp;FORMAT,&nbsp;is&nbsp;a&nbsp;format&nbsp;string&nbsp;for&nbsp;the<br>
+message&nbsp;to&nbsp;be&nbsp;logged.&nbsp;&nbsp;If&nbsp;the&nbsp;format&nbsp;string&nbsp;contains<br>
+any&nbsp;%&nbsp;escapes&nbsp;requiring&nbsp;parameters,&nbsp;they&nbsp;should&nbsp;be<br>
+specified&nbsp;as&nbsp;subsequent&nbsp;arguments&nbsp;(it's&nbsp;just&nbsp;like<br>
+printf!).<br>
+&nbsp;<br>
+The&nbsp;client&nbsp;host&nbsp;and&nbsp;current&nbsp;date/time&nbsp;are&nbsp;prefixed&nbsp;to<br>
+every&nbsp;message.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-log_request"><strong>log_request</strong></a>(self, code<font color="#909090">='-'</font>, size<font color="#909090">='-'</font>)</dt><dd><tt>Log&nbsp;an&nbsp;accepted&nbsp;request.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;called&nbsp;by&nbsp;<a href="#FGCPRelayHTTPRequestHandler-send_response">send_response</a>().</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-parse_request"><strong>parse_request</strong></a>(self)</dt><dd><tt>Parse&nbsp;a&nbsp;request&nbsp;(internal).<br>
+&nbsp;<br>
+The&nbsp;request&nbsp;should&nbsp;be&nbsp;stored&nbsp;in&nbsp;self.<strong>raw_requestline</strong>;&nbsp;the&nbsp;results<br>
+are&nbsp;in&nbsp;self.<strong>command</strong>,&nbsp;self.<strong>path</strong>,&nbsp;self.<strong>request_version</strong>&nbsp;and<br>
+self.<strong>headers</strong>.<br>
+&nbsp;<br>
+Return&nbsp;True&nbsp;for&nbsp;success,&nbsp;False&nbsp;for&nbsp;failure;&nbsp;on&nbsp;failure,&nbsp;an<br>
+error&nbsp;is&nbsp;sent&nbsp;back.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-send_error"><strong>send_error</strong></a>(self, code, message<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;and&nbsp;log&nbsp;an&nbsp;error&nbsp;reply.<br>
+&nbsp;<br>
+Arguments&nbsp;are&nbsp;the&nbsp;error&nbsp;code,&nbsp;and&nbsp;a&nbsp;detailed&nbsp;message.<br>
+The&nbsp;detailed&nbsp;message&nbsp;defaults&nbsp;to&nbsp;the&nbsp;short&nbsp;entry&nbsp;matching&nbsp;the<br>
+response&nbsp;code.<br>
+&nbsp;<br>
+This&nbsp;sends&nbsp;an&nbsp;error&nbsp;response&nbsp;(so&nbsp;it&nbsp;must&nbsp;be&nbsp;called&nbsp;before&nbsp;any<br>
+output&nbsp;has&nbsp;been&nbsp;generated),&nbsp;logs&nbsp;the&nbsp;error,&nbsp;and&nbsp;finally&nbsp;sends<br>
+a&nbsp;piece&nbsp;of&nbsp;HTML&nbsp;explaining&nbsp;the&nbsp;error&nbsp;to&nbsp;the&nbsp;user.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-send_header"><strong>send_header</strong></a>(self, keyword, value)</dt><dd><tt>Send&nbsp;a&nbsp;MIME&nbsp;header.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-send_response"><strong>send_response</strong></a>(self, code, message<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;the&nbsp;response&nbsp;header&nbsp;and&nbsp;log&nbsp;the&nbsp;response&nbsp;code.<br>
+&nbsp;<br>
+Also&nbsp;send&nbsp;two&nbsp;standard&nbsp;headers&nbsp;with&nbsp;the&nbsp;server&nbsp;software<br>
+version&nbsp;and&nbsp;the&nbsp;current&nbsp;date.</tt></dd></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-version_string"><strong>version_string</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;server&nbsp;software&nbsp;version&nbsp;string.</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="BaseHTTPServer.html#BaseHTTPRequestHandler">BaseHTTPServer.BaseHTTPRequestHandler</a>:<br>
+<dl><dt><strong>MessageClass</strong> = &lt;class mimetools.Message at 0x020B98A0&gt;<dd><tt>A&nbsp;derived&nbsp;class&nbsp;of&nbsp;rfc822.Message&nbsp;that&nbsp;knows&nbsp;about&nbsp;MIME&nbsp;headers&nbsp;and<br>
+contains&nbsp;some&nbsp;hooks&nbsp;for&nbsp;decoding&nbsp;encoded&nbsp;and&nbsp;multipart&nbsp;messages.</tt></dl>
+
+<dl><dt><strong>error_message_format</strong> = '&lt;head&gt;<font color="#c040c0">\n</font>&lt;title&gt;Error response&lt;/title&gt;<font color="#c040c0">\n</font>&lt;/head&gt;<font color="#c040c0">\n</font>&lt;bo...ode explanation: %(code)s = %(explain)s.<font color="#c040c0">\n</font>&lt;/body&gt;<font color="#c040c0">\n</font>'</dl>
+
+<dl><dt><strong>monthname</strong> = [None, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']</dl>
+
+<dl><dt><strong>protocol_version</strong> = 'HTTP/1.0'</dl>
+
+<dl><dt><strong>responses</strong> = {100: ('Continue', 'Request received, please continue'), 101: ('Switching Protocols', 'Switching to new protocol; obey Upgrade header'), 200: ('OK', 'Request fulfilled, document follows'), 201: ('Created', 'Document created, URL follows'), 202: ('Accepted', 'Request accepted, processing continues off-line'), 203: ('Non-Authoritative Information', 'Request fulfilled from cache'), 204: ('No Content', 'Request fulfilled, nothing follows'), 205: ('Reset Content', 'Clear input form for further input.'), 206: ('Partial Content', 'Partial content follows.'), 300: ('Multiple Choices', 'Object has several resources -- see URI list'), ...}</dl>
+
+<dl><dt><strong>sys_version</strong> = 'Python/2.5.4'</dl>
+
+<dl><dt><strong>weekdayname</strong> = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']</dl>
+
+<hr>
+Methods inherited from <a href="SocketServer.html#StreamRequestHandler">SocketServer.StreamRequestHandler</a>:<br>
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-finish"><strong>finish</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-setup"><strong>setup</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="SocketServer.html#StreamRequestHandler">SocketServer.StreamRequestHandler</a>:<br>
+<dl><dt><strong>wbufsize</strong> = 0</dl>
+
+<hr>
+Methods inherited from <a href="SocketServer.html#BaseRequestHandler">SocketServer.BaseRequestHandler</a>:<br>
+<dl><dt><a name="FGCPRelayHTTPRequestHandler-__init__"><strong>__init__</strong></a>(self, request, client_address, server)</dt></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-run_relay_server"><strong>run_relay_server</strong></a>(key_file, region)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>FGCP_RELAY_CONFIG</strong> = &lt;tests.start_relay_server.FGCPRelayConfig instance at 0x02116800&gt;</td></tr></table>
+</body></html>

@@ -28,7 +28,6 @@ def fgcp_client_walker(key_file, region):
     """
     Test client methods using test server (or generate .xml test fixtures using real API server)
     """
-    region = 'test'
 
     #vsysName = 'Python API Demo System'
     vsysName = 'Demo System'
@@ -105,6 +104,7 @@ def test_designer(key_file, region, vsysName, debug):
     print '\nUsing %s\n' % repr(client)
 
     client.debug = debug
+    client.verbose = 1
 
     vsysdescriptorName = '2-tier Skeleton'
     diskimageName = 'CentOS 5.4 32bit(EN)'
@@ -141,5 +141,7 @@ if __name__ == "__main__":
     parent = os.path.dirname(os.path.dirname(__file__))
     sys.path.append(parent)
     pem_file = 'client.pem'
-    region = 'de'
+    #region = 'de'
+    region = 'test'
+    #region = 'relay=http://localhost:8000/cgi-bin/fgcp_relay.py'
     fgcp_client_walker(pem_file, region)

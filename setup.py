@@ -45,6 +45,8 @@ class DocsCommand(Command):
         p2 = re.compile('>(\w:[^<]+)<')
         for modname in todo:
             filename = modname + '.html'
+            if not os.path.exists(filename):
+                continue
             print filename
             f = open(filename)
             lines = f.read()

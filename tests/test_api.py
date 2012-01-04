@@ -25,8 +25,6 @@ def fgcp_api_walker(key_file, region):
     """
     Test API commands using test server (or generate .xml test fixtures using real API server)
     """
-    region = 'test'
-
     test_api_command(key_file, region)
 
 
@@ -380,5 +378,7 @@ if __name__ == "__main__":
     parent = os.path.dirname(os.path.dirname(__file__))
     sys.path.append(parent)
     pem_file = 'client.pem'
-    region = 'de'
+    #region = 'de'
+    region = 'test'
+    #region = 'relay=http://localhost:8000/cgi-bin/fgcp_relay.py'
     fgcp_api_walker(pem_file, region)

@@ -127,7 +127,7 @@ Data and other attributes inherited from <a href="httplib.html#HTTPConnection">h
 
 <dl><dt><strong>debuglevel</strong> = 0</dl>
 
-<dl><dt><strong>response_class</strong> = &lt;class httplib.HTTPResponse at 0x01FFC7E0&gt;</dl>
+<dl><dt><strong>response_class</strong> = &lt;class httplib.HTTPResponse at 0x020B9900&gt;</dl>
 
 <dl><dt><strong>strict</strong> = 0</dl>
 
@@ -187,7 +187,7 @@ Data and other attributes inherited from <a href="httplib.html#HTTPConnection">h
 
 <dl><dt><strong>debuglevel</strong> = 0</dl>
 
-<dl><dt><strong>response_class</strong> = &lt;class httplib.HTTPResponse at 0x01FFC7E0&gt;</dl>
+<dl><dt><strong>response_class</strong> = &lt;class httplib.HTTPResponse at 0x020B9900&gt;</dl>
 
 <dl><dt><strong>strict</strong> = 0</dl>
 
@@ -284,18 +284,19 @@ Data and other attributes defined here:<br>
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
 <td colspan=2><tt>Connect&nbsp;to&nbsp;this&nbsp;test&nbsp;API&nbsp;server&nbsp;for&nbsp;local&nbsp;tests&nbsp;-&nbsp;updates&nbsp;are&nbsp;not&nbsp;supported<br>
 &nbsp;<br>
-&gt;&gt;&gt;&nbsp;from&nbsp;fgcp.client&nbsp;import&nbsp;FGCPClient<br>
-&gt;&gt;&gt;&nbsp;client&nbsp;=&nbsp;FGCPClient('client.pem',&nbsp;'test')<br>
-&gt;&gt;&gt;&nbsp;client.ShowSystemStatus('Python&nbsp;API&nbsp;Demo&nbsp;System')<br>
-Show&nbsp;System&nbsp;Status&nbsp;for&nbsp;VSYS&nbsp;Python&nbsp;API&nbsp;Demo&nbsp;System<br>
-VSYS:Python&nbsp;API&nbsp;Demo&nbsp;System:NORMAL<br>
-PublicIP:80.70.163.238:ATTACHED<br>
-EFM&nbsp;FW:Firewall:RUNNING<br>
-EFM&nbsp;SLB:LoadBalancer:192.168.3.211:RUNNING<br>
-VServer:Server1:192.168.3.12:RUNNING<br>
-VServer:Server2:192.168.3.13:RUNNING<br>
-VServer:Server3:192.168.4.12:RUNNING<br>
-VServer:Server4:192.168.4.13:RUNNING<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;fgcp.resource&nbsp;import&nbsp;FGCPVDataCenter<br>
+&gt;&gt;&gt;&nbsp;vdc&nbsp;=&nbsp;FGCPVDataCenter('client.pem',&nbsp;'test')<br>
+&gt;&gt;&gt;&nbsp;vsystem&nbsp;=&nbsp;vdc.get_vsystem('Demo&nbsp;System')<br>
+&gt;&gt;&gt;&nbsp;vsystem.show_status()&nbsp;&nbsp;&nbsp;#doctest:&nbsp;+NORMALIZE_WHITESPACE<br>
+Status&nbsp;Overview&nbsp;for&nbsp;VSystem&nbsp;Demo&nbsp;System<br>
+VSystem&nbsp;Demo&nbsp;System&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NORMAL<br>
+PublicIP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80.70.163.172&nbsp;&nbsp;&nbsp;ATTACHED<br>
+Firewall&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firewall&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RUNNING<br>
+LoadBalancer&nbsp;&nbsp;&nbsp;&nbsp;SLB1&nbsp;&nbsp;&nbsp;&nbsp;192.168.0.211&nbsp;&nbsp;&nbsp;RUNNING<br>
+VServer&nbsp;WebApp1&nbsp;192.168.0.13&nbsp;&nbsp;&nbsp;&nbsp;RUNNING<br>
+VServer&nbsp;DB1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;192.168.1.12&nbsp;&nbsp;&nbsp;&nbsp;RUNNING<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VDisk&nbsp;&nbsp;&nbsp;DISK1&nbsp;&nbsp;&nbsp;NORMAL<br>
+VServer&nbsp;WebApp2&nbsp;192.168.0.15&nbsp;&nbsp;&nbsp;&nbsp;RUNNING<br>
 .<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
@@ -399,7 +400,7 @@ Data and other attributes inherited from <a href="httplib.html#HTTPConnection">h
 
 <dl><dt><strong>default_port</strong> = 80</dl>
 
-<dl><dt><strong>response_class</strong> = &lt;class httplib.HTTPResponse at 0x01FFC7E0&gt;</dl>
+<dl><dt><strong>response_class</strong> = &lt;class httplib.HTTPResponse at 0x020B9900&gt;</dl>
 
 <dl><dt><strong>strict</strong> = 0</dl>
 

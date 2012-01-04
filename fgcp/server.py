@@ -60,12 +60,14 @@ class FGCPServerError(FGCPError):
 def FGCPGetServerConnection(key_file='client.pem', region='de'):
     if region == 'test':
         # connect to test API server for local testing
+        # format: region = 'test'
         return FGCPTestServerWithFixtures()
     elif region.startswith('relay='):
-        # TODO: connect to relay API server for remote connection
-        endpoint = region.split('=').pop()
+        # connect to relay API server for remote connection
+        # format: region = 'relay=http://127.0.0.1:8000/cgi-bin/fgcp_relay.py'
+        relay = region.split('=').pop()
         from urlparse import urlparse
-        url = urlparse(endpoint)
+        url = urlparse(relay)
         # TODO: secure access to relay server in some other way, e.g. Basic Auth, OAuth, ...
         if url.scheme == 'https':
             return FGCPRelayServer(url.hostname, port=url.port, path=url.path)
@@ -73,6 +75,7 @@ def FGCPGetServerConnection(key_file='client.pem', region='de'):
             return FGCPUnsecureRelayServer(url.hostname, port=url.port, path=url.path)
     elif region in FGCP_REGIONS:
         # connect to real API server
+        # format: region = 'uk'
         host = FGCP_REGIONS[region]
         # use the same PEM file for cert and key
         return FGCPRealServer(host, key_file=key_file, cert_file=key_file)
@@ -176,18 +179,19 @@ class FGCPTestServerWithFixtures(FGCPTestServer):
     """
     Connect to this test API server for local tests - updates are not supported
 
-    >>> from fgcp.client import FGCPClient
-    >>> client = FGCPClient('client.pem', 'test')
-    >>> client.ShowSystemStatus('Python API Demo System')
-    Show System Status for VSYS Python API Demo System
-    VSYS:Python API Demo System:NORMAL
-    PublicIP:80.70.163.238:ATTACHED
-    EFM FW:Firewall:RUNNING
-    EFM SLB:LoadBalancer:192.168.3.211:RUNNING
-    VServer:Server1:192.168.3.12:RUNNING
-    VServer:Server2:192.168.3.13:RUNNING
-    VServer:Server3:192.168.4.12:RUNNING
-    VServer:Server4:192.168.4.13:RUNNING
+    >>> from fgcp.resource import FGCPVDataCenter
+    >>> vdc = FGCPVDataCenter('client.pem', 'test')
+    >>> vsystem = vdc.get_vsystem('Demo System')
+    >>> vsystem.show_status()   #doctest: +NORMALIZE_WHITESPACE
+    Status Overview for VSystem Demo System
+    VSystem Demo System     NORMAL
+    PublicIP        80.70.163.172   ATTACHED
+    Firewall        Firewall        RUNNING
+    LoadBalancer    SLB1    192.168.0.211   RUNNING
+    VServer WebApp1 192.168.0.13    RUNNING
+    VServer DB1     192.168.1.12    RUNNING
+            VDisk   DISK1   NORMAL
+    VServer WebApp2 192.168.0.15    RUNNING
     .
 
     """
