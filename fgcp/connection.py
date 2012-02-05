@@ -117,8 +117,12 @@ class FGCPConnection:
             self.close()
         self.region = region
 
+    def set_key(self, key_string):
+        # Note: we need an unencrypted PEM string for this !
+        self._key = keyfactory.parsePrivateKey(key_string)
+
     def set_conn(self, conn):
-        # CHECKME: set connection from elsewhere, e.g. for integration with Apache Libcloud or running on Google App Engine
+        # CHECKME: set connection from elsewhere, e.g. for integration with Apache Libcloud
         self._conn = conn
 
     def connect(self):

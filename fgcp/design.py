@@ -136,6 +136,29 @@ class FGCPDesign(FGCPResource):
             L.append('%s%s' % (prefix, what))
         return '\r\n'.join(L)
 
+    def from_var(self, what, parent=None):
+        if isinstance(what, dict):
+            # convert to class based on _class
+            if '_class' not in what:
+                raise FGCPDesignError('INVALID_FORMAT', 'The dictionary does not contain a _class key:\n%s' % repr(what), self)
+            new_what = what['_class']()
+            # CHECKME: add parent and proxy to the FGCP Resource
+            new_what.setparent(parent)
+            keylist = what.keys()
+            for key in keylist:
+                if key == '_class':
+                    continue
+                setattr(new_what, key, self.from_var(what[key], new_what))
+            return new_what
+        elif isinstance(what, list):
+            new_what = []
+            for item in what:
+                new_what.append(self.from_var(item, parent))
+            return new_what
+        else:
+            # str, int, float etc. are returned as is
+            return what
+
     def to_var(self, what):
         if isinstance(what, FGCPElement):
             # convert to dict and add _class

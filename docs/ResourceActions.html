@@ -10,7 +10,7 @@ vsystem = vdc.get_vsystem(&#x27;Python API Demo System&#x27;)
 vsystem.show_status()
 for vserver in vsystem.vservers:
     result = vserver.backup(wait=True)
-...</pre><p><ul><li><a href="#Resource_Actions_for_the_Fujitsu_Global_Cloud_Platform_(FGCP)">Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</a></li><ul><li><a href="#FGCPVDataCenter">FGCPVDataCenter</a></li><li><a href="#FGCPVSystem">FGCPVSystem</a></li><li><a href="#FGCPVServer">FGCPVServer</a></li><li><a href="#FGCPVDisk">FGCPVDisk</a></li><li><a href="#FGCPBackup">FGCPBackup</a></li><li><a href="#FGCPFirewall">FGCPFirewall</a></li><li><a href="#FGCPLoadBalancer">FGCPLoadBalancer</a></li><li><a href="#FGCPPublicIP">FGCPPublicIP</a></li><li><a href="#FGCPAddressRange">FGCPAddressRange</a></li><li><a href="#FGCPVSysDescriptor">FGCPVSysDescriptor</a></li><li><a href="#FGCPDiskImage">FGCPDiskImage</a></li><li><a href="#FGCPServerType">FGCPServerType</a></li><li><a href="#FGCPDesign">FGCPDesign</a></li></ul></ul> </p><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and lower-level <a href="APICommands.html">API Commands</a>. </p><hr/><h2><a name="FGCPVDataCenter"></a>FGCPVDataCenter<a href="#FGCPVDataCenter" class="section_anchor"></a></h2><pre class="prettyprint">    from fgcp.resource import FGCPVDataCenter
+...</pre><p><ul><li><a href="#Resource_Actions_for_the_Fujitsu_Global_Cloud_Platform_(FGCP)">Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</a></li><ul><li><a href="#FGCPVDataCenter">FGCPVDataCenter</a></li><li><a href="#FGCPVSystem">FGCPVSystem</a></li><li><a href="#FGCPVServer">FGCPVServer</a></li><li><a href="#FGCPVDisk">FGCPVDisk</a></li><li><a href="#FGCPBackup">FGCPBackup</a></li><li><a href="#FGCPFirewall">FGCPFirewall</a></li><li><a href="#FGCPLoadBalancer">FGCPLoadBalancer</a></li><li><a href="#FGCPPublicIP">FGCPPublicIP</a></li><li><a href="#FGCPAddressRange">FGCPAddressRange</a></li><li><a href="#FGCPVSysDescriptor">FGCPVSysDescriptor</a></li><li><a href="#FGCPDiskImage">FGCPDiskImage</a></li><li><a href="#FGCPServerType">FGCPServerType</a></li><li><a href="#FGCPDesign">FGCPDesign</a></li></ul></ul> </p><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and lower-level <a href="APICommands.html">API Commands</a>. </p><hr/><h2><a name="FGCPVDataCenter"></a>FGCPVDataCenter<a href="#FGCPVDataCenter" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vdatacenter_yuml.png" /> </p><pre class="prettyprint">    from fgcp.resource import FGCPVDataCenter
     vdc = FGCPVDataCenter(key_file=&#x27;client.pem&#x27;, region=&#x27;de&#x27;, verbose=0, debug=0)
 
     status = vdc.status()
@@ -51,7 +51,7 @@ for vserver in vsystem.vservers:
     test_servertype(servertype)
 
     design = vdc.get_vsystem_design(&#x27;Demo System&#x27;)
-    test_design(design)</pre><hr/><h2><a name="FGCPVSystem"></a>FGCPVSystem<a href="#FGCPVSystem" class="section_anchor"></a></h2><pre class="prettyprint">    #vsystem = vdc.get_vsystem(&#x27;Python API Demo System&#x27;)
+    test_design(design)</pre><hr/><h2><a name="FGCPVSystem"></a>FGCPVSystem<a href="#FGCPVSystem" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vsystem_yuml.png" /> </p><pre class="prettyprint">    #vsystem = vdc.get_vsystem(&#x27;Python API Demo System&#x27;)
 
     status = vsystem.status()
 
@@ -120,7 +120,7 @@ for vserver in vsystem.vservers:
     #vsystem.vsysName = &#x27;Copy of %s&#x27; % vsystem.vsysName
     #result = vsystem.create()
 
-    #result = vsystem.detroy(wait=True)</pre><hr/><h2><a name="FGCPVServer"></a>FGCPVServer<a href="#FGCPVServer" class="section_anchor"></a></h2><pre class="prettyprint">    #vserver = vsystem.get_vserver(&#x27;WepApp1&#x27;)
+    #result = vsystem.detroy(wait=True)</pre><hr/><h2><a name="FGCPVServer"></a>FGCPVServer<a href="#FGCPVServer" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vserver_yuml.png" /> </p><pre class="prettyprint">    #vserver = vsystem.get_vserver(&#x27;WepApp1&#x27;)
 
     status = vserver.status()
 
@@ -153,7 +153,7 @@ for vserver in vsystem.vservers:
     #vserver.vserverName = &#x27;Copy of %s&#x27; % vserver.vserverName
     #result = vserver.create()
 
-    #result = vserver.detroy(wait=True)</pre><hr/><h2><a name="FGCPVDisk"></a>FGCPVDisk<a href="#FGCPVDisk" class="section_anchor"></a></h2><pre class="prettyprint">    status = vdisk.status()
+    #result = vserver.detroy(wait=True)</pre><hr/><h2><a name="FGCPVDisk"></a>FGCPVDisk<a href="#FGCPVDisk" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vdisk_yuml.png" /> </p><pre class="prettyprint">    status = vdisk.status()
 
     backups = vdisk.list_backups(timeZone=None, countryCode=None)
     for backup in backups:
@@ -170,7 +170,7 @@ for vserver in vsystem.vservers:
     #result = vdisk.create()
 
     #result = vdisk.detroy(wait=True)</pre><hr/><h2><a name="FGCPBackup"></a>FGCPBackup<a href="#FGCPBackup" class="section_anchor"></a></h2><pre class="prettyprint">    #backup.restore(wait=True)
-    #backup.destroy()</pre><hr/><h2><a name="FGCPFirewall"></a>FGCPFirewall<a href="#FGCPFirewall" class="section_anchor"></a></h2><pre class="prettyprint">    status = firewall.status()
+    #backup.destroy()</pre><hr/><h2><a name="FGCPFirewall"></a>FGCPFirewall<a href="#FGCPFirewall" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_firewall_yuml.png" /> </p><pre class="prettyprint">    status = firewall.status()
     #result = firewall.start(wait=True)
     #result = firewall.stop(wait=True)
 
@@ -195,7 +195,7 @@ for vserver in vsystem.vservers:
 
     update_info = firewall.get_update_info()
     #result = firewall.apply_update()
-    #result = firewall.revert_update()</pre><hr/><h2><a name="FGCPLoadBalancer"></a>FGCPLoadBalancer<a href="#FGCPLoadBalancer" class="section_anchor"></a></h2><pre class="prettyprint">    status = loadbalancer.status()
+    #result = firewall.revert_update()</pre><hr/><h2><a name="FGCPLoadBalancer"></a>FGCPLoadBalancer<a href="#FGCPLoadBalancer" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_loadbalancer_yuml.png" /> </p><pre class="prettyprint">    status = loadbalancer.status()
 
     #result = loadbalancer.start(wait=True)
     #result = loadbalancer.stop(wait=True)
@@ -241,11 +241,11 @@ for vserver in vsystem.vservers:
     #result = loadbalancer.detroy()</pre><hr/><h2><a name="FGCPPublicIP"></a>FGCPPublicIP<a href="#FGCPPublicIP" class="section_anchor"></a></h2><pre class="prettyprint">    status = publicip.status()
     #result = publicip.attach(wait=True)
     #result = publicip.detach(wait=True)
-    #result = publicip.free(wait=True)</pre><hr/><h2><a name="FGCPAddressRange"></a>FGCPAddressRange<a href="#FGCPAddressRange" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="FGCPVSysDescriptor"></a>FGCPVSysDescriptor<a href="#FGCPVSysDescriptor" class="section_anchor"></a></h2><pre class="prettyprint">    diskimages = vsysdescriptor.list_diskimages()
+    #result = publicip.free(wait=True)</pre><hr/><h2><a name="FGCPAddressRange"></a>FGCPAddressRange<a href="#FGCPAddressRange" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="FGCPVSysDescriptor"></a>FGCPVSysDescriptor<a href="#FGCPVSysDescriptor" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vsysdescriptor_yuml.png" /> </p><pre class="prettyprint">    diskimages = vsysdescriptor.list_diskimages()
     #vsysId = vsysdescriptor.create_vsystem(&#x27;Python API Demo System&#x27;, wait=True)
 
     #vsysdescriptor.update(vsysdescriptorName=&#x27;New VSYSDescriptor&#x27;,
-	#	description=&#x27;This is a new vsysdescriptor&#x27;, keyword=&#x27;2-tier Skeleton&#x27;)</pre><hr/><h2><a name="FGCPDiskImage"></a>FGCPDiskImage<a href="#FGCPDiskImage" class="section_anchor"></a></h2><pre class="prettyprint">    softwares = diskimage.list_softwares()
+	#	description=&#x27;This is a new vsysdescriptor&#x27;, keyword=&#x27;2-tier Skeleton&#x27;)</pre><hr/><h2><a name="FGCPDiskImage"></a>FGCPDiskImage<a href="#FGCPDiskImage" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_diskimage_yuml.png" /> </p><pre class="prettyprint">    softwares = diskimage.list_softwares()
     servertypes = diskimage.list_servertypes()
 
     #diskimage.update(diskimageName=&#x27;New Disk Image&#x27;, description=&#x27;This is a new disk image&#x27;)</pre><hr/><h2><a name="FGCPServerType"></a>FGCPServerType<a href="#FGCPServerType" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="FGCPDesign"></a>FGCPDesign<a href="#FGCPDesign" class="section_anchor"></a></h2><pre class="prettyprint">    #design = vdc.get_vsystem_design()
