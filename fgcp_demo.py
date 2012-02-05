@@ -23,10 +23,14 @@ see http://code.google.com/p/gdata-python-client/ for download and installation
 """
 
 
-def fgcp_run_sample(pem_file, region):
+def fgcp_run_sample(pem_file, region, private_key=None):
     # Connect with your client certificate to this region
     from fgcp.resource import FGCPVDataCenter
     vdc = FGCPVDataCenter(pem_file, region)
+
+    # Set your private key for signatures if you use the relay server
+    if region.startswith('relay') and private_key:
+        vdc.getproxy().set_key(private_key)
 
     # Do typical actions on resources
     vsystem = vdc.get_vsystem('Demo System')
@@ -66,17 +70,28 @@ openssl pkcs12 -in UserCert.p12 -out client.pem -nodes
 
 if __name__ == "__main__":
     """
-    Check if we have an existing 'client.pem' file or command line argument specifying the PEM file
+    Check if we have an existing 'client.pem' file or command line argument specifying the PEM file,
+    or get your private key from some configuration if you use the relay server
     """
     import os.path
     import sys
     pem_file = 'client.pem'
-    region = 'de'
+    #region = 'de'
+    region = 'test'
+    #region = 'relay=http://localhost:8000/cgi-bin/fgcp_relay.py'
+    # Get your private key from somewhere if you use the relay server
+    private_key = """
+-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----
+"""
     if len(sys.argv) > 1:
         pem_file = sys.argv[1]
         if len(sys.argv) > 2:
             region = sys.argv[2]
-    if os.path.exists(pem_file):
+    if region.startswith('relay') and private_key:
+        fgcp_run_sample(pem_file, region, private_key)
+    elif os.path.exists(pem_file):
         fgcp_run_sample(pem_file, region)
     else:
         fgcp_show_usage(os.path.basename(sys.argv[0]))
