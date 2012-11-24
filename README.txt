@@ -1,6 +1,6 @@
 Client API library for the Fujitsu Global Cloud Platform (FGCP)
 ===============================================================
-using XML-RPC API Version 2011-01-31
+using XML-RPC API Version 2012-02-18
 
 Using this library
 ------------------

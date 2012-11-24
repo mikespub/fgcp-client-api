@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2011 Michel Dalle
+#  Copyright (C) 2012 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -533,6 +533,14 @@ class FGCPVDataCenter(FGCPResource):
     def show_vsystem_status(self, sep='\t'):
         for vsystem in self.list_vsystems():
             vsystem.show_status(sep)
+
+    #=========================================================================
+
+    def get_information(self, all=None, timeZone=None, countryCode=None):
+        return self.getproxy().GetInformation(all, timeZone, countryCode)
+
+    def get_eventlog(self, all=None, timeZone=None, countryCode=None):
+        return self.getproxy().GetEventLog(all, timeZone, countryCode)
 
     #=========================================================================
 
@@ -1171,6 +1179,11 @@ class FGCPVServer(FGCPResource):
 
     def register_diskimage(self, name, description):
         return self.getproxy().RegisterPrivateDiskImage(self.getid(), name, description)
+
+    #=========================================================================
+
+    def get_performance(self, interval='hour', dataType=None):
+        return self.getproxy().GetPerformanceInformation(self.getparentid(), self.getid(), interval, dataType)
 
 
 class FGCPVServerImage(FGCPResource):
@@ -2079,7 +2092,7 @@ class FGCPSLBCause(FGCPResource):
     today = None
     total = None
     yesterday = None
-    filePath = None
+    #filePath = None
 
 
 class FGCPSLBErrorStats(FGCPResource):
@@ -2422,6 +2435,39 @@ class FGCPUsageInfoProduct(FGCPResource):
     productName = None
     unitName = None
     usedPoints = None
+
+
+class FGCPInformation(FGCPResource):
+    _idname = 'seqno'
+    entryDate = None
+    expiry = None
+    message = None
+    seqno = None
+    startDate = None
+    title = None
+
+
+class FGCPEventLog(FGCPResource):
+    _idname = None
+    entryDate = None
+    expiry = None
+    message = None
+    startDate = None
+    title = None
+
+
+class FGCPPerformanceInfo(FGCPResource):
+    _idname = None
+    cpuUtilization = None
+    diskReadRequestCount = None
+    diskReadSector = None
+    diskWriteRequestCount = None
+    diskWriteSector = None
+    nicInputByte = None
+    nicInputPacket = None
+    nicOutputByte = None
+    nicOutputPacket = None
+    recordTime = None
 
 
 class FGCPUnknown(FGCPResource):

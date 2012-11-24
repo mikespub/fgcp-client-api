@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2011 Michel Dalle
+#  Copyright (C) 2012 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 """
 Client API library for the Fujitsu Global Cloud Platform (FGCP)
-using XML-RPC API Version 2011-01-31
+using XML-RPC API Version 2012-02-18
 
 Requirements: this module uses gdata.tlslite.utils to create the key signature,
 see http://code.google.com/p/gdata-python-client/ for download and installation
@@ -25,7 +25,7 @@ Caution: this is a development work in progress - please do not use
 for productive systems without adequate testing...
 """
 
-__version__ = '1.2.2'
+__version__ = '1.3.1'
 
 
 class FGCPError(Exception):

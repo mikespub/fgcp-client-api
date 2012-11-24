@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2011 Michel Dalle
+#  Copyright (C) 2012 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -357,6 +357,14 @@ class FGCPCommand(FGCPProxyServer):
         self.show_status(result.vserverStatus)
         return result.vserverStatus
 
+    def GetPerformanceInformation(self, vsysId, vserverId, interval='10minute', dataType=None):
+        """
+        Usage: perfinfos = proxy.GetPerformanceInformation(vsys.vsysId, vserver.vserverId, interval='hour')
+        """
+        # CHECKME: serverId instead of vserverId ?
+        result = self.do_action('GetPerformanceInformation', {'vsysId': vsysId, 'serverId': vserverId, 'interval': interval, 'dataType': dataType})
+        return result.performanceinfos
+
     def CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId):
         """
         Usage: vserverId = proxy.CreateVServer(self, vsys.vsysId, 'My New Server', servertype.name, diskimage.diskimageId, vsys.vnets[0])
@@ -564,6 +572,20 @@ class FGCPCommand(FGCPProxyServer):
         """
         result = self.do_action('StandByConsole', {'vsysId': vsysId, 'networkId': networkId})
         return result.url
+
+    def GetInformation(self, all=None, timeZone=None, countryCode=None):
+        """
+        Usage: infos = proxy.GetInformation()
+        """
+        result = self.do_action('GetInformation', {'all': all, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result.informations
+
+    def GetEventLog(self, all=None, timeZone=None, countryCode=None):
+        """
+        Usage: logs = proxy.GetEventLog()
+        """
+        result = self.do_action('GetEventLog', {'all': all, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result.eventlogs
 
     def GetSystemUsage(self, vsysIds=None):
         """NOTE: extra 'date' element on top-level compared to other API calls !

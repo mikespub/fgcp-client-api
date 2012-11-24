@@ -281,6 +281,12 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetEFMConfigHandl
 
 <dl><dt><a name="FGCPClient-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
+<dl><dt><a name="FGCPClient-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetEventLog">GetEventLog</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-GetInformation"><strong>GetInformation</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;infos&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetInformation">GetInformation</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPClient-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
+
 <dl><dt><a name="FGCPClient-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPClient-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPClient-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
@@ -422,7 +428,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <hr>
 Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
+<dl><dt><strong>api_version</strong> = '2012-02-18'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
 
@@ -693,6 +699,12 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetEFMConfigHan
 
 <dl><dt><a name="FGCPDesigner-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
+<dl><dt><a name="FGCPDesigner-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetEventLog">GetEventLog</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPDesigner-GetInformation"><strong>GetInformation</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;infos&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetInformation">GetInformation</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPDesigner-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
+
 <dl><dt><a name="FGCPDesigner-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPDesigner-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPDesigner-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
@@ -834,7 +846,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <hr>
 Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
+<dl><dt><strong>api_version</strong> = '2012-02-18'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
 
@@ -945,6 +957,12 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetEFMConfigHand
 <dl><dt><a name="FGCPMonitor-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+
+<dl><dt><a name="FGCPMonitor-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetEventLog">GetEventLog</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPMonitor-GetInformation"><strong>GetInformation</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;infos&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetInformation">GetInformation</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPMonitor-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
 
 <dl><dt><a name="FGCPMonitor-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPMonitor-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
@@ -1087,7 +1105,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <hr>
 Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
+<dl><dt><strong>api_version</strong> = '2012-02-18'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
 
@@ -1259,6 +1277,12 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetEFMConfigHan
 
 <dl><dt><a name="FGCPOperator-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
+<dl><dt><a name="FGCPOperator-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetEventLog">GetEventLog</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPOperator-GetInformation"><strong>GetInformation</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;infos&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetInformation">GetInformation</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPOperator-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
+
 <dl><dt><a name="FGCPOperator-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPOperator-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPOperator-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
@@ -1400,7 +1424,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <hr>
 Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
+<dl><dt><strong>api_version</strong> = '2012-02-18'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
 

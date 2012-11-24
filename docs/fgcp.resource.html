@@ -58,12 +58,15 @@ for&nbsp;vserver&nbsp;in&nbsp;vsystem.vservers:<br>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPLoadBalancer">FGCPLoadBalancer</a>
 </font></dt></dl>
 </dd>
-<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWDirection">FGCPFWDirection</a>
+<dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPEventLog">FGCPEventLog</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWDirection">FGCPFWDirection</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWDns">FGCPFWDns</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWLogOrder">FGCPFWLogOrder</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWNATRule">FGCPFWNATRule</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWPolicy">FGCPFWPolicy</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPImageSoftware">FGCPImageSoftware</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPInformation">FGCPInformation</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPPerformanceInfo">FGCPPerformanceInfo</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPPublicIP">FGCPPublicIP</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSLBCCACert">FGCPSLBCCACert</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSLBCause">FGCPSLBCause</a>
@@ -463,6 +466,77 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 
 <hr>
 Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPEventLog">class <strong>FGCPEventLog</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPEventLog">FGCPEventLog</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>entryDate</strong> = None</dl>
+
+<dl><dt><strong>expiry</strong> = None</dl>
+
+<dl><dt><strong>message</strong> = None</dl>
+
+<dl><dt><strong>startDate</strong> = None</dl>
+
+<dl><dt><strong>title</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPEventLog-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPEventLog-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPEventLog-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPEventLog-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><strong>__dict__</strong></dt>
 <dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
 </dl>
@@ -1067,6 +1141,79 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPInformation">class <strong>FGCPInformation</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPInformation">FGCPInformation</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>entryDate</strong> = None</dl>
+
+<dl><dt><strong>expiry</strong> = None</dl>
+
+<dl><dt><strong>message</strong> = None</dl>
+
+<dl><dt><strong>seqno</strong> = None</dl>
+
+<dl><dt><strong>startDate</strong> = None</dl>
+
+<dl><dt><strong>title</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPInformation-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPInformation-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPInformation-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPInformation-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#000000" face="helvetica, arial"><a name="FGCPLoadBalancer">class <strong>FGCPLoadBalancer</strong></a>(<a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
@@ -1264,6 +1411,87 @@ Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:
 <dl><dt><a name="FGCPLoadBalancer-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPPerformanceInfo">class <strong>FGCPPerformanceInfo</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPPerformanceInfo">FGCPPerformanceInfo</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>cpuUtilization</strong> = None</dl>
+
+<dl><dt><strong>diskReadRequestCount</strong> = None</dl>
+
+<dl><dt><strong>diskReadSector</strong> = None</dl>
+
+<dl><dt><strong>diskWriteRequestCount</strong> = None</dl>
+
+<dl><dt><strong>diskWriteSector</strong> = None</dl>
+
+<dl><dt><strong>nicInputByte</strong> = None</dl>
+
+<dl><dt><strong>nicInputPacket</strong> = None</dl>
+
+<dl><dt><strong>nicOutputByte</strong> = None</dl>
+
+<dl><dt><strong>nicOutputPacket</strong> = None</dl>
+
+<dl><dt><strong>recordTime</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPPerformanceInfo-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPPerformanceInfo-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPPerformanceInfo-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1603,8 +1831,6 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>cat</strong> = None</dl>
 
 <dl><dt><strong>current</strong> = None</dl>
-
-<dl><dt><strong>filePath</strong> = None</dl>
 
 <dl><dt><strong>status</strong> = None</dl>
 
@@ -2501,6 +2727,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPVDataCenter-get_diskimage"><strong>get_diskimage</strong></a>(self, diskimageName)</dt></dl>
 
+<dl><dt><a name="FGCPVDataCenter-get_eventlog"><strong>get_eventlog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_information"><strong>get_information</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVDataCenter-get_publicip"><strong>get_publicip</strong></a>(self, publicipAddress)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-get_servertype"><strong>get_servertype</strong></a>(self, servertypeName)</dt></dl>
@@ -2779,6 +3009,8 @@ Methods defined here:<br>
 <dl><dt><a name="FGCPVServer-get_configuration"><strong>get_configuration</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVServer-get_password"><strong>get_password</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVServer-get_performance"><strong>get_performance</strong></a>(self, interval<font color="#909090">='hour'</font>, dataType<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVServer-get_vdisk"><strong>get_vdisk</strong></a>(self, vdisk)</dt></dl>
 

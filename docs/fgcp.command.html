@@ -124,6 +124,12 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMConfigHand
 
 <dl><dt><a name="FGCPCommand-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
+<dl><dt><a name="FGCPCommand-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEventLog">GetEventLog</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-GetInformation"><strong>GetInformation</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;infos&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetInformation">GetInformation</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
+
 <dl><dt><a name="FGCPCommand-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
@@ -265,7 +271,7 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <hr>
 Data and other attributes inherited from <a href="fgcp.connection.html#FGCPConnection">fgcp.connection.FGCPConnection</a>:<br>
-<dl><dt><strong>api_version</strong> = '2011-01-31'</dl>
+<dl><dt><strong>api_version</strong> = '2012-02-18'</dl>
 
 <dl><dt><strong>debug</strong> = 0</dl>
 

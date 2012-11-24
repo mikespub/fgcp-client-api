@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2011 Michel Dalle
+#  Copyright (C) 2012 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -73,7 +73,8 @@ class FGCPConnection:
                                                     #  99 = save request/response body for test fixture
 
     uri = '/ovissapi/endpoint'                      # fixed value for the API version
-    api_version = '2011-01-31'                      # fixed value for the API version
+    #api_version = '2011-01-31'                      # fixed value for the API version
+    api_version = '2012-02-18'                      # fixed value for the API version
     user_agent = 'OViSS-API-CLIENT'                 # fixed value for the API version
 
     _conn = None                                    # actual httplib.HTTPSConnection() or FGCPTestServerWithFixtures() or ...
@@ -385,6 +386,9 @@ class FGCPResponseParser:
         'ccacert': FGCPSLBCCACert,
         'usageinfo': FGCPUsageInfo,
         'product': FGCPUsageInfoProduct,
+        'information': FGCPInformation,
+        'eventlog': FGCPEventLog,
+        'performanceinfo': FGCPPerformanceInfo,
         'response': FGCPResponse,
         'default': FGCPUnknown,
     }

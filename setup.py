@@ -157,7 +157,7 @@ f.close()
 setup(
     name='fgcp-client-api',
     description='Client API Library for the Fujitsu Global Cloud Platform (FGCP)',
-    version='1.2.2',
+    version='1.3.1',
     author='mikespub',
     author_email='fgcp@mikespub.net',
     packages=['fgcp'],
