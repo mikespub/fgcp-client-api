@@ -1,3 +1,5 @@
+Note: This project has been migrated to GitHub at https://github.com/mikespub/fgcp-client-api Please report any new issues there...
+
 Client API library for the Fujitsu Global Cloud Platform (FGCP)
 ===============================================================
 using XML-RPC API Version 2012-02-18
