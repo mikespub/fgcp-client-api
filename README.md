@@ -24,7 +24,7 @@ vsystem.show_status()
 # See tests/test_resource.py for more examples
 ```
 
-Note: this client API library provides higher-level [Client Methods](ClientMethods.md), intermediate [Resource Actions](ResourceActions.md) and lower-level [API Commands](APICommands.md).
+Note: this client API library provides higher-level [Client Methods](wiki/ClientMethods), intermediate [Resource Actions](wiki/ResourceActions) and lower-level [API Commands](wiki/APICommands).
 
 
 ---
