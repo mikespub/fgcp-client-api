@@ -1,15 +1,29 @@
 
- <html><head><title>Test Server for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Test Server for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The FGCP Test Server can be used for local library tests, without needing access or registration to the Fujitsu Global Cloud Platform. You will not be able to update any resources though...</strong> </p><p>In order to use this Test Server, you simply specify that you want to connect to the region <strong>&#x27;test&#x27;</strong> in your scripts, instead of using a real region &#x27;uk&#x27;, &#x27;de&#x27; etc. For instance, the test scripts available under the tests/ directory are all configured to use the Test Server. </p><pre class="prettyprint">Example: [see tests/test_*.py for more examples]
+      <html><head><title>
+Test Server for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>
+Test Server for the Fujitsu Global Cloud Platform (FGCP)</h1>
 
-# Connect without valid client certificate to region &#x27;test&#x27;
+<p><strong>The FGCP Test Server can be used for local library tests, without needing access or registration to the Fujitsu Global Cloud Platform. You will not be able to update any resources though...</strong></p>
+
+<p>In order to use this Test Server, you simply specify that you want to connect to the region <strong>'test'</strong> in your scripts, instead of using a real region 'uk', 'de' etc. For instance, the test scripts available under the tests/ directory are all configured to use the Test Server.</p>
+
+<pre><code>Example: [see tests/test_*.py for more examples]
+
+# Connect without valid client certificate to region 'test'
 from fgcp.resource import FGCPVDataCenter
-vdc = FGCPVDataCenter(&#x27;client.pem&#x27;, &#x27;test&#x27;)
+vdc = FGCPVDataCenter('client.pem', 'test')
 
 # Do typical actions on resources - updates are not supported here
-vsystem = vdc.get_vsystem(&#x27;Demo System&#x27;)
+vsystem = vdc.get_vsystem('Demo System')
 vsystem.show_status()
 #for vserver in vsystem.vservers:
 #    result = vserver.backup(wait=True)
 #...
-# See tests/test_resource.py for more examples</pre><p>Note: this client API library also provides a <a href="RelayServer.html">Relay Server</a> in case your current script environment does not support connections with client certificates, like e.g. on Google App Engine. </p><p><img src="http://mikespub.net/fgcp_conn_yuml.png" /> </p>
- <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
+# See tests/test_resource.py for more examples
+</code></pre>
+
+<p>Note: this client API library also provides a <a href="RelayServer.html">Relay Server</a> in case your current script environment does not support connections with client certificates, like e.g. on Google App Engine.</p>
+
+<p><img src="https://camo.githubusercontent.com/94819f2eda093271bbc50ad45799b5fe1c75ea87/687474703a2f2f6d696b65737075622e6e65742f666763705f636f6e6e5f79756d6c2e706e67" alt="http://mikespub.net/fgcp_conn_yuml.png" data-canonical-src="http://mikespub.net/fgcp_conn_yuml.png"></p>
+
+    <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>

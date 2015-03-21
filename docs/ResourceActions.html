@@ -1,17 +1,35 @@
 
- <html><head><title>Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The following list gives an overview of the resource actions supported by this client API library that can be used in your scripts. This list is likely to be extended in future releases, and any suggestions are welcome in the <a href="http://code.google.com/p/fgcp-client-api/issues/list" rel="nofollow">issue tracker</a>.</strong> </p><pre class="prettyprint">Example: [see tests/test_resource.py for more examples]
+      <html><head><title>
+Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>
+Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</h1>
 
-# Connect with your client certificate to region &#x27;uk&#x27;
+<p><strong>The following list gives an overview of the resource actions supported by this client API library that can be used in your scripts. This list is likely to be extended in future releases, and any suggestions are welcome in the <a href="http://code.google.com/p/fgcp-client-api/issues/list">issue tracker</a>.</strong></p>
+
+<pre><code>Example: [see tests/test_resource.py for more examples]
+
+# Connect with your client certificate to region 'uk'
 from fgcp.resource import FGCPVDataCenter
-vdc = FGCPVDataCenter(&#x27;client.pem&#x27;, &#x27;uk&#x27;)
+vdc = FGCPVDataCenter('client.pem', 'uk')
 
 # Do typical resource actions
-vsystem = vdc.get_vsystem(&#x27;Python API Demo System&#x27;)
+vsystem = vdc.get_vsystem('Python API Demo System')
 vsystem.show_status()
 for vserver in vsystem.vservers:
     result = vserver.backup(wait=True)
-...</pre><p><ul><li><a href="#Resource_Actions_for_the_Fujitsu_Global_Cloud_Platform_(FGCP)">Resource Actions for the Fujitsu Global Cloud Platform (FGCP)</a></li><ul><li><a href="#FGCPVDataCenter">FGCPVDataCenter</a></li><li><a href="#FGCPVSystem">FGCPVSystem</a></li><li><a href="#FGCPVServer">FGCPVServer</a></li><li><a href="#FGCPVDisk">FGCPVDisk</a></li><li><a href="#FGCPBackup">FGCPBackup</a></li><li><a href="#FGCPFirewall">FGCPFirewall</a></li><li><a href="#FGCPLoadBalancer">FGCPLoadBalancer</a></li><li><a href="#FGCPPublicIP">FGCPPublicIP</a></li><li><a href="#FGCPAddressRange">FGCPAddressRange</a></li><li><a href="#FGCPVSysDescriptor">FGCPVSysDescriptor</a></li><li><a href="#FGCPDiskImage">FGCPDiskImage</a></li><li><a href="#FGCPServerType">FGCPServerType</a></li><li><a href="#FGCPDesign">FGCPDesign</a></li></ul></ul> </p><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and lower-level <a href="APICommands.html">API Commands</a>. </p><hr/><h2><a name="FGCPVDataCenter"></a>FGCPVDataCenter<a href="#FGCPVDataCenter" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vdatacenter_yuml.png" /> </p><pre class="prettyprint">    from fgcp.resource import FGCPVDataCenter
-    vdc = FGCPVDataCenter(key_file=&#x27;client.pem&#x27;, region=&#x27;de&#x27;, verbose=0, debug=0)
+...
+</code></pre>
+
+<p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and lower-level <a href="APICommands.html">API Commands</a>.</p>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpvdatacenter" class="anchor" href="#fgcpvdatacenter" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPVDataCenter</h2>
+
+<p><img src="https://camo.githubusercontent.com/f6a130d0ccd4d0de3958cabc2923f7866a0eae2d/687474703a2f2f6d696b65737075622e6e65742f666763705f766461746163656e7465725f79756d6c2e706e67" alt="http://mikespub.net/fgcp_vdatacenter_yuml.png" data-canonical-src="http://mikespub.net/fgcp_vdatacenter_yuml.png"></p>
+
+<pre><code>    from fgcp.resource import FGCPVDataCenter
+    vdc = FGCPVDataCenter(key_file='client.pem', region='de', verbose=0, debug=0)
 
     status = vdc.status()
     #vdc.show_vsystem_status()
@@ -20,12 +38,12 @@ for vserver in vsystem.vservers:
     #vdc.show_vsystem_usage(vsysNames=None)
 
     vsystems = vdc.list_vsystems()
-    #vsystem = vdc.get_vsystem(&#x27;Python API Demo System&#x27;)
-    vsystem = vdc.get_vsystem(&#x27;Demo System&#x27;)
+    #vsystem = vdc.get_vsystem('Python API Demo System')
+    vsystem = vdc.get_vsystem('Demo System')
     test_vsystem(vsystem)
 
-    #vsysId = vdc.create_vsystem(&#x27;Python API Demo System&#x27;, &#x27;2-tier Skeleton&#x27;, wait=True)
-    #result = vdc.destroy_vsystem(&#x27;Python API Demo System&#x27;, wait=True)
+    #vsysId = vdc.create_vsystem('Python API Demo System', '2-tier Skeleton', wait=True)
+    #result = vdc.destroy_vsystem('Python API Demo System', wait=True)
 
     publicips = vdc.list_publicips()
     publicip = vdc.get_publicip(publicips[0].address)
@@ -37,21 +55,31 @@ for vserver in vsystem.vservers:
     #result = vdc.delete_addressrange(pipFrom, pipTo)
 
     vsysdescriptors = vdc.list_vsysdescriptors()
-    vsysdescriptor = vdc.get_vsysdescriptor(&#x27;2-tier Skeleton&#x27;)
+    vsysdescriptor = vdc.get_vsysdescriptor('2-tier Skeleton')
     test_vsysdescriptor(vsysdescriptor)
 
     diskimages = vdc.list_diskimages()
     diskimages = vdc.list_diskimages(vsysdescriptor)
-    diskimage = vdc.get_diskimage(&#x27;CentOS 5.4 32bit(EN)&#x27;)
+    diskimage = vdc.get_diskimage('CentOS 5.4 32bit(EN)')
     test_diskimage(diskimage)
 
     servertypes = vdc.list_servertypes()
     servertypes = vdc.list_servertypes(diskimage)
-    servertype = vdc.get_servertype(&#x27;economy&#x27;)
+    servertype = vdc.get_servertype('economy')
     test_servertype(servertype)
 
-    design = vdc.get_vsystem_design(&#x27;Demo System&#x27;)
-    test_design(design)</pre><hr/><h2><a name="FGCPVSystem"></a>FGCPVSystem<a href="#FGCPVSystem" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vsystem_yuml.png" /> </p><pre class="prettyprint">    #vsystem = vdc.get_vsystem(&#x27;Python API Demo System&#x27;)
+    design = vdc.get_vsystem_design('Demo System')
+    test_design(design)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpvsystem" class="anchor" href="#fgcpvsystem" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPVSystem</h2>
+
+<p><img src="https://camo.githubusercontent.com/48856c850da2297904cfa9565142296d049c1fce/687474703a2f2f6d696b65737075622e6e65742f666763705f7673797374656d5f79756d6c2e706e67" alt="http://mikespub.net/fgcp_vsystem_yuml.png" data-canonical-src="http://mikespub.net/fgcp_vsystem_yuml.png"></p>
+
+<pre><code>    #vsystem = vdc.get_vsystem('Python API Demo System')
 
     status = vsystem.status()
 
@@ -63,46 +91,46 @@ for vserver in vsystem.vservers:
     #result = vsystem.start(wait=True)
     #result = vsystem.stop(wait=True, force=None)
 
-    #result = vsystem.update(vsysName=&#x27;New Demo System&#x27;, cloudCategory=&#x27;PUBLIC&#x27;)
+    #result = vsystem.update(vsysName='New Demo System', cloudCategory='PUBLIC')
 
     inventory = vsystem.get_inventory()
 
     vservers = vsystem.list_vservers()
     for vserver in vsystem.vservers:
         pass
-    #vserver = vsystem.get_vserver(&#x27;Server1&#x27;)
-    vserver = vsystem.get_vserver(&#x27;DB1&#x27;)
+    #vserver = vsystem.get_vserver('Server1')
+    vserver = vsystem.get_vserver('DB1')
     test_vserver(vserver)
 
-    #vserverId = vsystem.create_vserver(&#x27;My New Server&#x27;, &#x27;economy&#x27;, &#x27;CentOS 5.4 32bit(EN)&#x27;, &#x27;DMZ&#x27;)
-    #result = vsystem.start_vserver(&#x27;My New Server&#x27;, wait=True)
-    #result = vsystem.stop_vserver(&#x27;My New Server&#x27;, wait=True)
-    #result = vsystem.destroy_vserver(&#x27;My New Server&#x27;, wait=True)
+    #vserverId = vsystem.create_vserver('My New Server', 'economy', 'CentOS 5.4 32bit(EN)', 'DMZ')
+    #result = vsystem.start_vserver('My New Server', wait=True)
+    #result = vsystem.stop_vserver('My New Server', wait=True)
+    #result = vsystem.destroy_vserver('My New Server', wait=True)
 
     vdisks = vsystem.list_vdisks()
     for vdisk in vsystem.vdisks:
         pass
-    vdisk = vsystem.get_vdisk(&#x27;DISK1&#x27;)
+    vdisk = vsystem.get_vdisk('DISK1')
     test_vdisk(vdisk)
-    #result = vsystem.create_vdisk(&#x27;DISK2&#x27;, size=1500, wait=True)
-    #result = vsystem.attach_vdisk(&#x27;DISK2&#x27;, &#x27;My New Server&#x27;, wait=True)
-    #result = vsystem.detach_vdisk(&#x27;DISK2&#x27;, &#x27;My New Server&#x27;, wait=True)
-    #result = vsystem.destroy_vdisk(&#x27;DISK2&#x27;, wait=True)
+    #result = vsystem.create_vdisk('DISK2', size=1500, wait=True)
+    #result = vsystem.attach_vdisk('DISK2', 'My New Server', wait=True)
+    #result = vsystem.detach_vdisk('DISK2', 'My New Server', wait=True)
+    #result = vsystem.destroy_vdisk('DISK2', wait=True)
 
     test_vserver_vdisk(vserver, vdisk)
 
     firewalls = vsystem.list_firewalls()
     for firewall in vsystem.firewalls:
         pass
-    firewall = vsystem.get_firewall(&#x27;Firewall&#x27;)
+    firewall = vsystem.get_firewall('Firewall')
     test_firewall(firewall)
 
     loadbalancers = vsystem.list_loadbalancers()
     for loadbalancer in vsystem.loadbalancers:
         pass
-    loadbalancer = vsystem.get_loadbalancer(&#x27;SLB1&#x27;)
+    loadbalancer = vsystem.get_loadbalancer('SLB1')
     test_loadbalancer(loadbalancer)
-    #result = vsystem.create_loadbalancer(&#x27;SLB2&#x27;, &#x27;DMZ&#x27;, wait=True)
+    #result = vsystem.create_loadbalancer('SLB2', 'DMZ', wait=True)
 
     publicips = vsystem.list_publicips()
     for publicip in vsystem.publicips:
@@ -117,17 +145,27 @@ for vserver in vsystem.vservers:
 
     console = vsystem.get_console_url(vnets[0])
 
-    #vsystem.vsysName = &#x27;Copy of %s&#x27; % vsystem.vsysName
+    #vsystem.vsysName = 'Copy of %s' % vsystem.vsysName
     #result = vsystem.create()
 
-    #result = vsystem.detroy(wait=True)</pre><hr/><h2><a name="FGCPVServer"></a>FGCPVServer<a href="#FGCPVServer" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vserver_yuml.png" /> </p><pre class="prettyprint">    #vserver = vsystem.get_vserver(&#x27;WepApp1&#x27;)
+    #result = vsystem.detroy(wait=True)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpvserver" class="anchor" href="#fgcpvserver" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPVServer</h2>
+
+<p><img src="https://camo.githubusercontent.com/ff1e5329bc956cacf54d7084a1813a86f69ced3f/687474703a2f2f6d696b65737075622e6e65742f666763705f767365727665725f79756d6c2e706e67" alt="http://mikespub.net/fgcp_vserver_yuml.png" data-canonical-src="http://mikespub.net/fgcp_vserver_yuml.png"></p>
+
+<pre><code>    #vserver = vsystem.get_vserver('WepApp1')
 
     status = vserver.status()
 
     #result = vserver.start(wait=True)
     #result = vserver.stop(wait=True, force=None)
 
-    #result = vserver.update(vserverName=&#x27;New Server&#x27;, vserverType=&#x27;economy&#x27;)
+    #result = vserver.update(vserverName='New Server', vserverType='economy')
 
     config = vserver.get_configuration()
     vdisks = vserver.list_vdisks()
@@ -150,10 +188,20 @@ for vserver in vsystem.vservers:
 
     initialpwd = vserver.get_password()
 
-    #vserver.vserverName = &#x27;Copy of %s&#x27; % vserver.vserverName
+    #vserver.vserverName = 'Copy of %s' % vserver.vserverName
     #result = vserver.create()
 
-    #result = vserver.detroy(wait=True)</pre><hr/><h2><a name="FGCPVDisk"></a>FGCPVDisk<a href="#FGCPVDisk" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vdisk_yuml.png" /> </p><pre class="prettyprint">    status = vdisk.status()
+    #result = vserver.detroy(wait=True)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpvdisk" class="anchor" href="#fgcpvdisk" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPVDisk</h2>
+
+<p><img src="https://camo.githubusercontent.com/e21a1464b15570de089f85f080c0f86fa0b9b33d/687474703a2f2f6d696b65737075622e6e65742f666763705f766469736b5f79756d6c2e706e67" alt="http://mikespub.net/fgcp_vdisk_yuml.png" data-canonical-src="http://mikespub.net/fgcp_vdisk_yuml.png"></p>
+
+<pre><code>    status = vdisk.status()
 
     backups = vdisk.list_backups(timeZone=None, countryCode=None)
     for backup in backups:
@@ -161,16 +209,34 @@ for vserver in vsystem.vservers:
         break
     #result = vdisk.backup(wait=True)
 
-    #result = vdisk.update(vdiskName=&#x27;New Disk&#x27;)
+    #result = vdisk.update(vdiskName='New Disk')
 
     #result = vdisk.attach(vserver)
     #result = vdisk.detach(vserver)
 
-    #vdisk.vdiskName = &#x27;Copy of %s&#x27; % vdisk.vdiskName
+    #vdisk.vdiskName = 'Copy of %s' % vdisk.vdiskName
     #result = vdisk.create()
 
-    #result = vdisk.detroy(wait=True)</pre><hr/><h2><a name="FGCPBackup"></a>FGCPBackup<a href="#FGCPBackup" class="section_anchor"></a></h2><pre class="prettyprint">    #backup.restore(wait=True)
-    #backup.destroy()</pre><hr/><h2><a name="FGCPFirewall"></a>FGCPFirewall<a href="#FGCPFirewall" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_firewall_yuml.png" /> </p><pre class="prettyprint">    status = firewall.status()
+    #result = vdisk.detroy(wait=True)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpbackup" class="anchor" href="#fgcpbackup" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPBackup</h2>
+
+<pre><code>    #backup.restore(wait=True)
+    #backup.destroy()
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpfirewall" class="anchor" href="#fgcpfirewall" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPFirewall</h2>
+
+<p><img src="https://camo.githubusercontent.com/0b5e0394023e51e5b48b8de98cd6179a1c9de1f7/687474703a2f2f6d696b65737075622e6e65742f666763705f6669726577616c6c5f79756d6c2e706e67" alt="http://mikespub.net/fgcp_firewall_yuml.png" data-canonical-src="http://mikespub.net/fgcp_firewall_yuml.png"></p>
+
+<pre><code>    status = firewall.status()
     #result = firewall.start(wait=True)
     #result = firewall.stop(wait=True)
 
@@ -184,10 +250,10 @@ for vserver in vsystem.vservers:
     #result = firewall.set_nat_rules(rules=nat_rules)
 
     dns = firewall.get_dns()
-    #result = firewall.set_dns(dnstype=&#x27;AUTO&#x27;, primary=None, secondary=None)
+    #result = firewall.set_dns(dnstype='AUTO', primary=None, secondary=None)
 
     policies = firewall.get_policies(from_zone=None, to_zone=None)
-    #result = firewall.set_policies(log=&#x27;On&#x27;, policies=policies)
+    #result = firewall.set_policies(log='On', policies=policies)
 
     logs = firewall.get_log(num=10, orders=None)
 
@@ -195,7 +261,17 @@ for vserver in vsystem.vservers:
 
     update_info = firewall.get_update_info()
     #result = firewall.apply_update()
-    #result = firewall.revert_update()</pre><hr/><h2><a name="FGCPLoadBalancer"></a>FGCPLoadBalancer<a href="#FGCPLoadBalancer" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_loadbalancer_yuml.png" /> </p><pre class="prettyprint">    status = loadbalancer.status()
+    #result = firewall.revert_update()
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcploadbalancer" class="anchor" href="#fgcploadbalancer" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPLoadBalancer</h2>
+
+<p><img src="https://camo.githubusercontent.com/97358b33099db8eea18913020c4761667cb23505/687474703a2f2f6d696b65737075622e6e65742f666763705f6c6f616462616c616e6365725f79756d6c2e706e67" alt="http://mikespub.net/fgcp_loadbalancer_yuml.png" data-canonical-src="http://mikespub.net/fgcp_loadbalancer_yuml.png"></p>
+
+<pre><code>    status = loadbalancer.status()
 
     #result = loadbalancer.start(wait=True)
     #result = loadbalancer.stop(wait=True)
@@ -211,9 +287,9 @@ for vserver in vsystem.vservers:
 
     rules = loadbalancer.get_rules()
     #result = loadbalancer.set_rules(groups=rules.groups, force=None, webAccelerator=None)
-    #vserver1 = vsystem.get_vserver(&#x27;WebApp1&#x27;)
-    #vserver2 = vsystem.get_vserver(&#x27;WebApp2&#x27;)
-    #loadbalancer.add_group(id=10, protocol=&#x27;http&#x27;, targets=[vserver1, vserver2])
+    #vserver1 = vsystem.get_vserver('WebApp1')
+    #vserver2 = vsystem.get_vserver('WebApp2')
+    #loadbalancer.add_group(id=10, protocol='http', targets=[vserver1, vserver2])
     #loadbalancer.delete_group(id=20)
 
     load_stats = loadbalancer.get_load_stats()
@@ -222,37 +298,89 @@ for vserver in vsystem.vservers:
     #result = loadbalancer.clear_error_stats()
 
     servercerts = loadbalancer.list_servercerts(detail=None)
-    #result = loadbalancer.add_cert(certNum=5, filePath=&quot;server.pfx&quot;, passphrase=&#x27;changeit&#x27;)
+    #result = loadbalancer.add_cert(certNum=5, filePath="server.pfx", passphrase='changeit')
     #result = loadbalancer.set_cert(certNum=5, groupId=10)
     #result = loadbalancer.release_cert(certNum=10)
     #result = loadbalancer.delete_cert(certNum=10, force=None)
     ccacerts = loadbalancer.list_ccacerts(detail=None)
-    #result = loadbalancer.add_cca(ccacertNum=101, filePath=&#x27;cacert.crt&#x27;)
+    #result = loadbalancer.add_cca(ccacertNum=101, filePath='cacert.crt')
     #result = loadbalancer.delete_cca(ccacertNum=101)
     cert_list = loadbalancer.get_cert_list(certCategory=None, detail=None)
 
-    #result = loadbalancer.start_maintenance(groupId=10, ipAddress=&#x27;192.168.0.13&#x27;, time=None, unit=None)
-    #result = loadbalancer.stop_maintenance(groupId=10, ipAddress=&#x27;192.168.0.13&#x27;)
+    #result = loadbalancer.start_maintenance(groupId=10, ipAddress='192.168.0.13', time=None, unit=None)
+    #result = loadbalancer.stop_maintenance(groupId=10, ipAddress='192.168.0.13')
 
     update_info = loadbalancer.get_update_info()
     #result = loadbalancer.apply_update()
     #result = loadbalancer.revert_update()
 
-    #result = loadbalancer.detroy()</pre><hr/><h2><a name="FGCPPublicIP"></a>FGCPPublicIP<a href="#FGCPPublicIP" class="section_anchor"></a></h2><pre class="prettyprint">    status = publicip.status()
+    #result = loadbalancer.detroy()
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcppublicip" class="anchor" href="#fgcppublicip" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPPublicIP</h2>
+
+<pre><code>    status = publicip.status()
     #result = publicip.attach(wait=True)
     #result = publicip.detach(wait=True)
-    #result = publicip.free(wait=True)</pre><hr/><h2><a name="FGCPAddressRange"></a>FGCPAddressRange<a href="#FGCPAddressRange" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="FGCPVSysDescriptor"></a>FGCPVSysDescriptor<a href="#FGCPVSysDescriptor" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_vsysdescriptor_yuml.png" /> </p><pre class="prettyprint">    diskimages = vsysdescriptor.list_diskimages()
-    #vsysId = vsysdescriptor.create_vsystem(&#x27;Python API Demo System&#x27;, wait=True)
+    #result = publicip.free(wait=True)
+</code></pre>
 
-    #vsysdescriptor.update(vsysdescriptorName=&#x27;New VSYSDescriptor&#x27;,
-	#	description=&#x27;This is a new vsysdescriptor&#x27;, keyword=&#x27;2-tier Skeleton&#x27;)</pre><hr/><h2><a name="FGCPDiskImage"></a>FGCPDiskImage<a href="#FGCPDiskImage" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_diskimage_yuml.png" /> </p><pre class="prettyprint">    softwares = diskimage.list_softwares()
+<hr>
+
+<h2>
+<a id="user-content-fgcpaddressrange" class="anchor" href="#fgcpaddressrange" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPAddressRange</h2>
+
+<pre><code></code></pre>
+<hr>
+
+<h2>
+<a id="user-content-fgcpvsysdescriptor" class="anchor" href="#fgcpvsysdescriptor" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPVSysDescriptor</h2>
+
+<p><img src="https://camo.githubusercontent.com/471865e5ce9861630e97c98a624ea3d7ea039126/687474703a2f2f6d696b65737075622e6e65742f666763705f7673797364657363726970746f725f79756d6c2e706e67" alt="http://mikespub.net/fgcp_vsysdescriptor_yuml.png" data-canonical-src="http://mikespub.net/fgcp_vsysdescriptor_yuml.png"></p>
+
+<pre><code>    diskimages = vsysdescriptor.list_diskimages()
+    #vsysId = vsysdescriptor.create_vsystem('Python API Demo System', wait=True)
+
+    #vsysdescriptor.update(vsysdescriptorName='New VSYSDescriptor',
+    #   description='This is a new vsysdescriptor', keyword='2-tier Skeleton')
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-fgcpdiskimage" class="anchor" href="#fgcpdiskimage" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPDiskImage</h2>
+
+<p><img src="https://camo.githubusercontent.com/bf596d148b63fc3dada92d7f3799d176e690e602/687474703a2f2f6d696b65737075622e6e65742f666763705f6469736b696d6167655f79756d6c2e706e67" alt="http://mikespub.net/fgcp_diskimage_yuml.png" data-canonical-src="http://mikespub.net/fgcp_diskimage_yuml.png"></p>
+
+<pre><code>    softwares = diskimage.list_softwares()
     servertypes = diskimage.list_servertypes()
 
-    #diskimage.update(diskimageName=&#x27;New Disk Image&#x27;, description=&#x27;This is a new disk image&#x27;)</pre><hr/><h2><a name="FGCPServerType"></a>FGCPServerType<a href="#FGCPServerType" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="FGCPDesign"></a>FGCPDesign<a href="#FGCPDesign" class="section_anchor"></a></h2><pre class="prettyprint">    #design = vdc.get_vsystem_design()
+    #diskimage.update(diskimageName='New Disk Image', description='This is a new disk image')
+</code></pre>
 
-    #vsystem = design.load_file(&#x27;fgcp_demo_system.txt&#x27;)
-    vsystem = design.load_vsystem(&#x27;Demo System&#x27;)
-    #result = design.build_vsystem(&#x27;My New VSystem&#x27;)
-    design.save_file(&#x27;new_demo_system.txt&#x27;)
-    design.load_file(&#x27;new_demo_system.txt&#x27;)</pre><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and lower-level <a href="APICommands.html">API Commands</a>. </p>
- <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
+<hr>
+
+<h2>
+<a id="user-content-fgcpservertype" class="anchor" href="#fgcpservertype" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPServerType</h2>
+
+<pre><code></code></pre>
+<hr>
+
+<h2>
+<a id="user-content-fgcpdesign" class="anchor" href="#fgcpdesign" aria-hidden="true"><span class="octicon octicon-link"></span></a>FGCPDesign</h2>
+
+<pre><code>    #design = vdc.get_vsystem_design()
+
+    #vsystem = design.load_file('fgcp_demo_system.txt')
+    vsystem = design.load_vsystem('Demo System')
+    #result = design.build_vsystem('My New VSystem')
+    design.save_file('new_demo_system.txt')
+    design.load_file('new_demo_system.txt')
+</code></pre>
+
+<p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and lower-level <a href="APICommands.html">API Commands</a>.</p>
+
+    <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>

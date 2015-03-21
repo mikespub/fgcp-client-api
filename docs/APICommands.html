@@ -1,9 +1,17 @@
 
- <html><head><title>API Commands for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>API Commands for the Fujitsu Global Cloud Platform (FGCP)</h1><p><strong>The following list gives an overview of all low-level API Commands supported by the XML-RPC API version 2011-01-31 of the Fujitsu Global Cloud Platform that can be used by your scripts. They are grouped by logical &quot;resource type&quot; for presentation purposes only.</strong> </p><p>Reference: <a href="http://fenics.fujitsu.com/outsourcingservice/downloads/brochures/fj-cloud-api-design.pdf" rel="nofollow">Fujitsu Cloud API Design</a> </p><pre class="prettyprint">Example: [see tests/test_api.py for more examples]
+      <html><head><title>
+API Commands for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>
+API Commands for the Fujitsu Global Cloud Platform (FGCP)</h1>
 
-# Connect with your client certificate to region &#x27;uk&#x27;
+<p><strong>The following list gives an overview of all low-level API Commands supported by the XML-RPC API version 2011-01-31 of the Fujitsu Global Cloud Platform that can be used by your scripts. They are grouped by logical "resource type" for presentation purposes only.</strong></p>
+
+<p>Reference: <a href="http://fenics.fujitsu.com/outsourcingservice/downloads/brochures/fj-cloud-api-design.pdf">Fujitsu Cloud API Design</a></p>
+
+<pre><code>Example: [see tests/test_api.py for more examples]
+
+# Connect with your client certificate to region 'uk'
 from fgcp.command import FGCPCommand
-api_proxy = FGCPCommand(&#x27;client.pem&#x27;, &#x27;uk&#x27;)
+api_proxy = FGCPCommand('client.pem', 'uk')
 
 # Call standard API commands with identifiers
 vsystems = api_proxy.ListVSYS()
@@ -12,100 +20,128 @@ for vsys in vsystems:
     vsysconfig = api_proxy.GetVSYSConfiguration(vsys.vsysId)
     for vserver in vsysconfig.vservers:
         status = api_proxy.GetVServerStatus(vsys.vsysId, vserver.vserverId)
-    ...</pre><p><ul><li><a href="#API_Commands_for_the_Fujitsu_Global_Cloud_Platform_(FGCP)">API Commands for the Fujitsu Global Cloud Platform (FGCP)</a></li><ul><li><a href="#Virtual_Data_Center_(VDC)">Virtual Data Center (VDC)</a></li><li><a href="#Virtual_System_(VSYS)">Virtual System (VSYS)</a></li><li><a href="#Virtual_Server_(VServer)">Virtual Server (VServer)</a></li><li><a href="#Virtual_Disk_(VDisk)">Virtual Disk (VDisk)</a></li><li><a href="#Virtual_Disk_Backup">Virtual Disk Backup</a></li><li><a href="#Virtual_Network_Interface_(VNIC)">Virtual Network Interface (VNIC)</a></li><li><a href="#Extended_Function_Module_(EFM)">Extended Function Module (EFM)</a></li><li><a href="#EFM_Firewall_(FW)">EFM Firewall (FW)</a></li><li><a href="#EFM_LoadBalancer_(SLB)">EFM LoadBalancer (SLB)</a></li><li><a href="#Virtual_Network_(VNet)">Virtual Network (VNet)</a></li><li><a href="#Public_IP_(PublicIP)">Public IP (PublicIP)</a></li><li><a href="#Address_Range_(_AddressRange_)">Address Range ( AddressRange )</a></li><li><a href="#Virtual_System_Descriptor_(VSYSDescriptor)">Virtual System Descriptor (VSYSDescriptor)</a></li><li><a href="#Disk_Image_(_DiskImage_)">Disk Image ( DiskImage )</a></li><li><a href="#Server_Type_(_ServerType_)">Server Type ( ServerType )</a></li><li><a href="#Other_(SSL-VPN)">Other (SSL-VPN)</a></li></ul></ul> </p><p><img src="http://mikespub.net/fgcp_command_yuml.png" /> </p><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>. </p><hr/><h2><a name="Virtual_Data_Center_(VDC)"></a>Virtual Data Center (VDC)<a href="#Virtual_Data_Center_(VDC)" class="section_anchor"></a></h2><pre class="prettyprint">from fgcp.command import FGCPCommand
-proxy = FGCPCommand(key_file=&#x27;client.pem&#x27;, region=&#x27;de&#x27;)
+    ...
+</code></pre>
+
+<p><img src="https://camo.githubusercontent.com/e7b75fb7bf5bb706dfbd913d79aae0c79b9c75fe/687474703a2f2f6d696b65737075622e6e65742f666763705f636f6d6d616e645f79756d6c2e706e67" alt="http://mikespub.net/fgcp_command_yuml.png" data-canonical-src="http://mikespub.net/fgcp_command_yuml.png"></p>
+
+<p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>.</p>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-data-center-vdc" class="anchor" href="#virtual-data-center-vdc" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual Data Center (VDC)</h2>
+
+<pre><code>from fgcp.command import FGCPCommand
+proxy = FGCPCommand(key_file='client.pem', region='de')
 
 date, usage = proxy.GetSystemUsage()
 
 vsystems = proxy.ListVSYS()
 for vsys in vsystems:
-	test_vsys(proxy, vsys.vsysId)
-	break
+    test_vsys(proxy, vsys.vsysId)
+    break
 
 publicips = proxy.ListPublicIP(None)
 for publicip in publicips:
-	test_publicip(proxy, publicip.address)
-	break
+    test_publicip(proxy, publicip.address)
+    break
 
 test_addressrange(proxy)
 
 vsysdescriptors = proxy.ListVSYSDescriptor()
 for vsysdescriptor in vsysdescriptors:
-	test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
-	break
+    test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
+    break
 
 diskimages = proxy.ListDiskImage()
 for diskimage in diskimages:
-	test_diskimage(proxy, diskimage.diskimageId)
-	break</pre><hr/><h2><a name="Virtual_System_(VSYS)"></a>Virtual System (VSYS)<a href="#Virtual_System_(VSYS)" class="section_anchor"></a></h2><pre class="prettyprint">vsys_attr = proxy.GetVSYSAttributes(vsysId)
+    test_diskimage(proxy, diskimage.diskimageId)
+    break
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-system-vsys" class="anchor" href="#virtual-system-vsys" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual System (VSYS)</h2>
+
+<pre><code>vsys_attr = proxy.GetVSYSAttributes(vsysId)
 vsysName = vsys_attr.vsysName
-result = proxy.UpdateVSYSAttribute(vsysId, &#x27;vsysName&#x27;, vsysName)
+result = proxy.UpdateVSYSAttribute(vsysId, 'vsysName', vsysName)
 try:
-	cloudCategory = vsys_attr.cloudCategory
-	#result = proxy.UpdateVSYSConfiguration(vsysId, &#x27;CLOUD_CATEGORY&#x27;, cloudCategory)
+    cloudCategory = vsys_attr.cloudCategory
+    #result = proxy.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
 except:
-	pass
+    pass
 
 status = proxy.GetVSYSStatus(vsysId)
 
 vservers = proxy.ListVServer(vsysId)
 for vserver in vservers:
-	test_vsys_vserver(proxy, vsysId, vserver.vserverId)
-	break
+    test_vsys_vserver(proxy, vsysId, vserver.vserverId)
+    break
 
 #result = proxy.CreateVDisk(vsysId, vdiskName, size)
 vdisks = proxy.ListVDisk(vsysId)
 for vdisk in vdisks:
-	test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
-	break
+    test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
+    break
 
 #result = proxy.AllocatePublicIP(vsysId)
 publicips = proxy.ListPublicIP(vsysId)
 for publicip in publicips:
-	test_vsys_publicip(proxy, vsysId, publicip.address)
-	break
+    test_vsys_publicip(proxy, vsysId, publicip.address)
+    break
 
 vsys_config = proxy.GetVSYSConfiguration(vsysId)
 for networkId in vsys_config.vnets:
-	test_vsys_vnet(proxy, vsysId, networkId)
-	break
+    test_vsys_vnet(proxy, vsysId, networkId)
+    break
 
-efmType = &#x27;FW&#x27;
+efmType = 'FW'
 #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
 firewalls = proxy.ListEFM(vsysId, efmType)
 for firewall in firewalls:
-	test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
-	test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
-	break
+    test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
+    test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
+    break
 
-efmType = &#x27;SLB&#x27;
+efmType = 'SLB'
 #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
 loadbalancers = proxy.ListEFM(vsysId, efmType)
 for loadbalancer in loadbalancers:
-	test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
-	test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
-	break
+    test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
+    test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
+    break
 
 #result = proxy.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId)
 
 # only allowed on private vsysdescriptors
-name = &#x27;My New VSYS Template&#x27;
-description = &#x27;This is a 3-tier web application database template&#x27;
-keyword = &#x27;3-tier web application database&#x27;
+name = 'My New VSYS Template'
+description = 'This is a 3-tier web application database template'
+keyword = '3-tier web application database'
 vservers = proxy.ListVServer(vsysId)
 #result = proxy.RegisterPrivateVSYSDescriptor(vsysId, name, description, keyword, vservers)
 
-#result = proxy.DestroyVSYS(vsysId)</pre><hr/><h2><a name="Virtual_Server_(VServer)"></a>Virtual Server (VServer)<a href="#Virtual_Server_(VServer)" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.StartVServer(vsysId, vserverId)
+#result = proxy.DestroyVSYS(vsysId)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-server-vserver" class="anchor" href="#virtual-server-vserver" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual Server (VServer)</h2>
+
+<pre><code>#result = proxy.StartVServer(vsysId, vserverId)
 #result = proxy.StopVServer(vsysId, vserverId, force=None)
 
 vserver_attr = proxy.GetVServerAttributes(vsysId, vserverId)
 vserverName = vserver_attr.vserverName
-result = proxy.UpdateVServerAttribute(vsysId, vserverId, &#x27;vserverName&#x27;, vserverName)
+result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverName', vserverName)
 try:
-	vserverType = vserver_attr.vserverType
-	result = proxy.UpdateVServerAttribute(vsysId, vserverId, &#x27;vserverType&#x27;, vserverType)
+    vserverType = vserver_attr.vserverType
+    result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverType', vserverType)
 except:
-	pass
+    pass
 
 status = proxy.GetVServerStatus(vsysId, vserverId)
 password = proxy.GetVServerInitialPassword(vsysId, vserverId)
@@ -113,34 +149,69 @@ password = proxy.GetVServerInitialPassword(vsysId, vserverId)
 vserver_config = proxy.GetVServerConfiguration(vsysId, vserverId)
 
 for vdisk in vserver_config.vdisks:
-	test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
-	break
+    test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
+    break
 
 for vnic in vserver_config.vnics:
-	test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
-	break
+    test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
+    break
 
 #result = proxy.RegisterPrivateDiskImage(vserverId, name, description)
 
-#result = proxy.DestroyVServer(vsysId, vserverId)</pre><hr/><h2><a name="Virtual_Disk_(VDisk)"></a>Virtual Disk (VDisk)<a href="#Virtual_Disk_(VDisk)" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.AttachVDisk(vsysId, vserverId, vdiskId)
+#result = proxy.DestroyVServer(vsysId, vserverId)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-disk-vdisk" class="anchor" href="#virtual-disk-vdisk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual Disk (VDisk)</h2>
+
+<pre><code>#result = proxy.AttachVDisk(vsysId, vserverId, vdiskId)
 #result = proxy.DetachVDisk(vsysId, vserverId, vdiskId)
-#test_vsys_vdisk(vsysId, vdiskId)</pre><pre class="prettyprint">proxy.GetVDiskAttributes(vsysId, vdiskId)
-#result = proxy.UpdateVDiskAttribute(vsysId, vdiskId, &#x27;vdiskName&#x27;, vdisk.vdiskName)
+#test_vsys_vdisk(vsysId, vdiskId)
+</code></pre>
+
+<pre><code>proxy.GetVDiskAttributes(vsysId, vdiskId)
+#result = proxy.UpdateVDiskAttribute(vsysId, vdiskId, 'vdiskName', vdisk.vdiskName)
 proxy.GetVDiskStatus(vsysId, vdiskId)
 
 #result = proxy.BackupVDisk(vsysId, vdiskId)
 backups = proxy.ListVDiskBackup(vsysId, vdiskId)
 for backup in backups:
-	test_vsys_backup(proxy, vsysId, backup.backupId)
-	break
+    test_vsys_backup(proxy, vsysId, backup.backupId)
+    break
 
-#result = proxy.DestroyVDisk(vsysId, vdiskId)</pre><hr/><h2><a name="Virtual_Disk_Backup"></a>Virtual Disk Backup<a href="#Virtual_Disk_Backup" class="section_anchor"></a></h2><pre class="prettyprint">#result = proxy.RestoreVDisk(vsysId, backupId)
-#result = proxy.DestroyVDiskBackup(vsysId, backupId)</pre><hr/><h2><a name="Virtual_Network_Interface_(VNIC)"></a>Virtual Network Interface (VNIC)<a href="#Virtual_Network_Interface_(VNIC)" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="Extended_Function_Module_(EFM)"></a>Extended Function Module (EFM)<a href="#Extended_Function_Module_(EFM)" class="section_anchor"></a></h2><p><img src="http://mikespub.net/fgcp_efmconfig_yuml.png" /> </p><pre class="prettyprint">#result = proxy.StartEFM(vsysId, efmId)
+#result = proxy.DestroyVDisk(vsysId, vdiskId)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-disk-backup" class="anchor" href="#virtual-disk-backup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual Disk Backup</h2>
+
+<pre><code>#result = proxy.RestoreVDisk(vsysId, backupId)
+#result = proxy.DestroyVDiskBackup(vsysId, backupId)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-network-interface-vnic" class="anchor" href="#virtual-network-interface-vnic" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual Network Interface (VNIC)</h2>
+
+<pre><code></code></pre>
+<hr>
+
+<h2>
+<a id="user-content-extended-function-module-efm" class="anchor" href="#extended-function-module-efm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extended Function Module (EFM)</h2>
+
+<p><img src="https://camo.githubusercontent.com/fd8c236f08ebcb1b58b4d06931792be3f0a8fd71/687474703a2f2f6d696b65737075622e6e65742f666763705f65666d636f6e6669675f79756d6c2e706e67" alt="http://mikespub.net/fgcp_efmconfig_yuml.png" data-canonical-src="http://mikespub.net/fgcp_efmconfig_yuml.png"></p>
+
+<pre><code>#result = proxy.StartEFM(vsysId, efmId)
 #result = proxy.StopEFM(vsysId, efmId)
 
 efm_attr = proxy.GetEFMAttributes(vsysId, efmId)
 efmName = efm_attr.efmName
-result = proxy.UpdateEFMAttribute(vsysId, efmId, &#x27;efmName&#x27;, efmName)
+result = proxy.UpdateEFMAttribute(vsysId, efmId, 'efmName', efmName)
 get_handler = proxy.GetEFMConfigHandler(vsysId, efmId)
 #config = proxy.GetEFMConfiguration(vsysId, efmId, configurationName, configurationXML=None)
 update_handler = proxy.UpdateEFMConfigHandler(vsysId, efmId)
@@ -153,19 +224,38 @@ update_info = proxy.GetEFMConfigHandler(vsysId, efmId).efm_update()
 #result = proxy.BackupEFM(vsysId, efmId)
 backups = proxy.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None)
 for backup in backups:
-	test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
-	break
+    test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
+    break
 
-#result = proxy.DestroyEFM(vsysId, efmId)</pre><pre class="prettyprint">#result = proxy.RestoreEFM(vsysId, efmId, backupId)
-#result = proxy.DestroyEFMBackup(vsysId, efmId, backupId)</pre><hr/><h2><a name="EFM_Firewall_(FW)"></a>EFM Firewall (FW)<a href="#EFM_Firewall_(FW)" class="section_anchor"></a></h2><pre class="prettyprint">nat_rules = proxy.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
+#result = proxy.DestroyEFM(vsysId, efmId)
+</code></pre>
+
+<pre><code>#result = proxy.RestoreEFM(vsysId, efmId, backupId)
+#result = proxy.DestroyEFMBackup(vsysId, efmId, backupId)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-efm-firewall-fw" class="anchor" href="#efm-firewall-fw" aria-hidden="true"><span class="octicon octicon-link"></span></a>EFM Firewall (FW)</h2>
+
+<pre><code>nat_rules = proxy.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=nat_rules)
 dns = proxy.GetEFMConfigHandler(vsysId, efmId).fw_dns()
-#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype=&#x27;AUTO&#x27;, primary=None, secondary=None)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_dns(dnstype='AUTO', primary=None, secondary=None)
 policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_policy(from_zone=None, to_zone=None)
-#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log=&#x27;On&#x27;, directions=policies)
+#result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_policy(log='On', directions=policies)
 logs = proxy.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
 limit_policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
-update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()</pre><hr/><h2><a name="EFM_LoadBalancer_(SLB)"></a>EFM LoadBalancer (SLB)<a href="#EFM_LoadBalancer_(SLB)" class="section_anchor"></a></h2><pre class="prettyprint">rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
+update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-efm-loadbalancer-slb" class="anchor" href="#efm-loadbalancer-slb" aria-hidden="true"><span class="octicon octicon-link"></span></a>EFM LoadBalancer (SLB)</h2>
+
+<pre><code>rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=rules.groups, force=None, webAccelerator=None)
 load_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_load()
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_load_clear()
@@ -180,40 +270,99 @@ cert_list = proxy.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_cca_delete(ccacertNum)
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_start_maint(id, ipAddress, time=None, unit=None)
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_stop_maint(id, ipAddress)
-update_info = proxy.GetEFMConfigHandler(vsysId, efmId).slb_update()</pre><hr/><h2><a name="Virtual_Network_(VNet)"></a>Virtual Network (VNet)<a href="#Virtual_Network_(VNet)" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="Public_IP_(PublicIP)"></a>Public IP (PublicIP)<a href="#Public_IP_(PublicIP)" class="section_anchor"></a></h2><pre class="prettyprint">publicip_attr = proxy.GetPublicIPAttributes(publicipAddress)
-status = proxy.GetPublicIPStatus(publicipAddress)</pre><pre class="prettyprint">#result = proxy.AttachPublicIP(vsysId, publicipAddress)
+update_info = proxy.GetEFMConfigHandler(vsysId, efmId).slb_update()
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-network-vnet" class="anchor" href="#virtual-network-vnet" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual Network (VNet)</h2>
+
+<pre><code></code></pre>
+<hr>
+
+<h2>
+<a id="user-content-public-ip-publicip" class="anchor" href="#public-ip-publicip" aria-hidden="true"><span class="octicon octicon-link"></span></a>Public IP (PublicIP)</h2>
+
+<pre><code>publicip_attr = proxy.GetPublicIPAttributes(publicipAddress)
+status = proxy.GetPublicIPStatus(publicipAddress)
+</code></pre>
+
+<pre><code>#result = proxy.AttachPublicIP(vsysId, publicipAddress)
 #result = proxy.DetachPublicIP(vsysId, publicipAddress)
 #result = proxy.FreePublicIP(vsysId, publicipAddress)
-#test_publicip(publicipAddress)</pre><hr/><h2><a name="Address_Range_(_AddressRange_)"></a>Address Range (AddressRange)<a href="#Address_Range_(_AddressRange_)" class="section_anchor"></a></h2><pre class="prettyprint">addressranges = proxy.GetAddressRange()
+#test_publicip(publicipAddress)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-address-range-addressrange" class="anchor" href="#address-range-addressrange" aria-hidden="true"><span class="octicon octicon-link"></span></a>Address Range (AddressRange)</h2>
+
+<pre><code>addressranges = proxy.GetAddressRange()
 #result = proxy.CreateAddressPool(pipFrom=None, pipTo=None)
 #result = proxy.AddAddressRange(pipFrom, pipTo)
-#result = proxy.DeleteAddressRange(pipFrom, pipTo)</pre><hr/><h2><a name="Virtual_System_Descriptor_(VSYSDescriptor)"></a>Virtual System Descriptor (VSYSDescriptor)<a href="#Virtual_System_Descriptor_(VSYSDescriptor)" class="section_anchor"></a></h2><pre class="prettyprint">vsysdescriptor_attr = proxy.GetVSYSDescriptorAttributes(vsysdescriptorId)
+#result = proxy.DeleteAddressRange(pipFrom, pipTo)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-virtual-system-descriptor-vsysdescriptor" class="anchor" href="#virtual-system-descriptor-vsysdescriptor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Virtual System Descriptor (VSYSDescriptor)</h2>
+
+<pre><code>vsysdescriptor_attr = proxy.GetVSYSDescriptorAttributes(vsysdescriptorId)
 # only allowed on private vsysdescriptors
 vsysdescriptorName = vsysdescriptor_attr.vsysdescriptorName
 description = vsysdescriptor_attr.description
 keyword = vsysdescriptor_attr.keyword
-#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, &#x27;en&#x27;, &#x27;updateName&#x27;, vsysdescriptorName)
-#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, &#x27;en&#x27;, &#x27;updateDescription&#x27;, description)
-#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, &#x27;en&#x27;, &#x27;updateKeyword&#x27;, keyword)
+#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateName', vsysdescriptorName)
+#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateDescription', description)
+#result = proxy.UpdateVSYSDescriptorAttribute(vsysdescriptorId, 'en', 'updateKeyword', keyword)
 vsysdescriptor_config = proxy.GetVSYSDescriptorConfiguration(vsysdescriptorId)
 
 #result = proxy.CreateVSYS(vsysdescriptorId, vsysdescriptorName)
 
-diskimages = proxy.ListDiskImage(&#x27;GENERAL&#x27;, vsysdescriptorId)
+diskimages = proxy.ListDiskImage('GENERAL', vsysdescriptorId)
 #for diskimage in diskimages:
 #    test_diskimage(proxy, diskimage.diskimageId)
 
 #result = proxy.UnregisterPrivateVSYSDescriptor(vsysdescriptorId)
-#result = proxy.UnregisterVSYSDescriptor(vsysdescriptorId)</pre><hr/><h2><a name="Disk_Image_(_DiskImage_)"></a>Disk Image (DiskImage)<a href="#Disk_Image_(_DiskImage_)" class="section_anchor"></a></h2><pre class="prettyprint">diskimage_attr = proxy.GetDiskImageAttributes(diskimageId)
+#result = proxy.UnregisterVSYSDescriptor(vsysdescriptorId)
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-disk-image-diskimage" class="anchor" href="#disk-image-diskimage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disk Image (DiskImage)</h2>
+
+<pre><code>diskimage_attr = proxy.GetDiskImageAttributes(diskimageId)
 # only allowed on private diskimages
 diskimageName = diskimage_attr.diskimageName
-#result = proxy.UpdateDiskImageAttribute(diskimageId, &#x27;en&#x27;, &#x27;updateName&#x27;, diskimageName)
+#result = proxy.UpdateDiskImageAttribute(diskimageId, 'en', 'updateName', diskimageName)
 description = diskimage_attr.description
-#result = proxy.UpdateDiskImageAttribute(diskimageId, &#x27;en&#x27;, &#x27;updateDescription&#x27;, description)
+#result = proxy.UpdateDiskImageAttribute(diskimageId, 'en', 'updateDescription', description)
 #result = proxy.UnregisterDiskImage(diskimageId)
 
 servertypes = proxy.ListServerType(diskimageId)
 for servertype in servertypes:
-	test_diskimage_servertype(proxy, diskimageId, servertype.name)
-	break</pre><hr/><h2><a name="Server_Type_(_ServerType_)"></a>Server Type (ServerType)<a href="#Server_Type_(_ServerType_)" class="section_anchor"></a></h2><pre class="prettyprint"></pre><hr/><h2><a name="Other_(SSL-VPN)"></a>Other (SSL-VPN)<a href="#Other_(SSL-VPN)" class="section_anchor"></a></h2><pre class="prettyprint">console_url = proxy.StandByConsole(vsysId, networkId)</pre><p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>. </p>
- <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
+    test_diskimage_servertype(proxy, diskimageId, servertype.name)
+    break
+</code></pre>
+
+<hr>
+
+<h2>
+<a id="user-content-server-type-servertype" class="anchor" href="#server-type-servertype" aria-hidden="true"><span class="octicon octicon-link"></span></a>Server Type (ServerType)</h2>
+
+<pre><code></code></pre>
+<hr>
+
+<h2>
+<a id="user-content-other-ssl-vpn" class="anchor" href="#other-ssl-vpn" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other (SSL-VPN)</h2>
+
+<pre><code>console_url = proxy.StandByConsole(vsysId, networkId)
+</code></pre>
+
+<p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>.</p>
+
+    <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
