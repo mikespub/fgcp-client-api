@@ -24,7 +24,7 @@ vsystem.show_status()
 # See tests/test_resource.py for more examples
 ```
 
-Note: this client API library provides higher-level [Client Methods](/mikespub/fgcp-client-api/wiki/ClientMethods), intermediate [Resource Actions](/mikespub/fgcp-client-api/wiki/ResourceActions) and lower-level [API Commands](/mikespub/fgcp-client-api/wiki/APICommands).
+Note: this client API library provides higher-level [Client Methods](https://github.com/mikespub/fgcp-client-api/wiki/ClientMethods), intermediate [Resource Actions](https://github.com/mikespub/fgcp-client-api/wiki/ResourceActions) and lower-level [API Commands](https://github.com/mikespub/fgcp-client-api/wiki/APICommands).
 
 
 ---
