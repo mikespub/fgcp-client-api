@@ -2,7 +2,7 @@ Note: This project has been migrated to GitHub at https://github.com/mikespub/fg
 
 Client API library for the Fujitsu Global Cloud Platform (FGCP)
 ===============================================================
-using XML-RPC API Version 2012-02-18
+using XML-RPC API Version 2015-01-30
 
 Using this library
 ------------------
@@ -44,7 +44,7 @@ Service Portal:
 
 Requirements
 ------------
-This module uses gdata.tlslite.utils to create the key signature, see http://code.google.com/p/gdata-python-client/ for download and installation
+This module uses tlslite.utils or gdata.tlslite.utils to create the key signature, see https://pypi.python.org/pypi/tlslite-ng or https://pypi.python.org/pypi/tlslite for download and installation
 
 Note: to convert your .p12 or .pfx client certificate to unencrypted PEM format, you can use the following 'openssl' command::
 

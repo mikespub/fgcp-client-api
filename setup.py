@@ -38,7 +38,9 @@ class DocsCommand(Command):
             parts = match.group(1).split('/')
             file = parts.pop()
             dir = parts.pop()
-            return '"http://code.google.com/p/fgcp-client-api/source/browse/%s/%s"' % (dir, file)
+            #return '"http://code.google.com/p/fgcp-client-api/source/browse/%s/%s"' % (dir, file)
+            #return '"https://github.com/mikespub/fgcp-client-api/tree/master/%s/%s"' % (dir, file)
+            return '"https://github.com/mikespub/fgcp-client-api/blob/master/%s/%s"' % (dir, file)
         p1 = re.compile('"(file:[^"]+)"')
         # replace c:\... file with local file
         def clean_file(match):
@@ -65,7 +67,8 @@ class DocsCommand(Command):
 
     def get_project_pages(self, project, wikilist, modlist):
         footerlinks = []
-        pages = {'index.html': 'http://code.google.com/p/%s/' % project}
+        #pages = {'index.html': 'http://code.google.com/p/%s/' % project}
+        pages = {'index.html': 'https://github.com/mikespub/%s/wiki' % project}
         # add links to project pages
         for file in pages:
             footerlinks.append('<a href="%s">%s</a>' % (file, file.replace('.html','')))
@@ -74,11 +77,15 @@ class DocsCommand(Command):
         # define wiki pages + add links to them
         for wiki in wikilist:
             file = '%s.html' % wiki
-            url = 'http://code.google.com/p/%s/wiki/%s' % (project, wiki)
-            link = '/p/%s/wiki/%s' % (project, wiki)
+            #url = 'http://code.google.com/p/%s/wiki/%s' % (project, wiki)
+            #link = '/p/%s/wiki/%s' % (project, wiki)
+            url = 'https://github.com/mikespub/%s/wiki/%s' % (project, wiki)
+            link = '%s' % wiki
             wikipages[file] = url
             wikireplace[link] = file
-            footerlinks.append('<a href="%s">%s</a>' % (file, wiki))
+            #wikireplace[link] = link
+            #footerlinks.append('<a href="%s">%s</a>' % (file, wiki))
+            footerlinks.append('<a href="%s">%s</a>' % (wiki, wiki))
         # add links to module documentation
         for mod in modlist:
             footerlinks.append('<a href="%s">pydoc %s</a>' % ('%s.html' % mod, mod))
@@ -86,10 +93,12 @@ class DocsCommand(Command):
         footer = '<p>Content: %s</p></body></html>' % '&nbsp;&nbsp;'.join(footerlinks)
         # get project pages
         for file in pages:
-            self.get_html(file, pages[file], '<td id="wikicontent" class="psdescription">', '</td>', wikireplace, footer)
+            #self.get_html(file, pages[file], '<td id="wikicontent" class="psdescription">', '</td>', wikireplace, footer)
+            self.get_html(file, pages[file], '<div class="markdown-body">', '</div>', wikireplace, footer)
         # get wiki pages
         for file in wikipages:
-            self.get_html(file, wikipages[file], '<div class="vt" id="wikimaincol">', '</div>', wikireplace, footer)
+            #self.get_html(file, wikipages[file], '<div class="vt" id="wikimaincol">', '</div>', wikireplace, footer)
+            self.get_html(file, wikipages[file], '<div class="markdown-body">', '</div>', wikireplace, footer)
 
     def get_html(self, file, url, start_seq='<body>', end_seq='</body>', links={}, footer='<br /></body></html>'):
         print file
@@ -111,12 +120,14 @@ class DocsCommand(Command):
         import re
         def add_title(match):
             title = match.group(1)
-            title = re.sub('<a [^>]+></a>', '', title)
+            title = re.sub('<a [^>]+>.*</a>', '', title, flags=re.DOTALL)
             return '<html><head><title>%s</title></head><body><h1>%s</h1>' % (title, title)
-        lines = re.sub('<h1>(.+)</h1>', add_title, lines)
+        lines = re.sub('<h1>(.+)</h1>', add_title, lines, flags=re.DOTALL)
         # replace links
         for link in links:
             lines = lines.replace(link, links[link])
+        # remove wiki/* links
+        lines = lines.replace('wiki/', '')
         # write new file in docs
         import os
         f = open(os.path.join('docs', file), 'w')
@@ -145,8 +156,9 @@ class Pep8Command(Command):
 
         import os
         import subprocess
-        cwd = os.getcwd()
-        retcode = subprocess.call(('pep8 --show-source --ignore=E501 --filename=*.py %s/fgcp/ %s/tests/ %s/fgcp_demo.py' %
+        #cwd = os.getcwd()
+        cwd = '.'
+        retcode = subprocess.call(('C:\Python27\Scripts\pep8 --show-source --ignore=E501,E265 --filename=*.py %s/fgcp/ %s/tests/ %s/fgcp_demo.py' %
                 (cwd, cwd, cwd)).split(' '))
         sys.exit(retcode)
 
@@ -157,12 +169,12 @@ f.close()
 setup(
     name='fgcp-client-api',
     description='Client API Library for the Fujitsu Global Cloud Platform (FGCP)',
-    version='1.3.2',
+    version='1.4.0',
     author='mikespub',
     author_email='fgcp@mikespub.net',
     packages=['fgcp'],
     license='Apache License 2.0',
-    url='http://code.google.com/p/fgcp-client-api/',
+    url='https://github.com/mikespub/fgcp-client-api',
     long_description=long_description,
     entry_points = {
         'distutils.commands': [

@@ -1,6 +1,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module tests.start_relay_server</title>
+<meta charset="utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
@@ -148,7 +149,7 @@ probably&nbsp;be&nbsp;diagnosed.)</tt></dd></dl>
 
 <hr>
 Data and other attributes inherited from <a href="SimpleHTTPServer.html#SimpleHTTPRequestHandler">SimpleHTTPServer.SimpleHTTPRequestHandler</a>:<br>
-<dl><dt><strong>extensions_map</strong> = {'': 'application/octet-stream', '.3g2': 'video/3gpp2', '.3gp': 'video/3gpp', '.a': 'application/octet-stream', '.accda': 'application/msaccess.addin', '.accdb': 'application/msaccess', '.accdc': 'application/msaccess.cab', '.accde': 'application/msaccess.exec', '.accdr': 'application/msaccess.runtime', '.accdt': 'application/msaccess.template', ...}</dl>
+<dl><dt><strong>extensions_map</strong> = {'': 'application/octet-stream', '.3g2': 'video/3gpp2', '.3gp': 'video/3gpp', '.3gp2': 'video/3gpp2', '.3gpp': 'video/3gpp', '.AAC': 'audio/vnd.dlna.adts', '.ADT': 'audio/vnd.dlna.adts', '.ADTS': 'audio/vnd.dlna.adts', '.AddIn': 'text/xml', '.WMD': 'application/x-ms-wmd', ...}</dl>
 
 <dl><dt><strong>server_version</strong> = 'SimpleHTTP/0.6'</dl>
 
@@ -193,8 +194,8 @@ any&nbsp;%&nbsp;escapes&nbsp;requiring&nbsp;parameters,&nbsp;they&nbsp;should&nb
 specified&nbsp;as&nbsp;subsequent&nbsp;arguments&nbsp;(it's&nbsp;just&nbsp;like<br>
 printf!).<br>
 &nbsp;<br>
-The&nbsp;client&nbsp;host&nbsp;and&nbsp;current&nbsp;date/time&nbsp;are&nbsp;prefixed&nbsp;to<br>
-every&nbsp;message.</tt></dd></dl>
+The&nbsp;client&nbsp;ip&nbsp;address&nbsp;and&nbsp;current&nbsp;date/time&nbsp;are&nbsp;prefixed&nbsp;to&nbsp;every<br>
+message.</tt></dd></dl>
 
 <dl><dt><a name="FGCPRelayHTTPRequestHandler-log_request"><strong>log_request</strong></a>(self, code<font color="#909090">='-'</font>, size<font color="#909090">='-'</font>)</dt><dd><tt>Log&nbsp;an&nbsp;accepted&nbsp;request.<br>
 &nbsp;<br>
@@ -244,7 +245,7 @@ Data and other attributes inherited from <a href="BaseHTTPServer.html#BaseHTTPRe
 
 <dl><dt><strong>responses</strong> = {100: ('Continue', 'Request received, please continue'), 101: ('Switching Protocols', 'Switching to new protocol; obey Upgrade header'), 200: ('OK', 'Request fulfilled, document follows'), 201: ('Created', 'Document created, URL follows'), 202: ('Accepted', 'Request accepted, processing continues off-line'), 203: ('Non-Authoritative Information', 'Request fulfilled from cache'), 204: ('No Content', 'Request fulfilled, nothing follows'), 205: ('Reset Content', 'Clear input form for further input.'), 206: ('Partial Content', 'Partial content follows.'), 300: ('Multiple Choices', 'Object has several resources -- see URI list'), ...}</dl>
 
-<dl><dt><strong>sys_version</strong> = 'Python/2.7.3'</dl>
+<dl><dt><strong>sys_version</strong> = 'Python/2.7.10'</dl>
 
 <dl><dt><strong>weekdayname</strong> = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']</dl>
 

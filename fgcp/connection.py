@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2012 Michel Dalle
+#  Copyright (C) 2012-2016 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -38,11 +38,15 @@ import base64
 import os.path
 
 try:
-    from gdata.tlslite.utils import keyfactory
+    from tlslite.utils import keyfactory
 except:
-    print """Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation"""
-    exit()
+    try:
+        from gdata.tlslite.utils import keyfactory
+    except:
+        print """Requirements: this module uses tlslite.utils or gdata.tlslite.utils to create
+the key signature, see https://pypi.python.org/pypi/tlslite-ng or
+https://pypi.python.org/pypi/tlslite for download and installation."""
+        exit()
 from xml.etree import ElementTree
 
 from fgcp import FGCPError
@@ -74,7 +78,8 @@ class FGCPConnection:
 
     uri = '/ovissapi/endpoint'                      # fixed value for the API version
     #api_version = '2011-01-31'                      # fixed value for the API version
-    api_version = '2012-02-18'                      # fixed value for the API version
+    #api_version = '2012-02-18'                      # fixed value for the API version
+    api_version = '2015-01-30'                      # fixed value for the API version
     user_agent = 'OViSS-API-CLIENT'                 # fixed value for the API version
 
     _conn = None                                    # actual httplib.HTTPSConnection() or FGCPTestServerWithFixtures() or ...

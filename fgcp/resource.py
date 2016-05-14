@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2012 Michel Dalle
+#  Copyright (C) 2012-2016 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -1002,7 +1002,7 @@ class FGCPVServer(FGCPResource):
         vserverId = self.getproxy().CreateVServer(self.getparentid(), self.vserverName, self.vserverType, self.diskimageId, self.networkId)
         # set the vserverId here too
         setattr(self, 'vserverId', vserverId)
-         # CHECKME: invalidate list of vservers in VSystem
+        # CHECKME: invalidate list of vservers in VSystem
         if isinstance(self._parent, FGCPVSystem):
             self._parent.reset_attr('vservers')
         if wait:
@@ -1230,7 +1230,7 @@ class FGCPVDisk(FGCPResource):
         vdiskId = self.getproxy().CreateVDisk(self.getparentid(), self.vdiskName, self.size)
         # set the vdiskId here too
         setattr(self, 'vdiskId', vdiskId)
-         # CHECKME: invalidate list of vdisks in VSystem
+        # CHECKME: invalidate list of vdisks in VSystem
         if isinstance(self._parent, FGCPVSystem):
             self._parent.reset_attr('vdisks')
         if wait:
@@ -1432,7 +1432,7 @@ class FGCPEfm(FGCPResource):
         efmId = self.getproxy().CreateEFM(self.getparentid(), self.efmType, self.efmName, self.networkId)
         # set the efmId here too
         setattr(self, 'efmId', efmId)
-         # CHECKME: invalidate list of firewalls/loadbalancers in VSystem
+        # CHECKME: invalidate list of firewalls/loadbalancers in VSystem
         if isinstance(self._parent, FGCPVSystem):
             if self.efmType == 'FW':
                 self._parent.reset_attr('firewalls')
