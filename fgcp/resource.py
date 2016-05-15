@@ -342,6 +342,7 @@ class FGCPVDataCenter(FGCPResource):
     vsysdescriptors = None
     diskimages = None
     servertypes = None
+    users = None
 
     def __init__(self, key_file=None, region=None, verbose=0, debug=0):
         """
@@ -505,6 +506,48 @@ class FGCPVDataCenter(FGCPResource):
             if servertypeName == servertype.name:
                 return servertype.retrieve()
         raise FGCPResourceError('ILLEGAL_SERVERTYPE', 'Invalid servertypeName %s' % servertypeName, self)
+
+    #=========================================================================
+
+    def list_users(self):
+        if getattr(self, 'users', None) is None:
+            setattr(self, 'users', self.getproxy().ListUser())
+        return getattr(self, 'users')
+
+    def get_user(self, userId):
+        # support resource, id or mailAddress
+        if isinstance(userId, FGCPUser):
+            return userId.retrieve()
+        users = self.list_users()
+        for user in users:
+            if userId == user.id:
+                return user.retrieve()
+        # not found so far, check if we have an email address
+        if '@' not in userId:
+            raise FGCPResourceError('ILLEGAL_USER', 'Invalid userId %s' % userId, self)
+        for user in users:
+            user.retrieve()
+            if userId == user.mailAddress:
+                return user
+        raise FGCPResourceError('ILLEGAL_USER', 'Invalid userId %s' % userId, self)
+
+    def list_user_authority(self):
+        # get the list of user authority
+        userauth = self.getproxy().ListUserAuthority()
+        id2auth = {}
+        for user in userauth:
+            id2auth[user.id] = user
+        # get the list of users
+        users = self.list_users()
+        self.users = []
+        # CHECKME: could we have users in authority list that aren't in users list anymore?
+        for user in users:
+            if user.id in id2auth:
+                user.merge_attr(id2auth[user.id])
+            #else:
+            #    raise FGCPResourceError('ILLEGAL_USER', 'Invalid userId %s' % user.id, self)
+            self.users.append(user)
+        return self.users
 
     #=========================================================================
 
@@ -996,6 +1039,7 @@ class FGCPVServer(FGCPResource):
     vnics = None
     image = None
     backups = None
+    snapshots = None
 
     def create(self, wait=None):
         # CHECKME: simplify vnics[0].getid() issue on create by allowing networkId
@@ -1173,6 +1217,17 @@ class FGCPVServer(FGCPResource):
 
     #=========================================================================
 
+    def list_snapshots(self, timeZone=None, countryCode=None):
+        if timeZone or countryCode:
+            # Note: the system disk has the same id as the vserver
+            return self.getproxy().ListSnapshot(self.getparentid(), self.getid(), timeZone, countryCode)
+        if getattr(self, 'snapshots', None) is None:
+            # Note: the system disk has the same id as the vserver
+            setattr(self, 'snapshots', self.getproxy().ListSnapshot(self.getparentid(), self.getid(), timeZone, countryCode))
+        return getattr(self, 'snapshots')
+
+    #=========================================================================
+
     def list_vnics(self):
         if getattr(self, 'vnics', None) is None:
             self.retrieve()
@@ -1215,6 +1270,7 @@ class FGCPVDisk(FGCPResource):
     attachedTo = None
     creator = None
     backups = None
+    snapshots = None
 
     def getparentid(self):
         # CHECKME: the parent of a vdisk may be a vserver or a vsystem, so we need to override this
@@ -1361,6 +1417,15 @@ class FGCPVDisk(FGCPResource):
         #    backup.destroy()
         self.show_output('TODO: Stop cleaning backups for VDisk %s' % self.vdiskName)
 
+    #=========================================================================
+
+    def list_snapshots(self, timeZone=None, countryCode=None):
+        if timeZone or countryCode:
+            return self.getproxy().ListSnapshot(self.getparentid(), self.getid(), timeZone, countryCode)
+        if getattr(self, 'snapshots', None) is None:
+            setattr(self, 'snapshots', self.getproxy().ListSnapshot(self.getparentid(), self.getid(), timeZone, countryCode))
+        return getattr(self, 'snapshots')
+
 
 class FGCPBackup(FGCPResource):
     _idname = 'backupId'
@@ -1405,6 +1470,54 @@ class FGCPBackup(FGCPResource):
         elif isinstance(self._parent, FGCPEfm):
             # grand-parent, parent and current
             result = self.getproxy().DestroyEFMBackup(self._parent.getparentid(), self.getparentid(), self.getid())
+        else:
+            result = 'UNKNOWN'
+        return result
+
+
+class FGCPSnapshot(FGCPResource):
+    _idname = 'snapshotId'
+    snapshotId = None
+    snapshotTime = None
+
+    def getparentid(self):
+        # CHECKME: the parent of a snapshot is a vdisk, and we need to get the vsystem
+        if self._parent is not None:
+            if isinstance(self._parent, FGCPVDisk):
+                # we get the vdisk's parent's id here, i.e. the vsystem id (see also above)
+                return self._parent.getparentid()
+            elif isinstance(self._parent, FGCPResource):
+                # we get the parent's id as usual
+                return self._parent.getid()
+            elif isinstance(self._parent, str):
+                return self._parent
+
+    def get_timeval(self):
+        # convert weird time format to time value
+        timeval = time.mktime(time.strptime(self.snapshotTime, "%b %d, %Y %I:%M:%S %p"))
+        # CHECKME: store as string again ?
+        setattr(self, 'timeval', str(timeval))
+        return timeval
+
+    def restore(self, wait=None):
+        self.show_output('Restoring Snapshot %s' % self.getid())
+        if isinstance(self._parent, FGCPVDisk):
+            result = self.getproxy().RestoreSnapshot(self.getparentid(), self.getid())
+        #elif isinstance(self._parent, FGCPEfm):
+        #   # grand-parent, parent and current
+        #    result = self.getproxy().RestoreEFM(self._parent.getparentid(), self.getparentid(), self.getid())
+        else:
+            result = 'UNKNOWN'
+        # CHECKME: we can't really wait here, because we're not on the vdisk or efm level ?
+        return result
+
+    def destroy(self):
+        self.show_output('Destroying Snapshot %s' % self.getid())
+        if isinstance(self._parent, FGCPVDisk):
+            result = self.getproxy().DestroySnapshot(self.getparentid(), self.getid())
+        #elif isinstance(self._parent, FGCPEfm):
+        #    # grand-parent, parent and current
+        #    result = self.getproxy().DestroyEFMBackup(self._parent.getparentid(), self.getparentid(), self.getid())
         else:
             result = 'UNKNOWN'
         return result
@@ -2471,6 +2584,49 @@ class FGCPPerformanceInfo(FGCPResource):
     nicOutputByte = None
     nicOutputPacket = None
     recordTime = None
+
+
+class FGCPUser(FGCPResource):
+    _idname = 'id'
+    id = None
+    description = None
+    registrationDate = None
+    centralRole = None
+    vsysroles = None
+
+    def retrieve(self, refresh=None):
+        # CHECKME: retrieve information here ?
+        return self.get_information(refresh)
+
+    def get_information(self, refresh=None):
+        # CHECKME: if we already have the familyName, we already retrieved the information
+        if not refresh and getattr(self, 'familyName', None) is not None:
+            return self
+        # get information for this user
+        userinfo = self.getproxy().GetUserInformation(self.getid())
+        # CHECKME: copy information to self
+        self.merge_attr(userinfo)
+        return self
+
+    def get_authority(self, refresh=None):
+        # CHECKME: if we already have the vsysroles, we already retrieved the authority
+        if not refresh and getattr(self, 'vsysroles', None) is not None:
+            return self
+        # get the list of user authority
+        userauth = self.getproxy().ListUserAuthority()
+        for user in userauth:
+            if user.id != self.id:
+                continue
+            # CHECKME: copy information to self
+            self.merge_attr(user)
+            break
+        return self
+
+
+class FGCPVSysRole(FGCPResource):
+    _idname = None
+    vsysId = None
+    roleName = None
 
 
 class FGCPUnknown(FGCPResource):

@@ -79,15 +79,18 @@ for&nbsp;vserver&nbsp;in&nbsp;vsystem.vservers:<br>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPServerType">FGCPServerType</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPServerTypeCPU">FGCPServerTypeCPU</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPServerTypeDisk">FGCPServerTypeDisk</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSnapshot">FGCPSnapshot</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUnknown">FGCPUnknown</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfoProduct">FGCPUsageInfoProduct</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUser">FGCPUser</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDataCenter">FGCPVDataCenter</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDisk">FGCPVDisk</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVNic">FGCPVNic</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVServer">FGCPVServer</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVServerImage">FGCPVServerImage</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVSysDescriptor">FGCPVSysDescriptor</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVSysRole">FGCPVSysRole</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVSystem">FGCPVSystem</a>
 </font></dt></dl>
 </dd>
@@ -2500,6 +2503,77 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPSnapshot">class <strong>FGCPSnapshot</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPSnapshot">FGCPSnapshot</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPSnapshot-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-get_timeval"><strong>get_timeval</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-restore"><strong>restore</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>snapshotId</strong> = None</dl>
+
+<dl><dt><strong>snapshotTime</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPSnapshot-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSnapshot-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPSnapshot-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPSnapshot-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#000000" face="helvetica, arial"><a name="FGCPUnknown">class <strong>FGCPUnknown</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
@@ -2697,6 +2771,83 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPUser">class <strong>FGCPUser</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPUser">FGCPUser</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPUser-get_authority"><strong>get_authority</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-get_information"><strong>get_information</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>centralRole</strong> = None</dl>
+
+<dl><dt><strong>description</strong> = None</dl>
+
+<dl><dt><strong>id</strong> = None</dl>
+
+<dl><dt><strong>registrationDate</strong> = None</dl>
+
+<dl><dt><strong>vsysroles</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPUser-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPUser-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPUser-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPUser-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUser-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPUser-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#000000" face="helvetica, arial"><a name="FGCPVDataCenter">class <strong>FGCPVDataCenter</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
@@ -2737,6 +2888,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPVDataCenter-get_servertype"><strong>get_servertype</strong></a>(self, servertypeName)</dt></dl>
 
+<dl><dt><a name="FGCPVDataCenter-get_user"><strong>get_user</strong></a>(self, userId)</dt></dl>
+
 <dl><dt><a name="FGCPVDataCenter-get_vsysdescriptor"><strong>get_vsysdescriptor</strong></a>(self, vsysdescriptorName)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-get_vsystem"><strong>get_vsystem</strong></a>(self, vsysName)</dt></dl>
@@ -2752,6 +2905,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPVDataCenter-list_publicips"><strong>list_publicips</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-list_servertypes"><strong>list_servertypes</strong></a>(self, diskimage<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-list_user_authority"><strong>list_user_authority</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-list_users"><strong>list_users</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-list_vsysdescriptors"><strong>list_vsysdescriptors</strong></a>(self)</dt></dl>
 
@@ -2774,6 +2931,8 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>publicips</strong> = None</dl>
 
 <dl><dt><strong>servertypes</strong> = None</dl>
+
+<dl><dt><strong>users</strong> = None</dl>
 
 <dl><dt><strong>vsysdescriptors</strong> = None</dl>
 
@@ -2856,6 +3015,8 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVDisk-list_backups"><strong>list_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
 
+<dl><dt><a name="FGCPVDisk-list_snapshots"><strong>list_snapshots</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVDisk-restore"><strong>restore</strong></a>(self, backup, wait<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDisk-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
@@ -2873,6 +3034,8 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>creator</strong> = None</dl>
 
 <dl><dt><strong>size</strong> = None</dl>
+
+<dl><dt><strong>snapshots</strong> = None</dl>
 
 <dl><dt><strong>vdiskId</strong> = None</dl>
 
@@ -3018,6 +3181,8 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPVServer-list_backups"><strong>list_backups</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
 
+<dl><dt><a name="FGCPVServer-list_snapshots"><strong>list_snapshots</strong></a>(self, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVServer-list_vdisks"><strong>list_vdisks</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="FGCPVServer-list_vnics"><strong>list_vnics</strong></a>(self)</dt></dl>
@@ -3047,6 +3212,8 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>diskimageId</strong> = None</dl>
 
 <dl><dt><strong>image</strong> = None</dl>
+
+<dl><dt><strong>snapshots</strong> = None</dl>
 
 <dl><dt><strong>vdisks</strong> = None</dl>
 
@@ -3261,6 +3428,71 @@ Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:
 <dl><dt><a name="FGCPVSysDescriptor-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <dl><dt><a name="FGCPVSysDescriptor-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPVSysRole">class <strong>FGCPVSysRole</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPVSysRole">FGCPVSysRole</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>roleName</strong> = None</dl>
+
+<dl><dt><strong>vsysId</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPVSysRole-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVSysRole-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVSysRole-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPVSysRole-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>

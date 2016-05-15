@@ -452,6 +452,28 @@ class FGCPCommand(FGCPProxyServer):
         result = self.do_action('DestroyVDiskBackup', {'vsysId': vsysId, 'backupId': backupId})
         return result.responseStatus
 
+    def ListSnapshot(self, vsysId, vdiskId, timeZone=None, countryCode=None):
+        """
+        Usage: snapshots = proxy.ListSnapshot(vsys.vsysId, vdisk.vdiskId)
+        """
+        result = self.do_action('ListSnapshot', {'vsysId': vsysId, 'vdiskId': vdiskId, 'timeZone': timeZone, 'countryCode': countryCode})
+        # convert weird time format to time value
+        for snapshot in result.snapshots:
+            snapshot.get_timeval()
+        return result.snapshots
+
+    def CreateSnapshot(self, vsysId, vdiskId, comment=None):
+        result = self.do_action('CreateSnapshot', {'vsysId': vsysId, 'vdiskId': vdiskId, 'comment': comment})
+        return result.responseStatus
+
+    def RestoreSnapshot(self, vsysId, snapshotId):
+        result = self.do_action('RestoreSnapshot', {'vsysId': vsysId, 'snapshotId': snapshotId})
+        return result.responseStatus
+
+    def DestroySnapshot(self, vsysId, snapshotId):
+        result = self.do_action('DestroySnapshot', {'vsysId': vsysId, 'snapshotId': snapshotId})
+        return result.responseStatus
+
     def ListEFM(self, vsysId, efmType):
         """Usage:
         firewalls = proxy.ListEFM(vsys.vsysId, "FW")
@@ -566,6 +588,20 @@ class FGCPCommand(FGCPProxyServer):
         result = self.do_action('DestroyEFMBackup', {'vsysId': vsysId, 'efmId': efmId, 'backupId': backupId})
         return result.responseStatus
 
+    def StartEFMPacketCapture(self, vsysId, efmId, redundancyCategory=None):
+        result = self.do_action('StartEFMPacketCapture', {'vsysId': vsysId, 'efmId': efmId, 'redundancyCategory': redundancyCategory})
+        return result.responseStatus
+
+    def StopEFMPacketCapture(self, vsysId, efmId, redundancyCategory=None):
+        # CHECKME: this is supposed to return a binary file?
+        return self.do_action('StopEFMPacketCapture', {'vsysId': vsysId, 'efmId': efmId, 'redundancyCategory': redundancyCategory})
+
+    def GetEFMPacketCaptureStatus(self, vsysId, efmId, redundancyCategory=None):
+        result = self.do_action('GetEFMPacketCaptureStatus', {'vsysId': vsysId, 'efmId': efmId, 'redundancyCategory': redundancyCategory})
+        # show status if requested, e.g. for wait operations
+        self.show_status(result.status)
+        return result.status
+
     def StandByConsole(self, vsysId, networkId):
         """
         Usage: url = proxy.StandByConsole(vsys.vsysId, vsys.vnets[0])
@@ -604,6 +640,30 @@ class FGCPCommand(FGCPProxyServer):
         """
         result = self.do_action('ListProductMaster', {'category': category})
         return result
+
+    def ListUser(self):
+        """
+        Usage: users = proxy.ListUser()
+        """
+        result = self.do_action('ListUser')
+        # CHECKME: this returns a list with the users list?
+        if isinstance(result.usersInfo, list) and len(result.usersInfo) == 1:
+            return result.usersInfo[0]
+        return result.usersInfo
+
+    def GetUserInformation(self, userId):
+        """
+        Usage: info = proxy.GetUserInformation(user.id)
+        """
+        result = self.do_action('GetUserInformation', {'userId': userId})
+        return result.userInfo
+
+    def ListUserAuthority(self):
+        """
+        Usage: users = proxy.ListUserAuthority()
+        """
+        result = self.do_action('ListUserAuthority')
+        return result.users
 
 
 class FGCPGenericEFMHandler:
@@ -1035,15 +1095,6 @@ class FGCPCommandNotYetSupported(FGCPCommand):
         #return result.responseStatus
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
 
-    def StartEFMPacketCapture(self, vsysId, efmId, redundancyCategory=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def StopEFMPacketCapture(self, vsysId, efmId, redundancyCategory=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def GetEFMPacketCaptureStatus(self, vsysId, efmId, redundancyCategory=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
     def SetVSYSDescriptorCopyKey(self, vsysDescriptorId, contracts):
         #contractsXMLFilePath
         #filename = 'dummy.xml'
@@ -1086,18 +1137,6 @@ class FGCPCommandNotYetSupported(FGCPCommand):
     def ExternalRestoreVDisk(self, srcVsysId, srcBackupId, dstVsysId, dstVdiskId, key):
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
 
-    def CreateSnapshot(self, vsysId, vdiskId, comment=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def RestoreSnapshot(self, vsysId, snapshotId):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def ListSnapshot(self, vsysId, vdiskId, timeZone=None, countryCode=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def DestroySnapshot(self, vsysId, snapshotId):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
     def CheckUserIDAvailability(self, userIds):
         #<?xml version="1.0" encoding="UTF-8"?>
         #<Request>
@@ -1136,26 +1175,11 @@ class FGCPCommandNotYetSupported(FGCPCommand):
         #return result.usersInfo
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
 
-    def ListUser(self):
-        #result = self.do_action('ListUser')
-        #return result.usersInfo
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
     def UpdateUserAuthority(self, authInfo):
         #filename = 'dummy.xml'
         #authInfoXML = self._get_authInfoXML(authInfo)
         #result = self.do_action('UpdateUserAuthority', {'authInfoXMLFilePath': filename}, {'name': 'authInfoXMLFilePath', 'filename': filename, 'body': authInfoXML})
         #return result.responseStatus
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def ListUserAuthority(self):
-        #result = self.do_action('ListUserAuthority')
-        #return result.users
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def GetUserInformation(self, userId):
-        #result = self.do_action('GetUserInformation', {'userId': userId})
-        #return result.userInfo
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
 
     def UpdateUserInformation(self, userId, usersInfo):

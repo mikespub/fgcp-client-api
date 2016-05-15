@@ -373,6 +373,7 @@ class FGCPResponseParser:
         'image': FGCPVServerImage,
         'vdisk': FGCPVDisk,
         'backup': FGCPBackup,
+        'snapshot': FGCPSnapshot,
         'vnic': FGCPVNic,
         'efm': FGCPEfm,
         'firewall': FGCPFirewall,
@@ -394,6 +395,9 @@ class FGCPResponseParser:
         'information': FGCPInformation,
         'eventlog': FGCPEventLog,
         'performanceinfo': FGCPPerformanceInfo,
+        'user': FGCPUser,
+        #'userinfo': FGCPUser,
+        'vsysrole': FGCPVSysRole,
         'response': FGCPResponse,
         'default': FGCPUnknown,
     }

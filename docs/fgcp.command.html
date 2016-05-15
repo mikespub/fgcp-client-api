@@ -86,6 +86,8 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPCommand-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId, efmGrade<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
 
+<dl><dt><a name="FGCPCommand-CreateSnapshot"><strong>CreateSnapshot</strong></a>(self, vsysId, vdiskId, comment<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPCommand-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
@@ -97,6 +99,8 @@ Methods defined here:<br>
 <dl><dt><a name="FGCPCommand-DestroyEFM"><strong>DestroyEFM</strong></a>(self, vsysId, efmId)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-DestroyEFMBackup"><strong>DestroyEFMBackup</strong></a>(self, vsysId, efmId, backupId)</dt></dl>
+
+<dl><dt><a name="FGCPCommand-DestroySnapshot"><strong>DestroySnapshot</strong></a>(self, vsysId, snapshotId)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-DestroyVDisk"><strong>DestroyVDisk</strong></a>(self, vsysId, vdiskId)</dt></dl>
 
@@ -123,6 +127,8 @@ Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMConfigHand
 
 <dl><dt><a name="FGCPCommand-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, redundancyCategory<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
+<dl><dt><a name="FGCPCommand-GetEFMPacketCaptureStatus"><strong>GetEFMPacketCaptureStatus</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPCommand-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEventLog">GetEventLog</a>()</tt></dd></dl>
@@ -138,6 +144,8 @@ Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPerformanceInfo
 
 <dl><dt><a name="FGCPCommand-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>, storageNames<font color="#909090">=None</font>, year<font color="#909090">=None</font>, month<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
 Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-GetUserInformation"><strong>GetUserInformation</strong></a>(self, userId)</dt><dd><tt>Usage:&nbsp;info&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetUserInformation">GetUserInformation</a>(user.id)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
 
@@ -175,6 +183,12 @@ loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListEFM">ListEFM</a>(vsys.
 
 <dl><dt><a name="FGCPCommand-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
 
+<dl><dt><a name="FGCPCommand-ListSnapshot"><strong>ListSnapshot</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;snapshots&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListSnapshot">ListSnapshot</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-ListUser"><strong>ListUser</strong></a>(self)</dt><dd><tt>Usage:&nbsp;users&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListUser">ListUser</a>()</tt></dd></dl>
+
+<dl><dt><a name="FGCPCommand-ListUserAuthority"><strong>ListUserAuthority</strong></a>(self)</dt><dd><tt>Usage:&nbsp;users&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListUserAuthority">ListUserAuthority</a>()</tt></dd></dl>
+
 <dl><dt><a name="FGCPCommand-ListVDisk"><strong>ListVDisk</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vdisks&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListVDisk">ListVDisk</a>(vsys.vsysId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-ListVDiskBackup"><strong>ListVDiskBackup</strong></a>(self, vsysId, vdiskId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListVDiskBackup">ListVDiskBackup</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
@@ -194,15 +208,21 @@ proxy.<a href="#FGCPCommand-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDe
 
 <dl><dt><a name="FGCPCommand-RestoreEFM"><strong>RestoreEFM</strong></a>(self, vsysId, efmId, backupId)</dt></dl>
 
+<dl><dt><a name="FGCPCommand-RestoreSnapshot"><strong>RestoreSnapshot</strong></a>(self, vsysId, snapshotId)</dt></dl>
+
 <dl><dt><a name="FGCPCommand-RestoreVDisk"><strong>RestoreVDisk</strong></a>(self, vsysId, backupId)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
 
+<dl><dt><a name="FGCPCommand-StartEFMPacketCapture"><strong>StartEFMPacketCapture</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPCommand-StartVServer"><strong>StartVServer</strong></a>(self, vsysId, vserverId)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-StopEFM"><strong>StopEFM</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPCommand-StopEFMPacketCapture"><strong>StopEFMPacketCapture</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-StopVServer"><strong>StopVServer</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt></dl>
 
