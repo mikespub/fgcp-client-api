@@ -74,11 +74,11 @@ class FGCPCommand(FGCPProxyServer):
         if self.verbose > 1:
             print text
 
-    def ListVSYSDescriptor(self):
-        """
+    def ListVSYSDescriptor(self, keyword=None, estimateFrom=None, estimateTo=None):
+        """"
         Usage: vsysdescriptors = proxy.ListVSYSDescriptor()
         """
-        result = self.do_action('ListVSYSDescriptor')
+        result = self.do_action('ListVSYSDescriptor', {'keyword': keyword, 'estimateFrom': estimateFrom, 'estimateTo': estimateTo})
         return result.vsysdescriptors
 
     def GetVSYSDescriptorConfiguration(self, vsysDescriptorId):
@@ -357,19 +357,19 @@ class FGCPCommand(FGCPProxyServer):
         self.show_status(result.vserverStatus)
         return result.vserverStatus
 
-    def GetPerformanceInformation(self, vsysId, vserverId, interval='10minute', dataType=None):
-        """
+    def GetPerformanceInformation(self, vsysId, vserverId=None, interval='10minute', dataType=None, efmId=None, redundancyCategory=None):
+        """"
         Usage: perfinfos = proxy.GetPerformanceInformation(vsys.vsysId, vserver.vserverId, interval='hour')
         """
         # CHECKME: serverId instead of vserverId ?
-        result = self.do_action('GetPerformanceInformation', {'vsysId': vsysId, 'serverId': vserverId, 'interval': interval, 'dataType': dataType})
+        result = self.do_action('GetPerformanceInformation', {'vsysId': vsysId, 'serverId': vserverId, 'efmId': efmId, 'dataType': dataType, 'interval': interval, 'redundancyCategory': redundancyCategory})
         return result.performanceinfos
 
-    def CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId):
+    def CreateVServer(self, vsysId, vserverName, vserverType, diskImageId, networkId, multiNic=None):
         """
         Usage: vserverId = proxy.CreateVServer(self, vsys.vsysId, 'My New Server', servertype.name, diskimage.diskimageId, vsys.vnets[0])
         """
-        result = self.do_action('CreateVServer', {'vsysId': vsysId, 'vserverName': vserverName, 'vserverType': vserverType, 'diskImageId': diskImageId, 'networkId': networkId})
+        result = self.do_action('CreateVServer', {'vsysId': vsysId, 'vserverName': vserverName, 'vserverType': vserverType, 'diskImageId': diskImageId, 'networkId': networkId, 'multiNic': multiNic})
         return result.vserverId
 
     def StartVServer(self, vsysId, vserverId):
@@ -464,12 +464,12 @@ class FGCPCommand(FGCPProxyServer):
             child_efms.append(efm.get_child_object())
         return child_efms
 
-    def GetEFMConfiguration(self, vsysId, efmId, configurationName, configurationXML=None):
+    def GetEFMConfiguration(self, vsysId, efmId, configurationName, configurationXML=None, redundancyCategory=None):
         """Generic method for all GetEFMConfiguration methods"""
         if configurationXML is None:
-            result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName})
+            result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName, 'redundancyCategory': redundancyCategory})
         else:
-            result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName}, {'name': 'configurationXMLFilePath', 'body': configurationXML})
+            result = self.do_action('GetEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName, 'redundancyCategory': redundancyCategory}, {'name': 'configurationXMLFilePath', 'body': configurationXML})
         # CHECKME: return child firewall or loadbalancer object
         return result.efm.get_child_object()
 
@@ -479,15 +479,15 @@ class FGCPCommand(FGCPProxyServer):
         """
         return FGCPGetEFMConfigHandler(self, vsysId, efmId)
 
-    def UpdateEFMConfiguration(self, vsysId, efmId, configurationName, configurationXML=None, filePath=None):
+    def UpdateEFMConfiguration(self, vsysId, efmId, configurationName, configurationXML=None, filePath=None, redundancyCategory=None):
         """Generic method for all UpdateEFMConfiguration methods"""
         if configurationXML is None:
-            result = self.do_action('UpdateEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName})
+            result = self.do_action('UpdateEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName, 'redundancyCategory': redundancyCategory})
         elif filePath is None:
-            result = self.do_action('UpdateEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName}, {'name': 'configurationXMLFilePath', 'body': configurationXML})
+            result = self.do_action('UpdateEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName, 'redundancyCategory': redundancyCategory}, {'name': 'configurationXMLFilePath', 'body': configurationXML})
         else:
             # when adding SLB server/cca certificates, configurationXML contains the filePath for the actual certificate to be uploaded
-            result = self.do_action('UpdateEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName}, [{'name': 'configurationXMLFilePath', 'body': configurationXML}, {'name': 'filePath', 'filename': filePath}])
+            result = self.do_action('UpdateEFMConfiguration', {'vsysId': vsysId, 'efmId': efmId, 'configurationName': configurationName, 'redundancyCategory': redundancyCategory}, [{'name': 'configurationXMLFilePath', 'body': configurationXML}, {'name': 'filePath', 'filename': filePath}])
         return result.responseStatus
 
     def UpdateEFMConfigHandler(self, vsysId, efmId):
@@ -519,28 +519,28 @@ class FGCPCommand(FGCPProxyServer):
         result = self.do_action('UpdateEFMAttribute', {'vsysId': vsysId, 'efmId': efmId, 'attributeName': attributeName, 'attributeValue': attributeValue})
         return result.responseStatus
 
-    def GetEFMStatus(self, vsysId, efmId):
+    def GetEFMStatus(self, vsysId, efmId, redundancyCategory=None):
         """
         Usage: status = proxy.GetEFMStatus(vsys.vsysId, loadbalancer.efmId)
         """
-        result = self.do_action('GetEFMStatus', {'vsysId': vsysId, 'efmId': efmId})
+        result = self.do_action('GetEFMStatus', {'vsysId': vsysId, 'efmId': efmId, 'redundancyCategory': redundancyCategory})
         # show status if requested, e.g. for wait operations
         self.show_status(result.efmStatus)
         return result.efmStatus
 
-    def CreateEFM(self, vsysId, efmType, efmName, networkId):
+    def CreateEFM(self, vsysId, efmType, efmName, networkId, efmGrade=None):
         """
         Usage: efmId = proxy.CreateEFM(self, vsys.vsysId, 'SLB', 'My LoadBalancer', vsys.vnets[0])
         """
-        result = self.do_action('CreateEFM', {'vsysId': vsysId, 'efmType': efmType, 'efmName': efmName, 'networkId': networkId})
+        result = self.do_action('CreateEFM', {'vsysId': vsysId, 'efmType': efmType, 'efmName': efmName, 'networkId': networkId, 'efmGrade': efmGrade})
         return result.efmId
 
-    def StartEFM(self, vsysId, efmId):
-        result = self.do_action('StartEFM', {'vsysId': vsysId, 'efmId': efmId})
+    def StartEFM(self, vsysId, efmId, redundancyCategory=None):
+        result = self.do_action('StartEFM', {'vsysId': vsysId, 'efmId': efmId, 'redundancyCategory': redundancyCategory})
         return result.responseStatus
 
-    def StopEFM(self, vsysId, efmId):
-        result = self.do_action('StopEFM', {'vsysId': vsysId, 'efmId': efmId})
+    def StopEFM(self, vsysId, efmId, redundancyCategory=None):
+        result = self.do_action('StopEFM', {'vsysId': vsysId, 'efmId': efmId, 'redundancyCategory': redundancyCategory})
         return result.responseStatus
 
     def DestroyEFM(self, vsysId, efmId):
@@ -587,14 +587,23 @@ class FGCPCommand(FGCPProxyServer):
         result = self.do_action('GetEventLog', {'all': all, 'timeZone': timeZone, 'countryCode': countryCode})
         return result.eventlogs
 
-    def GetSystemUsage(self, vsysIds=None):
+    def GetSystemUsage(self, vsysIds=None, storageNames=None, year=None, month=None):
         """NOTE: extra 'date' element on top-level compared to other API calls !
         Usage: date, usage = proxy.GetSystemUsage()
         """
         if isinstance(vsysIds, list):
             vsysIds = ' '.join(vsysIds)
-        result = self.do_action('GetSystemUsage', {'vsysIds': vsysIds})
+        if isinstance(storageNames, list):
+            storageNames = ' '.join(storageNames)
+        result = self.do_action('GetSystemUsage', {'vsysIds': vsysIds, 'storageNames': storageNames, 'year': year, 'month': month})
         return result.date, result.usageinfos
+
+    def ListProductMaster(self, category=None):
+        """
+        Usage: result = proxy.ListProductMaster()
+        """
+        result = self.do_action('ListProductMaster', {'category': category})
+        return result
 
 
 class FGCPGenericEFMHandler:
@@ -1015,4 +1024,145 @@ class FGCPCommandNotSupported(FGCPCommand):
 
     def CreateVNIC(self):
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+class FGCPCommandNotYetSupported(FGCPCommand):
+
+    def CreateMultipleVServer(self, vsysId, vservers):
+        #vserversXMLFilePath
+        #filename = 'dummy.xml'
+        #vserversXML = self._get_vserversXML(vservers)
+        #result = self.do_action('SetVSYSDescriptorCopyKey', {'vsysId': vsysId, 'vserversXMLFilePath': filename}, {'name': 'vserversXMLFilePath', 'filename': filename, 'body': vserversXML})
+        #return result.responseStatus
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def StartEFMPacketCapture(self, vsysId, efmId, redundancyCategory=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def StopEFMPacketCapture(self, vsysId, efmId, redundancyCategory=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def GetEFMPacketCaptureStatus(self, vsysId, efmId, redundancyCategory=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def SetVSYSDescriptorCopyKey(self, vsysDescriptorId, contracts):
+        #contractsXMLFilePath
+        #filename = 'dummy.xml'
+        #contractsXML = self._get_contractsXML(contracts)
+        #result = self.do_action('SetVSYSDescriptorCopyKey', {'vsysDescriptorId': vsysDescriptorId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
+        #return result.responseStatus
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def SetDiskImageCopyKey(self, diskImageId, contracts):
+        #contractsXMLFilePath
+        #filename = 'dummy.xml'
+        #contractsXML = self._get_contractsXML(contracts)
+        #result = self.do_action('SetDiskImageCopyKey', {'diskImageId': diskImageId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
+        #return result.responseStatus
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def SetVDiskBackupCopyKey(self, vsysId, backupId, contracts):
+        #contractsXMLFilePath
+        #filename = 'dummy.xml'
+        #contractsXML = self._get_contractsXML(contracts)
+        #result = self.do_action('SetVDiskBackupCopyKey', {'vsysId': vsysId, 'backupId': backupId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
+        #return result.responseStatus
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def GetVSYSDescriptorCopyKey(self, vsysDescriptorId, timeZone=None, countryCode=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def GetDiskImageCopyKey(self, diskImageId, timeZone=None, countryCode=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def GetVDiskBackupCopyKey(self, vsysId, backupId, timeZone=None, countryCode=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def CopyVSYSDescriptor(self, vsysDescriptorId, key, timeZone=None, countryCode=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def CopyDiskImage(self, diskImageId, key, timeZone=None, countryCode=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def ExternalRestoreVDisk(self, srcVsysId, srcBackupId, dstVsysId, dstVdiskId, key):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def CreateSnapshot(self, vsysId, vdiskId, comment=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def RestoreSnapshot(self, vsysId, snapshotId):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def ListSnapshot(self, vsysId, vdiskId, timeZone=None, countryCode=None):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def DestroySnapshot(self, vsysId, snapshotId):
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def CheckUserIDAvailability(self, userIds):
+        #<?xml version="1.0" encoding="UTF-8"?>
+        #<Request>
+        #<usersInfo>
+        #<users>
+        #<user>
+        #<id>userId01</id>
+        #</user>
+        #</users>
+        #</usersInfo>
+        #</Request>
+        #filename = 'dummy.xml'
+        #usersInfoXML = self._get_usersInfoXML(userIds)
+        #result = self.do_action('CheckUserIDAvailability', {'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
+        #return result.usersInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def RegisterUser(self, usersInfo):
+        #filename = 'dummy.xml'
+        #usersInfoXML = self._get_usersInfoXML(usersInfo)
+        #result = self.do_action('RegisterUser', {'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
+        #return result.usersInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def UpdateUserAttribute(self, attributeName, usersInfo):
+        #filename = 'dummy.xml'
+        #usersInfoXML = self._get_usersInfoXML(usersInfo)
+        #result = self.do_action('UpdateUserAttribute', {'attributeName': attributeName, 'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
+        #return result.usersInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def UnregisterUser(self, userIds):
+        #if isinstance(userIds, list):
+        #    userIds = ' '.join(userIds)
+        #result = self.do_action('UnregisterUser', {'ids': userIds})
+        #return result.usersInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def ListUser(self):
+        #result = self.do_action('ListUser')
+        #return result.usersInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def UpdateUserAuthority(self, authInfo):
+        #filename = 'dummy.xml'
+        #authInfoXML = self._get_authInfoXML(authInfo)
+        #result = self.do_action('UpdateUserAuthority', {'authInfoXMLFilePath': filename}, {'name': 'authInfoXMLFilePath', 'filename': filename, 'body': authInfoXML})
+        #return result.responseStatus
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def ListUserAuthority(self):
+        #result = self.do_action('ListUserAuthority')
+        #return result.users
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def GetUserInformation(self, userId):
+        #result = self.do_action('GetUserInformation', {'userId': userId})
+        #return result.userInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
+    def UpdateUserInformation(self, userId, usersInfo):
+        #filename = 'dummy.xml'
+        #usersInfoXML = self._get_usersInfoXML(usersInfo)
+        #result = self.do_action('UpdateUserInformation', {'userId': userId, 'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
+        #return result.usersInfo
+        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
+
 """

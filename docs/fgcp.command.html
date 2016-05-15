@@ -84,13 +84,13 @@ Methods defined here:<br>
 
 <dl><dt><a name="FGCPCommand-CreateAddressPool"><strong>CreateAddressPool</strong></a>(self, pipFrom<font color="#909090">=None</font>, pipTo<font color="#909090">=None</font>)</dt></dl>
 
-<dl><dt><a name="FGCPCommand-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-CreateEFM"><strong>CreateEFM</strong></a>(self, vsysId, efmType, efmName, networkId, efmGrade<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;efmId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateEFM">CreateEFM</a>(self,&nbsp;vsys.vsysId,&nbsp;'SLB',&nbsp;'My&nbsp;LoadBalancer',&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-CreateVDisk"><strong>CreateVDisk</strong></a>(self, vsysId, vdiskName, size)</dt><dd><tt>Usage:&nbsp;vdiskId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateVDisk">CreateVDisk</a>(self,&nbsp;vsys.vsysId,&nbsp;vdiskName,&nbsp;size)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-CreateVSYS"><strong>CreateVSYS</strong></a>(self, vsysDescriptorId, vsysName)</dt><dd><tt>Usage:&nbsp;vsysId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateVSYS">CreateVSYS</a>(vsysdescriptor.vsysdescriptorId,&nbsp;'My&nbsp;New&nbsp;System')</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-CreateVServer"><strong>CreateVServer</strong></a>(self, vsysId, vserverName, vserverType, diskImageId, networkId, multiNic<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;vserverId&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-CreateVServer">CreateVServer</a>(self,&nbsp;vsys.vsysId,&nbsp;'My&nbsp;New&nbsp;Server',&nbsp;servertype.name,&nbsp;diskimage.diskimageId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-DeleteAddressRange"><strong>DeleteAddressRange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
@@ -121,21 +121,22 @@ Methods defined here:<br>
 <dl><dt><a name="FGCPCommand-GetEFMConfigHandler"><strong>GetEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;GetEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;<a href="#FGCPGetEFMConfigHandler">FGCPGetEFMConfigHandler</a>&nbsp;for&nbsp;details<br>
 Usage:&nbsp;fw_policies&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMConfigHandler">GetEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_policy(from_zone,&nbsp;to_zone)</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-GetEFMConfiguration"><strong>GetEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, redundancyCategory<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;GetEFMConfiguration&nbsp;methods</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-GetEFMStatus"><strong>GetEFMStatus</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEFMStatus">GetEFMStatus</a>(vsys.vsysId,&nbsp;loadbalancer.efmId)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetEventLog"><strong>GetEventLog</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;logs&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetEventLog">GetEventLog</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetInformation"><strong>GetInformation</strong></a>(self, all<font color="#909090">=None</font>, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;infos&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetInformation">GetInformation</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-GetPerformanceInformation"><strong>GetPerformanceInformation</strong></a>(self, vsysId, vserverId<font color="#909090">=None</font>, interval<font color="#909090">='10minute'</font>, dataType<font color="#909090">=None</font>, efmId<font color="#909090">=None</font>, redundancyCategory<font color="#909090">=None</font>)</dt><dd><tt>"<br>
+Usage:&nbsp;perfinfos&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPerformanceInformation">GetPerformanceInformation</a>(vsys.vsysId,&nbsp;vserver.vserverId,&nbsp;interval='hour')</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetPublicIPAttributes"><strong>GetPublicIPAttributes</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;publicipattr&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPublicIPAttributes">GetPublicIPAttributes</a>(publicip.address)</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetPublicIPStatus"><strong>GetPublicIPStatus</strong></a>(self, publicIp)</dt><dd><tt>Usage:&nbsp;status&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetPublicIPStatus">GetPublicIPStatus</a>(publicip.address)</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
+<dl><dt><a name="FGCPCommand-GetSystemUsage"><strong>GetSystemUsage</strong></a>(self, vsysIds<font color="#909090">=None</font>, storageNames<font color="#909090">=None</font>, year<font color="#909090">=None</font>, month<font color="#909090">=None</font>)</dt><dd><tt>NOTE:&nbsp;extra&nbsp;'date'&nbsp;element&nbsp;on&nbsp;top-level&nbsp;compared&nbsp;to&nbsp;other&nbsp;API&nbsp;calls&nbsp;!<br>
 Usage:&nbsp;date,&nbsp;usage&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetSystemUsage">GetSystemUsage</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-GetVDiskAttributes"><strong>GetVDiskAttributes</strong></a>(self, vsysId, vdiskId)</dt><dd><tt>Usage:&nbsp;vdiskattr&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-GetVDiskAttributes">GetVDiskAttributes</a>(vsys.vsysId,&nbsp;vdisk.vdiskId)</tt></dd></dl>
@@ -168,6 +169,8 @@ loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListEFM">ListEFM</a>(vsys.
 
 <dl><dt><a name="FGCPCommand-ListEFMBackup"><strong>ListEFMBackup</strong></a>(self, vsysId, efmId, timeZone<font color="#909090">=None</font>, countryCode<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;backups&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListEFMBackup">ListEFMBackup</a>(vsys.vsysId,&nbsp;firewall.efmId)</tt></dd></dl>
 
+<dl><dt><a name="FGCPCommand-ListProductMaster"><strong>ListProductMaster</strong></a>(self, category<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;result&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListProductMaster">ListProductMaster</a>()</tt></dd></dl>
+
 <dl><dt><a name="FGCPCommand-ListPublicIP"><strong>ListPublicIP</strong></a>(self, vsysId<font color="#909090">=None</font>)</dt><dd><tt>Usage:&nbsp;publicips&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListPublicIP">ListPublicIP</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-ListServerType"><strong>ListServerType</strong></a>(self, diskImageId)</dt><dd><tt>Usage:&nbsp;servertypes&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListServerType">ListServerType</a>(diskimage.diskimageId)</tt></dd></dl>
@@ -178,7 +181,8 @@ loadbalancers&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListEFM">ListEFM</a>(vsys.
 
 <dl><dt><a name="FGCPCommand-ListVSYS"><strong>ListVSYS</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsystems&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListVSYS">ListVSYS</a>()</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self)</dt><dd><tt>Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-ListVSYSDescriptor"><strong>ListVSYSDescriptor</strong></a>(self, keyword<font color="#909090">=None</font>, estimateFrom<font color="#909090">=None</font>, estimateTo<font color="#909090">=None</font>)</dt><dd><tt>"<br>
+Usage:&nbsp;vsysdescriptors&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListVSYSDescriptor">ListVSYSDescriptor</a>()</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-ListVServer"><strong>ListVServer</strong></a>(self, vsysId)</dt><dd><tt>Usage:&nbsp;vservers&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-ListVServer">ListVServer</a>(vsys.vsysId)</tt></dd></dl>
 
@@ -194,11 +198,11 @@ proxy.<a href="#FGCPCommand-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDe
 
 <dl><dt><a name="FGCPCommand-StandByConsole"><strong>StandByConsole</strong></a>(self, vsysId, networkId)</dt><dd><tt>Usage:&nbsp;url&nbsp;=&nbsp;proxy.<a href="#FGCPCommand-StandByConsole">StandByConsole</a>(vsys.vsysId,&nbsp;vsys.vnets[0])</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId)</dt></dl>
+<dl><dt><a name="FGCPCommand-StartEFM"><strong>StartEFM</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-StartVServer"><strong>StartVServer</strong></a>(self, vsysId, vserverId)</dt></dl>
 
-<dl><dt><a name="FGCPCommand-StopEFM"><strong>StopEFM</strong></a>(self, vsysId, efmId)</dt></dl>
+<dl><dt><a name="FGCPCommand-StopEFM"><strong>StopEFM</strong></a>(self, vsysId, efmId, redundancyCategory<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPCommand-StopVServer"><strong>StopVServer</strong></a>(self, vsysId, vserverId, force<font color="#909090">=None</font>)</dt></dl>
 
@@ -215,7 +219,7 @@ proxy.<a href="#FGCPCommand-RegisterPrivateVSYSDescriptor">RegisterPrivateVSYSDe
 <dl><dt><a name="FGCPCommand-UpdateEFMConfigHandler"><strong>UpdateEFMConfigHandler</strong></a>(self, vsysId, efmId)</dt><dd><tt>Handler&nbsp;for&nbsp;specific&nbsp;UpdateEFMConfiguration&nbsp;methods,&nbsp;see&nbsp;<a href="#FGCPUpdateEFMConfigHandler">FGCPUpdateEFMConfigHandler</a>&nbsp;for&nbsp;details<br>
 Usage:&nbsp;proxy.<a href="#FGCPCommand-UpdateEFMConfigHandler">UpdateEFMConfigHandler</a>(vsys.vsysId,&nbsp;firewall.efmId).fw_dns('AUTO')</tt></dd></dl>
 
-<dl><dt><a name="FGCPCommand-UpdateEFMConfiguration"><strong>UpdateEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;UpdateEFMConfiguration&nbsp;methods</tt></dd></dl>
+<dl><dt><a name="FGCPCommand-UpdateEFMConfiguration"><strong>UpdateEFMConfiguration</strong></a>(self, vsysId, efmId, configurationName, configurationXML<font color="#909090">=None</font>, filePath<font color="#909090">=None</font>, redundancyCategory<font color="#909090">=None</font>)</dt><dd><tt>Generic&nbsp;method&nbsp;for&nbsp;all&nbsp;UpdateEFMConfiguration&nbsp;methods</tt></dd></dl>
 
 <dl><dt><a name="FGCPCommand-UpdateVDiskAttribute"><strong>UpdateVDiskAttribute</strong></a>(self, vsysId, vdiskId, attributeName, attributeValue)</dt></dl>
 

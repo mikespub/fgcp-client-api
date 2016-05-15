@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 2011 Michel Dalle
+#  Copyright (C) 2011-2016 Michel Dalle
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 
 """
 Client API library for the Fujitsu Global Cloud Platform (FGCP)
-using XML-RPC API Version 2012-02-18
+using XML-RPC API Version 2015-01-30
 
-Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation
+Requirements: this module uses tlslite.utils or gdata.tlslite.utils to create
+the key signature, see https://pypi.python.org/pypi/tlslite-ng or
+https://pypi.python.org/pypi/tlslite for download and installation
 """
 
 
@@ -58,8 +59,9 @@ vsystem.show_status()
 #...
 # See tests/test_resource.py for more examples
 
-Requirements: this module uses gdata.tlslite.utils to create the key signature,
-see http://code.google.com/p/gdata-python-client/ for download and installation
+Requirements: this module uses tlslite.utils or gdata.tlslite.utils to create
+the key signature, see https://pypi.python.org/pypi/tlslite-ng or
+https://pypi.python.org/pypi/tlslite for download and installation
 
 Note: to convert your .p12 or .pfx file to unencrypted PEM format, you can use
 the following 'openssl' command:
@@ -85,6 +87,7 @@ if __name__ == "__main__":
 ...
 -----END RSA PRIVATE KEY-----
 """
+    #private_key = open(pem_file).read()
     if len(sys.argv) > 1:
         pem_file = sys.argv[1]
         if len(sys.argv) > 2:

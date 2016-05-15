@@ -123,7 +123,10 @@ class FGCPElement(object):
         """
         Show dump of the FGCP Element for development
         """
-        print self.pformat(self)
+        try:
+            print self.pformat(self)
+        except:
+            print self.__dict__
 
     #=========================================================================
 
