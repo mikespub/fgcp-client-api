@@ -131,21 +131,27 @@ class FGCPCommand(FGCPProxyServer):
         if vservers is not None and len(vservers) > 0:
             # CHECKME: do we need to add name & description for loadbalancers too ?
             for vserver in vservers:
-                L.append('    <server>')
-                # CHECKME: and what should we use for the id here - is it mandatory ?
-                L.append('      <id>%s</id>' % vserver.vserverId)
-                L.append('      <locales>')
-                L.append('        <locale>')
-                L.append('          <lcid>en</lcid>')
-                L.append('          <name>%s</name>' % vserver.vserverName)
-                # CHECKME: what should we use for description ?
-                descr = vserver.vserverName + ' on ' + vserver.vserverType + ' server type'
-                L.append('          <description>%s</description>' % descr)
-                L.append('        </locale>')
-                L.append('      </locales>')
-                L.append('    </server>')
-                L.append('  </servers>')
-                L.append('</Request>')
+                L.append(self._get_vserverXML(vserver))
+        L.append('  </servers>')
+        L.append('</Request>')
+        return CRLF.join(L)
+
+    def _get_vserverXML(self, vserver):
+        CRLF = '\r\n'
+        L = []
+        L.append('    <server>')
+        # CHECKME: and what should we use for the id here - is it mandatory ?
+        L.append('      <id>%s</id>' % vserver.vserverId)
+        L.append('      <locales>')
+        L.append('        <locale>')
+        L.append('          <lcid>en</lcid>')
+        L.append('          <name>%s</name>' % vserver.vserverName)
+        # CHECKME: what should we use for description ?
+        descr = vserver.vserverName + ' on ' + vserver.vserverType + ' server type'
+        L.append('          <description>%s</description>' % descr)
+        L.append('        </locale>')
+        L.append('      </locales>')
+        L.append('    </server>')
         return CRLF.join(L)
 
     def UnregisterPrivateVSYSDescriptor(self, vsysDescriptorId):
@@ -372,6 +378,37 @@ class FGCPCommand(FGCPProxyServer):
         result = self.do_action('CreateVServer', {'vsysId': vsysId, 'vserverName': vserverName, 'vserverType': vserverType, 'diskImageId': diskImageId, 'networkId': networkId, 'multiNic': multiNic})
         return result.vserverId
 
+    def CreateMultipleVServer(self, vsysId, vservers):
+        filename = 'dummy.xml'
+        vserversXML = self._get_vserversXML(vservers)
+        print vserversXML
+        result = self.do_action('CreateMultipleVServer', {'vsysId': vsysId, 'vserversXMLFilePath': filename}, {'name': 'vserversXMLFilePath', 'filename': filename, 'body': vserversXML})
+        return result.vservers
+
+    def _get_vserversXML(self, vservers):
+        vserversInfo = []
+        attrlist = ['vserverName', 'vserverType', 'diskImageId', 'networkId', 'vnics']
+        for vserver in vservers:
+            # initialize vnics for update if necessary
+            vserver.retrieve()
+            vserverInfo = {}
+            vserverInfo['vserverName'] = vserver.vserverName
+            vserverInfo['vserverType'] = vserver.vserverType
+            vserverInfo['diskImageId'] = vserver.diskimageId # CHECKME: different caps
+            vserverInfo['networkId'] = vserver.vnics[0].networkId
+            vserverInfo['vnics'] = []
+            # CHECKME: convert vnics list to dict list for add_param!?
+            networks = {}
+            for vnic in vserver.vnics[1:]:
+                if vnic.networkId not in networks:
+                    networks[vnic.networkId] = 0
+                networks[vnic.networkId] += 1
+            for networkId in networks:
+                vserverInfo['vnics'].append({'vnic': {'networkId': networkId, 'num': networks[networkId]}})
+            # CHECKME: all attributes are required, but may be empty here!?
+            vserversInfo.append({'vserver': vserverInfo})
+        return self._get_requestXML('vservers', vserversInfo)
+
     def StartVServer(self, vsysId, vserverId):
         result = self.do_action('StartVServer', {'vsysId': vsysId, 'vserverId': vserverId})
         return result.responseStatus
@@ -518,16 +555,19 @@ class FGCPCommand(FGCPProxyServer):
         """
         return FGCPUpdateEFMConfigHandler(self, vsysId, efmId)
 
-    def _get_configurationXML(self, configName, params=None):
+    def _get_requestXML(self, key, values):
         CRLF = '\r\n'
         L = []
         L.append('<?xml version="1.0" encoding="UTF-8"?>')
         L.append('<Request>')
-        L.append('  <configuration>')
-        L.append(self.add_param(configName, params, 2))
-        L.append('  </configuration>')
+        L.append(self.add_param(key, values, 1))
         L.append('</Request>')
         return CRLF.join(L)
+
+    def _get_configurationXML(self, configName, params=None):
+        values = {}
+        values[configName] = params
+        return self._get_requestXML('configuration', values)
 
     def GetEFMAttributes(self, vsysId, efmId):
         """
@@ -645,6 +685,7 @@ class FGCPCommand(FGCPProxyServer):
         """
         Usage: users = proxy.ListUser()
         """
+        # CHECKME: this does not return the contract administrator!?
         result = self.do_action('ListUser')
         # CHECKME: this returns a list with the users list?
         if isinstance(result.usersInfo, list) and len(result.usersInfo) == 1:
@@ -664,6 +705,182 @@ class FGCPCommand(FGCPProxyServer):
         """
         result = self.do_action('ListUserAuthority')
         return result.users
+
+    def CheckUserIDAvailability(self, userIds):
+        """
+        Usage: usersinfo = proxy.CheckUserIDAvailability(userIds)
+        """
+        filename = 'dummy.xml'
+        userIdsXML = self._get_userIdsXML(userIds)
+        result = self.do_action('CheckUserIDAvailability', {'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': userIdsXML})
+        return result.usersInfo
+
+    def _get_userIdsXML(self, userIds):
+        users = []
+        for userId in userIds:
+            users.append({'user': {'id': userId}})
+        return self._get_requestXML('usersInfo', {'users': users})
+
+    def RegisterUser(self, users):
+        """
+        Usage: usersinfo = proxy.RegisterUser(users)
+        """
+        filename = 'dummy.xml'
+        usersInfoXML = self._get_usersInfoXML(users, True)
+        result = self.do_action('RegisterUser', {'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
+        return result.usersInfo
+
+    def _get_usersInfoXML(self, users, password=False):
+        usersInfo = []
+        attrlist = ['id', 'description', 'familyName', 'firstName', 'kanaFamilyName', 'kanaFirstName', 'corporateName', 'emergencyTelephoneNumber', 'mailAddress', 'emergencyMailAddress']
+        if password:
+            attrlist.append('password')
+        for user in users:
+            # CHECKME: all attributes are required, but may be empty here!?
+            usersInfo.append({'user': user.get_attr(attrlist, default='')})
+        return self._get_requestXML('users', usersInfo)
+
+    def UpdateUserAttribute(self, users):
+        """
+        Usage: usersinfo = proxy.UpdateUserAttribute(users)
+        """
+        filename = 'dummy.xml'
+        usersInfoXML = self._get_usersInfoXML(users)
+        result = self.do_action('UpdateUserAttribute', {'attributeName': 'updateInformation', 'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
+        return result.usersInfo
+
+    def UpdateUserAuthority(self, users):
+        """
+        Usage: status = proxy.UpdateUserAuthority(users)
+        """
+        filename = 'dummy.xml'
+        authInfoXML = self._get_authInfoXML(users)
+        print authInfoXML
+        result = self.do_action('UpdateUserAuthority', {'authInfoXMLFilePath': filename}, {'name': 'authInfoXMLFilePath', 'filename': filename, 'body': authInfoXML})
+        return result.responseStatus
+
+    def _get_authInfoXML(self, users):
+        usersInfo = []
+        attrlist = ['id', 'description', 'centralRole', 'vsysroles']
+        for user in users:
+            # initialize centralRole and vsysroles for update if necessary
+            if getattr(user, 'centralRole', None) is None:
+                setattr(user, 'centralRole', '')
+            if getattr(user, 'vsysroles', None) is None:
+                setattr(user, 'vsysroles', [])
+            # CHECKME: convert vsysroles list to dict list for add_param!?
+            vsysroles = user.vsysroles
+            user.vsysroles = []
+            for vsysrole in vsysroles:
+                user.vsysroles.append({'vsysrole': vsysrole.get_attr()})
+            # CHECKME: all attributes are required, but may be empty here!?
+            usersInfo.append({'user': user.get_attr(attrlist, default='')})
+        return self._get_requestXML('users', usersInfo)
+
+    def UnregisterUser(self, userIds):
+        """
+        Usage: usersinfo = proxy.UnregisterUser(userIds)
+        """
+        if isinstance(userIds, list):
+            userIds = ' '.join(userIds)
+        result = self.do_action('UnregisterUser', {'ids': userIds})
+        return result.usersInfo
+
+    def UpdateUserInformation(self, userId, userInfo):
+        """
+        Usage: usersinfo = proxy.UpdateUserInformation(userId, userInfo)
+        """
+        filename = 'dummy.xml'
+        userInfoXML = self._get_userInfoXML(userInfo)
+        result = self.do_action('UpdateUserInformation', {'userId': userId, 'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': userInfoXML})
+        return result.usersInfo
+
+    def _get_userInfoXML(self, userInfo):
+        attrlist = ['description', 'familyName', 'firstName', 'kanaFamilyName', 'kanaFirstName', 'corporateName', 'emergencyTelephoneNumber', 'mailAddress', 'emergencyMailAddress']
+        return self._get_requestXML('userInfo', userInfo.get_attr(attrlist, default=''))
+
+    def _get_contractsXML(self, contractNrs=None):
+        if not contractNrs:
+            contractNrs = []
+        contracts = []
+        for number in contractNrs:
+            contracts.append({'contract': {'number': number}})
+        return self._get_requestXML('contracts', contracts)
+
+    def SetVSYSDescriptorCopyKey(self, vsysDescriptorId, contractNrs):
+        """
+        Usage: status = proxy.SetVSYSDescriptorCopyKey(vsysDescriptorId, contractNrs)
+        """
+        # CHECKME: this reissues the key each time, or removes it if contractNrs is empty
+        filename = 'dummy.xml'
+        contractsXML = self._get_contractsXML(contractNrs)
+        print contractsXML
+        result = self.do_action('SetVSYSDescriptorCopyKey', {'vsysDescriptorId': vsysDescriptorId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
+        return result.responseStatus
+
+    def GetVSYSDescriptorCopyKey(self, vsysDescriptorId, timeZone=None, countryCode=None):
+        """
+        Usage: result = proxy.GetVSYSDescriptorCopyKey(vsysDescriptorId)
+        """
+        result = self.do_action('GetVSYSDescriptorCopyKey', {'vsysDescriptorId': vsysDescriptorId, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result
+
+    def CopyVSYSDescriptor(self, vsysDescriptorId, key, timeZone=None, countryCode=None):
+        """
+        Usage: vsysdescriptorId = proxy.CopyVSYSDescriptor(vsysDescriptorId, key)
+        """
+        result = self.do_action('CopyVSYSDescriptor', {'vsysDescriptorId': vsysDescriptorId, 'key': key, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result.vsysdescriptorId
+
+    def SetDiskImageCopyKey(self, diskImageId, contractNrs):
+        """
+        Usage: status = proxy.SetDiskImageCopyKey(diskImageId, contractNrs)
+        """
+        # CHECKME: this reissues the key each time, or removes it if contractNrs is empty
+        filename = 'dummy.xml'
+        contractsXML = self._get_contractsXML(contractNrs)
+        print contractsXML
+        result = self.do_action('SetDiskImageCopyKey', {'diskImageId': diskImageId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
+        return result.responseStatus
+
+    def GetDiskImageCopyKey(self, diskImageId, timeZone=None, countryCode=None):
+        """
+        Usage: result = proxy.GetDiskImageCopyKey(diskImageId)
+        """
+        result = self.do_action('GetDiskImageCopyKey', {'diskImageId': diskImageId, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result
+
+    def CopyDiskImage(self, diskImageId, key, timeZone=None, countryCode=None):
+        """
+        Usage: diskimageId = proxy.CopyDiskImage(diskImageId, key)
+        """
+        result = self.do_action('CopyDiskImage', {'diskImageId': diskImageId, 'key': key, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result.diskimageId
+
+    def SetVDiskBackupCopyKey(self, vsysId, backupId, contractNrs=None):
+        """
+        Usage: status = proxy.SetVDiskBackupCopyKey(vsysId, backupId, contractNrs)
+        """
+        # CHECKME: this reissues the key each time, or removes it if contractNrs is empty
+        filename = 'dummy.xml'
+        contractsXML = self._get_contractsXML(contractNrs)
+        print contractsXML
+        result = self.do_action('SetVDiskBackupCopyKey', {'vsysId': vsysId, 'backupId': backupId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
+        return result.responseStatus
+
+    def GetVDiskBackupCopyKey(self, vsysId, backupId, timeZone=None, countryCode=None):
+        """
+        Usage: result = proxy.GetVDiskBackupCopyKey(vsysId, backupId)
+        """
+        result = self.do_action('GetVDiskBackupCopyKey', {'vsysId': vsysId, 'backupId': backupId, 'timeZone': timeZone, 'countryCode': countryCode})
+        return result
+
+    def ExternalRestoreVDisk(self, srcVsysId, srcBackupId, dstVsysId, dstVdiskId, key):
+        """
+        Usage: status = proxy.ExternalRestoreVDisk(srcVsysId, srcBackupId, dstVsysId, dstVdiskId, key)
+        """
+        result = self.do_action('ExternalRestoreVDisk', {'srcVsysId': srcVsysId, 'srcBackupId': srcBackupId, 'dstVsysId': dstVsysId, 'dstVdiskId': dstVdiskId, 'key': key})
+        return result.responseStatus
 
 
 class FGCPGenericEFMHandler:
@@ -1083,110 +1300,6 @@ class FGCPCommandNotSupported(FGCPCommand):
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
 
     def CreateVNIC(self):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-class FGCPCommandNotYetSupported(FGCPCommand):
-
-    def CreateMultipleVServer(self, vsysId, vservers):
-        #vserversXMLFilePath
-        #filename = 'dummy.xml'
-        #vserversXML = self._get_vserversXML(vservers)
-        #result = self.do_action('SetVSYSDescriptorCopyKey', {'vsysId': vsysId, 'vserversXMLFilePath': filename}, {'name': 'vserversXMLFilePath', 'filename': filename, 'body': vserversXML})
-        #return result.responseStatus
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def SetVSYSDescriptorCopyKey(self, vsysDescriptorId, contracts):
-        #contractsXMLFilePath
-        #filename = 'dummy.xml'
-        #contractsXML = self._get_contractsXML(contracts)
-        #result = self.do_action('SetVSYSDescriptorCopyKey', {'vsysDescriptorId': vsysDescriptorId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
-        #return result.responseStatus
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def SetDiskImageCopyKey(self, diskImageId, contracts):
-        #contractsXMLFilePath
-        #filename = 'dummy.xml'
-        #contractsXML = self._get_contractsXML(contracts)
-        #result = self.do_action('SetDiskImageCopyKey', {'diskImageId': diskImageId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
-        #return result.responseStatus
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def SetVDiskBackupCopyKey(self, vsysId, backupId, contracts):
-        #contractsXMLFilePath
-        #filename = 'dummy.xml'
-        #contractsXML = self._get_contractsXML(contracts)
-        #result = self.do_action('SetVDiskBackupCopyKey', {'vsysId': vsysId, 'backupId': backupId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
-        #return result.responseStatus
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def GetVSYSDescriptorCopyKey(self, vsysDescriptorId, timeZone=None, countryCode=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def GetDiskImageCopyKey(self, diskImageId, timeZone=None, countryCode=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def GetVDiskBackupCopyKey(self, vsysId, backupId, timeZone=None, countryCode=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def CopyVSYSDescriptor(self, vsysDescriptorId, key, timeZone=None, countryCode=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def CopyDiskImage(self, diskImageId, key, timeZone=None, countryCode=None):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def ExternalRestoreVDisk(self, srcVsysId, srcBackupId, dstVsysId, dstVdiskId, key):
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def CheckUserIDAvailability(self, userIds):
-        #<?xml version="1.0" encoding="UTF-8"?>
-        #<Request>
-        #<usersInfo>
-        #<users>
-        #<user>
-        #<id>userId01</id>
-        #</user>
-        #</users>
-        #</usersInfo>
-        #</Request>
-        #filename = 'dummy.xml'
-        #usersInfoXML = self._get_usersInfoXML(userIds)
-        #result = self.do_action('CheckUserIDAvailability', {'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
-        #return result.usersInfo
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def RegisterUser(self, usersInfo):
-        #filename = 'dummy.xml'
-        #usersInfoXML = self._get_usersInfoXML(usersInfo)
-        #result = self.do_action('RegisterUser', {'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
-        #return result.usersInfo
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def UpdateUserAttribute(self, attributeName, usersInfo):
-        #filename = 'dummy.xml'
-        #usersInfoXML = self._get_usersInfoXML(usersInfo)
-        #result = self.do_action('UpdateUserAttribute', {'attributeName': attributeName, 'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
-        #return result.usersInfo
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def UnregisterUser(self, userIds):
-        #if isinstance(userIds, list):
-        #    userIds = ' '.join(userIds)
-        #result = self.do_action('UnregisterUser', {'ids': userIds})
-        #return result.usersInfo
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def UpdateUserAuthority(self, authInfo):
-        #filename = 'dummy.xml'
-        #authInfoXML = self._get_authInfoXML(authInfo)
-        #result = self.do_action('UpdateUserAuthority', {'authInfoXMLFilePath': filename}, {'name': 'authInfoXMLFilePath', 'filename': filename, 'body': authInfoXML})
-        #return result.responseStatus
-        raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
-
-    def UpdateUserInformation(self, userId, usersInfo):
-        #filename = 'dummy.xml'
-        #usersInfoXML = self._get_usersInfoXML(usersInfo)
-        #result = self.do_action('UpdateUserInformation', {'userId': userId, 'usersInfoXMLFilePath': filename}, {'name': 'usersInfoXMLFilePath', 'filename': filename, 'body': usersInfoXML})
-        #return result.usersInfo
         raise FGCPCommandError('UNSUPPORT_ERROR', 'Unable to use the specified API')
 
 """

@@ -130,6 +130,18 @@ class FGCPElement(object):
 
     #=========================================================================
 
+    def get_attr(self, attrlist=None, required=False, default=None):
+        attr = {}
+        if not attrlist:
+            attrlist = self.__dict__
+        for key in attrlist:
+            if key.startswith('_'):
+                continue
+            if required and not hasattr(self, key):
+                raise FGCPResourceError('ILLEGAL_ATTRIBUTE', 'Invalid attribute %s' % key, self)
+            attr[key] = getattr(self, key, default)
+        return attr
+
     def reset_attr(self, what):
         if hasattr(self, what):
             setattr(self, what, None)
@@ -510,6 +522,7 @@ class FGCPVDataCenter(FGCPResource):
     #=========================================================================
 
     def list_users(self):
+        # CHECKME: this does not return the contract administrator!?
         if getattr(self, 'users', None) is None:
             setattr(self, 'users', self.getproxy().ListUser())
         return getattr(self, 'users')
@@ -524,7 +537,11 @@ class FGCPVDataCenter(FGCPResource):
                 return user.retrieve()
         # not found so far, check if we have an email address
         if '@' not in userId:
-            raise FGCPResourceError('ILLEGAL_USER', 'Invalid userId %s' % userId, self)
+            user = FGCPUser(id=userId)
+            # set the parent of the user to this vdc !
+            user.setparent(self)
+            return user.retrieve()
+            #raise FGCPResourceError('ILLEGAL_USER', 'Invalid userId %s' % userId, self)
         for user in users:
             user.retrieve()
             if userId == user.mailAddress:
@@ -540,14 +557,34 @@ class FGCPVDataCenter(FGCPResource):
         # get the list of users
         users = self.list_users()
         self.users = []
-        # CHECKME: could we have users in authority list that aren't in users list anymore?
+        # CHECKME: could we have users in authority list that aren't in users list? Yes, the contract administrator!
+        seenid = {}
         for user in users:
             if user.id in id2auth:
                 user.merge_attr(id2auth[user.id])
+                seenid[user.id] = True
             #else:
             #    raise FGCPResourceError('ILLEGAL_USER', 'Invalid userId %s' % user.id, self)
             self.users.append(user)
+        for key in id2auth:
+            if key in seenid:
+                continue
+            setattr(id2auth[key], 'contract', self.get_contract_number())
+            self.users.append(id2auth[key])
         return self.users
+
+    def check_user_availability(self, userIds):
+        return self.getproxy().CheckUserIDAvailability(userIds)
+
+    def get_contractor(self, userId=None):
+        if userId:
+            return self.get_user(userId)
+        # get the list of user authority
+        userauth = self.list_user_authority()
+        for user in userauth:
+            if hasattr(user, 'contract'):
+                return self.get_user(user)
+        raise FGCPResourceError('ILLEGAL_USER', 'Invalid contractor', self)
 
     #=========================================================================
 
@@ -587,6 +624,10 @@ class FGCPVDataCenter(FGCPResource):
 
     def get_eventlog(self, all=None, timeZone=None, countryCode=None):
         return self.getproxy().GetEventLog(all, timeZone, countryCode)
+
+    def get_contract_number(self):
+        # CHECKME: quick hack to find the contract number - is there some better way via API?
+        return self.list_vsysdescriptors()[0].creatorName
 
     #=========================================================================
 
@@ -2622,11 +2663,103 @@ class FGCPUser(FGCPResource):
             break
         return self
 
+    def update_authority(self, centralRole=None, vsysroles=None):
+        self.get_authority()
+        if centralRole is not None:
+            setattr(self, 'centralRole', centralRole)
+        if vsysroles is not None:
+            # TODO: check if we need to add roles instead of replacing them
+            setattr(self, 'vsysroles', vsysroles)
+        # specify the list of users to be updated (= self)
+        return self.getproxy().UpdateUserAuthority([self])
+
+    def set_vsysrole(self, vsysId, roleName=None):
+        """Usage:
+        vsystem = vdc.get_vsystem('Demo System')
+        user = vdc.get_user('demo_user')
+        roleName='Designer/Builder'
+        #user.set_vsysrole(vsystem.vsysId, roleName)
+        #user.set_vsysrole(vsystem.vsysId, None)
+        """
+        self.get_authority()
+        found = False
+        vsysroles = []
+        if self.vsysroles:
+            vsysroles = self.vsysroles
+        self.vsysroles = []
+        for vsysrole in vsysroles:
+            if vsysrole.vsysId == vsysId:
+                found = True
+                if not roleName:
+                    continue
+                vsysrole.roleName = roleName
+            self.vsysroles.append(vsysrole)
+        if not found and roleName:
+            vsysrole = FGCPVSysRole(vsysId=vsysId, roleName=roleName)
+            # set the parent of the vsysrole to this user !
+            vsysrole.setparent(self)
+            self.vsysroles.append(vsysrole)
+        return self.update_authority()
+
+    def check_availability(self, userId=None):
+        if userId is not None:
+            self.id = userId
+        # specify the list of userIds to be checked (= self.id)
+        return self.getproxy().CheckUserIDAvailability([self.id])
+
+    def register(self, user=None):
+        # CHECKME: copy information to self
+        if user:
+            self.merge_attr(user)
+        # specify the list of users to be registered (= self)
+        return self.getproxy().RegisterUser([self])
+
+    def update(self, *args, **kwargs):
+        self.show_output('Updating User %s' % self.id)
+        allowed = ['description', 'familyName', 'firstName', 'kanaFamilyName', 'kanaFirstName', 'corporateName', 'emergencyTelephoneNumber', 'mailAddress', 'emergencyMailAddress']
+        # convert arguments to dict
+        tododict = self._args2dict(args, kwargs, allowed)
+        #print tododict
+        # update the object attributes if necessary
+        for key in tododict:
+            if tododict[key] != getattr(self, key, None):
+                setattr(self, key, tododict[key])
+        # CHECKME: when to use UpdateUserInformation or UpdateUserAttribute?
+        #result = self.getproxy().UpdateUserInformation(self.id, self)
+        # specify the list of users to be updated (= self)
+        result = self.getproxy().UpdateUserAttribute([self])
+        self.show_output('Updated User %s' % self.id)
+        return result
+
+    def unregister(self):
+        return self.getproxy().UnregisterUser(self.getid())
+
+
+class FGCPUsersInfo(FGCPResource):
+    _idname = None
+    successCount = None
+    errorCount = None
+    users = None
+
 
 class FGCPVSysRole(FGCPResource):
     _idname = None
     vsysId = None
     roleName = None
+
+
+class FGCPContract(FGCPResource):
+    _idname = 'number'
+    number = None
+    lock = None
+
+
+class FGCPKeyInfo(FGCPResource):
+    _idname = 'key'
+    key = None
+    startExpire = None
+    endExpire = None
+    contracts = None
 
 
 class FGCPUnknown(FGCPResource):

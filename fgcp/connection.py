@@ -396,8 +396,10 @@ class FGCPResponseParser:
         'eventlog': FGCPEventLog,
         'performanceinfo': FGCPPerformanceInfo,
         'user': FGCPUser,
-        #'userinfo': FGCPUser,
+        'usersInfo': FGCPUsersInfo,
         'vsysrole': FGCPVSysRole,
+        'contract': FGCPContract,
+        'keyInfo': FGCPKeyInfo,
         'response': FGCPResponse,
         'default': FGCPUnknown,
     }

@@ -51,6 +51,7 @@ for&nbsp;vserver&nbsp;in&nbsp;vsystem.vservers:<br>
 <dl>
 <dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPAddressRange">FGCPAddressRange</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPBackup">FGCPBackup</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPContract">FGCPContract</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPDiskImage">FGCPDiskImage</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPEfm">FGCPEfm</a>
 </font></dt><dd>
@@ -67,6 +68,7 @@ for&nbsp;vserver&nbsp;in&nbsp;vsystem.vservers:<br>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPFWPolicy">FGCPFWPolicy</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPImageSoftware">FGCPImageSoftware</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPInformation">FGCPInformation</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPKeyInfo">FGCPKeyInfo</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPPerformanceInfo">FGCPPerformanceInfo</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPPublicIP">FGCPPublicIP</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPSLBCCACert">FGCPSLBCCACert</a>
@@ -84,6 +86,7 @@ for&nbsp;vserver&nbsp;in&nbsp;vsystem.vservers:<br>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfo">FGCPUsageInfo</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsageInfoProduct">FGCPUsageInfoProduct</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUser">FGCPUser</a>
+</font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPUsersInfo">FGCPUsersInfo</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDataCenter">FGCPVDataCenter</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVDisk">FGCPVDisk</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.resource.html#FGCPVNic">FGCPVNic</a>
@@ -167,6 +170,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPAddressRange-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPAddressRange-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPAddressRange-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -238,11 +243,80 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPBackup-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPBackup-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPBackup-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <dl><dt><a name="FGCPBackup-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPContract">class <strong>FGCPContract</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPContract">FGCPContract</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>lock</strong> = None</dl>
+
+<dl><dt><strong>number</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPContract-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPContract-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPContract-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPContract-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPContract-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPContract-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPContract-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPContract-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPContract-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPContract-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPContract-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPContract-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPContract-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPContract-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPContract-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPContract-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPContract-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPContract-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -331,6 +405,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPDiskImage-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPDiskImage-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPDiskImage-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -436,6 +512,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPEfm-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPEfm-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPEfm-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -461,6 +539,8 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 <dl><dt><a name="FGCPElement-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
 <dl><dt><a name="FGCPElement-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPElement-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPElement-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
@@ -533,6 +613,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPEventLog-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPEventLog-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPEventLog-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -608,6 +690,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPFWDirection-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPFWDirection-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWDirection-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -675,6 +759,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPFWDns-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPFWDns-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWDns-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -746,6 +832,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPFWLogOrder-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPFWLogOrder-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWLogOrder-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -813,6 +901,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPFWNATRule-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPFWNATRule-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWNATRule-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -896,6 +986,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPFWPolicy-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPFWPolicy-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFWPolicy-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1050,6 +1142,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPFirewall-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPFirewall-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPFirewall-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1127,6 +1221,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPImageSoftware-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPImageSoftware-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPImageSoftware-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1200,11 +1296,84 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPInformation-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPInformation-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPInformation-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <dl><dt><a name="FGCPInformation-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPKeyInfo">class <strong>FGCPKeyInfo</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPKeyInfo">FGCPKeyInfo</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>contracts</strong> = None</dl>
+
+<dl><dt><strong>endExpire</strong> = None</dl>
+
+<dl><dt><strong>key</strong> = None</dl>
+
+<dl><dt><strong>startExpire</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPKeyInfo-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPKeyInfo-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPKeyInfo-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPKeyInfo-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -1410,6 +1579,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPLoadBalancer-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPLoadBalancer-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPLoadBalancer-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1491,6 +1662,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPPerformanceInfo-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPPerformanceInfo-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPPerformanceInfo-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1572,6 +1745,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPPublicIP-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPPublicIP-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPPublicIP-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1632,6 +1807,8 @@ Methods defined here:<br>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPResource-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPResource-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPResource-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1729,6 +1906,8 @@ Methods defined here:<br>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
 <dl><dt><a name="FGCPResponse-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
 
+<dl><dt><a name="FGCPResponse-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPResponse-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPResponse-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1802,6 +1981,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBCCACert-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBCCACert-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCCACert-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1877,6 +2058,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBCause-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBCause-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBCause-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -1946,6 +2129,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBErrorPeriod-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBErrorPeriod-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorPeriod-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2015,6 +2200,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBErrorStats-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBErrorStats-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBErrorStats-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2112,6 +2299,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBGroup-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBGroup-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBGroup-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2185,6 +2374,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBServerCert-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBServerCert-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBServerCert-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2262,6 +2453,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSLBTarget-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSLBTarget-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSLBTarget-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2351,6 +2544,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPServerType-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPServerType-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPServerType-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2418,6 +2613,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPServerTypeCPU-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPServerTypeCPU-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeCPU-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2485,6 +2682,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPServerTypeDisk-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPServerTypeDisk-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPServerTypeDisk-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2556,6 +2755,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPSnapshot-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPSnapshot-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPSnapshot-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2615,6 +2816,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUnknown-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPUnknown-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUnknown-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2686,6 +2889,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUsageInfo-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPUsageInfo-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfo-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2753,6 +2958,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUsageInfoProduct-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPUsageInfoProduct-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUsageInfoProduct-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -2782,11 +2989,28 @@ Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPEle
 </dl>
 <hr>
 Methods defined here:<br>
+<dl><dt><a name="FGCPUser-check_availability"><strong>check_availability</strong></a>(self, userId<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPUser-get_authority"><strong>get_authority</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUser-get_information"><strong>get_information</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
 
+<dl><dt><a name="FGCPUser-register"><strong>register</strong></a>(self, user<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPUser-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUser-set_vsysrole"><strong>set_vsysrole</strong></a>(self, vsysId, roleName<font color="#909090">=None</font>)</dt><dd><tt>Usage:<br>
+vsystem&nbsp;=&nbsp;vdc.get_vsystem('Demo&nbsp;System')<br>
+user&nbsp;=&nbsp;vdc.get_user('demo_user')<br>
+roleName='Designer/Builder'<br>
+#user.<a href="#FGCPUser-set_vsysrole">set_vsysrole</a>(vsystem.vsysId,&nbsp;roleName)<br>
+#user.<a href="#FGCPUser-set_vsysrole">set_vsysrole</a>(vsystem.vsysId,&nbsp;None)</tt></dd></dl>
+
+<dl><dt><a name="FGCPUser-unregister"><strong>unregister</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUser-update"><strong>update</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPUser-update_authority"><strong>update_authority</strong></a>(self, centralRole<font color="#909090">=None</font>, vsysroles<font color="#909090">=None</font>)</dt></dl>
 
 <hr>
 Data and other attributes defined here:<br>
@@ -2824,17 +3048,86 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <dl><dt><a name="FGCPUser-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
 
-<dl><dt><a name="FGCPUser-update"><strong>update</strong></a>(self)</dt></dl>
-
 <dl><dt><a name="FGCPUser-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUser-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPUser-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPUser-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
 
 <dl><dt><a name="FGCPUser-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPUsersInfo">class <strong>FGCPUsersInfo</strong></a>(<a href="fgcp.resource.html#FGCPResource">FGCPResource</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.resource.html#FGCPUsersInfo">FGCPUsersInfo</a></dd>
+<dd><a href="fgcp.resource.html#FGCPResource">FGCPResource</a></dd>
+<dd><a href="fgcp.resource.html#FGCPElement">FGCPElement</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>errorCount</strong> = None</dl>
+
+<dl><dt><strong>successCount</strong> = None</dl>
+
+<dl><dt><strong>users</strong> = None</dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a>:<br>
+<dl><dt><a name="FGCPUsersInfo-__init__"><strong>__init__</strong></a>(self, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-check_status"><strong>check_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-create"><strong>create</strong></a>(self, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-destroy"><strong>destroy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-getid"><strong>getid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-getparentid"><strong>getparentid</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-getproxy"><strong>getproxy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-merge_attr"><strong>merge_attr</strong></a>(self, partial)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-retrieve"><strong>retrieve</strong></a>(self, refresh<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-setparent"><strong>setparent</strong></a>(self, parent)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-show_output"><strong>show_output</strong></a>(self, text<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-update"><strong>update</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-wait_for_status"><strong>wait_for_status</strong></a>(self, in_state<font color="#909090">=[]</font>, out_state<font color="#909090">=[]</font>, timeout<font color="#909090">=900</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPUsersInfo-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="FGCPUsersInfo-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
+
+<dl><dt><a name="FGCPUsersInfo-reset_attr"><strong>reset_attr</strong></a>(self, what)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
@@ -2870,6 +3163,8 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 
 <dl><dt><a name="FGCPVDataCenter-add_addressrange"><strong>add_addressrange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
+<dl><dt><a name="FGCPVDataCenter-check_user_availability"><strong>check_user_availability</strong></a>(self, userIds)</dt></dl>
+
 <dl><dt><a name="FGCPVDataCenter-create_addresspool"><strong>create_addresspool</strong></a>(self, pipFrom<font color="#909090">=None</font>, pipTo<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-create_vsystem"><strong>create_vsystem</strong></a>(self, vsysName, vsysdescriptor, wait<font color="#909090">=None</font>)</dt></dl>
@@ -2877,6 +3172,10 @@ openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-n
 <dl><dt><a name="FGCPVDataCenter-delete_addressrange"><strong>delete_addressrange</strong></a>(self, pipFrom, pipTo)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-destroy_vsystem"><strong>destroy_vsystem</strong></a>(self, vsysName, wait<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_contract_number"><strong>get_contract_number</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVDataCenter-get_contractor"><strong>get_contractor</strong></a>(self, userId<font color="#909090">=None</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-get_diskimage"><strong>get_diskimage</strong></a>(self, diskimageName)</dt></dl>
 
@@ -2968,6 +3267,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVDataCenter-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVDataCenter-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDataCenter-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3063,6 +3364,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVDisk-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVDisk-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVDisk-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3130,6 +3433,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVNic-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVNic-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVNic-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3249,6 +3554,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVServer-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVServer-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVServer-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3330,6 +3637,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVServerImage-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVServerImage-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVServerImage-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3423,6 +3732,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVSysDescriptor-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVSysDescriptor-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSysDescriptor-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3488,6 +3799,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVSysRole-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVSysRole-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSysRole-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
@@ -3643,6 +3956,8 @@ Methods inherited from <a href="fgcp.resource.html#FGCPResource">FGCPResource</a
 
 <hr>
 Methods inherited from <a href="fgcp.resource.html#FGCPElement">FGCPElement</a>:<br>
+<dl><dt><a name="FGCPVSystem-get_attr"><strong>get_attr</strong></a>(self, attrlist<font color="#909090">=None</font>, required<font color="#909090">=False</font>, default<font color="#909090">=None</font>)</dt></dl>
+
 <dl><dt><a name="FGCPVSystem-pformat"><strong>pformat</strong></a>(self, what, depth<font color="#909090">=0</font>)</dt></dl>
 
 <dl><dt><a name="FGCPVSystem-pprint"><strong>pprint</strong></a>(self)</dt><dd><tt>Show&nbsp;dump&nbsp;of&nbsp;the&nbsp;FGCP&nbsp;Element&nbsp;for&nbsp;development</tt></dd></dl>
