@@ -1,0 +1,62 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: package fgcp.libcloud</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="fgcp.html"><font color="#ffffff">fgcp</font></a>.libcloud</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="https://github.com/mikespub/fgcp-client-api/blob/master/libcloud/__init__.py">__init__.py</a></font></td></tr></table>
+    <p><tt>Client&nbsp;API&nbsp;library&nbsp;for&nbsp;the&nbsp;Fujitsu&nbsp;Global&nbsp;Cloud&nbsp;Platform&nbsp;(FGCP)<br>
+using&nbsp;XML-RPC&nbsp;API&nbsp;Version&nbsp;2015-01-30<br>
+&nbsp;<br>
+#&nbsp;Register&nbsp;FGCP&nbsp;as&nbsp;third&nbsp;party&nbsp;driver&nbsp;for&nbsp;libcloud<br>
+from&nbsp;libcloud.compute.providers&nbsp;import&nbsp;set_driver<br>
+from&nbsp;libcloud.compute.providers&nbsp;import&nbsp;get_driver<br>
+set_driver('fgcp',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'fgcp.libcloud.compute',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'FGCPNodeDriver')<br>
+cls&nbsp;=&nbsp;get_driver('fgcp')<br>
+&nbsp;<br>
+#&nbsp;Connect&nbsp;with&nbsp;your&nbsp;client&nbsp;certificate&nbsp;to&nbsp;region&nbsp;'uk'&nbsp;and&nbsp;work&nbsp;in&nbsp;location&nbsp;'Demo&nbsp;VSystem'<br>
+driver&nbsp;=&nbsp;cls('client.pem',&nbsp;region='uk',&nbsp;location='Demo&nbsp;VSystem')<br>
+&nbsp;<br>
+#regions&nbsp;=&nbsp;driver.list_regions()<br>
+#locations&nbsp;=&nbsp;driver.list_locations()<br>
+#nodes&nbsp;=&nbsp;driver.list_nodes()<br>
+#images&nbsp;=&nbsp;driver.list_images()<br>
+#sizes&nbsp;=&nbsp;driver.list_sizes()<br>
+#volumes&nbsp;=&nbsp;driver.list_volumes()<br>
+#for&nbsp;volume&nbsp;in&nbsp;volumes:<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;snapshots&nbsp;=&nbsp;driver.list_volume_snapshots(volume)<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;snapshots_and_backups&nbsp;=&nbsp;driver.list_volume_snapshots(volume,&nbsp;ex_include_backups=True)<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;backups&nbsp;=&nbsp;driver.ex_list_volume_backups(volume)<br>
+&nbsp;<br>
+&nbsp;<br>
+Requirements:&nbsp;this&nbsp;module&nbsp;uses&nbsp;tlslite.utils&nbsp;or&nbsp;gdata.tlslite.utils&nbsp;to&nbsp;create<br>
+the&nbsp;key&nbsp;signature,&nbsp;see&nbsp;https://pypi.python.org/pypi/tlslite-ng&nbsp;or<br>
+https://pypi.python.org/pypi/tlslite&nbsp;for&nbsp;download&nbsp;and&nbsp;installation<br>
+&nbsp;<br>
+Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
+the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
+&nbsp;<br>
+openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="fgcp.libcloud.backup.html">backup</a><br>
+<a href="fgcp.libcloud.common.html">common</a><br>
+</td><td width="25%" valign=top><a href="fgcp.libcloud.compute.html">compute</a><br>
+<a href="fgcp.libcloud.container.html">container</a><br>
+</td><td width="25%" valign=top><a href="fgcp.libcloud.dns.html">dns</a><br>
+<a href="fgcp.libcloud.loadbalancer.html">loadbalancer</a><br>
+</td><td width="25%" valign=top><a href="fgcp.libcloud.storage.html">storage</a><br>
+</td></tr></table></td></tr></table>
+</body></html>

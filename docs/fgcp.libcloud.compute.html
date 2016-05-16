@@ -1,0 +1,1577 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module fgcp.libcloud.compute</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="fgcp.html"><font color="#ffffff">fgcp</font></a>.<a href="fgcp.libcloud.html"><font color="#ffffff">libcloud</font></a>.compute</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="https://github.com/mikespub/fgcp-client-api/blob/master/libcloud/compute.py">compute.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;Copyright&nbsp;(C)&nbsp;2016&nbsp;Michel&nbsp;Dalle<br>
+#<br>
+#&nbsp;&nbsp;Licensed&nbsp;under&nbsp;the&nbsp;Apache&nbsp;License,&nbsp;Version&nbsp;2.0&nbsp;(the&nbsp;"License");<br>
+#&nbsp;&nbsp;you&nbsp;may&nbsp;not&nbsp;use&nbsp;this&nbsp;file&nbsp;except&nbsp;in&nbsp;compliance&nbsp;with&nbsp;the&nbsp;License.<br>
+#&nbsp;&nbsp;You&nbsp;may&nbsp;obtain&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;License&nbsp;at<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a><br>
+#<br>
+#&nbsp;&nbsp;Unless&nbsp;required&nbsp;by&nbsp;applicable&nbsp;law&nbsp;or&nbsp;agreed&nbsp;to&nbsp;in&nbsp;writing,&nbsp;software<br>
+#&nbsp;&nbsp;distributed&nbsp;under&nbsp;the&nbsp;License&nbsp;is&nbsp;distributed&nbsp;on&nbsp;an&nbsp;"AS&nbsp;IS"&nbsp;BASIS,<br>
+#&nbsp;&nbsp;WITHOUT&nbsp;WARRANTIES&nbsp;OR&nbsp;CONDITIONS&nbsp;OF&nbsp;ANY&nbsp;KIND,&nbsp;either&nbsp;express&nbsp;or&nbsp;implied.<br>
+#&nbsp;&nbsp;See&nbsp;the&nbsp;License&nbsp;for&nbsp;the&nbsp;specific&nbsp;language&nbsp;governing&nbsp;permissions&nbsp;and<br>
+#&nbsp;&nbsp;limitations&nbsp;under&nbsp;the&nbsp;License.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="libcloud.common.base.html#ConnectionKey">libcloud.common.base.ConnectionKey</a>(<a href="libcloud.common.base.html#Connection">libcloud.common.base.Connection</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPConnectionKey">FGCPConnectionKey</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.common.types.html#LibcloudError">libcloud.common.types.LibcloudError</a>(<a href="exceptions.html#Exception">exceptions.Exception</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPException">FGCPException</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.base.html#Node">libcloud.compute.base.Node</a>(<a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPNode">FGCPNode</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.base.html#NodeImage">libcloud.compute.base.NodeImage</a>(<a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPNodeImage">FGCPNodeImage</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.base.html#NodeLocation">libcloud.compute.base.NodeLocation</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPNodeLocation">FGCPNodeLocation</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.base.html#StorageVolume">libcloud.compute.base.StorageVolume</a>(<a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPStorageVolume">FGCPStorageVolume</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.base.html#VolumeSnapshot">libcloud.compute.base.VolumeSnapshot</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPVolumeSnapshot">FGCPVolumeSnapshot</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.drivers.openstack.html#OpenStackNodeSize">libcloud.compute.drivers.openstack.OpenStackNodeSize</a>(<a href="libcloud.compute.base.html#NodeSize">libcloud.compute.base.NodeSize</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPNodeSize">FGCPNodeSize</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpAddress</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPFloatingIpAddress">FGCPFloatingIpAddress</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpPool">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpPool</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPFloatingIpPool">FGCPFloatingIpPool</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_NodeDriver">libcloud.compute.drivers.openstack.OpenStack_1_1_NodeDriver</a>(<a href="libcloud.compute.drivers.openstack.html#OpenStackNodeDriver">libcloud.compute.drivers.openstack.OpenStackNodeDriver</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="fgcp.libcloud.compute.html#FGCPNodeDriver">FGCPNodeDriver</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPConnectionKey">class <strong>FGCPConnectionKey</strong></a>(<a href="libcloud.common.base.html#ConnectionKey">libcloud.common.base.ConnectionKey</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPConnectionKey">FGCPConnectionKey</a></dd>
+<dd><a href="libcloud.common.base.html#ConnectionKey">libcloud.common.base.ConnectionKey</a></dd>
+<dd><a href="libcloud.common.base.html#Connection">libcloud.common.base.Connection</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPConnectionKey-connect"><strong>connect</strong></a>(self, host<font color="#909090">=None</font>, port<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Methods inherited from <a href="libcloud.common.base.html#ConnectionKey">libcloud.common.base.ConnectionKey</a>:<br>
+<dl><dt><a name="FGCPConnectionKey-__init__"><strong>__init__</strong></a>(self, key, secure<font color="#909090">=True</font>, host<font color="#909090">=None</font>, port<font color="#909090">=None</font>, url<font color="#909090">=None</font>, timeout<font color="#909090">=None</font>, proxy_url<font color="#909090">=None</font>, backoff<font color="#909090">=None</font>, retry_delay<font color="#909090">=None</font>)</dt><dd><tt>Initialize&nbsp;`user_id`&nbsp;and&nbsp;`key`;&nbsp;set&nbsp;`secure`&nbsp;to&nbsp;an&nbsp;``int``&nbsp;based&nbsp;on<br>
+passed&nbsp;value.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="libcloud.common.base.html#Connection">libcloud.common.base.Connection</a>:<br>
+<dl><dt><a name="FGCPConnectionKey-add_default_headers"><strong>add_default_headers</strong></a>(self, headers)</dt><dd><tt>Adds&nbsp;default&nbsp;headers&nbsp;(such&nbsp;as&nbsp;Authorization,&nbsp;X-Foo-Bar)<br>
+to&nbsp;the&nbsp;passed&nbsp;`headers`<br>
+&nbsp;<br>
+Should&nbsp;return&nbsp;a&nbsp;dictionary.</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnectionKey-add_default_params"><strong>add_default_params</strong></a>(self, params)</dt><dd><tt>Adds&nbsp;default&nbsp;parameters&nbsp;(such&nbsp;as&nbsp;API&nbsp;key,&nbsp;version,&nbsp;etc.)<br>
+to&nbsp;the&nbsp;passed&nbsp;`params`<br>
+&nbsp;<br>
+Should&nbsp;return&nbsp;a&nbsp;dictionary.</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnectionKey-encode_data"><strong>encode_data</strong></a>(self, data)</dt><dd><tt>Encode&nbsp;body&nbsp;data.<br>
+&nbsp;<br>
+Override&nbsp;in&nbsp;a&nbsp;provider's&nbsp;subclass.</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnectionKey-morph_action_hook"><strong>morph_action_hook</strong></a>(self, action)</dt></dl>
+
+<dl><dt><a name="FGCPConnectionKey-pre_connect_hook"><strong>pre_connect_hook</strong></a>(self, params, headers)</dt><dd><tt>A&nbsp;hook&nbsp;which&nbsp;is&nbsp;called&nbsp;before&nbsp;connecting&nbsp;to&nbsp;the&nbsp;remote&nbsp;server.<br>
+This&nbsp;hook&nbsp;can&nbsp;perform&nbsp;a&nbsp;final&nbsp;manipulation&nbsp;on&nbsp;the&nbsp;params,&nbsp;headers&nbsp;and<br>
+url&nbsp;parameters.<br>
+&nbsp;<br>
+:type&nbsp;params:&nbsp;``dict``<br>
+:param&nbsp;params:&nbsp;Request&nbsp;parameters.<br>
+&nbsp;<br>
+:type&nbsp;headers:&nbsp;``dict``<br>
+:param&nbsp;headers:&nbsp;Request&nbsp;headers.</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnectionKey-request"><strong>request</strong></a>(self, action, params<font color="#909090">=None</font>, data<font color="#909090">=None</font>, headers<font color="#909090">=None</font>, method<font color="#909090">='GET'</font>, raw<font color="#909090">=False</font>)</dt><dd><tt>Request&nbsp;a&nbsp;given&nbsp;`action`.<br>
+&nbsp;<br>
+Basically&nbsp;a&nbsp;wrapper&nbsp;around&nbsp;the&nbsp;connection<br>
+object's&nbsp;`request`&nbsp;that&nbsp;does&nbsp;some&nbsp;helpful&nbsp;pre-processing.<br>
+&nbsp;<br>
+:type&nbsp;action:&nbsp;``str``<br>
+:param&nbsp;action:&nbsp;A&nbsp;path.&nbsp;This&nbsp;can&nbsp;include&nbsp;arguments.&nbsp;If&nbsp;included,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;any&nbsp;extra&nbsp;parameters&nbsp;are&nbsp;appended&nbsp;to&nbsp;the&nbsp;existing&nbsp;ones.<br>
+&nbsp;<br>
+:type&nbsp;params:&nbsp;``dict``<br>
+:param&nbsp;params:&nbsp;Optional&nbsp;mapping&nbsp;of&nbsp;additional&nbsp;parameters&nbsp;to&nbsp;send.&nbsp;If<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None,&nbsp;leave&nbsp;as&nbsp;an&nbsp;empty&nbsp;``dict``.<br>
+&nbsp;<br>
+:type&nbsp;data:&nbsp;``unicode``<br>
+:param&nbsp;data:&nbsp;A&nbsp;body&nbsp;of&nbsp;data&nbsp;to&nbsp;send&nbsp;with&nbsp;the&nbsp;request.<br>
+&nbsp;<br>
+:type&nbsp;headers:&nbsp;``dict``<br>
+:param&nbsp;headers:&nbsp;Extra&nbsp;headers&nbsp;to&nbsp;add&nbsp;to&nbsp;the&nbsp;request<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None,&nbsp;leave&nbsp;as&nbsp;an&nbsp;empty&nbsp;``dict``.<br>
+&nbsp;<br>
+:type&nbsp;method:&nbsp;``str``<br>
+:param&nbsp;method:&nbsp;An&nbsp;HTTP&nbsp;method&nbsp;such&nbsp;as&nbsp;"GET"&nbsp;or&nbsp;"POST".<br>
+&nbsp;<br>
+:type&nbsp;raw:&nbsp;``bool``<br>
+:param&nbsp;raw:&nbsp;True&nbsp;to&nbsp;perform&nbsp;a&nbsp;"raw"&nbsp;request&nbsp;aka&nbsp;only&nbsp;send&nbsp;the&nbsp;headers<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;use&nbsp;the&nbsp;rawResponseCls&nbsp;class.&nbsp;This&nbsp;is&nbsp;used&nbsp;with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;API&nbsp;when&nbsp;uploading&nbsp;a&nbsp;file.<br>
+&nbsp;<br>
+:return:&nbsp;An&nbsp;:class:`Response`&nbsp;instance.<br>
+:rtype:&nbsp;:class:`Response`&nbsp;instance</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnectionKey-reset_context"><strong>reset_context</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPConnectionKey-set_context"><strong>set_context</strong></a>(self, context)</dt></dl>
+
+<dl><dt><a name="FGCPConnectionKey-set_http_proxy"><strong>set_http_proxy</strong></a>(self, proxy_url)</dt><dd><tt>Set&nbsp;a&nbsp;HTTP&nbsp;proxy&nbsp;which&nbsp;will&nbsp;be&nbsp;used&nbsp;with&nbsp;this&nbsp;connection.<br>
+&nbsp;<br>
+:param&nbsp;proxy_url:&nbsp;Proxy&nbsp;URL&nbsp;(e.g.&nbsp;<a href="http://&lt;hostname&gt;:&lt;port">http://&lt;hostname&gt;:&lt;port</a>&gt;&nbsp;without<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://&lt;username&gt;:&lt;password&gt;@&lt;hostname&gt;:&lt;port">http://&lt;username&gt;:&lt;password&gt;@&lt;hostname&gt;:&lt;port</a>&gt;&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basic&nbsp;auth&nbsp;authentication&nbsp;information.<br>
+:type&nbsp;proxy_url:&nbsp;``str``</tt></dd></dl>
+
+<dl><dt><a name="FGCPConnectionKey-user_agent_append"><strong>user_agent_append</strong></a>(self, token)</dt><dd><tt>Append&nbsp;a&nbsp;token&nbsp;to&nbsp;a&nbsp;user&nbsp;agent&nbsp;string.<br>
+&nbsp;<br>
+Users&nbsp;of&nbsp;the&nbsp;library&nbsp;should&nbsp;call&nbsp;this&nbsp;to&nbsp;uniquely&nbsp;identify&nbsp;their<br>
+requests&nbsp;to&nbsp;a&nbsp;provider.<br>
+&nbsp;<br>
+:type&nbsp;token:&nbsp;``str``<br>
+:param&nbsp;token:&nbsp;Token&nbsp;to&nbsp;add&nbsp;to&nbsp;the&nbsp;user&nbsp;agent.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.common.base.html#Connection">libcloud.common.base.Connection</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="libcloud.common.base.html#Connection">libcloud.common.base.Connection</a>:<br>
+<dl><dt><strong>action</strong> = None</dl>
+
+<dl><dt><strong>allow_insecure</strong> = True</dl>
+
+<dl><dt><strong>backoff</strong> = None</dl>
+
+<dl><dt><strong>cache_busting</strong> = False</dl>
+
+<dl><dt><strong>conn_classes</strong> = (&lt;class 'libcloud.httplib_ssl.LibcloudHTTPConnection'&gt;, &lt;class 'libcloud.httplib_ssl.LibcloudHTTPSConnection'&gt;)</dl>
+
+<dl><dt><strong>connection</strong> = None</dl>
+
+<dl><dt><strong>driver</strong> = None</dl>
+
+<dl><dt><strong>host</strong> = '127.0.0.1'</dl>
+
+<dl><dt><strong>port</strong> = 443</dl>
+
+<dl><dt><strong>rawResponseCls</strong> = &lt;class 'libcloud.common.base.RawResponse'&gt;</dl>
+
+<dl><dt><strong>responseCls</strong> = &lt;class 'libcloud.common.base.Response'&gt;<dd><tt>A&nbsp;base&nbsp;Response&nbsp;class&nbsp;to&nbsp;derive&nbsp;from.</tt></dl>
+
+<dl><dt><strong>retry_delay</strong> = None</dl>
+
+<dl><dt><strong>secure</strong> = 1</dl>
+
+<dl><dt><strong>timeout</strong> = None</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPException">class <strong>FGCPException</strong></a>(<a href="libcloud.common.types.html#LibcloudError">libcloud.common.types.LibcloudError</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPException">FGCPException</a></dd>
+<dd><a href="libcloud.common.types.html#LibcloudError">libcloud.common.types.LibcloudError</a></dd>
+<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
+<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.common.types.html#LibcloudError">libcloud.common.types.LibcloudError</a>:<br>
+<dl><dt><a name="FGCPException-__init__"><strong>__init__</strong></a>(self, value, driver<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPException-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPException-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.common.types.html#LibcloudError">libcloud.common.types.LibcloudError</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#FGCPException-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><a name="FGCPException-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#FGCPException-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="FGCPException-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#FGCPException-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="FGCPException-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#FGCPException-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="FGCPException-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#FGCPException-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="FGCPException-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="FGCPException-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#FGCPException-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="FGCPException-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="FGCPException-__unicode__"><strong>__unicode__</strong></a>(...)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+<dl><dt><strong>message</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPFloatingIpAddress">class <strong>FGCPFloatingIpAddress</strong></a>(<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpAddress</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPFloatingIpAddress">FGCPFloatingIpAddress</a></dd>
+<dd><a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpAddress</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpAddress</a>:<br>
+<dl><dt><a name="FGCPFloatingIpAddress-__init__"><strong>__init__</strong></a>(self, id, ip_address, pool, node_id<font color="#909090">=None</font>, driver<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPFloatingIpAddress-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFloatingIpAddress-delete"><strong>delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;this&nbsp;floating&nbsp;IP<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpAddress</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPFloatingIpPool">class <strong>FGCPFloatingIpPool</strong></a>(<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpPool">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpPool</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPFloatingIpPool">FGCPFloatingIpPool</a></dd>
+<dd><a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpPool">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpPool</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpPool">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpPool</a>:<br>
+<dl><dt><a name="FGCPFloatingIpPool-__init__"><strong>__init__</strong></a>(self, name, connection)</dt></dl>
+
+<dl><dt><a name="FGCPFloatingIpPool-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPFloatingIpPool-create_floating_ip"><strong>create_floating_ip</strong></a>(self)</dt><dd><tt>Create&nbsp;new&nbsp;floating&nbsp;IP&nbsp;in&nbsp;the&nbsp;pool<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPFloatingIpPool-delete_floating_ip"><strong>delete_floating_ip</strong></a>(self, ip)</dt><dd><tt>Delete&nbsp;specified&nbsp;floating&nbsp;IP&nbsp;from&nbsp;the&nbsp;pool<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;floating&nbsp;IP&nbsp;to&nbsp;remove<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip::class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPFloatingIpPool-get_floating_ip"><strong>get_floating_ip</strong></a>(self, ip)</dt><dd><tt>Get&nbsp;specified&nbsp;floating&nbsp;IP&nbsp;from&nbsp;the&nbsp;pool<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;floating&nbsp;IP&nbsp;to&nbsp;get<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPFloatingIpPool-list_floating_ips"><strong>list_floating_ips</strong></a>(self)</dt><dd><tt>List&nbsp;floating&nbsp;IPs&nbsp;in&nbsp;the&nbsp;pool<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpPool">libcloud.compute.drivers.openstack.OpenStack_1_1_FloatingIpPool</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPNode">class <strong>FGCPNode</strong></a>(<a href="libcloud.compute.base.html#Node">libcloud.compute.base.Node</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPNode">FGCPNode</a></dd>
+<dd><a href="libcloud.compute.base.html#Node">libcloud.compute.base.Node</a></dd>
+<dd><a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#Node">libcloud.compute.base.Node</a>:<br>
+<dl><dt><a name="FGCPNode-__init__"><strong>__init__</strong></a>(self, id, name, state, public_ips, private_ips, driver, size<font color="#909090">=None</font>, image<font color="#909090">=None</font>, extra<font color="#909090">=None</font>)</dt><dd><tt>:param&nbsp;id:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;ID.<br>
+:type&nbsp;id:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;name.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;state:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;state.<br>
+:type&nbsp;state:&nbsp;:class:`libcloud.compute.types.NodeState`<br>
+&nbsp;<br>
+:param&nbsp;public_ips:&nbsp;Public&nbsp;IP&nbsp;addresses&nbsp;associated&nbsp;with&nbsp;this&nbsp;node.<br>
+:type&nbsp;public_ips:&nbsp;``list``<br>
+&nbsp;<br>
+:param&nbsp;private_ips:&nbsp;Private&nbsp;IP&nbsp;addresses&nbsp;associated&nbsp;with&nbsp;this&nbsp;node.<br>
+:type&nbsp;private_ips:&nbsp;``list``<br>
+&nbsp;<br>
+:param&nbsp;driver:&nbsp;Driver&nbsp;this&nbsp;node&nbsp;belongs&nbsp;to.<br>
+:type&nbsp;driver:&nbsp;:class:`.NodeDriver`<br>
+&nbsp;<br>
+:param&nbsp;size:&nbsp;Size&nbsp;of&nbsp;this&nbsp;node.&nbsp;(optional)<br>
+:type&nbsp;size:&nbsp;:class:`.NodeSize`<br>
+&nbsp;<br>
+:param&nbsp;image:&nbsp;Image&nbsp;of&nbsp;this&nbsp;node.&nbsp;(optional)<br>
+:type&nbsp;size:&nbsp;:class:`.<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`<br>
+&nbsp;<br>
+:param&nbsp;extra:&nbsp;Optional&nbsp;provider&nbsp;specific&nbsp;attributes&nbsp;associated&nbsp;with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;node.<br>
+:type&nbsp;extra:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNode-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPNode-destroy"><strong>destroy</strong></a>(self)</dt><dd><tt>Destroy&nbsp;this&nbsp;node<br>
+&nbsp;<br>
+:return:&nbsp;``bool``<br>
+&nbsp;<br>
+This&nbsp;calls&nbsp;the&nbsp;node's&nbsp;driver&nbsp;and&nbsp;destroys&nbsp;the&nbsp;node<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.types&nbsp;import&nbsp;NodeState<br>
+&gt;&gt;&gt;&nbsp;node&nbsp;=&nbsp;driver.create_node()<br>
+&gt;&gt;&gt;&nbsp;node.state&nbsp;==&nbsp;NodeState.RUNNING<br>
+True<br>
+&gt;&gt;&gt;&nbsp;node.<a href="#FGCPNode-destroy">destroy</a>()<br>
+True<br>
+&gt;&gt;&gt;&nbsp;node.state&nbsp;==&nbsp;NodeState.RUNNING<br>
+False</tt></dd></dl>
+
+<dl><dt><a name="FGCPNode-reboot"><strong>reboot</strong></a>(self)</dt><dd><tt>Reboot&nbsp;this&nbsp;node<br>
+&nbsp;<br>
+:return:&nbsp;``bool``<br>
+&nbsp;<br>
+This&nbsp;calls&nbsp;the&nbsp;node's&nbsp;driver&nbsp;and&nbsp;reboots&nbsp;the&nbsp;node<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;node&nbsp;=&nbsp;driver.create_node()<br>
+&gt;&gt;&gt;&nbsp;node.state&nbsp;==&nbsp;NodeState.RUNNING<br>
+True<br>
+&gt;&gt;&gt;&nbsp;node.state&nbsp;==&nbsp;NodeState.REBOOTING<br>
+False<br>
+&gt;&gt;&gt;&nbsp;node.<a href="#FGCPNode-reboot">reboot</a>()<br>
+True<br>
+&gt;&gt;&gt;&nbsp;node.state&nbsp;==&nbsp;NodeState.REBOOTING<br>
+True</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><a name="FGCPNode-get_uuid"><strong>get_uuid</strong></a>(self)</dt><dd><tt>Unique&nbsp;hash&nbsp;for&nbsp;a&nbsp;node,&nbsp;node&nbsp;image,&nbsp;or&nbsp;node&nbsp;size<br>
+&nbsp;<br>
+The&nbsp;hash&nbsp;is&nbsp;a&nbsp;function&nbsp;of&nbsp;an&nbsp;SHA1&nbsp;hash&nbsp;of&nbsp;the&nbsp;node,&nbsp;node&nbsp;image,<br>
+or&nbsp;node&nbsp;size's&nbsp;ID&nbsp;and&nbsp;its&nbsp;driver&nbsp;which&nbsp;means&nbsp;that&nbsp;it&nbsp;should&nbsp;be<br>
+unique&nbsp;between&nbsp;all&nbsp;objects&nbsp;of&nbsp;its&nbsp;type.<br>
+In&nbsp;some&nbsp;subclasses&nbsp;(e.g.&nbsp;GoGridNode)&nbsp;there&nbsp;is&nbsp;no&nbsp;ID<br>
+available&nbsp;so&nbsp;the&nbsp;public&nbsp;IP&nbsp;address&nbsp;is&nbsp;used.&nbsp;&nbsp;This&nbsp;means&nbsp;that,<br>
+unlike&nbsp;a&nbsp;properly&nbsp;done&nbsp;system&nbsp;UUID,&nbsp;the&nbsp;same&nbsp;UUID&nbsp;may&nbsp;mean&nbsp;a<br>
+different&nbsp;system&nbsp;install&nbsp;at&nbsp;a&nbsp;different&nbsp;time<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;node&nbsp;=&nbsp;driver.create_node()<br>
+&gt;&gt;&gt;&nbsp;node.<a href="#FGCPNode-get_uuid">get_uuid</a>()<br>
+'d3748461511d8b9b0e0bfa0d4d3383a619a2bb9f'<br>
+&nbsp;<br>
+Note,&nbsp;for&nbsp;example,&nbsp;that&nbsp;this&nbsp;example&nbsp;will&nbsp;always&nbsp;produce&nbsp;the<br>
+same&nbsp;UUID!<br>
+&nbsp;<br>
+:rtype:&nbsp;``str``</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>uuid</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPNodeDriver">class <strong>FGCPNodeDriver</strong></a>(<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_NodeDriver">libcloud.compute.drivers.openstack.OpenStack_1_1_NodeDriver</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>#&nbsp;Register&nbsp;FGCP&nbsp;as&nbsp;third&nbsp;party&nbsp;driver&nbsp;for&nbsp;libcloud<br>
+from&nbsp;libcloud.compute.providers&nbsp;import&nbsp;set_driver<br>
+from&nbsp;libcloud.compute.providers&nbsp;import&nbsp;get_driver<br>
+set_driver('fgcp',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'fgcp.libcloud.compute',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<a href="#FGCPNodeDriver">FGCPNodeDriver</a>')<br>
+cls&nbsp;=&nbsp;get_driver('fgcp')<br>
+&nbsp;<br>
+#&nbsp;Connect&nbsp;with&nbsp;your&nbsp;client&nbsp;certificate&nbsp;to&nbsp;region&nbsp;'uk'&nbsp;and&nbsp;work&nbsp;in&nbsp;location&nbsp;'Demo&nbsp;VSystem'<br>
+driver&nbsp;=&nbsp;cls('client.pem',&nbsp;region='uk',&nbsp;location='Demo&nbsp;VSystem')<br>
+&nbsp;<br>
+#regions&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_regions">list_regions</a>()<br>
+#locations&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_locations">list_locations</a>()<br>
+#nodes&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_nodes">list_nodes</a>()<br>
+#images&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_images">list_images</a>()<br>
+#sizes&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_sizes">list_sizes</a>()<br>
+#volumes&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_volumes">list_volumes</a>()<br>
+#for&nbsp;volume&nbsp;in&nbsp;volumes:<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;snapshots&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_volume_snapshots">list_volume_snapshots</a>(volume)<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;snapshots_and_backups&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-list_volume_snapshots">list_volume_snapshots</a>(volume,&nbsp;ex_include_backups=True)<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;backups&nbsp;=&nbsp;driver.<a href="#FGCPNodeDriver-ex_list_volume_backups">ex_list_volume_backups</a>(volume)<br>
+&nbsp;<br>
+&nbsp;<br>
+Requirements:&nbsp;this&nbsp;module&nbsp;uses&nbsp;tlslite.utils&nbsp;or&nbsp;gdata.tlslite.utils&nbsp;to&nbsp;create<br>
+the&nbsp;key&nbsp;signature,&nbsp;see&nbsp;https://pypi.python.org/pypi/tlslite-ng&nbsp;or<br>
+https://pypi.python.org/pypi/tlslite&nbsp;for&nbsp;download&nbsp;and&nbsp;installation<br>
+&nbsp;<br>
+Note:&nbsp;to&nbsp;convert&nbsp;your&nbsp;.p12&nbsp;or&nbsp;.pfx&nbsp;file&nbsp;to&nbsp;unencrypted&nbsp;PEM&nbsp;format,&nbsp;you&nbsp;can&nbsp;use<br>
+the&nbsp;following&nbsp;'openssl'&nbsp;command:<br>
+&nbsp;<br>
+openssl&nbsp;pkcs12&nbsp;-in&nbsp;UserCert.p12&nbsp;-out&nbsp;client.pem&nbsp;-nodes<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPNodeDriver">FGCPNodeDriver</a></dd>
+<dd><a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_NodeDriver">libcloud.compute.drivers.openstack.OpenStack_1_1_NodeDriver</a></dd>
+<dd><a href="libcloud.compute.drivers.openstack.html#OpenStackNodeDriver">libcloud.compute.drivers.openstack.OpenStackNodeDriver</a></dd>
+<dd><a href="libcloud.compute.base.html#NodeDriver">libcloud.compute.base.NodeDriver</a></dd>
+<dd><a href="libcloud.common.base.html#BaseDriver">libcloud.common.base.BaseDriver</a></dd>
+<dd><a href="libcloud.common.openstack.html#OpenStackDriverMixin">libcloud.common.openstack.OpenStackDriverMixin</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FGCPNodeDriver-__init__"><strong>__init__</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_volume_backups"><strong>ex_list_volume_backups</strong></a>(self, volume)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_images"><strong>list_images</strong></a>(self, location<font color="#909090">=None</font>, ex_only_active<font color="#909090">=True</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_locations"><strong>list_locations</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_nodes"><strong>list_nodes</strong></a>(self, ex_all_tenants<font color="#909090">=False</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_regions"><strong>list_regions</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_sizes"><strong>list_sizes</strong></a>(self, location<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_volume_snapshots"><strong>list_volume_snapshots</strong></a>(self, volume, ex_include_backups<font color="#909090">=False</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_volumes"><strong>list_volumes</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>connectionCls</strong> = &lt;class 'fgcp.libcloud.compute.FGCPConnectionKey'&gt;</dl>
+
+<dl><dt><strong>name</strong> = 'FGCP'</dl>
+
+<dl><dt><strong>type</strong> = 'fgcp'</dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_NodeDriver">libcloud.compute.drivers.openstack.OpenStack_1_1_NodeDriver</a>:<br>
+<dl><dt><a name="FGCPNodeDriver-create_image"><strong>create_image</strong></a>(self, node, name, metadata<font color="#909090">=None</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;image.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a><br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;The&nbsp;name&nbsp;for&nbsp;the&nbsp;new&nbsp;image.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata:&nbsp;Key&nbsp;and&nbsp;value&nbsp;pairs&nbsp;for&nbsp;metadata.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata:&nbsp;``dict``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-create_key_pair"><strong>create_key_pair</strong></a>(self, name)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-create_node"><strong>create_node</strong></a>(self, **kwargs)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;node<br>
+&nbsp;<br>
+@inherits:&nbsp;&nbsp;:class:`NodeDriver.create_node`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_keyname:&nbsp;&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;key&nbsp;pair<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_keyname:&nbsp;&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_userdata:&nbsp;String&nbsp;containing&nbsp;user&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;see<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://help.ubuntu.com/community/CloudInit<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_userdata:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_config_drive:&nbsp;Enable&nbsp;config&nbsp;drive<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;see<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://docs.openstack.org/grizzly/openstack-compute/admin/content/config-drive.html">http://docs.openstack.org/grizzly/openstack-compute/admin/content/config-drive.html</a><br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_config_drive:&nbsp;``bool``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_security_groups:&nbsp;List&nbsp;of&nbsp;security&nbsp;groups&nbsp;to&nbsp;assign&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_security_groups:&nbsp;``list``&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:class:`OpenStackSecurityGroup`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_metadata:&nbsp;Key/Value&nbsp;metadata&nbsp;to&nbsp;associate&nbsp;with&nbsp;a&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_metadata:&nbsp;``dict``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_files:&nbsp;&nbsp;&nbsp;File&nbsp;Path&nbsp;=&gt;&nbsp;File&nbsp;contents&nbsp;to&nbsp;create&nbsp;on<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;no&nbsp;&nbsp;de<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_files:&nbsp;&nbsp;&nbsp;``dict``<br>
+&nbsp;<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;networks:&nbsp;The&nbsp;server&nbsp;is&nbsp;launched&nbsp;into&nbsp;a&nbsp;set&nbsp;of&nbsp;Networks.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks:&nbsp;``list``&nbsp;of&nbsp;:class:`OpenStackNetwork`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_disk_config:&nbsp;Name&nbsp;of&nbsp;the&nbsp;disk&nbsp;configuration.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Can&nbsp;be&nbsp;either&nbsp;``AUTO``&nbsp;or&nbsp;``MANUAL``.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_disk_config:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_config_drive:&nbsp;If&nbsp;True&nbsp;enables&nbsp;metadata&nbsp;injection&nbsp;in&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;through&nbsp;a&nbsp;configuration&nbsp;drive.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_config_drive:&nbsp;``bool``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_admin_pass:&nbsp;The&nbsp;root&nbsp;password&nbsp;for&nbsp;the&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_admin_pass:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_availability_zone:&nbsp;Nova&nbsp;availability&nbsp;zone&nbsp;for&nbsp;the&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_availability_zone:&nbsp;``str``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-create_volume_snapshot"><strong>create_volume_snapshot</strong></a>(self, volume, name<font color="#909090">=None</font>, ex_description<font color="#909090">=None</font>, ex_force<font color="#909090">=True</font>)</dt><dd><tt>Create&nbsp;snapshot&nbsp;from&nbsp;volume<br>
+&nbsp;<br>
+:param&nbsp;volume:&nbsp;Instance&nbsp;of&nbsp;`<a href="libcloud.compute.base.html#StorageVolume">StorageVolume</a>`<br>
+:type&nbsp;&nbsp;volume:&nbsp;`<a href="libcloud.compute.base.html#StorageVolume">StorageVolume</a>`<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;snapshot&nbsp;(optional)<br>
+:type&nbsp;&nbsp;name:&nbsp;`str`<br>
+&nbsp;<br>
+:param&nbsp;ex_description:&nbsp;Description&nbsp;of&nbsp;the&nbsp;snapshot&nbsp;(optional)<br>
+:type&nbsp;&nbsp;ex_description:&nbsp;`str`<br>
+&nbsp;<br>
+:param&nbsp;ex_force:&nbsp;Specifies&nbsp;if&nbsp;we&nbsp;create&nbsp;a&nbsp;snapshot&nbsp;that&nbsp;is&nbsp;not&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state&nbsp;`available`.&nbsp;For&nbsp;example&nbsp;`in-use`.&nbsp;Defaults<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;True.&nbsp;(optional)<br>
+:type&nbsp;&nbsp;ex_force:&nbsp;`bool`<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-delete_image"><strong>delete_image</strong></a>(self, image)</dt><dd><tt>Delete&nbsp;a&nbsp;<a href="libcloud.compute.base.html#NodeImage">NodeImage</a><br>
+&nbsp;<br>
+@inherits:&nbsp;:class:`NodeDriver.delete_image`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image:&nbsp;image&nbsp;witch&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image:&nbsp;:class:`<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-delete_key_pair"><strong>delete_key_pair</strong></a>(self, key_pair)</dt><dd><tt>Delete&nbsp;a&nbsp;KeyPair.<br>
+&nbsp;<br>
+:param&nbsp;keypair:&nbsp;KeyPair&nbsp;to&nbsp;delete<br>
+:type&nbsp;&nbsp;keypair:&nbsp;:class:`OpenStackKeyPair`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-destroy_volume_snapshot"><strong>destroy_volume_snapshot</strong></a>(self, snapshot)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_attach_floating_ip_to_node"><strong>ex_attach_floating_ip_to_node</strong></a>(self, node, ip)</dt><dd><tt>Attach&nbsp;the&nbsp;floating&nbsp;IP&nbsp;to&nbsp;the&nbsp;node<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;floating&nbsp;IP&nbsp;to&nbsp;attach<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;``str``&nbsp;or&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_confirm_resize"><strong>ex_confirm_resize</strong></a>(self, node)</dt><dd><tt>Confirms&nbsp;a&nbsp;pending&nbsp;resize&nbsp;action.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;to&nbsp;resize.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_create_floating_ip"><strong>ex_create_floating_ip</strong></a>(self)</dt><dd><tt>Create&nbsp;new&nbsp;floating&nbsp;IP<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_create_keypair"><strong>ex_create_keypair</strong></a>(self, name)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;KeyPair<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;the&nbsp;new&nbsp;KeyPair<br>
+:type&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`OpenStackKeyPair`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_create_network"><strong>ex_create_network</strong></a>(self, name, cidr)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;Network<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;network&nbsp;which&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;cidr:&nbsp;cidr&nbsp;of&nbsp;network&nbsp;which&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;cidr:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`OpenStackNetwork`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_create_security_group"><strong>ex_create_security_group</strong></a>(self, name, description)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;Security&nbsp;Group<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;the&nbsp;new&nbsp;Security&nbsp;Group<br>
+:type&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;description:&nbsp;Description&nbsp;of&nbsp;the&nbsp;new&nbsp;Security&nbsp;Group<br>
+:type&nbsp;&nbsp;description:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`OpenStackSecurityGroup`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_create_security_group_rule"><strong>ex_create_security_group_rule</strong></a>(self, security_group, ip_protocol, from_port, to_port, cidr<font color="#909090">=None</font>, source_security_group<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;Rule&nbsp;in&nbsp;a&nbsp;Security&nbsp;Group<br>
+&nbsp;<br>
+:param&nbsp;security_group:&nbsp;Security&nbsp;Group&nbsp;in&nbsp;which&nbsp;to&nbsp;add&nbsp;the&nbsp;rule<br>
+:type&nbsp;&nbsp;security_group:&nbsp;:class:`OpenStackSecurityGroup`<br>
+&nbsp;<br>
+:param&nbsp;ip_protocol:&nbsp;Protocol&nbsp;to&nbsp;which&nbsp;this&nbsp;rule&nbsp;applies<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Examples:&nbsp;tcp,&nbsp;udp,&nbsp;...<br>
+:type&nbsp;&nbsp;ip_protocol:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;from_port:&nbsp;First&nbsp;port&nbsp;of&nbsp;the&nbsp;port&nbsp;range<br>
+:type&nbsp;&nbsp;from_port:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;to_port:&nbsp;Last&nbsp;port&nbsp;of&nbsp;the&nbsp;port&nbsp;range<br>
+:type&nbsp;&nbsp;to_port:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;cidr:&nbsp;CIDR&nbsp;notation&nbsp;of&nbsp;the&nbsp;source&nbsp;IP&nbsp;range&nbsp;for&nbsp;this&nbsp;rule<br>
+:type&nbsp;&nbsp;cidr:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;source_security_group:&nbsp;Existing&nbsp;Security&nbsp;Group&nbsp;to&nbsp;use&nbsp;as&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source&nbsp;(instead&nbsp;of&nbsp;CIDR)<br>
+:type&nbsp;&nbsp;source_security_group:&nbsp;L{OpenStackSecurityGroup<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`OpenStackSecurityGroupRule`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_create_snapshot"><strong>ex_create_snapshot</strong></a>(self, volume, name, description<font color="#909090">=None</font>, force<font color="#909090">=False</font>)</dt><dd><tt>Create&nbsp;a&nbsp;snapshot&nbsp;based&nbsp;off&nbsp;of&nbsp;a&nbsp;volume.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;volume:&nbsp;volume<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;volume:&nbsp;:class:`<a href="libcloud.compute.base.html#StorageVolume">StorageVolume</a>`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;New&nbsp;name&nbsp;for&nbsp;the&nbsp;volume&nbsp;snapshot<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;description:&nbsp;Description&nbsp;of&nbsp;the&nbsp;snapshot&nbsp;(optional)<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;force:&nbsp;Whether&nbsp;to&nbsp;force&nbsp;creation&nbsp;(optional)<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force:&nbsp;``bool``<br>
+&nbsp;<br>
+:rtype:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:class:`<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_delete_floating_ip"><strong>ex_delete_floating_ip</strong></a>(self, ip)</dt><dd><tt>Delete&nbsp;specified&nbsp;floating&nbsp;IP<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;floating&nbsp;IP&nbsp;to&nbsp;remove<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_delete_keypair"><strong>ex_delete_keypair</strong></a>(self, keypair)</dt><dd><tt>Delete&nbsp;a&nbsp;KeyPair.<br>
+&nbsp;<br>
+:param&nbsp;keypair:&nbsp;KeyPair&nbsp;to&nbsp;delete<br>
+:type&nbsp;&nbsp;keypair:&nbsp;:class:`OpenStackKeyPair`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_delete_network"><strong>ex_delete_network</strong></a>(self, network)</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;NodeNetorks&nbsp;that&nbsp;are&nbsp;available.<br>
+&nbsp;<br>
+:param&nbsp;network:&nbsp;Network&nbsp;which&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;network:&nbsp;:class:`OpenStackNetwork`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_delete_security_group"><strong>ex_delete_security_group</strong></a>(self, security_group)</dt><dd><tt>Delete&nbsp;a&nbsp;Security&nbsp;Group.<br>
+&nbsp;<br>
+:param&nbsp;security_group:&nbsp;Security&nbsp;Group&nbsp;should&nbsp;be&nbsp;deleted<br>
+:type&nbsp;&nbsp;security_group:&nbsp;:class:`OpenStackSecurityGroup`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_delete_security_group_rule"><strong>ex_delete_security_group_rule</strong></a>(self, rule)</dt><dd><tt>Delete&nbsp;a&nbsp;Rule&nbsp;from&nbsp;a&nbsp;Security&nbsp;Group.<br>
+&nbsp;<br>
+:param&nbsp;rule:&nbsp;Rule&nbsp;should&nbsp;be&nbsp;deleted<br>
+:type&nbsp;&nbsp;rule:&nbsp;:class:`OpenStackSecurityGroupRule`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_delete_snapshot"><strong>ex_delete_snapshot</strong></a>(self, snapshot)</dt><dd><tt>Delete&nbsp;a&nbsp;<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a><br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;snapshot:&nbsp;snapshot<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;snapshot:&nbsp;:class:`<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_detach_floating_ip_from_node"><strong>ex_detach_floating_ip_from_node</strong></a>(self, node, ip)</dt><dd><tt>Detach&nbsp;the&nbsp;floating&nbsp;IP&nbsp;from&nbsp;the&nbsp;node<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;floating&nbsp;IP&nbsp;to&nbsp;remove<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;``str``&nbsp;or&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_console_output"><strong>ex_get_console_output</strong></a>(self, node, length<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;console&nbsp;output<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length:&nbsp;Optional&nbsp;number&nbsp;of&nbsp;lines&nbsp;to&nbsp;fetch&nbsp;from&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console&nbsp;log<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length:&nbsp;``int``<br>
+&nbsp;<br>
+:return:&nbsp;Dictionary&nbsp;with&nbsp;the&nbsp;output<br>
+:rtype:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_floating_ip"><strong>ex_get_floating_ip</strong></a>(self, ip)</dt><dd><tt>Get&nbsp;specified&nbsp;floating&nbsp;IP<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;floating&nbsp;IP&nbsp;to&nbsp;get<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_metadata"><strong>ex_get_metadata</strong></a>(self, node)</dt><dd><tt>Get&nbsp;a&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>'s&nbsp;metadata.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a><br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:return:&nbsp;Key/Value&nbsp;metadata&nbsp;associated&nbsp;with&nbsp;node.<br>
+:rtype:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_metadata_for_node"><strong>ex_get_metadata_for_node</strong></a>(self, node)</dt><dd><tt>Return&nbsp;the&nbsp;metadata&nbsp;associated&nbsp;with&nbsp;the&nbsp;node.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;instance<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:return:&nbsp;A&nbsp;dictionary&nbsp;or&nbsp;other&nbsp;mapping&nbsp;of&nbsp;strings&nbsp;to&nbsp;strings,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;associating&nbsp;tag&nbsp;names&nbsp;with&nbsp;tag&nbsp;values.<br>
+:type&nbsp;tags:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_node_security_groups"><strong>ex_get_node_security_groups</strong></a>(self, node)</dt><dd><tt>Get&nbsp;Security&nbsp;Groups&nbsp;of&nbsp;the&nbsp;specified&nbsp;server.<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`OpenStackSecurityGroup`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_size"><strong>ex_get_size</strong></a>(self, size_id)</dt><dd><tt>Get&nbsp;a&nbsp;NodeSize<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_id:&nbsp;ID&nbsp;of&nbsp;the&nbsp;size&nbsp;which&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_id:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`NodeSize`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_import_keypair"><strong>ex_import_keypair</strong></a>(self, name, keyfile)</dt><dd><tt>Import&nbsp;a&nbsp;KeyPair&nbsp;from&nbsp;a&nbsp;file<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;the&nbsp;new&nbsp;KeyPair<br>
+:type&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;keyfile:&nbsp;Path&nbsp;to&nbsp;the&nbsp;public&nbsp;key&nbsp;file&nbsp;(in&nbsp;OpenSSH&nbsp;format)<br>
+:type&nbsp;&nbsp;keyfile:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`OpenStackKeyPair`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_import_keypair_from_string"><strong>ex_import_keypair_from_string</strong></a>(self, name, key_material)</dt><dd><tt>Import&nbsp;a&nbsp;KeyPair&nbsp;from&nbsp;a&nbsp;string<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;the&nbsp;new&nbsp;KeyPair<br>
+:type&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;key_material:&nbsp;Public&nbsp;key&nbsp;(in&nbsp;OpenSSH&nbsp;format)<br>
+:type&nbsp;&nbsp;key_material:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`OpenStackKeyPair`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_floating_ip_pools"><strong>ex_list_floating_ip_pools</strong></a>(self)</dt><dd><tt>List&nbsp;available&nbsp;floating&nbsp;IP&nbsp;pools<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpPool">OpenStack_1_1_FloatingIpPool</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_floating_ips"><strong>ex_list_floating_ips</strong></a>(self)</dt><dd><tt>List&nbsp;floating&nbsp;IPs<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_keypairs"><strong>ex_list_keypairs</strong></a>(self)</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;KeyPairs&nbsp;that&nbsp;are&nbsp;available.<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`OpenStackKeyPair`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_networks"><strong>ex_list_networks</strong></a>(self)</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;Networks&nbsp;that&nbsp;are&nbsp;available.<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`OpenStackNetwork`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_security_groups"><strong>ex_list_security_groups</strong></a>(self)</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;Security&nbsp;Groups&nbsp;that&nbsp;are&nbsp;available.<br>
+&nbsp;<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;:class:`OpenStackSecurityGroup`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_list_snapshots"><strong>ex_list_snapshots</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_pause_node"><strong>ex_pause_node</strong></a>(self, node)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_rebuild"><strong>ex_rebuild</strong></a>(self, node, image, **kwargs)</dt><dd><tt>Rebuild&nbsp;a&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;to&nbsp;rebuild.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image:&nbsp;New&nbsp;image&nbsp;to&nbsp;use.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image:&nbsp;:class:`<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_metadata:&nbsp;Key/Value&nbsp;metadata&nbsp;to&nbsp;associate&nbsp;with&nbsp;a&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_metadata:&nbsp;``dict``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_files:&nbsp;&nbsp;&nbsp;File&nbsp;Path&nbsp;=&gt;&nbsp;File&nbsp;contents&nbsp;to&nbsp;create&nbsp;on<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;no&nbsp;&nbsp;de<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_files:&nbsp;&nbsp;&nbsp;``dict``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_keyname:&nbsp;&nbsp;Name&nbsp;of&nbsp;existing&nbsp;public&nbsp;key&nbsp;to&nbsp;inject&nbsp;into<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_keyname:&nbsp;&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_userdata:&nbsp;String&nbsp;containing&nbsp;user&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;see<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://help.ubuntu.com/community/CloudInit<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_userdata:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_security_groups:&nbsp;List&nbsp;of&nbsp;security&nbsp;groups&nbsp;to&nbsp;assign&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_security_groups:&nbsp;``list``&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:class:`OpenStackSecurityGroup`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_disk_config:&nbsp;Name&nbsp;of&nbsp;the&nbsp;disk&nbsp;configuration.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Can&nbsp;be&nbsp;either&nbsp;``AUTO``&nbsp;or&nbsp;``MANUAL``.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_disk_config:&nbsp;``str``<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;ex_config_drive:&nbsp;If&nbsp;True&nbsp;enables&nbsp;metadata&nbsp;injection&nbsp;in&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;through&nbsp;a&nbsp;configuration&nbsp;drive.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_config_drive:&nbsp;``bool``<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_rescue"><strong>ex_rescue</strong></a>(self, node, password<font color="#909090">=None</font>)</dt><dd><tt>Rescue&nbsp;a&nbsp;node<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;password<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_resize"><strong>ex_resize</strong></a>(self, node, size)</dt><dd><tt>Change&nbsp;a&nbsp;node&nbsp;size.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;to&nbsp;resize.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size:&nbsp;:class:`NodeSize`<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size:&nbsp;New&nbsp;size&nbsp;to&nbsp;use.<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_resume_node"><strong>ex_resume_node</strong></a>(self, node)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_revert_resize"><strong>ex_revert_resize</strong></a>(self, node)</dt><dd><tt>Cancels&nbsp;and&nbsp;reverts&nbsp;a&nbsp;pending&nbsp;resize&nbsp;action.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;to&nbsp;resize.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_set_metadata"><strong>ex_set_metadata</strong></a>(self, node, metadata)</dt><dd><tt>Sets&nbsp;the&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>'s&nbsp;metadata.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a><br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata:&nbsp;Key/Value&nbsp;metadata&nbsp;to&nbsp;associate&nbsp;with&nbsp;a&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata:&nbsp;``dict``<br>
+&nbsp;<br>
+:rtype:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_set_password"><strong>ex_set_password</strong></a>(self, node, password)</dt><dd><tt>Changes&nbsp;the&nbsp;administrator&nbsp;password&nbsp;for&nbsp;a&nbsp;specified&nbsp;server.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;to&nbsp;rebuild.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;The&nbsp;administrator&nbsp;password.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_set_server_name"><strong>ex_set_server_name</strong></a>(self, node, name)</dt><dd><tt>Sets&nbsp;the&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>'s&nbsp;name.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a><br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;server.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_suspend_node"><strong>ex_suspend_node</strong></a>(self, node)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_unpause_node"><strong>ex_unpause_node</strong></a>(self, node)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_unrescue"><strong>ex_unrescue</strong></a>(self, node)</dt><dd><tt>Unrescue&nbsp;a&nbsp;node<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_update_node"><strong>ex_update_node</strong></a>(self, node, **node_updates)</dt><dd><tt>Update&nbsp;the&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>'s&nbsp;editable&nbsp;attributes.&nbsp;&nbsp;The&nbsp;OpenStack&nbsp;API&nbsp;currently<br>
+supports&nbsp;editing&nbsp;name&nbsp;and&nbsp;IPv4/IPv6&nbsp;access&nbsp;addresses.<br>
+&nbsp;<br>
+The&nbsp;driver&nbsp;currently&nbsp;only&nbsp;supports&nbsp;updating&nbsp;the&nbsp;node&nbsp;name.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a><br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:keyword&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;&nbsp;&nbsp;New&nbsp;name&nbsp;for&nbsp;the&nbsp;server<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;&nbsp;&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-get_image"><strong>get_image</strong></a>(self, image_id)</dt><dd><tt>Get&nbsp;a&nbsp;<a href="libcloud.compute.base.html#NodeImage">NodeImage</a><br>
+&nbsp;<br>
+@inherits:&nbsp;:class:`NodeDriver.get_image`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image_id:&nbsp;ID&nbsp;of&nbsp;the&nbsp;image&nbsp;which&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image_id:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-get_key_pair"><strong>get_key_pair</strong></a>(self, name)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-import_key_pair_from_string"><strong>import_key_pair_from_string</strong></a>(self, name, key_material)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-list_key_pairs"><strong>list_key_pairs</strong></a>(self)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_NodeDriver">libcloud.compute.drivers.openstack.OpenStack_1_1_NodeDriver</a>:<br>
+<dl><dt><strong>features</strong> = {'create_node': ['generates_password']}</dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStackNodeDriver">libcloud.compute.drivers.openstack.OpenStackNodeDriver</a>:<br>
+<dl><dt><a name="FGCPNodeDriver-attach_volume"><strong>attach_volume</strong></a>(self, node, volume, device<font color="#909090">='auto'</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-create_volume"><strong>create_volume</strong></a>(self, size, name, location<font color="#909090">=None</font>, snapshot<font color="#909090">=None</font>, ex_volume_type<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;volume.<br>
+&nbsp;<br>
+:param&nbsp;size:&nbsp;Size&nbsp;of&nbsp;volume&nbsp;in&nbsp;gigabytes&nbsp;(required)<br>
+:type&nbsp;size:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;the&nbsp;volume&nbsp;to&nbsp;be&nbsp;created<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;location:&nbsp;Which&nbsp;data&nbsp;center&nbsp;to&nbsp;create&nbsp;a&nbsp;volume&nbsp;in.&nbsp;If<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;empty,&nbsp;undefined&nbsp;behavior&nbsp;will&nbsp;be&nbsp;selected.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(optional)<br>
+:type&nbsp;location:&nbsp;:class:`.<a href="libcloud.compute.base.html#NodeLocation">NodeLocation</a>`<br>
+&nbsp;<br>
+:param&nbsp;snapshot:&nbsp;&nbsp;Snapshot&nbsp;from&nbsp;which&nbsp;to&nbsp;create&nbsp;the&nbsp;new<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;volume.&nbsp;&nbsp;(optional)<br>
+:type&nbsp;snapshot:&nbsp;&nbsp;:class:`.<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>`<br>
+&nbsp;<br>
+:param&nbsp;ex_volume_type:&nbsp;What&nbsp;kind&nbsp;of&nbsp;volume&nbsp;to&nbsp;create.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(optional)<br>
+:type&nbsp;ex_volume_type:&nbsp;``str``<br>
+&nbsp;<br>
+:return:&nbsp;The&nbsp;newly&nbsp;created&nbsp;volume.<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#StorageVolume">StorageVolume</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-destroy_node"><strong>destroy_node</strong></a>(self, node)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-destroy_volume"><strong>destroy_volume</strong></a>(self, volume)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-detach_volume"><strong>detach_volume</strong></a>(self, volume, ex_node<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_node_details"><strong>ex_get_node_details</strong></a>(self, node_id)</dt><dd><tt>Lists&nbsp;details&nbsp;of&nbsp;the&nbsp;specified&nbsp;server.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_id:&nbsp;ID&nbsp;of&nbsp;the&nbsp;node&nbsp;which&nbsp;should&nbsp;be&nbsp;used<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_id:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_get_volume"><strong>ex_get_volume</strong></a>(self, volumeId)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_hard_reboot_node"><strong>ex_hard_reboot_node</strong></a>(self, node)</dt><dd><tt>Hard&nbsp;reboots&nbsp;the&nbsp;specified&nbsp;server<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_soft_reboot_node"><strong>ex_soft_reboot_node</strong></a>(self, node)</dt><dd><tt>Soft&nbsp;reboots&nbsp;the&nbsp;specified&nbsp;server<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;&nbsp;node<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-reboot_node"><strong>reboot_node</strong></a>(self, node)</dt></dl>
+
+<hr>
+Static methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStackNodeDriver">libcloud.compute.drivers.openstack.OpenStackNodeDriver</a>:<br>
+<dl><dt><a name="FGCPNodeDriver-__new__"><strong>__new__</strong></a>(cls, key, secret<font color="#909090">=None</font>, secure<font color="#909090">=True</font>, host<font color="#909090">=None</font>, port<font color="#909090">=None</font>, api_version<font color="#909090">='1.1'</font>, **kwargs)</dt></dl>
+
+<hr>
+Data and other attributes inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStackNodeDriver">libcloud.compute.drivers.openstack.OpenStackNodeDriver</a>:<br>
+<dl><dt><strong>NODE_STATE_MAP</strong> = {'ACTIVE': 0, 'BUILD': 3, 'DELETED': 2, 'DELETE_IP': 3, 'ERROR': 7, 'HARD_REBOOT': 1, 'PASSWORD': 3, 'PREP_RESIZE': 3, 'QUEUE_RESIZE': 3, 'REBOOT': 1, ...}</dl>
+
+<dl><dt><strong>SNAPSHOT_STATE_MAP</strong> = {'available': 0, 'creating': 2, 'deleting': 3, 'error': 1, 'error_restoring': 1, 'restoring': 4}</dl>
+
+<dl><dt><strong>VOLUME_STATE_MAP</strong> = {'attaching': 'attaching', 'available': 'available', 'backing-up': 'backup', 'creating': 'creating', 'deleting': 'deleting', 'error': 'error', 'error_deleting': 'error', 'error_extending': 'error', 'error_restoring': 'error', 'in-use': 'in_use', ...}</dl>
+
+<dl><dt><strong>api_name</strong> = 'openstack'</dl>
+
+<dl><dt><strong>website</strong> = 'http://openstack.org/'</dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#NodeDriver">libcloud.compute.base.NodeDriver</a>:<br>
+<dl><dt><a name="FGCPNodeDriver-copy_image"><strong>copy_image</strong></a>(self, source_region, node_image, name, description<font color="#909090">=None</font>)</dt><dd><tt>Copies&nbsp;an&nbsp;image&nbsp;from&nbsp;a&nbsp;source&nbsp;region&nbsp;to&nbsp;the&nbsp;current&nbsp;region.<br>
+&nbsp;<br>
+:param&nbsp;source_region:&nbsp;Region&nbsp;to&nbsp;copy&nbsp;the&nbsp;node&nbsp;from.<br>
+:type&nbsp;source_region:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;node_image:&nbsp;<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>&nbsp;to&nbsp;copy.<br>
+:type&nbsp;node_image:&nbsp;:class:`.<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`:<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;name&nbsp;for&nbsp;new&nbsp;image.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;description:&nbsp;description&nbsp;for&nbsp;new&nbsp;image.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`.<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`:<br>
+:return:&nbsp;<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>&nbsp;instance&nbsp;on&nbsp;success.</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-deploy_node"><strong>deploy_node</strong></a>(self, **kwargs)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;node,&nbsp;and&nbsp;start&nbsp;deployment.<br>
+&nbsp;<br>
+In&nbsp;order&nbsp;to&nbsp;be&nbsp;able&nbsp;to&nbsp;SSH&nbsp;into&nbsp;a&nbsp;created&nbsp;node&nbsp;access&nbsp;credentials&nbsp;are<br>
+required.<br>
+&nbsp;<br>
+A&nbsp;user&nbsp;can&nbsp;pass&nbsp;either&nbsp;a&nbsp;:class:`.NodeAuthPassword`&nbsp;or<br>
+:class:`.NodeAuthSSHKey`&nbsp;to&nbsp;the&nbsp;``auth``&nbsp;argument.&nbsp;If&nbsp;the<br>
+``create_node``&nbsp;implementation&nbsp;supports&nbsp;that&nbsp;kind&nbsp;if&nbsp;credential&nbsp;(as<br>
+declared&nbsp;in&nbsp;``self.<strong>features</strong>['create_node']``)&nbsp;then&nbsp;it&nbsp;is&nbsp;passed&nbsp;on&nbsp;to<br>
+``create_node``.&nbsp;Otherwise&nbsp;it&nbsp;is&nbsp;not&nbsp;passed&nbsp;on&nbsp;to&nbsp;``create_node``&nbsp;and<br>
+it&nbsp;is&nbsp;only&nbsp;used&nbsp;for&nbsp;authentication.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;``auth``&nbsp;parameter&nbsp;is&nbsp;not&nbsp;supplied&nbsp;but&nbsp;the&nbsp;driver&nbsp;declares&nbsp;it<br>
+supports&nbsp;``generates_password``&nbsp;then&nbsp;the&nbsp;password&nbsp;returned&nbsp;by<br>
+``create_node``&nbsp;will&nbsp;be&nbsp;used&nbsp;to&nbsp;SSH&nbsp;into&nbsp;the&nbsp;server.<br>
+&nbsp;<br>
+Finally,&nbsp;if&nbsp;the&nbsp;``ssh_key_file``&nbsp;is&nbsp;supplied&nbsp;that&nbsp;key&nbsp;will&nbsp;be&nbsp;used&nbsp;to<br>
+SSH&nbsp;into&nbsp;the&nbsp;server.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;may&nbsp;raise&nbsp;a&nbsp;:class:`DeploymentException`,&nbsp;if&nbsp;a<br>
+create_node&nbsp;call&nbsp;was&nbsp;successful,&nbsp;but&nbsp;there&nbsp;is&nbsp;a&nbsp;later&nbsp;error&nbsp;(like&nbsp;SSH<br>
+failing&nbsp;or&nbsp;timing&nbsp;out).&nbsp;&nbsp;This&nbsp;exception&nbsp;includes&nbsp;a&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;object&nbsp;which<br>
+you&nbsp;may&nbsp;want&nbsp;to&nbsp;destroy&nbsp;if&nbsp;incomplete&nbsp;deployments&nbsp;are&nbsp;not&nbsp;desirable.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.deployment&nbsp;import&nbsp;ScriptDeployment<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.deployment&nbsp;import&nbsp;MultiStepDeployment<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.base&nbsp;import&nbsp;NodeAuthSSHKey<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;key&nbsp;=&nbsp;NodeAuthSSHKey('...')&nbsp;#&nbsp;read&nbsp;from&nbsp;file<br>
+&gt;&gt;&gt;&nbsp;script&nbsp;=&nbsp;ScriptDeployment("yum&nbsp;-y&nbsp;install&nbsp;emacs&nbsp;strace&nbsp;tcpdump")<br>
+&gt;&gt;&gt;&nbsp;msd&nbsp;=&nbsp;MultiStepDeployment([key,&nbsp;script])<br>
+&gt;&gt;&gt;&nbsp;def&nbsp;d():<br>
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver.<a href="#FGCPNodeDriver-deploy_node">deploy_node</a>(deploy=msd)<br>
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except&nbsp;NotImplementedError:<br>
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;("not&nbsp;implemented&nbsp;for&nbsp;dummy&nbsp;driver")<br>
+&gt;&gt;&gt;&nbsp;d()<br>
+not&nbsp;implemented&nbsp;for&nbsp;dummy&nbsp;driver<br>
+&nbsp;<br>
+Deploy&nbsp;node&nbsp;is&nbsp;typically&nbsp;not&nbsp;overridden&nbsp;in&nbsp;subclasses.&nbsp;&nbsp;The<br>
+existing&nbsp;implementation&nbsp;should&nbsp;be&nbsp;able&nbsp;to&nbsp;handle&nbsp;most&nbsp;such.<br>
+&nbsp;<br>
+:param&nbsp;deploy:&nbsp;Deployment&nbsp;to&nbsp;run&nbsp;once&nbsp;machine&nbsp;is&nbsp;online&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;available&nbsp;to&nbsp;SSH.<br>
+:type&nbsp;deploy:&nbsp;:class:`Deployment`<br>
+&nbsp;<br>
+:param&nbsp;ssh_username:&nbsp;Optional&nbsp;name&nbsp;of&nbsp;the&nbsp;account&nbsp;which&nbsp;is&nbsp;used<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;connecting&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SSH&nbsp;server&nbsp;(default&nbsp;is&nbsp;root)<br>
+:type&nbsp;ssh_username:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;ssh_alternate_usernames:&nbsp;Optional&nbsp;list&nbsp;of&nbsp;ssh&nbsp;usernames&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;to&nbsp;connect&nbsp;with&nbsp;if&nbsp;using&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default&nbsp;one&nbsp;fails<br>
+:type&nbsp;ssh_alternate_usernames:&nbsp;``list``<br>
+&nbsp;<br>
+:param&nbsp;ssh_port:&nbsp;Optional&nbsp;SSH&nbsp;server&nbsp;port&nbsp;(default&nbsp;is&nbsp;22)<br>
+:type&nbsp;ssh_port:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;ssh_timeout:&nbsp;Optional&nbsp;SSH&nbsp;connection&nbsp;timeout&nbsp;in&nbsp;seconds<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;is&nbsp;10)<br>
+:type&nbsp;ssh_timeout:&nbsp;``float``<br>
+&nbsp;<br>
+:param&nbsp;auth:&nbsp;&nbsp;&nbsp;Initial&nbsp;authentication&nbsp;information&nbsp;for&nbsp;the&nbsp;node<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(optional)<br>
+:type&nbsp;auth:&nbsp;&nbsp;&nbsp;:class:`.NodeAuthSSHKey`&nbsp;or&nbsp;:class:`NodeAuthPassword`<br>
+&nbsp;<br>
+:param&nbsp;ssh_key:&nbsp;A&nbsp;path&nbsp;(or&nbsp;paths)&nbsp;to&nbsp;an&nbsp;SSH&nbsp;private&nbsp;key&nbsp;with&nbsp;which<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;attempt&nbsp;to&nbsp;authenticate.&nbsp;(optional)<br>
+:type&nbsp;ssh_key:&nbsp;``str``&nbsp;or&nbsp;``list``&nbsp;of&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;timeout:&nbsp;How&nbsp;many&nbsp;seconds&nbsp;to&nbsp;wait&nbsp;before&nbsp;timing&nbsp;out.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;is&nbsp;600)<br>
+:type&nbsp;timeout:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;max_tries:&nbsp;How&nbsp;many&nbsp;times&nbsp;to&nbsp;retry&nbsp;if&nbsp;a&nbsp;deployment&nbsp;fails<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;before&nbsp;giving&nbsp;up&nbsp;(default&nbsp;is&nbsp;3)<br>
+:type&nbsp;max_tries:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;ssh_interface:&nbsp;The&nbsp;interface&nbsp;to&nbsp;wait&nbsp;for.&nbsp;Default&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'public_ips',&nbsp;other&nbsp;option&nbsp;is&nbsp;'private_ips'.<br>
+:type&nbsp;ssh_interface:&nbsp;``str``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-import_key_pair_from_file"><strong>import_key_pair_from_file</strong></a>(self, name, key_file_path)</dt><dd><tt>Import&nbsp;a&nbsp;new&nbsp;public&nbsp;key&nbsp;from&nbsp;string.<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Key&nbsp;pair&nbsp;name.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;key_file_path:&nbsp;Path&nbsp;to&nbsp;the&nbsp;public&nbsp;key&nbsp;file.<br>
+:type&nbsp;key_file_path:&nbsp;``str``<br>
+&nbsp;<br>
+:rtype:&nbsp;:class:`.KeyPair`&nbsp;object</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeDriver-wait_until_running"><strong>wait_until_running</strong></a>(self, nodes, wait_period<font color="#909090">=3</font>, timeout<font color="#909090">=600</font>, ssh_interface<font color="#909090">='public_ips'</font>, force_ipv4<font color="#909090">=True</font>, ex_list_nodes_kwargs<font color="#909090">=None</font>)</dt><dd><tt>Block&nbsp;until&nbsp;the&nbsp;provided&nbsp;nodes&nbsp;are&nbsp;considered&nbsp;running.<br>
+&nbsp;<br>
+<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;is&nbsp;considered&nbsp;running&nbsp;when&nbsp;it's&nbsp;state&nbsp;is&nbsp;"running"&nbsp;and&nbsp;when&nbsp;it&nbsp;has<br>
+at&nbsp;least&nbsp;one&nbsp;IP&nbsp;address&nbsp;assigned.<br>
+&nbsp;<br>
+:param&nbsp;nodes:&nbsp;List&nbsp;of&nbsp;nodes&nbsp;to&nbsp;wait&nbsp;for.<br>
+:type&nbsp;nodes:&nbsp;``list``&nbsp;of&nbsp;:class:`.<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;wait_period:&nbsp;How&nbsp;many&nbsp;seconds&nbsp;to&nbsp;wait&nbsp;between&nbsp;each&nbsp;loop<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iteration.&nbsp;(default&nbsp;is&nbsp;3)<br>
+:type&nbsp;wait_period:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;timeout:&nbsp;How&nbsp;many&nbsp;seconds&nbsp;to&nbsp;wait&nbsp;before&nbsp;giving&nbsp;up.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;is&nbsp;600)<br>
+:type&nbsp;timeout:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;ssh_interface:&nbsp;Which&nbsp;attribute&nbsp;on&nbsp;the&nbsp;node&nbsp;to&nbsp;use&nbsp;to&nbsp;obtain<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;an&nbsp;IP&nbsp;address.&nbsp;Valid&nbsp;options:&nbsp;public_ips,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_ips.&nbsp;Default&nbsp;is&nbsp;public_ips.<br>
+:type&nbsp;ssh_interface:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;force_ipv4:&nbsp;Ignore&nbsp;IPv6&nbsp;addresses&nbsp;(default&nbsp;is&nbsp;True).<br>
+:type&nbsp;force_ipv4:&nbsp;``bool``<br>
+&nbsp;<br>
+:param&nbsp;ex_list_nodes_kwargs:&nbsp;Optional&nbsp;driver-specific&nbsp;keyword&nbsp;arguments<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;which&nbsp;are&nbsp;passed&nbsp;to&nbsp;the&nbsp;``list_nodes``<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method.<br>
+:type&nbsp;ex_list_nodes_kwargs:&nbsp;``dict``<br>
+&nbsp;<br>
+:return:&nbsp;``[(<a href="libcloud.compute.base.html#Node">Node</a>,&nbsp;ip_addresses)]``&nbsp;list&nbsp;of&nbsp;tuple&nbsp;of&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;instance&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list&nbsp;of&nbsp;ip_address&nbsp;on&nbsp;success.<br>
+:rtype:&nbsp;``list``&nbsp;of&nbsp;``tuple``</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="libcloud.compute.base.html#NodeDriver">libcloud.compute.base.NodeDriver</a>:<br>
+<dl><dt><strong>port</strong> = None</dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.common.base.html#BaseDriver">libcloud.common.base.BaseDriver</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.common.openstack.html#OpenStackDriverMixin">libcloud.common.openstack.OpenStackDriverMixin</a>:<br>
+<dl><dt><a name="FGCPNodeDriver-openstack_connection_kwargs"><strong>openstack_connection_kwargs</strong></a>(self)</dt><dd><tt>:rtype:&nbsp;``dict``</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPNodeImage">class <strong>FGCPNodeImage</strong></a>(<a href="libcloud.compute.base.html#NodeImage">libcloud.compute.base.NodeImage</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPNodeImage">FGCPNodeImage</a></dd>
+<dd><a href="libcloud.compute.base.html#NodeImage">libcloud.compute.base.NodeImage</a></dd>
+<dd><a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#NodeImage">libcloud.compute.base.NodeImage</a>:<br>
+<dl><dt><a name="FGCPNodeImage-__init__"><strong>__init__</strong></a>(self, id, name, driver, extra<font color="#909090">=None</font>)</dt><dd><tt>:param&nbsp;id:&nbsp;Image&nbsp;ID.<br>
+:type&nbsp;id:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Image&nbsp;name.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;driver:&nbsp;Driver&nbsp;this&nbsp;image&nbsp;belongs&nbsp;to.<br>
+:type&nbsp;driver:&nbsp;:class:`.NodeDriver`<br>
+&nbsp;<br>
+:param&nbsp;extra:&nbsp;Optional&nbsp;provided&nbsp;specific&nbsp;attributes&nbsp;associated&nbsp;with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;image.<br>
+:type&nbsp;extra:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeImage-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><a name="FGCPNodeImage-get_uuid"><strong>get_uuid</strong></a>(self)</dt><dd><tt>Unique&nbsp;hash&nbsp;for&nbsp;a&nbsp;node,&nbsp;node&nbsp;image,&nbsp;or&nbsp;node&nbsp;size<br>
+&nbsp;<br>
+The&nbsp;hash&nbsp;is&nbsp;a&nbsp;function&nbsp;of&nbsp;an&nbsp;SHA1&nbsp;hash&nbsp;of&nbsp;the&nbsp;node,&nbsp;node&nbsp;image,<br>
+or&nbsp;node&nbsp;size's&nbsp;ID&nbsp;and&nbsp;its&nbsp;driver&nbsp;which&nbsp;means&nbsp;that&nbsp;it&nbsp;should&nbsp;be<br>
+unique&nbsp;between&nbsp;all&nbsp;objects&nbsp;of&nbsp;its&nbsp;type.<br>
+In&nbsp;some&nbsp;subclasses&nbsp;(e.g.&nbsp;GoGridNode)&nbsp;there&nbsp;is&nbsp;no&nbsp;ID<br>
+available&nbsp;so&nbsp;the&nbsp;public&nbsp;IP&nbsp;address&nbsp;is&nbsp;used.&nbsp;&nbsp;This&nbsp;means&nbsp;that,<br>
+unlike&nbsp;a&nbsp;properly&nbsp;done&nbsp;system&nbsp;UUID,&nbsp;the&nbsp;same&nbsp;UUID&nbsp;may&nbsp;mean&nbsp;a<br>
+different&nbsp;system&nbsp;install&nbsp;at&nbsp;a&nbsp;different&nbsp;time<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;node&nbsp;=&nbsp;driver.create_node()<br>
+&gt;&gt;&gt;&nbsp;node.<a href="#FGCPNodeImage-get_uuid">get_uuid</a>()<br>
+'d3748461511d8b9b0e0bfa0d4d3383a619a2bb9f'<br>
+&nbsp;<br>
+Note,&nbsp;for&nbsp;example,&nbsp;that&nbsp;this&nbsp;example&nbsp;will&nbsp;always&nbsp;produce&nbsp;the<br>
+same&nbsp;UUID!<br>
+&nbsp;<br>
+:rtype:&nbsp;``str``</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>uuid</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPNodeLocation">class <strong>FGCPNodeLocation</strong></a>(<a href="libcloud.compute.base.html#NodeLocation">libcloud.compute.base.NodeLocation</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPNodeLocation">FGCPNodeLocation</a></dd>
+<dd><a href="libcloud.compute.base.html#NodeLocation">libcloud.compute.base.NodeLocation</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#NodeLocation">libcloud.compute.base.NodeLocation</a>:<br>
+<dl><dt><a name="FGCPNodeLocation-__init__"><strong>__init__</strong></a>(self, id, name, country, driver)</dt><dd><tt>:param&nbsp;id:&nbsp;Location&nbsp;ID.<br>
+:type&nbsp;id:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Location&nbsp;name.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;country:&nbsp;Location&nbsp;country.<br>
+:type&nbsp;country:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;driver:&nbsp;Driver&nbsp;this&nbsp;location&nbsp;belongs&nbsp;to.<br>
+:type&nbsp;driver:&nbsp;:class:`.NodeDriver`</tt></dd></dl>
+
+<dl><dt><a name="FGCPNodeLocation-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.base.html#NodeLocation">libcloud.compute.base.NodeLocation</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPNodeSize">class <strong>FGCPNodeSize</strong></a>(<a href="libcloud.compute.drivers.openstack.html#OpenStackNodeSize">libcloud.compute.drivers.openstack.OpenStackNodeSize</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPNodeSize">FGCPNodeSize</a></dd>
+<dd><a href="libcloud.compute.drivers.openstack.html#OpenStackNodeSize">libcloud.compute.drivers.openstack.OpenStackNodeSize</a></dd>
+<dd><a href="libcloud.compute.base.html#NodeSize">libcloud.compute.base.NodeSize</a></dd>
+<dd><a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStackNodeSize">libcloud.compute.drivers.openstack.OpenStackNodeSize</a>:<br>
+<dl><dt><a name="FGCPNodeSize-__init__"><strong>__init__</strong></a>(self, id, name, ram, disk, bandwidth, price, driver, vcpus<font color="#909090">=None</font>, ephemeral_disk<font color="#909090">=None</font>, swap<font color="#909090">=None</font>, extra<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="FGCPNodeSize-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><a name="FGCPNodeSize-get_uuid"><strong>get_uuid</strong></a>(self)</dt><dd><tt>Unique&nbsp;hash&nbsp;for&nbsp;a&nbsp;node,&nbsp;node&nbsp;image,&nbsp;or&nbsp;node&nbsp;size<br>
+&nbsp;<br>
+The&nbsp;hash&nbsp;is&nbsp;a&nbsp;function&nbsp;of&nbsp;an&nbsp;SHA1&nbsp;hash&nbsp;of&nbsp;the&nbsp;node,&nbsp;node&nbsp;image,<br>
+or&nbsp;node&nbsp;size's&nbsp;ID&nbsp;and&nbsp;its&nbsp;driver&nbsp;which&nbsp;means&nbsp;that&nbsp;it&nbsp;should&nbsp;be<br>
+unique&nbsp;between&nbsp;all&nbsp;objects&nbsp;of&nbsp;its&nbsp;type.<br>
+In&nbsp;some&nbsp;subclasses&nbsp;(e.g.&nbsp;GoGridNode)&nbsp;there&nbsp;is&nbsp;no&nbsp;ID<br>
+available&nbsp;so&nbsp;the&nbsp;public&nbsp;IP&nbsp;address&nbsp;is&nbsp;used.&nbsp;&nbsp;This&nbsp;means&nbsp;that,<br>
+unlike&nbsp;a&nbsp;properly&nbsp;done&nbsp;system&nbsp;UUID,&nbsp;the&nbsp;same&nbsp;UUID&nbsp;may&nbsp;mean&nbsp;a<br>
+different&nbsp;system&nbsp;install&nbsp;at&nbsp;a&nbsp;different&nbsp;time<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;node&nbsp;=&nbsp;driver.create_node()<br>
+&gt;&gt;&gt;&nbsp;node.<a href="#FGCPNodeSize-get_uuid">get_uuid</a>()<br>
+'d3748461511d8b9b0e0bfa0d4d3383a619a2bb9f'<br>
+&nbsp;<br>
+Note,&nbsp;for&nbsp;example,&nbsp;that&nbsp;this&nbsp;example&nbsp;will&nbsp;always&nbsp;produce&nbsp;the<br>
+same&nbsp;UUID!<br>
+&nbsp;<br>
+:rtype:&nbsp;``str``</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>uuid</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPStorageVolume">class <strong>FGCPStorageVolume</strong></a>(<a href="libcloud.compute.base.html#StorageVolume">libcloud.compute.base.StorageVolume</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPStorageVolume">FGCPStorageVolume</a></dd>
+<dd><a href="libcloud.compute.base.html#StorageVolume">libcloud.compute.base.StorageVolume</a></dd>
+<dd><a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#StorageVolume">libcloud.compute.base.StorageVolume</a>:<br>
+<dl><dt><a name="FGCPStorageVolume-__init__"><strong>__init__</strong></a>(self, id, name, size, driver, state<font color="#909090">=None</font>, extra<font color="#909090">=None</font>)</dt><dd><tt>:param&nbsp;id:&nbsp;Storage&nbsp;volume&nbsp;ID.<br>
+:type&nbsp;id:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;name:&nbsp;Storage&nbsp;volume&nbsp;name.<br>
+:type&nbsp;name:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;size:&nbsp;Size&nbsp;of&nbsp;this&nbsp;volume&nbsp;(in&nbsp;GB).<br>
+:type&nbsp;size:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;driver:&nbsp;Driver&nbsp;this&nbsp;image&nbsp;belongs&nbsp;to.<br>
+:type&nbsp;driver:&nbsp;:class:`.NodeDriver`<br>
+&nbsp;<br>
+:param&nbsp;state:&nbsp;Optional&nbsp;state&nbsp;of&nbsp;the&nbsp;<a href="libcloud.compute.base.html#StorageVolume">StorageVolume</a>.&nbsp;If&nbsp;not<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provided,&nbsp;will&nbsp;default&nbsp;to&nbsp;UNKNOWN.<br>
+:type&nbsp;state:&nbsp;:class:`.StorageVolumeState`<br>
+&nbsp;<br>
+:param&nbsp;extra:&nbsp;Optional&nbsp;provider&nbsp;specific&nbsp;attributes.<br>
+:type&nbsp;extra:&nbsp;``dict``</tt></dd></dl>
+
+<dl><dt><a name="FGCPStorageVolume-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPStorageVolume-attach"><strong>attach</strong></a>(self, node, device<font color="#909090">=None</font>)</dt><dd><tt>Attach&nbsp;this&nbsp;volume&nbsp;to&nbsp;a&nbsp;node.<br>
+&nbsp;<br>
+:param&nbsp;node:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;to&nbsp;attach&nbsp;volume&nbsp;to<br>
+:type&nbsp;node:&nbsp;:class:`.<a href="libcloud.compute.base.html#Node">Node</a>`<br>
+&nbsp;<br>
+:param&nbsp;device:&nbsp;Where&nbsp;the&nbsp;device&nbsp;is&nbsp;exposed,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.g.&nbsp;'/dev/sdb&nbsp;(optional)<br>
+:type&nbsp;device:&nbsp;``str``<br>
+&nbsp;<br>
+:return:&nbsp;``True``&nbsp;if&nbsp;attach&nbsp;was&nbsp;successful,&nbsp;``False``&nbsp;otherwise.<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPStorageVolume-destroy"><strong>destroy</strong></a>(self)</dt><dd><tt>Destroy&nbsp;this&nbsp;storage&nbsp;volume.<br>
+&nbsp;<br>
+:return:&nbsp;``True``&nbsp;if&nbsp;destroy&nbsp;was&nbsp;successful,&nbsp;``False``&nbsp;otherwise.<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPStorageVolume-detach"><strong>detach</strong></a>(self)</dt><dd><tt>Detach&nbsp;this&nbsp;volume&nbsp;from&nbsp;its&nbsp;node<br>
+&nbsp;<br>
+:return:&nbsp;``True``&nbsp;if&nbsp;detach&nbsp;was&nbsp;successful,&nbsp;``False``&nbsp;otherwise.<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<dl><dt><a name="FGCPStorageVolume-list_snapshots"><strong>list_snapshots</strong></a>(self)</dt><dd><tt>:rtype:&nbsp;``list``&nbsp;of&nbsp;``<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>``</tt></dd></dl>
+
+<dl><dt><a name="FGCPStorageVolume-snapshot"><strong>snapshot</strong></a>(self, name)</dt><dd><tt>Creates&nbsp;a&nbsp;snapshot&nbsp;of&nbsp;this&nbsp;volume.<br>
+&nbsp;<br>
+:return:&nbsp;Created&nbsp;snapshot.<br>
+:rtype:&nbsp;``<a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>``</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><a name="FGCPStorageVolume-get_uuid"><strong>get_uuid</strong></a>(self)</dt><dd><tt>Unique&nbsp;hash&nbsp;for&nbsp;a&nbsp;node,&nbsp;node&nbsp;image,&nbsp;or&nbsp;node&nbsp;size<br>
+&nbsp;<br>
+The&nbsp;hash&nbsp;is&nbsp;a&nbsp;function&nbsp;of&nbsp;an&nbsp;SHA1&nbsp;hash&nbsp;of&nbsp;the&nbsp;node,&nbsp;node&nbsp;image,<br>
+or&nbsp;node&nbsp;size's&nbsp;ID&nbsp;and&nbsp;its&nbsp;driver&nbsp;which&nbsp;means&nbsp;that&nbsp;it&nbsp;should&nbsp;be<br>
+unique&nbsp;between&nbsp;all&nbsp;objects&nbsp;of&nbsp;its&nbsp;type.<br>
+In&nbsp;some&nbsp;subclasses&nbsp;(e.g.&nbsp;GoGridNode)&nbsp;there&nbsp;is&nbsp;no&nbsp;ID<br>
+available&nbsp;so&nbsp;the&nbsp;public&nbsp;IP&nbsp;address&nbsp;is&nbsp;used.&nbsp;&nbsp;This&nbsp;means&nbsp;that,<br>
+unlike&nbsp;a&nbsp;properly&nbsp;done&nbsp;system&nbsp;UUID,&nbsp;the&nbsp;same&nbsp;UUID&nbsp;may&nbsp;mean&nbsp;a<br>
+different&nbsp;system&nbsp;install&nbsp;at&nbsp;a&nbsp;different&nbsp;time<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;from&nbsp;libcloud.compute.drivers.dummy&nbsp;import&nbsp;DummyNodeDriver<br>
+&gt;&gt;&gt;&nbsp;driver&nbsp;=&nbsp;DummyNodeDriver(0)<br>
+&gt;&gt;&gt;&nbsp;node&nbsp;=&nbsp;driver.create_node()<br>
+&gt;&gt;&gt;&nbsp;node.<a href="#FGCPStorageVolume-get_uuid">get_uuid</a>()<br>
+'d3748461511d8b9b0e0bfa0d4d3383a619a2bb9f'<br>
+&nbsp;<br>
+Note,&nbsp;for&nbsp;example,&nbsp;that&nbsp;this&nbsp;example&nbsp;will&nbsp;always&nbsp;produce&nbsp;the<br>
+same&nbsp;UUID!<br>
+&nbsp;<br>
+:rtype:&nbsp;``str``</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.base.html#UuidMixin">libcloud.compute.base.UuidMixin</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>uuid</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FGCPVolumeSnapshot">class <strong>FGCPVolumeSnapshot</strong></a>(<a href="libcloud.compute.base.html#VolumeSnapshot">libcloud.compute.base.VolumeSnapshot</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.libcloud.compute.html#FGCPVolumeSnapshot">FGCPVolumeSnapshot</a></dd>
+<dd><a href="libcloud.compute.base.html#VolumeSnapshot">libcloud.compute.base.VolumeSnapshot</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods inherited from <a href="libcloud.compute.base.html#VolumeSnapshot">libcloud.compute.base.VolumeSnapshot</a>:<br>
+<dl><dt><a name="FGCPVolumeSnapshot-__init__"><strong>__init__</strong></a>(self, id, driver, size<font color="#909090">=None</font>, extra<font color="#909090">=None</font>, created<font color="#909090">=None</font>, state<font color="#909090">=None</font>)</dt><dd><tt><a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>&nbsp;constructor.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:&nbsp;Snapshot&nbsp;ID.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver:&nbsp;The&nbsp;driver&nbsp;that&nbsp;represents&nbsp;a&nbsp;connection&nbsp;to&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver:&nbsp;`NodeDriver`<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size:&nbsp;A&nbsp;snapshot&nbsp;size&nbsp;in&nbsp;GB.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size:&nbsp;``int``<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra:&nbsp;Provider&nbsp;depends&nbsp;parameters&nbsp;for&nbsp;snapshot.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extra:&nbsp;``dict``<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;created:&nbsp;A&nbsp;datetime&nbsp;object&nbsp;that&nbsp;represents&nbsp;when&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;snapshot&nbsp;was&nbsp;created<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;created:&nbsp;``datetime.datetime``<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state:&nbsp;A&nbsp;string&nbsp;representing&nbsp;the&nbsp;state&nbsp;the&nbsp;snapshot&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in.&nbsp;See&nbsp;`libcloud.compute.types.StorageVolumeState`.<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state:&nbsp;``str``</tt></dd></dl>
+
+<dl><dt><a name="FGCPVolumeSnapshot-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPVolumeSnapshot-destroy"><strong>destroy</strong></a>(self)</dt><dd><tt>Destroys&nbsp;this&nbsp;snapshot.<br>
+&nbsp;<br>
+:rtype:&nbsp;``bool``</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="libcloud.compute.base.html#VolumeSnapshot">libcloud.compute.base.VolumeSnapshot</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
