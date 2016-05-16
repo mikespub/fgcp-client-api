@@ -394,7 +394,7 @@ class FGCPCommand(FGCPProxyServer):
             vserverInfo = {}
             vserverInfo['vserverName'] = vserver.vserverName
             vserverInfo['vserverType'] = vserver.vserverType
-            vserverInfo['diskImageId'] = vserver.diskimageId # CHECKME: different caps
+            vserverInfo['diskImageId'] = vserver.diskimageId  # CHECKME: different caps
             vserverInfo['networkId'] = vserver.vnics[0].networkId
             vserverInfo['vnics'] = []
             # CHECKME: convert vnics list to dict list for add_param!?

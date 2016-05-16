@@ -16,7 +16,7 @@ class DocsCommand(Command):
         import os
         import pydoc
         todo = []
-        modlist = ['fgcp', 'tests']
+        modlist = ['fgcp', 'fgcp.libcloud', 'tests']
         for curmod in modlist:
             pydoc.writedoc(curmod)
             todo.append(curmod)
