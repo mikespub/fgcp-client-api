@@ -23,6 +23,7 @@ the key signature, see https://pypi.python.org/pypi/tlslite-ng or
 https://pypi.python.org/pypi/tlslite for download and installation
 """
 
+
 def fgcp_via_libcloud():
     # Register FGCP as third party driver for libcloud
     from libcloud.compute.providers import set_driver
