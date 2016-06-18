@@ -88,7 +88,10 @@
           "200" : {
             "description" : "200 response",
             "schema" : {
-              "$ref" : "#/definitions/DiskImagesList"
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/DiskImage"
+              }
             },
             "headers" : {
               "Access-Control-Allow-Origin" : {
@@ -160,7 +163,10 @@
           "200" : {
             "description" : "200 response",
             "schema" : {
-              "$ref" : "#/definitions/ServerTypesList"
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ServerType"
+              }
             },
             "headers" : {
               "Access-Control-Allow-Origin" : {
@@ -232,7 +238,10 @@
           "200" : {
             "description" : "200 response",
             "schema" : {
-              "$ref" : "#/definitions/VSysDescriptorsList"
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/VSysDescriptor"
+              }
             },
             "headers" : {
               "Access-Control-Allow-Origin" : {
@@ -304,7 +313,10 @@
           "200" : {
             "description" : "200 response",
             "schema" : {
-              "$ref" : "#/definitions/VSystemsList"
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/VSystem"
+              }
             },
             "headers" : {
               "Access-Control-Allow-Origin" : {
@@ -900,30 +912,6 @@
         "keyword" : {
           "type" : "string"
         }
-      }
-    },
-    "VSystemsList" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/VSystem"
-      }
-    },
-    "DiskImagesList" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/DiskImage"
-      }
-    },
-    "ServerTypesList" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/ServerType"
-      }
-    },
-    "VSysDescriptorsList" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/VSysDescriptor"
       }
     }
   }
