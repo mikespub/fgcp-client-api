@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2016-06-18T17:54:01Z",
-    "title": "MikesDemoAPI"
+    "version": "2016-06-18T21:03:07Z",
+    "title": "FGCP Demo REST API"
   },
-  "host": "jvlcs0xvza.execute-api.us-east-1.amazonaws.com",
+  "host": "8up5wrlvv9.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -19,7 +19,7 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/Empty"
+              "$ref": "#/definitions/Info"
             },
             "headers": {
               "Access-Control-Allow-Origin": {
@@ -417,7 +417,7 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/Empty"
+              "$ref": "#/definitions/VSystem"
             },
             "headers": {
               "Access-Control-Allow-Origin": {
@@ -450,6 +450,14 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vsysId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
         ],
         "responses": {
           "200": {
@@ -491,251 +499,305 @@
     }
   },
   "definitions": {
+    "VSysDescriptor": {
+      "type": "object",
+      "properties": {
+        "vsysdescriptorName": {
+          "type": "string"
+        },
+        "creatorName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "registrant": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "vsysdescriptorId": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "keyword": {
+          "type": "string"
+        }
+      }
+    },
+    "ServerType": {
+      "type": "object",
+      "properties": {
+        "expectedUsage": {
+          "type": "string"
+        },
+        "memory": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "chargeType": {
+          "type": "string"
+        },
+        "cpu": {
+          "$ref": "#/definitions/ServerTypeCPU"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        }
+      }
+    },
+    "PublicIP": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "vsysId": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "v4v6Flag": {
+          "type": "string"
+        }
+      }
+    },
+    "VServer": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string"
+        },
+        "vnics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VNic"
+          }
+        },
+        "vserverType": {
+          "type": "string"
+        },
+        "vserverName": {
+          "type": "string"
+        },
+        "vserverId": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "vdisks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VDisk"
+          }
+        },
+        "diskimageId": {
+          "type": "string"
+        }
+      }
+    },
+    "ServerTypesList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ServerType"
+      }
+    },
+    "Resource": {
+      "type": "object",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "LoadBalancer": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string"
+        },
+        "efmId": {
+          "type": "string"
+        },
+        "slbVip": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "efmType": {
+          "type": "string"
+        },
+        "efmName": {
+          "type": "string"
+        }
+      }
+    },
+    "ServerTypeCPU": {
+      "type": "object",
+      "properties": {
+        "numOfCpu": {
+          "type": "string"
+        },
+        "cpuArch": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "cpuPerf": {
+          "type": "string"
+        }
+      }
+    },
+    "Info": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "$ref": "#/definitions/API"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Resource"
+          }
+        }
+      }
+    },
+    "VDisk": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "vdiskName": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "attachedTo": {
+          "type": "string"
+        },
+        "vdiskId": {
+          "type": "string"
+        }
+      }
+    },
+    "Firewall": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string"
+        },
+        "efmId": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "efmType": {
+          "type": "string"
+        },
+        "efmName": {
+          "type": "string"
+        }
+      }
+    },
+    "ImageSoftware": {
+      "type": "object",
+      "properties": {
+        "license": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        }
+      }
+    },
     "VSystemsList": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "creator": {
-            "type": "string"
-          },
-          "vsysName": {
-            "type": "string"
-          },
-          "firewalls": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "creator": {
-                  "type": "string"
-                },
-                "efmId": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "_class": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "efmType": {
-                  "type": "string"
-                },
-                "efmName": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "baseDescriptor": {
-            "type": "string"
-          },
-          "vdisks": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "creator": {
-                  "type": "string"
-                },
-                "size": {
-                  "type": "string"
-                },
-                "vdiskName": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "_class": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "attachedTo": {
-                  "type": "string"
-                },
-                "vdiskId": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "vservers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "creator": {
-                  "type": "string"
-                },
-                "vnics": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "nicNo": {
-                        "type": "string"
-                      },
-                      "privateIp": {
-                        "type": "string"
-                      },
-                      "networkId": {
-                        "type": "string"
-                      },
-                      "href": {
-                        "type": "string"
-                      },
-                      "_class": {
-                        "type": "string"
-                      },
-                      "id": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "vserverType": {
-                  "type": "string"
-                },
-                "vserverName": {
-                  "type": "string"
-                },
-                "vserverId": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "_class": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "vdisks": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "creator": {
-                        "type": "string"
-                      },
-                      "size": {
-                        "type": "string"
-                      },
-                      "vdiskName": {
-                        "type": "string"
-                      },
-                      "href": {
-                        "type": "string"
-                      },
-                      "_class": {
-                        "type": "string"
-                      },
-                      "id": {
-                        "type": "string"
-                      },
-                      "attachedTo": {
-                        "type": "string"
-                      },
-                      "vdiskId": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "diskimageId": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "loadbalancers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "creator": {
-                  "type": "string"
-                },
-                "efmId": {
-                  "type": "string"
-                },
-                "slbVip": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "_class": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "efmType": {
-                  "type": "string"
-                },
-                "efmName": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "vsysId": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          },
-          "_class": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "cloudCategory": {
-            "type": "string"
-          },
-          "publicips": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "address": {
-                  "type": "string"
-                },
-                "vsysId": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "_class": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "v4v6Flag": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "vnets": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
+        "$ref": "#/definitions/VSystem"
       }
     },
     "Empty": {
@@ -744,123 +806,109 @@
     "DiskImagesList": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "softwares": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "license": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "_class": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "creatorName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "licenseInfo": {
-            "type": "string"
-          },
-          "osName": {
-            "type": "string"
-          },
-          "size": {
-            "type": "string"
-          },
-          "diskimageName": {
-            "type": "string"
-          },
-          "osType": {
-            "type": "string"
-          },
-          "registrant": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          },
-          "_class": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "diskimageId": {
-            "type": "string"
-          }
+        "$ref": "#/definitions/DiskImage"
+      }
+    },
+    "VNic": {
+      "type": "object",
+      "properties": {
+        "nicNo": {
+          "type": "string"
+        },
+        "privateIp": {
+          "type": "string"
+        },
+        "networkId": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
         }
       }
     },
-    "ServerTypesList": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "expectedUsage": {
-            "type": "string"
-          },
-          "memory": {
-            "type": "string"
-          },
-          "productId": {
-            "type": "string"
-          },
-          "price": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "chargeType": {
-            "type": "string"
-          },
-          "cpu": {
-            "type": "object",
-            "properties": {
-              "numOfCpu": {
-                "type": "string"
-              },
-              "cpuArch": {
-                "type": "string"
-              },
-              "href": {
-                "type": "string"
-              },
-              "_class": {
-                "type": "string"
-              },
-              "cpuPerf": {
-                "type": "string"
-              }
-            }
-          },
-          "href": {
-            "type": "string"
-          },
-          "_class": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "productName": {
+    "API": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "VSystem": {
+      "type": "object",
+      "properties": {
+        "creator": {
+          "type": "string"
+        },
+        "vsysName": {
+          "type": "string"
+        },
+        "firewalls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Firewall"
+          }
+        },
+        "baseDescriptor": {
+          "type": "string"
+        },
+        "vdisks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VDisk"
+          }
+        },
+        "vservers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VServer"
+          }
+        },
+        "loadbalancers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoadBalancer"
+          }
+        },
+        "vsysId": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "cloudCategory": {
+          "type": "string"
+        },
+        "publicips": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PublicIP"
+          }
+        },
+        "vnets": {
+          "type": "array",
+          "items": {
             "type": "string"
           }
         }
@@ -869,35 +917,53 @@
     "VSysDescriptorsList": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "vsysdescriptorName": {
-            "type": "string"
-          },
-          "creatorName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "registrant": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          },
-          "vsysdescriptorId": {
-            "type": "string"
-          },
-          "_class": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "keyword": {
-            "type": "string"
+        "$ref": "#/definitions/VSysDescriptor"
+      }
+    },
+    "DiskImage": {
+      "type": "object",
+      "properties": {
+        "softwares": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageSoftware"
           }
+        },
+        "creatorName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "licenseInfo": {
+          "type": "string"
+        },
+        "osName": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "diskimageName": {
+          "type": "string"
+        },
+        "osType": {
+          "type": "string"
+        },
+        "registrant": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "_class": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "diskimageId": {
+          "type": "string"
         }
       }
     }
