@@ -1,0 +1,905 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2016-06-18T17:54:01Z",
+    "title": "MikesDemoAPI"
+  },
+  "host": "jvlcs0xvza.execute-api.us-east-1.amazonaws.com",
+  "basePath": "/test",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/fgcp": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://mikespub.appspot.com/cloud/fujitsu/",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    },
+    "/fgcp/diskimages": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/DiskImagesList"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://mikespub.appspot.com/cloud/fujitsu/diskimages",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    },
+    "/fgcp/servertypes": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ServerTypesList"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://mikespub.appspot.com/cloud/fujitsu/servertypes",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    },
+    "/fgcp/vsysdescriptors": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/VSysDescriptorsList"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://mikespub.appspot.com/cloud/fujitsu/vsysdescriptors",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    },
+    "/fgcp/vsystems": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/VSystemsList"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://mikespub.appspot.com/cloud/fujitsu/vsystems",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    },
+    "/fgcp/vsystems/{vsysId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vsysId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://mikespub.appspot.com/cloud/fujitsu/vsystems/{vsysId}",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "requestParameters": {
+            "integration.request.path.vsysId": "method.request.path.vsysId"
+          },
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "VSystemsList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "creator": {
+            "type": "string"
+          },
+          "vsysName": {
+            "type": "string"
+          },
+          "firewalls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "creator": {
+                  "type": "string"
+                },
+                "efmId": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "_class": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "efmType": {
+                  "type": "string"
+                },
+                "efmName": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "baseDescriptor": {
+            "type": "string"
+          },
+          "vdisks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "creator": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "string"
+                },
+                "vdiskName": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "_class": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "attachedTo": {
+                  "type": "string"
+                },
+                "vdiskId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "vservers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "creator": {
+                  "type": "string"
+                },
+                "vnics": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nicNo": {
+                        "type": "string"
+                      },
+                      "privateIp": {
+                        "type": "string"
+                      },
+                      "networkId": {
+                        "type": "string"
+                      },
+                      "href": {
+                        "type": "string"
+                      },
+                      "_class": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "vserverType": {
+                  "type": "string"
+                },
+                "vserverName": {
+                  "type": "string"
+                },
+                "vserverId": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "_class": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "vdisks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "creator": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "string"
+                      },
+                      "vdiskName": {
+                        "type": "string"
+                      },
+                      "href": {
+                        "type": "string"
+                      },
+                      "_class": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "attachedTo": {
+                        "type": "string"
+                      },
+                      "vdiskId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "diskimageId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "loadbalancers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "creator": {
+                  "type": "string"
+                },
+                "efmId": {
+                  "type": "string"
+                },
+                "slbVip": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "_class": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "efmType": {
+                  "type": "string"
+                },
+                "efmName": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "vsysId": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "_class": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "cloudCategory": {
+            "type": "string"
+          },
+          "publicips": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "vsysId": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "_class": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "v4v6Flag": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "vnets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "Empty": {
+      "type": "object"
+    },
+    "DiskImagesList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "softwares": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "license": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "_class": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "creatorName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "licenseInfo": {
+            "type": "string"
+          },
+          "osName": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "diskimageName": {
+            "type": "string"
+          },
+          "osType": {
+            "type": "string"
+          },
+          "registrant": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "_class": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "diskimageId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ServerTypesList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "expectedUsage": {
+            "type": "string"
+          },
+          "memory": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "chargeType": {
+            "type": "string"
+          },
+          "cpu": {
+            "type": "object",
+            "properties": {
+              "numOfCpu": {
+                "type": "string"
+              },
+              "cpuArch": {
+                "type": "string"
+              },
+              "href": {
+                "type": "string"
+              },
+              "_class": {
+                "type": "string"
+              },
+              "cpuPerf": {
+                "type": "string"
+              }
+            }
+          },
+          "href": {
+            "type": "string"
+          },
+          "_class": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "VSysDescriptorsList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "vsysdescriptorName": {
+            "type": "string"
+          },
+          "creatorName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "registrant": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "vsysdescriptorId": {
+            "type": "string"
+          },
+          "_class": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "keyword": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
