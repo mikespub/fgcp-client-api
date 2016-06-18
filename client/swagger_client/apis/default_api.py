@@ -61,7 +61,7 @@ class DefaultApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: list[DiskImage]
+        :return: DiskImagesList
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -113,7 +113,7 @@ class DefaultApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=local_var_files,
-                                            response_type='list[DiskImage]',
+                                            response_type='DiskImagesList',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -349,7 +349,7 @@ class DefaultApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: list[ServerType]
+        :return: ServerTypesList
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -401,7 +401,7 @@ class DefaultApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=local_var_files,
-                                            response_type='list[ServerType]',
+                                            response_type='ServerTypesList',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -493,7 +493,7 @@ class DefaultApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: list[VSysDescriptor]
+        :return: VSysDescriptorsList
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -545,7 +545,7 @@ class DefaultApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=local_var_files,
-                                            response_type='list[VSysDescriptor]',
+                                            response_type='VSysDescriptorsList',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -637,7 +637,7 @@ class DefaultApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: list[VSystem]
+        :return: VSystemsList
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -689,7 +689,7 @@ class DefaultApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=local_var_files,
-                                            response_type='list[VSystem]',
+                                            response_type='VSystemsList',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

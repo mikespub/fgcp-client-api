@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 
 # **fgcp_diskimages_get**
-> list[DiskImage] fgcp_diskimages_get()
+> DiskImagesList fgcp_diskimages_get()
 
 
 
@@ -45,7 +45,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**list[DiskImage]**](DiskImage.md)
+[**DiskImagesList**](DiskImagesList.md)
 
 ### Authorization
 
@@ -179,7 +179,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **fgcp_servertypes_get**
-> list[ServerType] fgcp_servertypes_get()
+> ServerTypesList fgcp_servertypes_get()
 
 
 
@@ -205,7 +205,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**list[ServerType]**](ServerType.md)
+[**ServerTypesList**](ServerTypesList.md)
 
 ### Authorization
 
@@ -259,7 +259,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **fgcp_vsysdescriptors_get**
-> list[VSysDescriptor] fgcp_vsysdescriptors_get()
+> VSysDescriptorsList fgcp_vsysdescriptors_get()
 
 
 
@@ -285,7 +285,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**list[VSysDescriptor]**](VSysDescriptor.md)
+[**VSysDescriptorsList**](VSysDescriptorsList.md)
 
 ### Authorization
 
@@ -339,7 +339,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **fgcp_vsystems_get**
-> list[VSystem] fgcp_vsystems_get()
+> VSystemsList fgcp_vsystems_get()
 
 
 
@@ -365,7 +365,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**list[VSystem]**](VSystem.md)
+[**VSystemsList**](VSystemsList.md)
 
 ### Authorization
 
