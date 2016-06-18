@@ -1,0 +1,684 @@
+---
+swagger: "2.0"
+info:
+  description: "Demo REST API for the Fujitsu Cloud IaaS Trusted Public S5 (TPS5)\
+    \ aka Fujitsu Global Cloud Platform (FGCP) - generated from SwaggerHub"
+  version: "1.0.0"
+  title: "FGCP Demo REST API"
+host: "jvlcs0xvza.execute-api.us-east-1.amazonaws.com"
+basePath: "/test"
+schemes:
+- "https"
+paths:
+  /fgcp:
+    get:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_get"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Info"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: "http://mikespub.appspot.com/cloud/fujitsu/"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+    options:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_options"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+  /fgcp/diskimages:
+    get:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_diskimages_get"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/DiskImagesList"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: "http://mikespub.appspot.com/cloud/fujitsu/diskimages"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+    options:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_diskimages_options"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+  /fgcp/servertypes:
+    get:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_servertypes_get"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ServerTypesList"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: "http://mikespub.appspot.com/cloud/fujitsu/servertypes"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+    options:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_servertypes_options"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+  /fgcp/vsysdescriptors:
+    get:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_vsysdescriptors_get"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/VSysDescriptorsList"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: "http://mikespub.appspot.com/cloud/fujitsu/vsysdescriptors"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+    options:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_vsysdescriptors_options"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+  /fgcp/vsystems:
+    get:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_vsystems_get"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/VSystemsList"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: "http://mikespub.appspot.com/cloud/fujitsu/vsystems"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+    options:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_vsystems_options"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+  /fgcp/vsystems/{vsysId}:
+    get:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_vsystems_vsys_id_get"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "vsysId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/VSystem"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: "http://mikespub.appspot.com/cloud/fujitsu/vsystems/{vsysId}"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        requestParameters:
+          integration.request.path.vsysId: "method.request.path.vsysId"
+        type: "http"
+    options:
+      tags:
+      - "default_controller"
+      operationId: "controllers.default_controller.fgcp_vsystems_vsys_id_options"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "vsysId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+definitions:
+  Empty:
+    type: "object"
+  Info:
+    type: "object"
+    properties:
+      api:
+        $ref: "#/definitions/API"
+      resources:
+        type: "array"
+        items:
+          $ref: "#/definitions/Resource"
+  API:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+      version:
+        type: "string"
+      name:
+        type: "string"
+      description:
+        type: "string"
+  Resource:
+    type: "object"
+    properties:
+      _class:
+        type: "string"
+      href:
+        type: "string"
+      name:
+        type: "string"
+      description:
+        type: "string"
+  VSystem:
+    type: "object"
+    properties:
+      creator:
+        type: "string"
+      vsysName:
+        type: "string"
+      firewalls:
+        type: "array"
+        items:
+          $ref: "#/definitions/Firewall"
+      baseDescriptor:
+        type: "string"
+      vdisks:
+        type: "array"
+        items:
+          $ref: "#/definitions/VDisk"
+      vservers:
+        type: "array"
+        items:
+          $ref: "#/definitions/VServer"
+      loadbalancers:
+        type: "array"
+        items:
+          $ref: "#/definitions/LoadBalancer"
+      vsysId:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      cloudCategory:
+        type: "string"
+      publicips:
+        type: "array"
+        items:
+          $ref: "#/definitions/PublicIP"
+      vnets:
+        type: "array"
+        items:
+          type: "string"
+  VServer:
+    type: "object"
+    properties:
+      creator:
+        type: "string"
+      vnics:
+        type: "array"
+        items:
+          $ref: "#/definitions/VNic"
+      vserverType:
+        type: "string"
+      vserverName:
+        type: "string"
+      vserverId:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      vdisks:
+        type: "array"
+        items:
+          $ref: "#/definitions/VDisk"
+      diskimageId:
+        type: "string"
+  VDisk:
+    type: "object"
+    properties:
+      creator:
+        type: "string"
+      size:
+        type: "string"
+      vdiskName:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      attachedTo:
+        type: "string"
+      vdiskId:
+        type: "string"
+  VNic:
+    type: "object"
+    properties:
+      nicNo:
+        type: "string"
+      privateIp:
+        type: "string"
+      networkId:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+  Firewall:
+    type: "object"
+    properties:
+      creator:
+        type: "string"
+      efmId:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      efmType:
+        type: "string"
+      efmName:
+        type: "string"
+  LoadBalancer:
+    type: "object"
+    properties:
+      creator:
+        type: "string"
+      efmId:
+        type: "string"
+      slbVip:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      efmType:
+        type: "string"
+      efmName:
+        type: "string"
+  PublicIP:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+      vsysId:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      v4v6Flag:
+        type: "string"
+  DiskImage:
+    type: "object"
+    properties:
+      softwares:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageSoftware"
+      creatorName:
+        type: "string"
+      description:
+        type: "string"
+      licenseInfo:
+        type: "string"
+      osName:
+        type: "string"
+      size:
+        type: "string"
+      diskimageName:
+        type: "string"
+      osType:
+        type: "string"
+      registrant:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      diskimageId:
+        type: "string"
+  ImageSoftware:
+    type: "object"
+    properties:
+      license:
+        type: "string"
+      name:
+        type: "string"
+      id:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+  ServerTypeCPU:
+    type: "object"
+    properties:
+      numOfCpu:
+        type: "string"
+      cpuArch:
+        type: "string"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      cpuPerf:
+        type: "string"
+  ServerType:
+    type: "object"
+    properties:
+      expectedUsage:
+        type: "string"
+      memory:
+        type: "string"
+      productId:
+        type: "string"
+      price:
+        type: "string"
+      name:
+        type: "string"
+      chargeType:
+        type: "string"
+      cpu:
+        $ref: "#/definitions/ServerTypeCPU"
+      href:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      productName:
+        type: "string"
+  VSysDescriptor:
+    type: "object"
+    properties:
+      vsysdescriptorName:
+        type: "string"
+      creatorName:
+        type: "string"
+      description:
+        type: "string"
+      registrant:
+        type: "string"
+      href:
+        type: "string"
+      vsysdescriptorId:
+        type: "string"
+      _class:
+        type: "string"
+      id:
+        type: "string"
+      keyword:
+        type: "string"
+  VSystemsList:
+    type: "array"
+    items:
+      $ref: "#/definitions/VSystem"
+  DiskImagesList:
+    type: "array"
+    items:
+      $ref: "#/definitions/DiskImage"
+  ServerTypesList:
+    type: "array"
+    items:
+      $ref: "#/definitions/ServerType"
+  VSysDescriptorsList:
+    type: "array"
+    items:
+      $ref: "#/definitions/VSysDescriptor"
