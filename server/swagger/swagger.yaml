@@ -81,9 +81,7 @@ paths:
         200:
           description: "200 response"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/DiskImage"
+            $ref: "#/definitions/DiskImagesList"
           headers:
             Access-Control-Allow-Origin:
               type: "string"
@@ -142,9 +140,7 @@ paths:
         200:
           description: "200 response"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/ServerType"
+            $ref: "#/definitions/ServerTypesList"
           headers:
             Access-Control-Allow-Origin:
               type: "string"
@@ -203,9 +199,7 @@ paths:
         200:
           description: "200 response"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/VSysDescriptor"
+            $ref: "#/definitions/VSysDescriptorsList"
           headers:
             Access-Control-Allow-Origin:
               type: "string"
@@ -264,9 +258,7 @@ paths:
         200:
           description: "200 response"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/VSystem"
+            $ref: "#/definitions/VSystemsList"
           headers:
             Access-Control-Allow-Origin:
               type: "string"
@@ -674,3 +666,19 @@ definitions:
         type: "string"
       keyword:
         type: "string"
+  VSystemsList:
+    type: "array"
+    items:
+      $ref: "#/definitions/VSystem"
+  DiskImagesList:
+    type: "array"
+    items:
+      $ref: "#/definitions/DiskImage"
+  ServerTypesList:
+    type: "array"
+    items:
+      $ref: "#/definitions/ServerType"
+  VSysDescriptorsList:
+    type: "array"
+    items:
+      $ref: "#/definitions/VSysDescriptor"
