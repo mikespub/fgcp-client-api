@@ -1,6 +1,6 @@
 # swagger_client.DefaultApi
 
-All URIs are relative to *https://jvlcs0xvza.execute-api.us-east-1.amazonaws.com/test*
+All URIs are relative to *https://api.mikespub.net*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

@@ -56,7 +56,7 @@ class Configuration(object):
         Constructor
         """
         # Default Base url
-        self.host = "https://jvlcs0xvza.execute-api.us-east-1.amazonaws.com/test"
+        self.host = "https://api.mikespub.net"
         # Default api client
         self.api_client = None
         # Temp file folder for downloading files
