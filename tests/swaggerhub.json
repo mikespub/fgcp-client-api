@@ -5,8 +5,7 @@
     "title" : "FGCP Demo REST API",
     "description" : "Demo REST API for the Fujitsu Cloud IaaS Trusted Public S5 (TPS5) aka Fujitsu Global Cloud Platform (FGCP) - generated from SwaggerHub"
   },
-  "host" : "jvlcs0xvza.execute-api.us-east-1.amazonaws.com",
-  "basePath" : "/test",
+  "host" : "api.mikespub.net",
   "schemes" : [ "https" ],
   "paths" : {
     "/fgcp" : {
