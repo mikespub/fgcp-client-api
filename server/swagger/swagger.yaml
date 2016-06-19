@@ -5,8 +5,7 @@ info:
     \ aka Fujitsu Global Cloud Platform (FGCP) - generated from SwaggerHub"
   version: "1.0.0"
   title: "FGCP Demo REST API"
-host: "jvlcs0xvza.execute-api.us-east-1.amazonaws.com"
-basePath: "/test"
+host: "api.mikespub.net"
 schemes:
 - "https"
 paths:
