@@ -63,7 +63,7 @@ class DocsCommand(Command):
             f.close()
 
         # get latest version of project pages
-        self.get_project_pages('fgcp-client-api', ['ClientMethods', 'ResourceActions', 'APICommands', 'ClassDiagrams', 'TestServer', 'RelayServer'], modlist)
+        self.get_project_pages('fgcp-client-api', ['ClientMethods', 'ResourceActions', 'APICommands', 'ClassDiagrams', 'TestServer', 'RelayServer', 'LibcloudDriver', 'REST_API'], modlist)
 
     def get_project_pages(self, project, wikilist, modlist):
         footerlinks = []
