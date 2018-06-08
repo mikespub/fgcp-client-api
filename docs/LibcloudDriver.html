@@ -1,0 +1,32 @@
+
+          <html><head><title>
+FGCP as Third Party Driver for Apache Libcloud</title></head><body><h1>
+FGCP as Third Party Driver for Apache Libcloud</h1>
+<hr>
+<p>You can also register FGCP as Third Party Driver for Apache Libcloud, and use the Libcloud APIs as usual.</p>
+<p>For example:</p>
+<pre><code>    # Register FGCP as third party driver for libcloud
+    from libcloud.compute.providers import set_driver
+    from libcloud.compute.providers import get_driver
+    set_driver('fgcp',
+               'fgcp.libcloud.compute',
+               'FGCPNodeDriver')
+    cls = get_driver('fgcp')
+
+    # Connect with your client certificate to region 'uk' and work in location 'Demo VSystem'
+    driver = cls('client.pem', region='uk', location='Demo VSystem')
+
+    #regions = driver.list_regions()
+    #locations = driver.list_locations()
+    #nodes = driver.list_nodes()
+    #images = driver.list_images()
+    #sizes = driver.list_sizes()
+    #volumes = driver.list_volumes()
+    #for volume in volumes:
+    #    snapshots = driver.list_volume_snapshots(volume)
+    #    snapshots_and_backups = driver.list_volume_snapshots(volume, ex_include_backups=True)
+    #    backups = driver.ex_list_volume_backups(volume)
+</code></pre>
+<p>Note: this is still a work in progress - only the list_* methods are available for now :-)</p>
+
+        <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="LibcloudDriver.html">LibcloudDriver.html</a>&nbsp;&nbsp;<a href="REST_API.html">REST_API.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="fgcp.libcloud.html">pydoc fgcp.libcloud</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
