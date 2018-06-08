@@ -26,7 +26,7 @@ Caution: this is a development work in progress - please do not use
 for productive systems without adequate testing...
 """
 
-__version__ = '1.4.0'
+__version__ = '1.4.6'
 
 
 class FGCPError(Exception):

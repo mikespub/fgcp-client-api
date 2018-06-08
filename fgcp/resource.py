@@ -64,7 +64,7 @@ class FGCPElement(object):
         prefix = '  ' * depth
         #if what is None:
         #    return '%sNone' % prefix
-        if isinstance(what, str):
+        if isinstance(what, (str, unicode)):
             return "%s'%s'" % (prefix, what)
         CRLF = '\r\n'
         L = []
@@ -83,7 +83,7 @@ class FGCPElement(object):
             if key == '_caller' or key == '_parent' or key == '_status':
                 if isinstance(what.__dict__[key], FGCPResource):
                     L.append("%s%s='%s'," % (prefix, key, repr(what.__dict__[key])))
-                elif isinstance(what.__dict__[key], str):
+                elif isinstance(what.__dict__[key], (str, unicode)):
                     L.append("%s%s='%s'," % (prefix, key, what.__dict__[key]))
                 else:
                     L.append('%s%s=%s,' % (prefix, key, what.__dict__[key]))
@@ -105,7 +105,7 @@ class FGCPElement(object):
                 for val in what.__dict__[key]:
                     L.append(self.pformat(val, depth + 1) + ',')
                 L.append('%s],' % prefix)
-            elif isinstance(what.__dict__[key], str):
+            elif isinstance(what.__dict__[key], (str, unicode)):
                 L.append("%s%s='%s'," % (prefix, key, what.__dict__[key]))
             elif isinstance(what.__dict__[key], int) or isinstance(what.__dict__[key], float):
                 L.append("%s%s=%s," % (prefix, key, what.__dict__[key]))
@@ -640,6 +640,16 @@ class FGCPVDataCenter(FGCPResource):
         # set the parent of the design to this vdatacenter !
         design.setparent(self)
         return design
+
+    def get_vsystem_visual(self, vsystem=None):
+        # get visual design from existing vsystem if specified
+        if vsystem is not None:
+            vsystem = self.get_vsystem(vsystem)
+        from fgcp.design import FGCPVisual
+        visual = FGCPVisual(vsystem=vsystem)
+        # set the parent of the visual design to this vdatacenter !
+        visual.setparent(self)
+        return visual
 
 
 class FGCPVSystem(FGCPResource):

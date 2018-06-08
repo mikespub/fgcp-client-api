@@ -1,10 +1,8 @@
 
-        <html><head><title>
+          <html><head><title>
 Client Methods for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>
 Client Methods for the Fujitsu Global Cloud Platform (FGCP)</h1>
-
-<p><strong>The following list gives an overview of higher-level methods supported by this client API library that can be used in your scripts. This list is likely to be extended in future releases, and any suggestions are welcome in the <a href="http://code.google.com/p/fgcp-client-api/issues/list">issue tracker</a>.</strong></p>
-
+<p><strong>The following list gives an overview of higher-level methods supported by this client API library that can be used in your scripts. This list is likely to be extended in future releases, and any suggestions are welcome in the <a href="http://code.google.com/p/fgcp-client-api/issues/list" rel="nofollow">issue tracker</a>.</strong></p>
 <pre><code>Example: [see tests/test_client.py for more examples]
 
 # Connect with your client certificate to region 'uk'
@@ -14,303 +12,203 @@ client = FGCPClient('client.pem', 'uk')
 # Call custom client methods
 client.ShowSystemStatus()
 </code></pre>
-
 <p>The client methods below are organized in classes by <strong>client role</strong>, i.e. Client, Designer, Operator and Monitor. With version 1.0.x and later of the library, most of these client methods can now directly be replaced by <em>corresponding <a href="ResourceActions.html">Resource Actions</a></em>.</p>
-
 <p><img src="https://camo.githubusercontent.com/451a940d0c9e5b5b41f834dc7a0ddf74ea332384/687474703a2f2f6d696b65737075622e6e65742f666763705f636c69656e745f79756d6c2e706e67" alt="http://mikespub.net/fgcp_client_yuml.png" data-canonical-src="http://mikespub.net/fgcp_client_yuml.png"></p>
-
 <p>Note: this client API library also provides lower-level <a href="APICommands.html">API Commands</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>.</p>
-
 <hr>
-
 <h2>
-<a id="user-content-fgcpmonitor" class="anchor" href="#fgcpmonitor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>FGCPMonitor</h2>
-
+<a id="user-content-fgcpmonitor" class="anchor" href="#fgcpmonitor" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FGCPMonitor</h2>
 <p><strong>client = FGCPMonitor(key_file='client.pem', region='de', verbose=0, debug=0)</strong></p>
-
 <blockquote>
 <p>Connect as Monitor with your client certificate to region 'de'</p>
 </blockquote>
-
 <pre><code>    vdc = FGCPVDataCenter(key_file='client.pem', region='de', verbose=0, debug=0)
 </code></pre>
-
 <p><strong>client.FindSystemByName(vsysName)</strong></p>
-
 <blockquote>
 <p>Find VSystem by vsysName</p>
 </blockquote>
-
 <pre><code>    vsystem = vdc.get_vsystem(vsysName)
 </code></pre>
-
 <p><strong>client.GetSystemInventory(vsysName=None)</strong></p>
-
 <blockquote>
 <p>Get VSystem inventory (by vsysName)</p>
 </blockquote>
-
 <pre><code>    vsystems = vdc.list_vsystems()
     inventory = vsystem.get_inventory()
 </code></pre>
-
 <p><strong>client.GetSystemStatus(vsysName=None, verbose=None)</strong></p>
-
 <blockquote>
 <p>Get the overall system status (for a particular VSystem)</p>
 </blockquote>
-
 <pre><code>    status = vsystem.get_status()
 </code></pre>
-
 <p><strong>client.ShowSystemStatus(vsysName=None, sep='\t')</strong></p>
-
 <blockquote>
 <p>Show the overall system status (for a particular VSystem)</p>
 </blockquote>
-
 <pre><code>    vdc.show_vsystem_status()
     vsystem.show_status()
 </code></pre>
-
 <p><strong>+ all of the <a href="APICommands.html">API Commands</a></strong></p>
-
 <hr>
-
 <h2>
-<a id="user-content-fgcpoperator" class="anchor" href="#fgcpoperator" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>FGCPOperator</h2>
-
+<a id="user-content-fgcpoperator" class="anchor" href="#fgcpoperator" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FGCPOperator</h2>
 <p><strong>client = FGCPOperator(key_file='client.pem', region='de', verbose=0, debug=0)</strong></p>
-
 <blockquote>
 <p>Connect as Operator with your client certificate to region 'de'</p>
 </blockquote>
-
 <pre><code>    vdc = FGCPVDataCenter(key_file='client.pem', region='de', verbose=0, debug=0)
 </code></pre>
-
 <p><strong>client.StartVServerAndWait(vsysId, vserverId)</strong></p>
-
 <blockquote>
 <p>Start VServer and wait until it's running</p>
 </blockquote>
-
 <pre><code>    result = vserver.start(wait=True)
 </code></pre>
-
 <p><strong>client.StopVServerAndWait(vsysId, vserverId, force=None)</strong></p>
-
 <blockquote>
 <p>Stop VServer and wait until it's stopped</p>
 </blockquote>
-
 <pre><code>    result = vserver.stop(wait=True, force=None)
 </code></pre>
-
 <p><strong>client.BackupVDiskAndWait(vsysId, vdiskId)</strong></p>
-
 <blockquote>
 <p>Take Backup of VDisk and wait until it's finished (this might take a while)</p>
 </blockquote>
-
 <pre><code>    result = vdisk.backup(wait=True)
 </code></pre>
-
 <p><strong>client.BackupVServerAndRestart(vsysId, vserverId)</strong></p>
-
 <blockquote>
 <p>Backup all VDisks of a VServer and restart the VServer (this might take a while)</p>
 </blockquote>
-
 <pre><code>    result = vserver.backup(wait=True)
     for vdisk in vserver.list_vdisks():
         result = vdisk.backup(wait=True)
     result = vserver.start(wait=True)
 </code></pre>
-
 <p><strong>client.CleanupBackups(vsysId, vdiskId=None)</strong></p>
-
 <blockquote>
 <p>Clean up old VDisk backups e.g. to minimize disk space</p>
 </blockquote>
-
 <pre><code>    result = vdisk.cleanup_backups(max_num=100, max_age=None)
 </code></pre>
-
 <p><strong>client.StartEFMAndWait(vsysId, efmId)</strong></p>
-
 <blockquote>
 <p>Start EFM and wait until it's running</p>
 </blockquote>
-
 <pre><code>    result = loadbalancer.start(wait=True)
 </code></pre>
-
 <p><strong>client.StopEFMAndWait(vsysId, efmId)</strong></p>
-
 <blockquote>
 <p>Stop EFM and wait until it's stopped</p>
 </blockquote>
-
 <pre><code>    result = loadbalancer.stop(wait=True)
 </code></pre>
-
 <p><strong>client.AttachPublicIPAndWait(vsysId, publicIp)</strong></p>
-
 <blockquote>
 <p>Attach PublicIP and wait until it's attached</p>
 </blockquote>
-
 <pre><code>    result = publicip.attach(wait=True)
 </code></pre>
-
 <p><strong>client.DetachPublicIPAndWait(vsysId, publicIp)</strong></p>
-
 <blockquote>
 <p>Detach PublicIP and wait until it's detached</p>
 </blockquote>
-
 <pre><code>    result = publicip.detach(wait=True)
 </code></pre>
-
 <p><strong>client.StartSystem(vsysName, verbose=None)</strong></p>
-
 <blockquote>
 <p>Start VSystem and wait until all VServers and EFMs are started (TODO: define start sequence for vservers)</p>
 </blockquote>
-
 <pre><code>    vsystem.boot(wait=True)
     vsystem.start(wait=True)
 </code></pre>
-
 <p><strong>client.StopSystem(vsysName, verbose=None)</strong></p>
-
 <blockquote>
 <p>Stop VSystem and wait until all VServers and EFMs are stopped (TODO: define stop sequence for vservers)</p>
 </blockquote>
-
 <pre><code>    vsystem.stop(wait=True)
     vsystem.shutdown(wait=True)
 </code></pre>
-
 <p><strong>+ all of the <a href="ClientMethods.html#FGCPMonitor">FGCPMonitor() Methods</a></strong></p>
-
 <p><strong>+ all of the <a href="APICommands.html">API Commands</a></strong></p>
-
 <hr>
-
 <h2>
-<a id="user-content-fgcpdesigner" class="anchor" href="#fgcpdesigner" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>FGCPDesigner</h2>
-
+<a id="user-content-fgcpdesigner" class="anchor" href="#fgcpdesigner" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FGCPDesigner</h2>
 <p><strong>client = FGCPDesigner(key_file='client.pem', region='de', verbose=0, debug=0)</strong></p>
-
 <blockquote>
 <p>Connect as Designer with your client certificate to region 'de'</p>
 </blockquote>
-
 <pre><code>    vdc = FGCPVDataCenter(key_file='client.pem', region='de', verbose=0, debug=0)
 </code></pre>
-
 <p><strong>client.FindDiskImageByName(diskimageName)</strong></p>
-
 <blockquote>
 <p>Find DiskImage by diskimageName</p>
 </blockquote>
-
 <pre><code>    diskimage = vdc.get_diskimage(diskimageName)
 </code></pre>
-
 <p><strong>client.FindServerTypeByName(name)</strong></p>
-
 <blockquote>
 <p>Find ServerType by name</p>
 </blockquote>
-
 <pre><code>    servertype = vdc.get_servertype(name)
 </code></pre>
-
 <p><strong>client.FindVSYSDescriptorByName(vsysdescriptorName)</strong></p>
-
 <blockquote>
 <p>Find VSYSDescriptor by vsysdescriptorName</p>
 </blockquote>
-
 <pre><code>    vsysdescriptor = vdc.get_vsysdescriptor(vsysdescriptorName)
 </code></pre>
-
 <p><strong>client.CreateSystem(vsysName, vsysdescriptorName, verbose=None)</strong></p>
-
 <blockquote>
 <p>Create VSystem based on descriptor and wait until it's deployed</p>
 </blockquote>
-
 <pre><code>    vsysId = vdc.create_vsystem(vsysName, vsysdescriptorName, wait=True)
 </code></pre>
-
 <p><strong>client.DestroySystem(vsysName, verbose=None)</strong></p>
-
 <blockquote>
 <p>Destroy VSystem after stopping all VServers and EFMs</p>
 </blockquote>
-
 <pre><code>    vdc.destroy_vsystem(vsysName, wait=True)
 </code></pre>
-
 <p><strong>client.LoadSystemDesign(filePath, verbose=None)</strong></p>
-
 <blockquote>
 <p>Load VSystem design from file, for use e.g. in ConfigureSystem()</p>
 </blockquote>
-
 <pre><code>    design = vdc.get_vsystem_design()
     design.load_file(filePath)
     #design.build_vsystem(vsysName)
 </code></pre>
-
 <p><strong>client.ConfigureSystem(vsysName, systemDesign, verbose=None)</strong></p>
-
 <blockquote>
 <p>Configure VSystem based on some systemDesign - see LoadSystemDesign()</p>
 </blockquote>
-
 <pre><code>    #design = vdc.get_vsystem_design()
     #design.load_file(filePath)
     design.build_vsystem(vsysName)
 </code></pre>
-
 <p><strong>client.SaveSystemDesign(vsysName, filePath, verbose=None)</strong></p>
-
 <blockquote>
 <p>Save (fixed parts of) VSystem design to file</p>
 </blockquote>
-
 <pre><code>    design = vdc.get_vsystem_design()
     design.load_vsystem(vsysName)
     design.save_file(filePath)
 </code></pre>
-
 <p><strong>+ all of the <a href="ClientMethods.html#FGCPOperator">FGCPOperator() Methods</a></strong></p>
-
 <p><strong>+ all of the <a href="APICommands.html">API Commands</a></strong></p>
-
 <hr>
-
 <h2>
-<a id="user-content-fgcpclient" class="anchor" href="#fgcpclient" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>FGCPClient</h2>
-
+<a id="user-content-fgcpclient" class="anchor" href="#fgcpclient" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FGCPClient</h2>
 <p><strong>client = FGCPClient(key_file='client.pem', region='de', verbose=0, debug=0)</strong></p>
-
 <blockquote>
 <p>Connect as generic Client with your client certificate to region 'de'</p>
 </blockquote>
-
 <pre><code>    vdc = FGCPVDataCenter(key_file='client.pem', region='de', verbose=0, debug=0)
 </code></pre>
-
 <p><strong>+ all of the <a href="ClientMethods.html#FGCPDesigner">FGCPDesigner() Methods</a></strong></p>
-
 <p><strong>+ all of the <a href="APICommands.html">API Commands</a></strong></p>
-
 <p>Note: this client API library also provides lower-level <a href="APICommands.html">API Commands</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>.</p>
 
-      <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="fgcp.libcloud.html">pydoc fgcp.libcloud</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
+        <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="fgcp.libcloud.html">pydoc fgcp.libcloud</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>

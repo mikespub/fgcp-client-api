@@ -148,7 +148,7 @@ url&nbsp;parameters.<br>
 :type&nbsp;headers:&nbsp;``dict``<br>
 :param&nbsp;headers:&nbsp;Request&nbsp;headers.</tt></dd></dl>
 
-<dl><dt><a name="FGCPConnectionKey-request"><strong>request</strong></a>(self, action, params<font color="#909090">=None</font>, data<font color="#909090">=None</font>, headers<font color="#909090">=None</font>, method<font color="#909090">='GET'</font>, raw<font color="#909090">=False</font>)</dt><dd><tt>Request&nbsp;a&nbsp;given&nbsp;`action`.<br>
+<dl><dt><a name="FGCPConnectionKey-request"><strong>request</strong></a>(self, action, params<font color="#909090">=None</font>, data<font color="#909090">=None</font>, headers<font color="#909090">=None</font>, method<font color="#909090">='GET'</font>, raw<font color="#909090">=False</font>, stream<font color="#909090">=False</font>)</dt><dd><tt>Request&nbsp;a&nbsp;given&nbsp;`action`.<br>
 &nbsp;<br>
 Basically&nbsp;a&nbsp;wrapper&nbsp;around&nbsp;the&nbsp;connection<br>
 object's&nbsp;`request`&nbsp;that&nbsp;does&nbsp;some&nbsp;helpful&nbsp;pre-processing.<br>
@@ -175,6 +175,11 @@ object's&nbsp;`request`&nbsp;that&nbsp;does&nbsp;some&nbsp;helpful&nbsp;pre-proc
 :param&nbsp;raw:&nbsp;True&nbsp;to&nbsp;perform&nbsp;a&nbsp;"raw"&nbsp;request&nbsp;aka&nbsp;only&nbsp;send&nbsp;the&nbsp;headers<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;use&nbsp;the&nbsp;rawResponseCls&nbsp;class.&nbsp;This&nbsp;is&nbsp;used&nbsp;with<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storage&nbsp;API&nbsp;when&nbsp;uploading&nbsp;a&nbsp;file.<br>
+&nbsp;<br>
+:type&nbsp;stream:&nbsp;``bool``<br>
+:param&nbsp;stream:&nbsp;True&nbsp;to&nbsp;return&nbsp;an&nbsp;iterator&nbsp;in&nbsp;Response.iter_content<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;allow&nbsp;streaming&nbsp;of&nbsp;the&nbsp;response&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for&nbsp;downloading&nbsp;large&nbsp;files)<br>
 &nbsp;<br>
 :return:&nbsp;An&nbsp;:class:`Response`&nbsp;instance.<br>
 :rtype:&nbsp;:class:`Response`&nbsp;instance</tt></dd></dl>
@@ -217,7 +222,7 @@ Data and other attributes inherited from <a href="libcloud.common.base.html#Conn
 
 <dl><dt><strong>cache_busting</strong> = False</dl>
 
-<dl><dt><strong>conn_classes</strong> = (&lt;class 'libcloud.httplib_ssl.LibcloudHTTPConnection'&gt;, &lt;class 'libcloud.httplib_ssl.LibcloudHTTPSConnection'&gt;)</dl>
+<dl><dt><strong>conn_class</strong> = &lt;class 'libcloud.http.LibcloudConnection'&gt;</dl>
 
 <dl><dt><strong>connection</strong> = None</dl>
 
@@ -389,7 +394,7 @@ Data descriptors inherited from <a href="libcloud.compute.drivers.openstack.html
 </dl>
 <hr>
 Methods inherited from <a href="libcloud.compute.base.html#Node">libcloud.compute.base.Node</a>:<br>
-<dl><dt><a name="FGCPNode-__init__"><strong>__init__</strong></a>(self, id, name, state, public_ips, private_ips, driver, size<font color="#909090">=None</font>, image<font color="#909090">=None</font>, extra<font color="#909090">=None</font>)</dt><dd><tt>:param&nbsp;id:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;ID.<br>
+<dl><dt><a name="FGCPNode-__init__"><strong>__init__</strong></a>(self, id, name, state, public_ips, private_ips, driver, size<font color="#909090">=None</font>, image<font color="#909090">=None</font>, extra<font color="#909090">=None</font>, created_at<font color="#909090">=None</font>)</dt><dd><tt>:param&nbsp;id:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;ID.<br>
 :type&nbsp;id:&nbsp;``str``<br>
 &nbsp;<br>
 :param&nbsp;name:&nbsp;<a href="libcloud.compute.base.html#Node">Node</a>&nbsp;name.<br>
@@ -411,7 +416,10 @@ Methods inherited from <a href="libcloud.compute.base.html#Node">libcloud.comput
 :type&nbsp;size:&nbsp;:class:`.NodeSize`<br>
 &nbsp;<br>
 :param&nbsp;image:&nbsp;Image&nbsp;of&nbsp;this&nbsp;node.&nbsp;(optional)<br>
-:type&nbsp;size:&nbsp;:class:`.<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`<br>
+:type&nbsp;image:&nbsp;:class:`.<a href="libcloud.compute.base.html#NodeImage">NodeImage</a>`<br>
+&nbsp;<br>
+:param&nbsp;created_at:&nbsp;The&nbsp;datetime&nbsp;this&nbsp;node&nbsp;was&nbsp;created&nbsp;(optional)<br>
+:type&nbsp;created_at:&nbsp;:class:&nbsp;`datetime.datetime`<br>
 &nbsp;<br>
 :param&nbsp;extra:&nbsp;Optional&nbsp;provider&nbsp;specific&nbsp;attributes&nbsp;associated&nbsp;with<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;node.<br>
@@ -633,10 +641,10 @@ Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStac
 :type&nbsp;&nbsp;volume:&nbsp;`<a href="libcloud.compute.base.html#StorageVolume">StorageVolume</a>`<br>
 &nbsp;<br>
 :param&nbsp;name:&nbsp;Name&nbsp;of&nbsp;snapshot&nbsp;(optional)<br>
-:type&nbsp;&nbsp;name:&nbsp;`str`<br>
+:type&nbsp;&nbsp;name:&nbsp;`str`&nbsp;|&nbsp;`NoneType`<br>
 &nbsp;<br>
 :param&nbsp;ex_description:&nbsp;Description&nbsp;of&nbsp;the&nbsp;snapshot&nbsp;(optional)<br>
-:type&nbsp;&nbsp;ex_description:&nbsp;`str`<br>
+:type&nbsp;&nbsp;ex_description:&nbsp;`str`&nbsp;|&nbsp;`NoneType`<br>
 &nbsp;<br>
 :param&nbsp;ex_force:&nbsp;Specifies&nbsp;if&nbsp;we&nbsp;create&nbsp;a&nbsp;snapshot&nbsp;that&nbsp;is&nbsp;not&nbsp;in<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state&nbsp;`available`.&nbsp;For&nbsp;example&nbsp;`in-use`.&nbsp;Defaults<br>
@@ -680,7 +688,11 @@ Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStac
 &nbsp;<br>
 :rtype:&nbsp;``bool``</tt></dd></dl>
 
-<dl><dt><a name="FGCPNodeDriver-ex_create_floating_ip"><strong>ex_create_floating_ip</strong></a>(self)</dt><dd><tt>Create&nbsp;new&nbsp;floating&nbsp;IP<br>
+<dl><dt><a name="FGCPNodeDriver-ex_create_floating_ip"><strong>ex_create_floating_ip</strong></a>(self, ip_pool<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;new&nbsp;floating&nbsp;IP.&nbsp;The&nbsp;ip_pool&nbsp;attribute&nbsp;is&nbsp;optional&nbsp;only&nbsp;if&nbsp;your<br>
+infrastructure&nbsp;has&nbsp;only&nbsp;one&nbsp;IP&nbsp;pool&nbsp;available.<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool:&nbsp;name&nbsp;of&nbsp;the&nbsp;floating&nbsp;IP&nbsp;pool<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool:&nbsp;``str``<br>
 &nbsp;<br>
 :rtype:&nbsp;:class:`<a href="libcloud.compute.drivers.openstack.html#OpenStack_1_1_FloatingIpAddress">OpenStack_1_1_FloatingIpAddress</a>`</tt></dd></dl>
 
@@ -992,6 +1004,10 @@ Methods inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStac
 &nbsp;<br>
 :rtype:&nbsp;:class:`<a href="libcloud.compute.base.html#Node">Node</a>`</tt></dd></dl>
 
+<dl><dt><a name="FGCPNodeDriver-ex_start_node"><strong>ex_start_node</strong></a>(self, node)</dt></dl>
+
+<dl><dt><a name="FGCPNodeDriver-ex_stop_node"><strong>ex_stop_node</strong></a>(self, node)</dt></dl>
+
 <dl><dt><a name="FGCPNodeDriver-ex_suspend_node"><strong>ex_suspend_node</strong></a>(self, node)</dt></dl>
 
 <dl><dt><a name="FGCPNodeDriver-ex_unpause_node"><strong>ex_unpause_node</strong></a>(self, node)</dt></dl>
@@ -1100,11 +1116,11 @@ Static methods inherited from <a href="libcloud.compute.drivers.openstack.html#O
 
 <hr>
 Data and other attributes inherited from <a href="libcloud.compute.drivers.openstack.html#OpenStackNodeDriver">libcloud.compute.drivers.openstack.OpenStackNodeDriver</a>:<br>
-<dl><dt><strong>NODE_STATE_MAP</strong> = {'ACTIVE': 0, 'BUILD': 3, 'DELETED': 2, 'DELETE_IP': 3, 'ERROR': 7, 'HARD_REBOOT': 1, 'PASSWORD': 3, 'PREP_RESIZE': 3, 'QUEUE_RESIZE': 3, 'REBOOT': 1, ...}</dl>
+<dl><dt><strong>NODE_STATE_MAP</strong> = {'ACTIVE': 'running', 'BUILD': 'pending', 'DELETED': 'terminated', 'DELETE_IP': 'pending', 'ERROR': 'error', 'HARD_REBOOT': 'rebooting', 'PASSWORD': 'pending', 'PREP_RESIZE': 'pending', 'QUEUE_RESIZE': 'pending', 'REBOOT': 'rebooting', ...}</dl>
 
-<dl><dt><strong>SNAPSHOT_STATE_MAP</strong> = {'available': 0, 'creating': 2, 'deleting': 3, 'error': 1, 'error_restoring': 1, 'restoring': 4}</dl>
+<dl><dt><strong>SNAPSHOT_STATE_MAP</strong> = {'available': 'available', 'creating': 'creating', 'deleting': 'deleting', 'error': 'error', 'error_restoring': 'error', 'restoring': 'restoring'}</dl>
 
-<dl><dt><strong>VOLUME_STATE_MAP</strong> = {'attaching': 'attaching', 'available': 'available', 'backing-up': 'backup', 'creating': 'creating', 'deleting': 'deleting', 'error': 'error', 'error_deleting': 'error', 'error_extending': 'error', 'error_restoring': 'error', 'in-use': 'in_use', ...}</dl>
+<dl><dt><strong>VOLUME_STATE_MAP</strong> = {'attaching': 'attaching', 'available': 'available', 'backing-up': 'backup', 'creating': 'creating', 'deleting': 'deleting', 'error': 'error', 'error_deleting': 'error', 'error_extending': 'error', 'error_restoring': 'error', 'in-use': 'inuse', ...}</dl>
 
 <dl><dt><strong>api_name</strong> = 'openstack'</dl>
 
@@ -1536,7 +1552,7 @@ Data descriptors inherited from <a href="libcloud.compute.base.html#UuidMixin">l
 </dl>
 <hr>
 Methods inherited from <a href="libcloud.compute.base.html#VolumeSnapshot">libcloud.compute.base.VolumeSnapshot</a>:<br>
-<dl><dt><a name="FGCPVolumeSnapshot-__init__"><strong>__init__</strong></a>(self, id, driver, size<font color="#909090">=None</font>, extra<font color="#909090">=None</font>, created<font color="#909090">=None</font>, state<font color="#909090">=None</font>)</dt><dd><tt><a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>&nbsp;constructor.<br>
+<dl><dt><a name="FGCPVolumeSnapshot-__init__"><strong>__init__</strong></a>(self, id, driver, size<font color="#909090">=None</font>, extra<font color="#909090">=None</font>, created<font color="#909090">=None</font>, state<font color="#909090">=None</font>, name<font color="#909090">=None</font>)</dt><dd><tt><a href="libcloud.compute.base.html#VolumeSnapshot">VolumeSnapshot</a>&nbsp;constructor.<br>
 &nbsp;<br>
 :param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:&nbsp;Snapshot&nbsp;ID.<br>
 :type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:&nbsp;``str``<br>
@@ -1557,7 +1573,10 @@ Methods inherited from <a href="libcloud.compute.base.html#VolumeSnapshot">libcl
 &nbsp;<br>
 :param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state:&nbsp;A&nbsp;string&nbsp;representing&nbsp;the&nbsp;state&nbsp;the&nbsp;snapshot&nbsp;is<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in.&nbsp;See&nbsp;`libcloud.compute.types.StorageVolumeState`.<br>
-:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state:&nbsp;``str``</tt></dd></dl>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state:&nbsp;``str``<br>
+&nbsp;<br>
+:param&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;A&nbsp;string&nbsp;representing&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;snapshot<br>
+:type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;``str``</tt></dd></dl>
 
 <dl><dt><a name="FGCPVolumeSnapshot-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
 

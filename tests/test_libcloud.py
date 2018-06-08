@@ -273,7 +273,7 @@ def test_snapshot(snapshot):
 
 def test_backup(backup):
     """
-    FGCP VolumeSnapshot (or BackupTargetJob)
+    FGCP VolumeSnapshot (or BackupTargetRecoveryPoint)
     """
     print 'Test: %s' % backup
     #backup.restore(wait=True)

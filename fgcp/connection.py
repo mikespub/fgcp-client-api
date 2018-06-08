@@ -434,7 +434,7 @@ class FGCPResponseParser:
         elif tag.endswith('Response'):
             return self._tag2class['response']()
         else:
-            #print 'CHECKME: unknown tag ' + tag
+            #print 'CHECKME: unknown tag %s' % tag
             return self._tag2class['default']()
 
     # CHECKME: get rid of parent here again, and re-parent in resource itself ?

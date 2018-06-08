@@ -1,12 +1,9 @@
 
-        <html><head><title>
+          <html><head><title>
 API Commands for the Fujitsu Global Cloud Platform (FGCP)</title></head><body><h1>
 API Commands for the Fujitsu Global Cloud Platform (FGCP)</h1>
-
 <p><strong>The following list gives an overview of all low-level API Commands supported by the XML-RPC API version 2015-01-30 of the Fujitsu Global Cloud Platform that can be used by your scripts. They are grouped by logical "resource type" for presentation purposes only.</strong></p>
-
-<p>Reference: <a href="http://fenics.fujitsu.com/outsourcingservice/downloads/brochures/fj-cloud-api-design.pdf">Fujitsu Cloud API Design</a></p>
-
+<p>Reference: <a href="http://fenics.fujitsu.com/outsourcingservice/downloads/brochures/fj-cloud-api-design.pdf" rel="nofollow">Fujitsu Cloud API Design</a></p>
 <pre><code>Example: [see tests/test_api.py for more examples]
 
 # Connect with your client certificate to region 'uk'
@@ -22,16 +19,11 @@ for vsys in vsystems:
         status = api_proxy.GetVServerStatus(vsys.vsysId, vserver.vserverId)
     ...
 </code></pre>
-
 <p><img src="https://camo.githubusercontent.com/e7b75fb7bf5bb706dfbd913d79aae0c79b9c75fe/687474703a2f2f6d696b65737075622e6e65742f666763705f636f6d6d616e645f79756d6c2e706e67" alt="http://mikespub.net/fgcp_command_yuml.png" data-canonical-src="http://mikespub.net/fgcp_command_yuml.png"></p>
-
 <p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>.</p>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-data-center-vdc" class="anchor" href="#virtual-data-center-vdc" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual Data Center (VDC)</h2>
-
+<a id="user-content-virtual-data-center-vdc" class="anchor" href="#virtual-data-center-vdc" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual Data Center (VDC)</h2>
 <pre><code>from fgcp.command import FGCPCommand
 proxy = FGCPCommand(key_file='client.pem', region='de')
 
@@ -39,80 +31,77 @@ date, usage = proxy.GetSystemUsage()
 
 vsystems = proxy.ListVSYS()
 for vsys in vsystems:
-    test_vsys(proxy, vsys.vsysId)
-    break
+	test_vsys(proxy, vsys.vsysId)
+	break
 
 publicips = proxy.ListPublicIP(None)
 for publicip in publicips:
-    test_publicip(proxy, publicip.address)
-    break
+	test_publicip(proxy, publicip.address)
+	break
 
 test_addressrange(proxy)
 
 vsysdescriptors = proxy.ListVSYSDescriptor()
 for vsysdescriptor in vsysdescriptors:
-    test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
-    break
+	test_vsysdescriptor(proxy, vsysdescriptor.vsysdescriptorId)
+	break
 
 diskimages = proxy.ListDiskImage()
 for diskimage in diskimages:
-    test_diskimage(proxy, diskimage.diskimageId)
-    break
+	test_diskimage(proxy, diskimage.diskimageId)
+	break
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-system-vsys" class="anchor" href="#virtual-system-vsys" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual System (VSYS)</h2>
-
+<a id="user-content-virtual-system-vsys" class="anchor" href="#virtual-system-vsys" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual System (VSYS)</h2>
 <pre><code>vsys_attr = proxy.GetVSYSAttributes(vsysId)
 vsysName = vsys_attr.vsysName
 result = proxy.UpdateVSYSAttribute(vsysId, 'vsysName', vsysName)
 try:
-    cloudCategory = vsys_attr.cloudCategory
-    #result = proxy.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
+	cloudCategory = vsys_attr.cloudCategory
+	#result = proxy.UpdateVSYSConfiguration(vsysId, 'CLOUD_CATEGORY', cloudCategory)
 except:
-    pass
+	pass
 
 status = proxy.GetVSYSStatus(vsysId)
 
 vservers = proxy.ListVServer(vsysId)
 for vserver in vservers:
-    test_vsys_vserver(proxy, vsysId, vserver.vserverId)
-    break
+	test_vsys_vserver(proxy, vsysId, vserver.vserverId)
+	break
 
 #result = proxy.CreateVDisk(vsysId, vdiskName, size)
 vdisks = proxy.ListVDisk(vsysId)
 for vdisk in vdisks:
-    test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
-    break
+	test_vsys_vdisk(proxy, vsysId, vdisk.vdiskId)
+	break
 
 #result = proxy.AllocatePublicIP(vsysId)
 publicips = proxy.ListPublicIP(vsysId)
 for publicip in publicips:
-    test_vsys_publicip(proxy, vsysId, publicip.address)
-    break
+	test_vsys_publicip(proxy, vsysId, publicip.address)
+	break
 
 vsys_config = proxy.GetVSYSConfiguration(vsysId)
 for networkId in vsys_config.vnets:
-    test_vsys_vnet(proxy, vsysId, networkId)
-    break
+	test_vsys_vnet(proxy, vsysId, networkId)
+	break
 
 efmType = 'FW'
 #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
 firewalls = proxy.ListEFM(vsysId, efmType)
 for firewall in firewalls:
-    test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
-    test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
-    break
+	test_vsys_efm_generic(proxy, vsysId, firewall.efmId)
+	test_vsys_efm_firewall(proxy, vsysId, firewall.efmId)
+	break
 
 efmType = 'SLB'
 #result = proxy.CreateEFM(vsysId, efmType, efmName, networkId)
 loadbalancers = proxy.ListEFM(vsysId, efmType)
 for loadbalancer in loadbalancers:
-    test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
-    test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
-    break
+	test_vsys_efm_generic(proxy, vsysId, loadbalancer.efmId)
+	test_vsys_efm_loadbalancer(proxy, vsysId, loadbalancer.efmId)
+	break
 
 #result = proxy.CreateVServer(vsysId, vserverName, vserverType, diskImageId, networkId)
 
@@ -125,12 +114,9 @@ vservers = proxy.ListVServer(vsysId)
 
 #result = proxy.DestroyVSYS(vsysId)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-server-vserver" class="anchor" href="#virtual-server-vserver" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual Server (VServer)</h2>
-
+<a id="user-content-virtual-server-vserver" class="anchor" href="#virtual-server-vserver" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual Server (VServer)</h2>
 <pre><code>#result = proxy.StartVServer(vsysId, vserverId)
 #result = proxy.StopVServer(vsysId, vserverId, force=None)
 
@@ -138,10 +124,10 @@ vserver_attr = proxy.GetVServerAttributes(vsysId, vserverId)
 vserverName = vserver_attr.vserverName
 result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverName', vserverName)
 try:
-    vserverType = vserver_attr.vserverType
-    result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverType', vserverType)
+	vserverType = vserver_attr.vserverType
+	result = proxy.UpdateVServerAttribute(vsysId, vserverId, 'vserverType', vserverType)
 except:
-    pass
+	pass
 
 status = proxy.GetVServerStatus(vsysId, vserverId)
 password = proxy.GetVServerInitialPassword(vsysId, vserverId)
@@ -149,28 +135,24 @@ password = proxy.GetVServerInitialPassword(vsysId, vserverId)
 vserver_config = proxy.GetVServerConfiguration(vsysId, vserverId)
 
 for vdisk in vserver_config.vdisks:
-    test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
-    break
+	test_vsys_vserver_vdisk(proxy, vsysId, vserverId, vdisk.vdiskId)
+	break
 
 for vnic in vserver_config.vnics:
-    test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
-    break
+	test_vsys_vserver_vnic(proxy, vsysId, vserverId, vnic.networkId)
+	break
 
 #result = proxy.RegisterPrivateDiskImage(vserverId, name, description)
 
 #result = proxy.DestroyVServer(vsysId, vserverId)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-disk-vdisk" class="anchor" href="#virtual-disk-vdisk" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual Disk (VDisk)</h2>
-
+<a id="user-content-virtual-disk-vdisk" class="anchor" href="#virtual-disk-vdisk" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual Disk (VDisk)</h2>
 <pre><code>#result = proxy.AttachVDisk(vsysId, vserverId, vdiskId)
 #result = proxy.DetachVDisk(vsysId, vserverId, vdiskId)
 #test_vsys_vdisk(vsysId, vdiskId)
 </code></pre>
-
 <pre><code>proxy.GetVDiskAttributes(vsysId, vdiskId)
 #result = proxy.UpdateVDiskAttribute(vsysId, vdiskId, 'vdiskName', vdisk.vdiskName)
 proxy.GetVDiskStatus(vsysId, vdiskId)
@@ -178,34 +160,25 @@ proxy.GetVDiskStatus(vsysId, vdiskId)
 #result = proxy.BackupVDisk(vsysId, vdiskId)
 backups = proxy.ListVDiskBackup(vsysId, vdiskId)
 for backup in backups:
-    test_vsys_backup(proxy, vsysId, backup.backupId)
-    break
+	test_vsys_backup(proxy, vsysId, backup.backupId)
+	break
 
 #result = proxy.DestroyVDisk(vsysId, vdiskId)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-disk-backup" class="anchor" href="#virtual-disk-backup" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual Disk Backup</h2>
-
+<a id="user-content-virtual-disk-backup" class="anchor" href="#virtual-disk-backup" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual Disk Backup</h2>
 <pre><code>#result = proxy.RestoreVDisk(vsysId, backupId)
 #result = proxy.DestroyVDiskBackup(vsysId, backupId)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-network-interface-vnic" class="anchor" href="#virtual-network-interface-vnic" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual Network Interface (VNIC)</h2>
-
+<a id="user-content-virtual-network-interface-vnic" class="anchor" href="#virtual-network-interface-vnic" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual Network Interface (VNIC)</h2>
 <pre><code></code></pre>
 <hr>
-
 <h2>
-<a id="user-content-extended-function-module-efm" class="anchor" href="#extended-function-module-efm" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Extended Function Module (EFM)</h2>
-
+<a id="user-content-extended-function-module-efm" class="anchor" href="#extended-function-module-efm" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extended Function Module (EFM)</h2>
 <p><img src="https://camo.githubusercontent.com/fd8c236f08ebcb1b58b4d06931792be3f0a8fd71/687474703a2f2f6d696b65737075622e6e65742f666763705f65666d636f6e6669675f79756d6c2e706e67" alt="http://mikespub.net/fgcp_efmconfig_yuml.png" data-canonical-src="http://mikespub.net/fgcp_efmconfig_yuml.png"></p>
-
 <pre><code>#result = proxy.StartEFM(vsysId, efmId)
 #result = proxy.StopEFM(vsysId, efmId)
 
@@ -224,21 +197,17 @@ update_info = proxy.GetEFMConfigHandler(vsysId, efmId).efm_update()
 #result = proxy.BackupEFM(vsysId, efmId)
 backups = proxy.ListEFMBackup(vsysId, efmId, timeZone=None, countryCode=None)
 for backup in backups:
-    test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
-    break
+	test_vsys_efm_backup(proxy, vsysId, efmId, backup.backupId)
+	break
 
 #result = proxy.DestroyEFM(vsysId, efmId)
 </code></pre>
-
 <pre><code>#result = proxy.RestoreEFM(vsysId, efmId, backupId)
 #result = proxy.DestroyEFMBackup(vsysId, efmId, backupId)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-efm-firewall-fw" class="anchor" href="#efm-firewall-fw" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>EFM Firewall (FW)</h2>
-
+<a id="user-content-efm-firewall-fw" class="anchor" href="#efm-firewall-fw" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EFM Firewall (FW)</h2>
 <pre><code>nat_rules = proxy.GetEFMConfigHandler(vsysId, efmId).fw_nat_rule()
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).fw_nat_rule(rules=nat_rules)
 dns = proxy.GetEFMConfigHandler(vsysId, efmId).fw_dns()
@@ -249,12 +218,9 @@ logs = proxy.GetEFMConfigHandler(vsysId, efmId).fw_log(num=10, orders=None)
 limit_policies = proxy.GetEFMConfigHandler(vsysId, efmId).fw_limit_policy(from_zone=None, to_zone=None)
 update_info = proxy.GetEFMConfigHandler(vsysId, efmId).fw_update()
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-efm-loadbalancer-slb" class="anchor" href="#efm-loadbalancer-slb" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>EFM LoadBalancer (SLB)</h2>
-
+<a id="user-content-efm-loadbalancer-slb" class="anchor" href="#efm-loadbalancer-slb" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EFM LoadBalancer (SLB)</h2>
 <pre><code>rules = proxy.GetEFMConfigHandler(vsysId, efmId).slb_rule()
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_rule(groups=rules.groups, force=None, webAccelerator=None)
 load_stats = proxy.GetEFMConfigHandler(vsysId, efmId).slb_load()
@@ -272,44 +238,32 @@ cert_list = proxy.GetEFMConfigHandler(vsysId, efmId).slb_cert_list(certCategory=
 #result = proxy.UpdateEFMConfigHandler(vsysId, efmId).slb_stop_maint(id, ipAddress)
 update_info = proxy.GetEFMConfigHandler(vsysId, efmId).slb_update()
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-network-vnet" class="anchor" href="#virtual-network-vnet" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual Network (VNet)</h2>
-
+<a id="user-content-virtual-network-vnet" class="anchor" href="#virtual-network-vnet" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual Network (VNet)</h2>
 <pre><code></code></pre>
 <hr>
-
 <h2>
-<a id="user-content-public-ip-publicip" class="anchor" href="#public-ip-publicip" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Public IP (PublicIP)</h2>
-
+<a id="user-content-public-ip-publicip" class="anchor" href="#public-ip-publicip" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public IP (PublicIP)</h2>
 <pre><code>publicip_attr = proxy.GetPublicIPAttributes(publicipAddress)
 status = proxy.GetPublicIPStatus(publicipAddress)
 </code></pre>
-
 <pre><code>#result = proxy.AttachPublicIP(vsysId, publicipAddress)
 #result = proxy.DetachPublicIP(vsysId, publicipAddress)
 #result = proxy.FreePublicIP(vsysId, publicipAddress)
 #test_publicip(publicipAddress)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-address-range-addressrange" class="anchor" href="#address-range-addressrange" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Address Range (AddressRange)</h2>
-
+<a id="user-content-address-range-addressrange" class="anchor" href="#address-range-addressrange" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Address Range (AddressRange)</h2>
 <pre><code>addressranges = proxy.GetAddressRange()
 #result = proxy.CreateAddressPool(pipFrom=None, pipTo=None)
 #result = proxy.AddAddressRange(pipFrom, pipTo)
 #result = proxy.DeleteAddressRange(pipFrom, pipTo)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-virtual-system-descriptor-vsysdescriptor" class="anchor" href="#virtual-system-descriptor-vsysdescriptor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Virtual System Descriptor (VSYSDescriptor)</h2>
-
+<a id="user-content-virtual-system-descriptor-vsysdescriptor" class="anchor" href="#virtual-system-descriptor-vsysdescriptor" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Virtual System Descriptor (VSYSDescriptor)</h2>
 <pre><code>vsysdescriptor_attr = proxy.GetVSYSDescriptorAttributes(vsysdescriptorId)
 # only allowed on private vsysdescriptors
 vsysdescriptorName = vsysdescriptor_attr.vsysdescriptorName
@@ -329,12 +283,9 @@ diskimages = proxy.ListDiskImage('GENERAL', vsysdescriptorId)
 #result = proxy.UnregisterPrivateVSYSDescriptor(vsysdescriptorId)
 #result = proxy.UnregisterVSYSDescriptor(vsysdescriptorId)
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-disk-image-diskimage" class="anchor" href="#disk-image-diskimage" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Disk Image (DiskImage)</h2>
-
+<a id="user-content-disk-image-diskimage" class="anchor" href="#disk-image-diskimage" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Disk Image (DiskImage)</h2>
 <pre><code>diskimage_attr = proxy.GetDiskImageAttributes(diskimageId)
 # only allowed on private diskimages
 diskimageName = diskimage_attr.diskimageName
@@ -345,24 +296,18 @@ description = diskimage_attr.description
 
 servertypes = proxy.ListServerType(diskimageId)
 for servertype in servertypes:
-    test_diskimage_servertype(proxy, diskimageId, servertype.name)
-    break
+	test_diskimage_servertype(proxy, diskimageId, servertype.name)
+	break
 </code></pre>
-
 <hr>
-
 <h2>
-<a id="user-content-server-type-servertype" class="anchor" href="#server-type-servertype" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Server Type (ServerType)</h2>
-
+<a id="user-content-server-type-servertype" class="anchor" href="#server-type-servertype" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Server Type (ServerType)</h2>
 <pre><code></code></pre>
 <hr>
-
 <h2>
-<a id="user-content-other-ssl-vpn" class="anchor" href="#other-ssl-vpn" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Other (SSL-VPN)</h2>
-
+<a id="user-content-other-ssl-vpn" class="anchor" href="#other-ssl-vpn" aria-hidden="true"><svg class="octicon octicon-link" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Other (SSL-VPN)</h2>
 <pre><code>console_url = proxy.StandByConsole(vsysId, networkId)
 </code></pre>
-
 <p>Note: this client API library also provides higher-level <a href="ClientMethods.html">Client Methods</a> and intermediate <a href="ResourceActions.html">Resource Actions</a>.</p>
 
-      <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="fgcp.libcloud.html">pydoc fgcp.libcloud</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
+        <p>Content: <a href="index.html">index</a>&nbsp;&nbsp;<a href="ClientMethods.html">ClientMethods.html</a>&nbsp;&nbsp;<a href="ResourceActions.html">ResourceActions.html</a>&nbsp;&nbsp;<a href="APICommands.html">APICommands.html</a>&nbsp;&nbsp;<a href="ClassDiagrams.html">ClassDiagrams.html</a>&nbsp;&nbsp;<a href="TestServer.html">TestServer.html</a>&nbsp;&nbsp;<a href="RelayServer.html">RelayServer.html</a>&nbsp;&nbsp;<a href="fgcp.html">pydoc fgcp</a>&nbsp;&nbsp;<a href="fgcp.libcloud.html">pydoc fgcp.libcloud</a>&nbsp;&nbsp;<a href="tests.html">pydoc tests</a></p></body></html>
