@@ -2,7 +2,7 @@
 #
 #  Copyright (C) 2011-2016 Michel Dalle
 #
-#  Licensed under the Apache License, Version 2.0 (the "License");
+#  Licensed under the Apache License, Version 2.0 (the "License")
 #  you may not use this file except in compliance with the License.
 #  You may obtain a copy of the License at
 #
@@ -31,7 +31,8 @@ design = vdc.get_vsystem_design('Demo System')
 design.save_file('new_demo_system.txt')
 """
 
-import sys, time
+import sys
+import time
 
 from fgcp import FGCPError
 from fgcp.resource import FGCPElement, FGCPResource, FGCPResourceError
@@ -504,7 +505,7 @@ class FGCPVisual(FGCPDesign):
         self.target_idx = {}
 
     def link_nodes(self, from_idx, to_idx, arrows=False, label=None):
-        edge = {'from': from_idx, 'to': to_idx} 
+        edge = {'from': from_idx, 'to': to_idx}
         if arrows:
             edge['arrows'] = 'middle'
             #self.edges.append({'from': from_idx, 'to': to_idx, 'arrows': 'middle'})
@@ -711,8 +712,8 @@ class FGCPVisual(FGCPDesign):
                     else:
                         from_label = label_from + ':' + fw_rule.src
                     if from_label not in target_idx:
-                         target_idx[from_label] = self.add_node(from_label, shape='box', group=from_zone)
-                         self.link_nodes(target_idx[label_from], target_idx[from_label], arrows=True)
+                        target_idx[from_label] = self.add_node(from_label, shape='box', group=from_zone)
+                        self.link_nodes(target_idx[label_from], target_idx[from_label], arrows=True)
                     #to_label = to_zone + ':' + fw_rule.dst
                     if add_zones:
                         if fw_rule.dst != 'any':
@@ -722,12 +723,12 @@ class FGCPVisual(FGCPDesign):
                     else:
                         to_label = label_to + ':' + fw_rule.dst
                     if to_label not in target_idx:
-                         target_idx[to_label] = self.add_node(to_label, shape='box', group=to_zone)
-                         self.link_nodes(target_idx[to_label], target_idx[label_to], arrows=True)
+                        target_idx[to_label] = self.add_node(to_label, shape='box', group=to_zone)
+                        self.link_nodes(target_idx[to_label], target_idx[label_to], arrows=True)
                     if fw_rule.action != 'Accept':
                         rule_idx = self.add_node('%s:%s\n%s' % (fw_rule.srcPort, fw_rule.dstPort, fw_rule.protocol), group='FW_RULE', color='red', descr=fw_rule.action, unique=False)
                     else:
-                        #rule_idx = self.add_node(fw_rule.srcPort+':'+fw_rule.dstPort+'\n'+fw_rule.protocol, group='FW_RULE', unique=False)
+                        #rule_idx = self.add_node(fw_rule.srcPort + ':' + fw_rule.dstPort + '\n' + fw_rule.protocol, group='FW_RULE', unique=False)
                         rule_idx = self.add_node('%s:%s\n%s' % (fw_rule.srcPort, fw_rule.dstPort, fw_rule.protocol), group=from_zone, unique=False)
                     if add_zones:
                         self.link_nodes(target_idx[from_label], rule_idx, arrows=True, label=fw_rule.src)
@@ -900,14 +901,14 @@ class FGCPVisual(FGCPDesign):
                     # CHECKME: add red Deny port instead?
                     if loadbalancer.slbVip not in target_idx:
                         #target_idx[loadbalancer.slbVip] = self.add_loadbalancer(loadbalancer)
-                        target_idx[loadbalancer.slbVip] = self.add_node(loadbalancer.slbVip+'\n'+loadbalancer.efmName, color='red', group='FW_RULE', descr='FW_RULE ?')
+                        target_idx[loadbalancer.slbVip] = self.add_node(loadbalancer.slbVip + '\n' + loadbalancer.efmName, color='red', group='FW_RULE', descr='FW_RULE ?')
                     else:
                         node_idx = self.add_node(group.port1, color='red', group='FW_RULE', descr='FW_RULE ?')
                         self.link_nodes(target_idx[loadbalancer.slbVip], node_idx)
                         fw_port_idx[loadbalancer.slbVip][group.port1] = node_idx
                 # CHECKME: split port mapping when we have more than 1 target
                 if len(group.targets) > 1:
-                    parent_idx = self.add_ports(group.port1+'\n'+group.protocol)
+                    parent_idx = self.add_ports(group.port1 + '\n' + group.protocol)
                     self.link_nodes(fw_port_idx[loadbalancer.slbVip][group.port1], parent_idx)
                 else:
                     parent_idx = fw_port_idx[loadbalancer.slbVip][group.port1]
@@ -917,9 +918,9 @@ class FGCPVisual(FGCPDesign):
                     if len(group.targets) > 1:
                         port_idx = self.add_port(target.port1)
                     elif group.port1 == target.port1:
-                        port_idx = self.add_ports(group.port1+'\n'+group.protocol)
+                        port_idx = self.add_ports(group.port1 + '\n' + group.protocol)
                     else:
-                        port_idx = self.add_ports(group.port1+'\n'+group.protocol, target.port1)
+                        port_idx = self.add_ports(group.port1 + '\n' + group.protocol, target.port1)
                     #self.link_nodes(target_idx[loadbalancer.slbVip], port_idx)
                     self.link_nodes(parent_idx, port_idx)
                     self.link_nodes(port_idx, target_idx[target.ipAddress])
@@ -935,7 +936,7 @@ class FGCPVisual(FGCPDesign):
                     # CHECKME: add red Deny port instead?
                     if loadbalancer.slbVip not in target_idx:
                         #target_idx[loadbalancer.slbVip] = self.add_loadbalancer(loadbalancer)
-                        target_idx[loadbalancer.slbVip] = self.add_node(loadbalancer.slbVip+'\n'+loadbalancer.efmName, color='red', group='FW_RULE', descr='FW_RULE ?')
+                        target_idx[loadbalancer.slbVip] = self.add_node(loadbalancer.slbVip + '\n' + loadbalancer.efmName, color='red', group='FW_RULE', descr='FW_RULE ?')
                         fw_port_idx[loadbalancer.slbVip][group.port2] = target_idx[loadbalancer.slbVip]
                     else:
                         node_idx = self.add_node(group.port2, color='red', group='FW_RULE', descr='FW_RULE ?')
@@ -943,7 +944,7 @@ class FGCPVisual(FGCPDesign):
                         fw_port_idx[loadbalancer.slbVip][group.port2] = node_idx
                 # CHECKME: split port mapping when we have more than 1 target
                 if len(group.targets) > 1:
-                    parent_idx = self.add_ports(group.port2+'\n'+group.protocol)
+                    parent_idx = self.add_ports(group.port2 + '\n' + group.protocol)
                     self.link_nodes(fw_port_idx[loadbalancer.slbVip][group.port2], parent_idx)
                 else:
                     parent_idx = fw_port_idx[loadbalancer.slbVip][group.port2]
@@ -951,9 +952,9 @@ class FGCPVisual(FGCPDesign):
                     if len(group.targets) > 1:
                         port_idx = self.add_port(target.port2)
                     elif group.port2 == target.port2:
-                        port_idx = self.add_ports(group.port2+'\n'+group.protocol)
+                        port_idx = self.add_ports(group.port2 + '\n' + group.protocol)
                     else:
-                        port_idx = self.add_ports(group.port2+'\n'+group.protocol, target.port2)
+                        port_idx = self.add_ports(group.port2 + '\n' + group.protocol, target.port2)
                     #self.link_nodes(target_idx[loadbalancer.slbVip], port_idx)
                     self.link_nodes(parent_idx, port_idx)
                     self.link_nodes(port_idx, target_idx[target.ipAddress])
@@ -994,9 +995,9 @@ class FGCPVisual(FGCPDesign):
 
     def write_vis_js(self):
         f = open(self.filePath, 'w')
-        f.write("  // create an array with nodes\n");
-        #f.write("  var nodes = new vis.DataSet([\n");
-        f.write("  var nodes = [\n");
+        f.write("  // create an array with nodes\n")
+        #f.write("  var nodes = new vis.DataSet([\n")
+        f.write("  var nodes = [\n")
         for node in self.nodes:
             #print "    %s,\n" % node
             #if 'color' in node:
@@ -1006,35 +1007,35 @@ class FGCPVisual(FGCPDesign):
             #else:
             #    f.write("    {id: %d, label: '%s'},\n" % (node['id'], node['label']))
             f.write("    %s,\n" % node)
-        #f.write("  ]);\n");
-        f.write("  ];\n");
-        f.write("\n");
-        f.write("  // create an array with edges\n");
-        #f.write("  var edges = new vis.DataSet([\n");
-        f.write("  var edges = [\n");
+        #f.write("  ]);\n")
+        f.write("  ];\n")
+        f.write("\n")
+        f.write("  // create an array with edges\n")
+        #f.write("  var edges = new vis.DataSet([\n")
+        f.write("  var edges = [\n")
         for edge in self.edges:
             f.write("    %s,\n" % edge)
             #f.write("    {from: %d, to: %d},\n" % (edge['from'], edge['to']))
-        #f.write("  ]);\n");
-        f.write("  ];\n");
-        f.write("\n");
+        #f.write("  ]);\n")
+        f.write("  ];\n")
+        f.write("\n")
         if not self.layout:
-            f.write("  var options = {};\n");
+            f.write("  var options = {};\n")
         elif self.layout == 'directed' or self.layout == 'hubsize':
-            f.write("  var options = {\n");
-            f.write("    layout: {\n");
-            f.write("      hierarchical: {\n");
+            f.write("  var options = {\n")
+            f.write("    layout: {\n")
+            f.write("      hierarchical: {\n")
             if self.direction:
-                f.write("        direction: '%s',\n" % self.direction);
+                f.write("        direction: '%s',\n" % self.direction)
             else:
-                f.write("        direction: 'UD',\n");
-            f.write("        //sortMethod: 'hubsize'\n");
-            f.write("        //sortMethod: 'directed'\n");
-            f.write("        sortMethod: '%s'\n" % self.layout);
-            f.write("      }\n");
-            f.write("    }\n");
-            f.write("  };\n");
-        f.write("\n");
+                f.write("        direction: 'UD',\n")
+            f.write("        //sortMethod: 'hubsize'\n")
+            f.write("        //sortMethod: 'directed'\n")
+            f.write("        sortMethod: '%s'\n" % self.layout)
+            f.write("      }\n")
+            f.write("    }\n")
+            f.write("  };\n")
+        f.write("\n")
         f.close()
         return
 

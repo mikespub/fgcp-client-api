@@ -625,6 +625,9 @@ class FGCPVDataCenter(FGCPResource):
     def get_eventlog(self, all=None, timeZone=None, countryCode=None):
         return self.getproxy().GetEventLog(all, timeZone, countryCode)
 
+    def list_product_master(self, category=None):
+        return self.getproxy().ListProductMaster(category)
+
     def get_contract_number(self):
         # CHECKME: quick hack to find the contract number - is there some better way via API?
         return self.list_vsysdescriptors()[0].creatorName
@@ -1822,8 +1825,8 @@ class FGCPFirewall(FGCPEfm):
     def _add_nat_rule(self, **kwargs):
         if getattr(self, 'nat', None) is None:
             self.get_nat_rules()
-        #nat_rule = FGCPNATRule(publicIp='80.70.163.172', snapt='true', privateIp='192.168.0.211')
-        nat_rule = FGCPNATRule(**kwargs)
+        #nat_rule = FGCPFWNATRule(publicIp='80.70.163.172', snapt='true', privateIp='192.168.0.211')
+        nat_rule = FGCPFWNATRule(**kwargs)
         # set the parent of the nat_rule to this firewall
         #nat_rule.setparent(self)
         self.nat.append(nat_rule)
@@ -2770,6 +2773,38 @@ class FGCPKeyInfo(FGCPResource):
     startExpire = None
     endExpire = None
     contracts = None
+
+
+#class FGCPProductMaster(FGCPResponse):
+class FGCPProductMaster(FGCPResource):
+    regionTimeZone = None
+    currencyUnit = None
+    currencySign = None
+    numOfDecimals = None
+    productinfos = None
+
+
+class FGCPProductInfo(FGCPResource):
+    _idname = 'productName'
+    categoryCode = None
+    categoryName = None
+    chargeType = None
+    productName = None
+    unitPrice = None
+    unitVolume = None
+    unitRoundType = None
+    unitName = None
+    displayUnitName = None
+    variables = None
+
+
+class FGCPProductVariable(FGCPResource):
+    _idname = 'rateName'
+    rateName = None
+    limit = None
+    unitPrice = None
+    freeAmount = None
+    addition = None
 
 
 class FGCPUnknown(FGCPResource):

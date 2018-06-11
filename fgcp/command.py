@@ -679,7 +679,10 @@ class FGCPCommand(FGCPProxyServer):
         Usage: result = proxy.ListProductMaster()
         """
         result = self.do_action('ListProductMaster', {'category': category})
-        return result
+        if result.responseStatus == "SUCCESS":
+            del result.responseStatus
+            del result.responseMessage
+            return result
 
     def ListUser(self):
         """
@@ -910,10 +913,17 @@ class FGCPGetEFMConfigHandler(FGCPGenericEFMHandler):
         Usage: fw_nat_rules = proxy.GetEFMConfigHandler(vsys.vsysId, firewall.efmId).fw_nat_rule()
         """
         firewall = self._proxy.GetEFMConfiguration(self.vsysId, self.efmId, 'FW_NAT_RULE')
+        #firewall.pprint()
+        rules = []
         if hasattr(firewall, 'nat'):
             # CHECKME: remove <rules> part first
             if isinstance(firewall.nat, list) and len(firewall.nat) == 1:
-                return firewall.nat[0]
+                rules.extend(firewall.nat[0])
+        if hasattr(firewall, 'staticNat'):
+            # CHECKME: remove <rules> part first
+            if isinstance(firewall.staticNat, list) and len(firewall.staticNat) == 1:
+                rules.extend(firewall.staticNat[0])
+        return rules
 
     def fw_dns(self):
         """

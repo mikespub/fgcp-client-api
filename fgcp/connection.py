@@ -400,6 +400,9 @@ class FGCPResponseParser:
         'vsysrole': FGCPVSysRole,
         'contract': FGCPContract,
         'keyInfo': FGCPKeyInfo,
+        'ListProductMasterResponse': FGCPProductMaster,
+        'productinfo': FGCPProductInfo,
+        'variable': FGCPProductVariable,
         'response': FGCPResponse,
         'default': FGCPUnknown,
     }

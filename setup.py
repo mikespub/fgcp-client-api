@@ -1,6 +1,7 @@
 # http://www.packtpub.com/article/writing-a-package-in-python
 from setuptools import setup, Command
 
+
 # adapted from Apache libcloud setup.py
 class DocsCommand(Command):
     description = "generate API documentation"
@@ -33,6 +34,7 @@ class DocsCommand(Command):
                     todo.append(modname)
 
         import re
+
         # replace file:/// link with link to google code
         def clean_link(match):
             parts = match.group(1).split('/')
@@ -42,6 +44,7 @@ class DocsCommand(Command):
             #return '"https://github.com/mikespub/fgcp-client-api/tree/master/%s/%s"' % (dir, file)
             return '"https://github.com/mikespub/fgcp-client-api/blob/master/%s/%s"' % (dir, file)
         p1 = re.compile('"(file:[^"]+)"')
+
         # replace c:\... file with local file
         def clean_file(match):
             name = match.group(1).split('\\').pop()
@@ -71,7 +74,7 @@ class DocsCommand(Command):
         pages = {'index.html': 'https://github.com/mikespub/%s/wiki' % project}
         # add links to project pages
         for file in pages:
-            footerlinks.append('<a href="%s">%s</a>' % (file, file.replace('.html','')))
+            footerlinks.append('<a href="%s">%s</a>' % (file, file.replace('.html', '')))
         wikipages = {}
         wikireplace = {}
         # define wiki pages + add links to them
@@ -118,6 +121,7 @@ class DocsCommand(Command):
         lines += footer
         # replace title
         import re
+
         def add_title(match):
             title = match.group(1)
             title = re.sub('<a [^>]+>.*</a>', '', title, flags=re.DOTALL)
@@ -133,6 +137,7 @@ class DocsCommand(Command):
         f = open(os.path.join('docs', file), 'w')
         f.write(lines)
         f.close()
+
 
 class Pep8Command(Command):
     description = "run pep8 script"
@@ -151,15 +156,15 @@ class Pep8Command(Command):
             pep8
         except ImportError:
             print ('Missing "pep8" library. You can install it using pip: '
-                  'pip install pep8')
+                   'pip install pep8')
             sys.exit(1)
 
         import os
         import subprocess
         #cwd = os.getcwd()
         cwd = '.'
-        retcode = subprocess.call(('C:\Python27\Scripts\pep8 --show-source --ignore=E501,E265 --filename=*.py %s/fgcp/ %s/tests/ %s/fgcp_demo.py' %
-                (cwd, cwd, cwd)).split(' '))
+        retcode = subprocess.call(('C:\Python27\Scripts\pep8 --show-source --ignore=E501,E265 --filename=*.py %s/fgcp/ %s/tests/ %s/fgcp_demo.py %s/fgcp_cli.py' %
+                                  (cwd, cwd, cwd, cwd)).split(' '))
         sys.exit(retcode)
 
 f = open('README.txt')
@@ -176,7 +181,7 @@ setup(
     license='Apache License 2.0',
     url='https://github.com/mikespub/fgcp-client-api',
     long_description=long_description,
-    entry_points = {
+    entry_points={
         'distutils.commands': [
             'docs = DocsCommand'
         ]
