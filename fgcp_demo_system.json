@@ -1,0 +1,396 @@
+{
+  "vsysStatus": "NORMAL",
+  "cloudCategory": "BOTH",
+  "vsysName": "Demo System",
+  "description": "2-tier Skeleton",
+  "creator": "DEMO",
+  "loadbalancers": [
+    {
+      "efmId": "DEMO-VSYSTEM-S-0002",
+      "webAccelerator": "false",
+      "firmUpdateExist": "false",
+      "efmName": "SLB1",
+      "_status": "RUNNING",
+      "creator": "DEMO",
+      "slbVip": "SLB1",
+      "configUpdateExist": "false",
+      "comment": "",
+      "efmStatus": "RUNNING",
+      "ccacerts": "",
+      "backout": "false",
+      "currentVersion": "2.0",
+      "efmType": "SLB",
+      "groups": [
+        {
+          "maxConnection": "10000",
+          "protocol": "http",
+          "interval": "60",
+          "uniqueType": "By connection",
+          "targets": [
+            {
+              "serverId": "DEMO-VSYSTEM-S-0003",
+              "_class": "FGCPSLBTarget",
+              "ipAddress": "WebApp1",
+              "serverName": "WebApp1",
+              "port1": "80"
+            },
+            {
+              "serverId": "DEMO-VSYSTEM-S-0006",
+              "_class": "FGCPSLBTarget",
+              "ipAddress": "WebApp2",
+              "serverName": "WebApp2",
+              "port1": "80"
+            }
+          ],
+          "recoveryAction": "switch-back",
+          "port1": "80",
+          "timeout": "10",
+          "retryCount": "3",
+          "monitorType": "ping",
+          "_class": "FGCPSLBGroup",
+          "id": "10",
+          "causes": [
+            {
+              "_status": "default",
+              "_class": "FGCPSLBCause",
+              "cat": "HIGH_STRESS"
+            },
+            {
+              "_status": "customize",
+              "_class": "FGCPSLBCause",
+              "cat": "LIMIT_ACCESS"
+            },
+            {
+              "_status": "customize",
+              "_class": "FGCPSLBCause",
+              "cat": "MAINTE"
+            },
+            {
+              "_status": "customize",
+              "_class": "FGCPSLBCause",
+              "cat": "SERVER_STOP"
+            },
+            {
+              "_status": "default",
+              "_class": "FGCPSLBCause",
+              "cat": "SYSTEM"
+            }
+          ],
+          "balanceType": "minimum-connection-strict"
+        },
+        {
+          "maxConnection": "58000",
+          "protocol": "tcp",
+          "interval": "60",
+          "uniqueType": "By connection",
+          "targets": [
+            {
+              "serverId": "DEMO-VSYSTEM-S-0003",
+              "_class": "FGCPSLBTarget",
+              "ipAddress": "WebApp1",
+              "serverName": "WebApp1",
+              "port1": "22"
+            },
+            {
+              "serverId": "DEMO-VSYSTEM-S-0006",
+              "_class": "FGCPSLBTarget",
+              "ipAddress": "WebApp2",
+              "serverName": "WebApp2",
+              "port1": "22"
+            }
+          ],
+          "recoveryAction": "switch-back",
+          "port1": "22",
+          "timeout": "10",
+          "retryCount": "3",
+          "monitorType": "ping",
+          "_class": "FGCPSLBGroup",
+          "id": "20",
+          "balanceType": "round-robin"
+        }
+      ],
+      "servercerts": "",
+      "latestVersion": "2.0",
+      "_class": "FGCPLoadBalancer",
+      "ipAddress": "SLB1",
+      "backups": [
+        {
+          "backupId": "5",
+          "_class": "FGCPBackup",
+          "backupTime": "Dec 23, 2011 10:13:06 PM"
+        }
+      ],
+      "category": "SLB"
+    }
+  ],
+  "vdisks": [
+    {
+      "vdiskStatus": "NORMAL",
+      "vdiskName": "DISK1",
+      "creator": "DEMO",
+      "vdiskId": "DEMO-VSYSTEM-D-0001",
+      "attachedTo": "DEMO-VSYSTEM-S-0005",
+      "backups": "",
+      "_class": "FGCPVDisk",
+      "size": "100.0"
+    }
+  ],
+  "vsysId": "DEMO-VSYSTEM",
+  "publicips": [
+    {
+      "vsysId": "DEMO-VSYSTEM",
+      "publicipStatus": "ATTACHED",
+      "_class": "FGCPPublicIP",
+      "v4v6Flag": "IPv4",
+      "address": "publicip.1"
+    }
+  ],
+  "vnets": [
+    "DEMO-VSYSTEM-N-DMZ",
+    "DEMO-VSYSTEM-N-SECURE1"
+  ],
+  "vservers": [
+    {
+      "vserverType": "economy",
+      "creator": "DEMO",
+      "vserverName": "WebApp1",
+      "diskimageName": "IMG_f36620_M15GX18N755IWW",
+      "vdisks": "",
+      "diskimageId": "IMG_f36620_M15GX18N755IWW",
+      "vserverId": "DEMO-VSYSTEM-S-0003",
+      "vserverStatus": "RUNNING",
+      "vnics": [
+        {
+          "networkId": "DEMO-VSYSTEM-N-DMZ",
+          "nicNo": "0",
+          "_class": "FGCPVNic",
+          "privateIp": "WebApp1"
+        }
+      ],
+      "_class": "FGCPVServer"
+    },
+    {
+      "vserverType": "advanced",
+      "creator": "DEMO",
+      "vserverName": "DB1",
+      "diskimageName": "IMG_f36620_5ERF3849UO",
+      "vdisks": [
+        {
+          "vdiskStatus": "NORMAL",
+          "vdiskName": "DISK1",
+          "creator": "DEMO",
+          "vdiskId": "DEMO-VSYSTEM-D-0001",
+          "attachedTo": "DEMO-VSYSTEM-S-0005",
+          "backups": "",
+          "_class": "FGCPVDisk",
+          "size": "100.0"
+        }
+      ],
+      "diskimageId": "IMG_f36620_5ERF3849UO",
+      "vserverId": "DEMO-VSYSTEM-S-0005",
+      "vserverStatus": "RUNNING",
+      "backups": [
+        {
+          "backupId": "0003",
+          "_class": "FGCPBackup",
+          "timeval": "1325094699.0",
+          "backupTime": "Dec 28, 2011 6:51:39 PM"
+        }
+      ],
+      "_class": "FGCPVServer",
+      "vnics": [
+        {
+          "networkId": "DEMO-VSYSTEM-N-SECURE1",
+          "nicNo": "0",
+          "_class": "FGCPVNic",
+          "privateIp": "DB1"
+        }
+      ]
+    },
+    {
+      "vserverType": "economy",
+      "creator": "DEMO",
+      "vserverName": "WebApp2",
+      "diskimageName": "IMG_f36620_GNFDMQHXLE68",
+      "vdisks": "",
+      "diskimageId": "IMG_f36620_GNFDMQHXLE68",
+      "vserverId": "DEMO-VSYSTEM-S-0006",
+      "vserverStatus": "RUNNING",
+      "vnics": [
+        {
+          "networkId": "DEMO-VSYSTEM-N-DMZ",
+          "nicNo": "0",
+          "_class": "FGCPVNic",
+          "privateIp": "WebApp2"
+        }
+      ],
+      "_class": "FGCPVServer"
+    }
+  ],
+  "firewalls": [
+    {
+      "category": "FW",
+      "comment": "",
+      "firmUpdateExist": "false",
+      "efmName": "Firewall",
+      "efmId": "DEMO-VSYSTEM-S-0001",
+      "creator": "DEMO",
+      "backout": "false",
+      "configUpdateExist": "false",
+      "efmStatus": "RUNNING",
+      "currentVersion": "3.0",
+      "efmType": "FW",
+      "dns": {
+        "_class": "FGCPFWDns",
+        "type": "AUTO",
+        "primary": "80.70.163.10",
+        "secondary": ""
+      },
+      "nat": [
+        {
+          "publicIp": "publicip.1",
+          "_class": "FGCPFWNATRule",
+          "snapt": "true",
+          "privateIp": "SLB1"
+        }
+      ],
+      "directions": [
+        {
+          "to_zone": "DEMO-VSYSTEM-N-INTERNET",
+          "_class": "FGCPFWDirection",
+          "from_zone": "DEMO-VSYSTEM-N-DMZ",
+          "policies": [
+            {
+              "dstService": "NONE",
+              "src": "any",
+              "dstPort": "any",
+              "protocol": "tcp-udp",
+              "log": "Off",
+              "dstType": "IP",
+              "dst": "any",
+              "srcPort": "any",
+              "srcType": "IP",
+              "action": "Accept",
+              "_class": "FGCPFWPolicy",
+              "id": "45999"
+            }
+          ]
+        },
+        {
+          "to_zone": "DEMO-VSYSTEM-N-SECURE1",
+          "_class": "FGCPFWDirection",
+          "from_zone": "DEMO-VSYSTEM-N-DMZ",
+          "policies": [
+            {
+              "dstService": "NONE",
+              "src": "any",
+              "dstPort": "3306",
+              "protocol": "tcp",
+              "log": "Off",
+              "dstType": "IP",
+              "dst": "DB1",
+              "srcPort": "any",
+              "srcType": "IP",
+              "action": "Accept",
+              "_class": "FGCPFWPolicy",
+              "id": "10306"
+            }
+          ]
+        },
+        {
+          "to_zone": "DEMO-VSYSTEM-N-DMZ",
+          "_class": "FGCPFWDirection",
+          "from_zone": "DEMO-VSYSTEM-N-INTERNET",
+          "policies": [
+            {
+              "dstService": "NONE",
+              "src": "any",
+              "dstPort": "22",
+              "protocol": "tcp",
+              "log": "On",
+              "dstType": "IP",
+              "dst": "publicip.1",
+              "srcPort": "any",
+              "srcType": "IP",
+              "action": "Accept",
+              "_class": "FGCPFWPolicy",
+              "id": "35022"
+            },
+            {
+              "dstService": "NONE",
+              "src": "any",
+              "dstPort": "80",
+              "protocol": "tcp",
+              "log": "Off",
+              "dstType": "IP",
+              "dst": "publicip.1",
+              "srcPort": "any",
+              "srcType": "IP",
+              "action": "Accept",
+              "_class": "FGCPFWPolicy",
+              "id": "35080"
+            }
+          ]
+        },
+        {
+          "to_zone": "DEMO-VSYSTEM-N-DMZ",
+          "_class": "FGCPFWDirection",
+          "from_zone": "DEMO-VSYSTEM-N-SECURE1",
+          "policies": [
+            {
+              "dstService": "NONE",
+              "src": "any",
+              "dstPort": "22",
+              "protocol": "tcp",
+              "log": "Off",
+              "dstType": "IP",
+              "dst": "any",
+              "srcPort": "any",
+              "srcType": "IP",
+              "action": "Accept",
+              "_class": "FGCPFWPolicy",
+              "id": "12022"
+            }
+          ]
+        },
+        {
+          "to_zone": "DEMO-VSYSTEM-N-INTERNET",
+          "_class": "FGCPFWDirection",
+          "from_zone": "DEMO-VSYSTEM-N-SECURE1",
+          "policies": [
+            {
+              "dstService": "NONE",
+              "src": "any",
+              "dstPort": "any",
+              "protocol": "tcp-udp",
+              "log": "Off",
+              "dstType": "IP",
+              "dst": "any",
+              "srcPort": "any",
+              "srcType": "IP",
+              "action": "Accept",
+              "_class": "FGCPFWPolicy",
+              "id": "46999"
+            }
+          ]
+        }
+      ],
+      "latestVersion": "3.0",
+      "_class": "FGCPFirewall",
+      "backups": [
+        {
+          "backupId": "3",
+          "_class": "FGCPBackup",
+          "backupTime": "Dec 23, 2011 10:04:55 PM"
+        },
+        {
+          "backupId": "2",
+          "_class": "FGCPBackup",
+          "backupTime": "Jun 2, 2011 1:10:28 PM"
+        }
+      ]
+    }
+  ],
+  "_class": "FGCPVSystem",
+  "baseDescriptor": "2-tier_Skeleton_de_001"
+}

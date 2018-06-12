@@ -90,68 +90,17 @@ class FGCPDesign(FGCPResource):
         var = self.to_var(what)
         return json.dumps(var, indent=indent, encoding='utf-8')
 
-    def from_yaml(self, lines):
-        # TODO: import from yaml :-)
-        from fgcp.resource import FGCPVSystem
-        return FGCPVSystem(vsysName='TODO: import from yaml', description='This library does not support importing from yaml files yet')
+    def from_yaml(self, lines, parent=None):
+        import yaml
+        var = yaml.safe_load(lines)
+        return self.from_var(var, parent)
 
     def to_yaml(self, what, depth=0, suffix=''):
         if isinstance(what, FGCPResource):
             # convert to dict recursively first
             what = self.to_var(what)
-        L = []
-        prefix = '  ' * depth
-        # See http://yaml.org/spec/1.1/
-        # Mapping of ...
-        if isinstance(what, dict):
-            keylist = what.keys()
-            keylist.sort()
-            for key in keylist:
-                if key == '_class':
-                    L.append('%s# %s%s' % (prefix, what[key], suffix))
-                # ... mappings
-                elif isinstance(what[key], dict):
-                    L.append('%s%s: {' % (prefix, key))
-                    # CHECKME: add , after each entry !
-                    L.append(self.to_yaml(what[key], depth + 1, ','))
-                    L.append('%s}%s' % (prefix, suffix))
-                # ... sequences
-                elif isinstance(what[key], list):
-                    L.append('%s%s:' % (prefix, key))
-                    L.append(self.to_yaml(what[key], depth + 1))
-                    # CHECKME: no suffix here ???
-                # ... scalars
-                else:
-                    L.append('%s%s: %s%s' % (prefix, key, what[key], suffix))
-        # Sequence of ...
-        elif isinstance(what, list):
-            if len(what) == 0:
-                return
-            # ... mappings
-            elif isinstance(what[0], dict):
-                for item in what:
-                    if '_class' in item:
-                        L.append('%s- # %s' % (prefix, item['_class']))
-                        del item['_class']
-                    else:
-                        L.append('%s-' % prefix)
-                    L.append(self.to_yaml(item, depth + 1))
-            # ... sequences
-            elif isinstance(what[0], list):
-                for item in what:
-                    L.append('%s- [' % prefix)
-                    # CHECKME: add , after each entry
-                    for entry in item:
-                        L.append(self.to_yaml(entry, depth + 1) + ',')
-                    L.append('%s]' % prefix)
-            # ... scalars
-            else:
-                for item in what:
-                    L.append('%s- %s' % (prefix, item))
-        # Scalar
-        else:
-            L.append('%s%s' % (prefix, what))
-        return '\r\n'.join(L)
+        import yaml
+        return yaml.safe_dump(what, default_flow_style=False)
 
     def from_var(self, what, parent=None):
         if isinstance(what, dict):
@@ -231,10 +180,14 @@ class FGCPDesign(FGCPResource):
             vsystem = self.from_json(lines)
         elif lines.startswith('#'):
             format = 'yaml'
-            # TODO :-)
+            # CHECKME: old-style yaml format
+            lines = lines.replace('#', '_class:')
+            vsystem = self.from_yaml(lines)
+        elif lines.startswith('_class:'):
+            format = 'yaml'
             vsystem = self.from_yaml(lines)
         else:
-            raise FGCPDesignError('INVALID_FORMAT', 'File %s does not seem to start with FGCPSystem(' % self.filePath)
+            raise FGCPDesignError('INVALID_FORMAT', 'File %s does not seem to start with FGCPVSystem(' % self.filePath)
         self.show_output('Loaded VSystem Design for %s from file %s' % (vsystem.vsysName, self.filePath))
         try:
             # check if VDataCenter already has a vsystem with the same name - TODO: deal with offline case, cfr. vdc.json
@@ -359,7 +312,7 @@ class FGCPDesign(FGCPResource):
         # TODO: remap FW and SLB rules and update them !?
         self.show_output('Configured VSystem %s' % self.vsysName)
 
-    def save_file(self, filePath, format='txt', replaceIps=True):
+    def save_file(self, filePath, format='json', replaceIps=True):
         """
         Save VSystem Design to file
         """
@@ -402,6 +355,8 @@ class FGCPDesign(FGCPResource):
             # in case we didn't load this from file
             if getattr(loadbalancer, 'groups', None) is None:
                 loadbalancer.get_rules()
+            #if getattr(loadbalancer, 'servercerts', None) is None:
+            #    loadbalancer.get_cert_list()
             new_loadbalancers.append(loadbalancer)
         self.vsystem.loadbalancers = new_loadbalancers
         # get mapping of diskimage id to name
@@ -437,8 +392,10 @@ class FGCPDesign(FGCPResource):
             lines = self.to_code(self.vsystem)
         elif format == 'json':
             lines = self.to_json(self.vsystem, indent=2)
-        else:
+        elif format == 'yaml':
             lines = self.to_yaml(self.vsystem)
+        else:
+            raise FGCPDesignError('INVALID_FORMAT', 'File %s cannot be saved in %s format' % (self.filePath, format))
         # Replace vsysId and creator everywhere (including Id's)
         lines = lines.replace(self.vsystem.vsysId, 'DEMO-VSYSTEM')
         lines = lines.replace(self.vsystem.creator, 'DEMO')
@@ -451,7 +408,7 @@ class FGCPDesign(FGCPResource):
             lines = lines.replace('from=', 'from_zone=')
             lines = lines.replace('to=', 'to_zone=')
         # Write configuration to file
-        f = open(self.filePath, 'wb')
+        f = open(self.filePath, 'w')
         f.write(lines)
         f.close()
         self.show_output('Saved VSystem Design for %s to file %s' % (self.vsystem.vsysName, self.filePath))
@@ -464,7 +421,8 @@ class FGCPDesign(FGCPResource):
         return self._parent
 
     def save_vdc(self, filePath='vdc.json'):
-        self._parent.list_vsystems()
+        for vsystem in self._parent.list_vsystems():
+            vsystem.get_inventory()
         self._parent.list_vsysdescriptors()
         self._parent.list_diskimages()
         self._parent.list_servertypes()

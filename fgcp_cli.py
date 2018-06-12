@@ -155,6 +155,8 @@ class FGCP_Menu(FGCP_CLI):
 
     def select_result(self, obj, method, result):
         if not isinstance(result, list):
+            if type(result).__name__.startswith('FGCP'):
+                return result
             return
         if len(result) < 1:
             return
