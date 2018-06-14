@@ -120,7 +120,7 @@ class FGCPRelayCGIScript(object):
         trace = traceback.format_exc()
         # remove local path from traceback just in case
         import re
-        trace = re.sub('"[^"]+fgcp_relay\.py"', '"fgcp_relay.py"', trace)
+        trace = re.sub(r'"[^"]+fgcp_relay\.py"', '"fgcp_relay.py"', trace)
         self.write_output('text/plain', 'Error: %s\n%s' % (text, trace), self.fpout)
         exit()
 

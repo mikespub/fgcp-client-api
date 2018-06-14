@@ -198,6 +198,7 @@ class FGCP_Menu(FGCP_CLI):
             return [attr for attr in attrlist if not attr.startswith('_') and callable(getattr(obj, attr))]
         return [attr for attr in attrlist if attr.startswith(prefix) and callable(getattr(obj, attr))]
 
+
 if __name__ == "__main__":
     key_file = 'client.pem'
     region = 'de'

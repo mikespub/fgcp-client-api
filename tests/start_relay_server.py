@@ -39,6 +39,7 @@ class FGCPRelayConfig(object):
     key_file = 'client.pem'
     region = 'uk'
 
+
 FGCP_RELAY_CONFIG = FGCPRelayConfig()
 
 

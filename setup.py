@@ -1,5 +1,6 @@
 from __future__ import print_function
 # http://www.packtpub.com/article/writing-a-package-in-python
+#from builtins import str
 from future import standard_library
 standard_library.install_aliases()
 from setuptools import setup, Command
@@ -46,13 +47,13 @@ class DocsCommand(Command):
             #return '"http://code.google.com/p/fgcp-client-api/source/browse/%s/%s"' % (dir, file)
             #return '"https://github.com/mikespub/fgcp-client-api/tree/master/%s/%s"' % (dir, file)
             return '"https://github.com/mikespub/fgcp-client-api/blob/master/%s/%s"' % (dir, file)
-        p1 = re.compile('"(file:[^"]+)"')
+        p1 = re.compile(r'"(file:[^"]+)"')
 
         # replace c:\... file with local file
         def clean_file(match):
             name = match.group(1).split('\\').pop()
             return '>%s<' % name
-        p2 = re.compile('>(\w:[^<]+)<')
+        p2 = re.compile(r'>(\w:[^<]+)<')
         for modname in todo:
             filename = modname + '.html'
             if not os.path.exists(filename):
@@ -108,7 +109,8 @@ class DocsCommand(Command):
 
     def get_html(self, file, url, start_seq='<body>', end_seq='</body>', links={}, footer='<br /></body></html>'):
         print(file)
-        import urllib.request, urllib.error, urllib.parse
+        #import urllib.request, urllib.error, urllib.parse
+        import urllib.request
         f = urllib.request.urlopen(url)
         lines = f.read()
         f.close()
@@ -127,9 +129,10 @@ class DocsCommand(Command):
 
         def add_title(match):
             title = match.group(1)
-            title = re.sub('<a [^>]+>.*</a>', '', title, flags=re.DOTALL)
-            return '<html><head><title>%s</title></head><body><h1>%s</h1>' % (title, title)
-        lines = re.sub('<h1>(.+)</h1>', add_title, lines, flags=re.DOTALL)
+            title = re.sub(r'<a [^>]+>.*</a>', '', title, flags=re.DOTALL)
+            #return '<html><head><title>%s</title></head><body><h1>%s</h1>' % (title, title)
+            return '<html><head><title>' + title + '</title></head><body><h1>' + title + '</h1>'
+        lines = re.sub(r'<h1>(.+)</h1>', add_title, lines, flags=re.DOTALL)
         # replace links
         for link in links:
             lines = lines.replace(link, links[link])
@@ -166,9 +169,10 @@ class Pep8Command(Command):
         import subprocess
         #cwd = os.getcwd()
         cwd = '.'
-        retcode = subprocess.call(('C:\Python27\Scripts\pep8 --show-source --ignore=E501,E265 --filename=*.py %s/fgcp/ %s/tests/ %s/fgcp_demo.py %s/fgcp_cli.py' %
+        retcode = subprocess.call((r'C:\Python27\Scripts\pycodestyle --show-source --ignore=E501,E265 --filename=*.py %s/fgcp/ %s/tests/ %s/fgcp_demo.py %s/fgcp_cli.py' %
                                   (cwd, cwd, cwd, cwd)).split(' '))
         sys.exit(retcode)
+
 
 f = open('README.txt')
 long_description = f.read()
@@ -177,7 +181,7 @@ f.close()
 setup(
     name='fgcp-client-api',
     description='Client API Library for the Fujitsu Global Cloud Platform (FGCP)',
-    version='1.4.7',
+    version='1.5.0',
     author='mikespub',
     author_email='fgcp@mikespub.net',
     packages=['fgcp'],
@@ -202,7 +206,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
-
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6',
     ]
 )
