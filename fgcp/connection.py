@@ -37,7 +37,6 @@ from __future__ import division
 
 from builtins import str
 from builtins import object
-from past.utils import old_div
 import time
 import base64
 import os.path
@@ -110,7 +109,7 @@ class FGCPConnection(object):
         # as long as the expires value is set to the current time
         self.timezone = time.tzname[0]
         if len(self.timezone) < 1:
-            offset = int(old_div(time.timezone, 3600))
+            offset = time.timezone // 3600
             if offset > 0:
                 self.timezone = 'Etc/GMT+%s' % offset
             elif offset < 0:
@@ -175,7 +174,8 @@ class FGCPConnection(object):
     # see com.fujitsu.oviss.pub.OViSSSignature
     def get_accesskeyid(self):
         t = int(time.time() * 1000)
-        acc = base64.b64encode(self.timezone + '&' + str(t) + '&1.0&SHA1withRSA')
+        data_str = self.timezone + '&' + str(t) + '&1.0&SHA1withRSA'
+        acc = base64.b64encode(data_str.encode('utf-8'))
         return acc
 
     # see com.fujitsu.oviss.pub.OViSSSignature
@@ -184,7 +184,7 @@ class FGCPConnection(object):
             acc = self.get_accesskeyid()
         if self._key is None:
             # Note: we need an unencrypted PEM file for this !
-            s = open(self.key_file, 'rb').read()
+            s = open(self.key_file, 'rt').read()
             self._key = keyfactory.parsePrivateKey(s)
         # RSAKey.hashAndSign() creates an RSA/PKCS1-1.5(SHA-1) signature, and does the equivalent of "SHA1withRSA" Signature method in Java
         # Note: the accesskeyid is already base64-encoded here
@@ -194,8 +194,8 @@ class FGCPConnection(object):
     def get_body(self, action, params=None, attachments=None):
         if self.region == 'test':
             # sanitize accesskeyid and signature for test fixtures
-            acc = '...'
-            sig = '...'
+            acc = b'...'
+            sig = b'...'
         else:
             acc = self.get_accesskeyid()
             sig = self.get_signature(acc)
@@ -213,8 +213,8 @@ class FGCPConnection(object):
                 extra = self.add_param(key, val, 1)
                 if extra:
                     L.append(extra)
-        L.append('  <AccessKeyId>' + acc + '</AccessKeyId>')
-        L.append('  <Signature>' + sig + '</Signature>')
+        L.append('  <AccessKeyId>' + str(acc, 'utf-8') + '</AccessKeyId>')
+        L.append('  <Signature>' + str(sig, 'utf-8') + '</Signature>')
         L.append('</OViSSRequest>')
         body = CRLF.join(L)
 
@@ -471,6 +471,7 @@ class FGCPResponseParser(object):
             for subelem in root:
                 # CHECKME: use grand-parent for the child now !
                 child = self.xmlelement_to_object(subelem, parent)
+                # FIXME: list_vnets returns list of lists now!?
                 if isinstance(child, str):
                     return child
                 else:

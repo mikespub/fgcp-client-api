@@ -217,7 +217,7 @@ class FGCPTestServerWithFixtures(FGCPTestServer):
             raise FGCPServerError('INVALID_PATH', 'File %s does not exist' % self._file)
         # compare body with request file
         f = open(self._file, 'rb')
-        data = f.read()
+        data = f.read().decode('utf-8')
         f.close()
         if data != body:
             raise FGCPServerError('INVALID_REQUEST', 'Request for test %s does not match test fixture:\n\
@@ -228,7 +228,7 @@ Current body:\n\
 Test fixture:\n\
 ====\n\
 %s\n\
-====\n' % (self._testid, body, data))
+====\n' % (self._testid, repr(body), repr(data)))
         return
 
     def getresponse(self):

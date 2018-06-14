@@ -287,6 +287,15 @@ class FGCPCommand(FGCPProxyServer):
         result = self.do_action('GetVSYSConfiguration', {'vsysId': vsysId})
         # FIXME: we seem to have ghosts in VSYSConfiguration.publicips compared to the overall ListPublicIP(vsys.vsysId) !
         setattr(result.vsys, 'publicips', self.ListPublicIP(vsysId))
+        # FIXME: list_vnets returns list of lists now!?
+        if hasattr(result.vsys, 'vnets'):
+            new_vnets = []
+            for vnet in getattr(result.vsys, 'vnets', []):
+                if isinstance(vnet, list) and len(vnet) == 1:
+                    new_vnets.append(vnet[0])
+                else:
+                    new_vnets.append(vnet)
+            setattr(result.vsys, 'vnets', new_vnets)
         return result.vsys
 
     def UpdateVSYSConfiguration(self, vsysId, configurationName, configurationValue):

@@ -106,7 +106,8 @@ def run_relay_server(key_file, region):
     FGCP_RELAY_CONFIG.key_file = key_file
     FGCP_RELAY_CONFIG.region = region
     # override default CGIHTTPRequestHandler
-    http.server.test(HandlerClass=FGCPRelayHTTPRequestHandler)
+    httpd = http.server.HTTPServer(('', 8000), FGCPRelayHTTPRequestHandler)
+    httpd.serve_forever()
 
 
 if __name__ == "__main__":
