@@ -34,7 +34,10 @@ Note: you need to unzip the file 'fixtures.zip' in tests/fixtures first
 """
 from __future__ import print_function
 
-import httplib
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+import http.client
 import time
 import os.path
 import re
@@ -67,7 +70,7 @@ def FGCPGetServerConnection(key_file='client.pem', region='de'):
         # connect to relay API server for remote connection
         # format: region = 'relay=http://127.0.0.1:8000/cgi-bin/fgcp_relay.py'
         relay = region.split('=').pop()
-        from urlparse import urlparse
+        from urllib.parse import urlparse
         url = urlparse(relay)
         # TODO: secure access to relay server in some other way, e.g. Basic Auth, OAuth, ...
         if url.scheme == 'https':
@@ -84,14 +87,14 @@ def FGCPGetServerConnection(key_file='client.pem', region='de'):
         raise FGCPServerError('INVALID_REGION', 'Region %s does not exist' % region)
 
 
-class FGCPRealServer(httplib.HTTPSConnection):
+class FGCPRealServer(http.client.HTTPSConnection):
     """
     Connect to the real API server for the Fujitsu Global Cloud Platform in this region
     """
     pass
 
 
-class FGCPRelayServer(httplib.HTTPSConnection):
+class FGCPRelayServer(http.client.HTTPSConnection):
     """
     Connect via some relay API server for remote connections, e.g. for Google App Engine
     """
@@ -104,22 +107,22 @@ class FGCPRelayServer(httplib.HTTPSConnection):
         self._relay_host = host
         self._relay_port = port
         self._relay_path = path
-        httplib.HTTPSConnection.__init__(self, host, port=port, strict=strict)
+        http.client.HTTPSConnection.__init__(self, host, port=port, strict=strict)
 
     def connect(self):
-        return httplib.HTTPSConnection.connect(self)
+        return http.client.HTTPSConnection.connect(self)
 
     def request(self, method, url, body=None, headers={}):
         # TODO: fix request
-        return httplib.HTTPSConnection.request(self, method, self._relay_path, body, headers)
+        return http.client.HTTPSConnection.request(self, method, self._relay_path, body, headers)
 
     def getresponse(self):
         # TODO: fix response
         # TODO: fix response.read()
-        return httplib.HTTPSConnection.getresponse(self)
+        return http.client.HTTPSConnection.getresponse(self)
 
 
-class FGCPUnsecureRelayServer(httplib.HTTPConnection):
+class FGCPUnsecureRelayServer(http.client.HTTPConnection):
     """
     Connect via some relay API server for remote connections, e.g. for localhost
     """
@@ -132,22 +135,22 @@ class FGCPUnsecureRelayServer(httplib.HTTPConnection):
         self._relay_host = host
         self._relay_port = port
         self._relay_path = path
-        httplib.HTTPConnection.__init__(self, host, port=port)
+        http.client.HTTPConnection.__init__(self, host, port=port)
 
     def connect(self):
-        return httplib.HTTPConnection.connect(self)
+        return http.client.HTTPConnection.connect(self)
 
     def request(self, method, url, body=None, headers={}):
         # TODO: fix request
-        return httplib.HTTPConnection.request(self, method, self._relay_path, body, headers)
+        return http.client.HTTPConnection.request(self, method, self._relay_path, body, headers)
 
     def getresponse(self):
         # TODO: fix response
         # TODO: fix response.read()
-        return httplib.HTTPConnection.getresponse(self)
+        return http.client.HTTPConnection.getresponse(self)
 
 
-class FGCPTestServer:
+class FGCPTestServer(object):
     status = 200
     reason = 'OK'
     _testid = None

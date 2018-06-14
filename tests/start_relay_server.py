@@ -28,10 +28,13 @@ region there
 """
 from __future__ import print_function
 
-import CGIHTTPServer
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+import http.server
 
 
-class FGCPRelayConfig:
+class FGCPRelayConfig(object):
     """The actual relay configuration is specified at startup"""
     key_file = 'client.pem'
     region = 'uk'
@@ -39,7 +42,7 @@ class FGCPRelayConfig:
 FGCP_RELAY_CONFIG = FGCPRelayConfig()
 
 
-class FGCPRelayHTTPRequestHandler(CGIHTTPServer.CGIHTTPRequestHandler):
+class FGCPRelayHTTPRequestHandler(http.server.CGIHTTPRequestHandler):
     """Override the default CGIHTTPRequestHandler to run the relay script here"""
     _relay = None
 
@@ -63,7 +66,7 @@ class FGCPRelayHTTPRequestHandler(CGIHTTPServer.CGIHTTPRequestHandler):
         """Version of is_cgi() that only supports the relay CGI script"""
         if self.path != '/cgi-bin/fgcp_relay.py':
             return False
-        return CGIHTTPServer.CGIHTTPRequestHandler.is_cgi(self)
+        return http.server.CGIHTTPRequestHandler.is_cgi(self)
 
     def run_cgi_local(self):
         """Version of run_cgi() that runs the relay script in place"""
@@ -103,7 +106,7 @@ def run_relay_server(key_file, region):
     FGCP_RELAY_CONFIG.key_file = key_file
     FGCP_RELAY_CONFIG.region = region
     # override default CGIHTTPRequestHandler
-    CGIHTTPServer.test(HandlerClass=FGCPRelayHTTPRequestHandler)
+    http.server.test(HandlerClass=FGCPRelayHTTPRequestHandler)
 
 
 if __name__ == "__main__":

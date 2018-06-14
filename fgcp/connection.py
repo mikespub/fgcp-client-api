@@ -33,7 +33,11 @@ for vsys in vsystems:
     ...
 """
 from __future__ import print_function
+from __future__ import division
 
+from builtins import str
+from builtins import object
+from past.utils import old_div
 import time
 import base64
 import os.path
@@ -58,7 +62,7 @@ class FGCPResponseError(FGCPError):
     pass
 
 
-class FGCPConnection:
+class FGCPConnection(object):
     """
     FGCP XML-RPC Connection
     """
@@ -106,7 +110,7 @@ class FGCPConnection:
         # as long as the expires value is set to the current time
         self.timezone = time.tzname[0]
         if len(self.timezone) < 1:
-            offset = int(time.timezone / 3600)
+            offset = int(old_div(time.timezone, 3600))
             if offset > 0:
                 self.timezone = 'Etc/GMT+%s' % offset
             elif offset < 0:
@@ -170,7 +174,7 @@ class FGCPConnection:
 
     # see com.fujitsu.oviss.pub.OViSSSignature
     def get_accesskeyid(self):
-        t = long(time.time() * 1000)
+        t = int(time.time() * 1000)
         acc = base64.b64encode(self.timezone + '&' + str(t) + '&1.0&SHA1withRSA')
         return acc
 
@@ -205,7 +209,7 @@ class FGCPConnection:
         L.append('  <Version>' + self.api_version + '</Version>')
         L.append('  <Locale>' + self.locale + '</Locale>')
         if params is not None:
-            for key, val in params.items():
+            for key, val in list(params.items()):
                 extra = self.add_param(key, val, 1)
                 if extra:
                     L.append(extra)
@@ -269,7 +273,7 @@ class FGCPConnection:
             #   <value>tcp</value>
             # </order>
             L.append('  ' * depth + '<%s>' % key)
-            for entry, val in value.items():
+            for entry, val in list(value.items()):
                 extra = self.add_param(entry, val, depth + 1)
                 if extra:
                     L.append(extra)
@@ -286,7 +290,7 @@ class FGCPConnection:
             # </orders>
             for item in value:
                 # CHECKME: item must be a dict of {'entry': val} !
-                for entry, val in item.items():
+                for entry, val in list(item.items()):
                     extra = self.add_param(entry, val, depth + 1)
                     if extra:
                         L.append(extra)
@@ -355,7 +359,7 @@ class FGCPProxyServer(FGCPConnection):
     pass
 
 
-class FGCPResponseParser:
+class FGCPResponseParser(object):
     """
     FGCP Response Parser
     """

@@ -34,6 +34,7 @@ for vsys in vsystems:
 """
 from __future__ import print_function
 
+from builtins import object
 from fgcp import FGCPError
 
 from fgcp.connection import FGCPProxyServer, FGCPResponseError
@@ -887,7 +888,7 @@ class FGCPCommand(FGCPProxyServer):
         return result.responseStatus
 
 
-class FGCPGenericEFMHandler:
+class FGCPGenericEFMHandler(object):
     """
     Generic Handler for FGCP Get/Update EFM Configuration methods
     """

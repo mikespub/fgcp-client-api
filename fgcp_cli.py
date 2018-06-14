@@ -1,5 +1,9 @@
 #!/usr/bin/python2.7
 from __future__ import print_function
+from builtins import input
+from builtins import str
+from builtins import zip
+from builtins import object
 import os
 import sys
 from fgcp.resource import FGCPVDataCenter
@@ -117,7 +121,7 @@ class FGCP_Menu(FGCP_CLI):
         print('%s. %s' % (0, 'Return'))
         if len(methodlist) < 1:
             default = '0'
-        idx = raw_input('Please select %s method [%s] ' % (type(obj).__name__, default))
+        idx = input('Please select %s method [%s] ' % (type(obj).__name__, default))
         if not idx:
             idx = default
         if idx in selected:
@@ -138,18 +142,18 @@ class FGCP_Menu(FGCP_CLI):
             return
         args = list(func.__code__.co_varnames[:argcount])
         defaults = func.__defaults__ or ()
-        values = dict(zip(reversed(args), reversed(defaults)))
+        values = dict(list(zip(reversed(args), reversed(defaults))))
         args.pop(0)
         params = []
         for arg in args:
             if arg in values:
-                val = raw_input('%s [%s] ' % (arg, values[arg]))
+                val = input('%s [%s] ' % (arg, values[arg]))
                 if val:
                     params.append(val)
                 #if not val:
                 #   val = values[arg]
             else:
-                val = raw_input('%s ' % arg)
+                val = input('%s ' % arg)
                 params.append(val)
             #params.append({arg: val})
         return params
@@ -179,7 +183,7 @@ class FGCP_Menu(FGCP_CLI):
             idx += 1
         default = '1'
         print('%s. %s' % (0, 'Return'))
-        idx = raw_input('Please select %s item [%s] ' % (type(result[0]).__name__, default))
+        idx = input('Please select %s item [%s] ' % (type(result[0]).__name__, default))
         if not idx:
             idx = default
         if idx in selected:
@@ -189,7 +193,7 @@ class FGCP_Menu(FGCP_CLI):
     def get_methods(self, obj, prefix=None):
         # check for local class methods here, not any inherited ones
         #attrlist = dir(obj)
-        attrlist = type(obj).__dict__.keys()
+        attrlist = list(type(obj).__dict__.keys())
         if not prefix:
             return [attr for attr in attrlist if not attr.startswith('_') and callable(getattr(obj, attr))]
         return [attr for attr in attrlist if attr.startswith(prefix) and callable(getattr(obj, attr))]

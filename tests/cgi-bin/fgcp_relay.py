@@ -27,6 +27,9 @@ at the bottom of this script, and specify your own certificate and
 region there
 """
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import cgi
 import sys
 import os
@@ -41,7 +44,7 @@ FGCP_REGIONS = {
 }
 
 
-class FGCPRelayCGIScript:
+class FGCPRelayCGIScript(object):
     fpin = None
     fpout = None
     environ = None
@@ -62,8 +65,8 @@ class FGCPRelayCGIScript:
         self.set_environ(environ)
         self.set_fp(fpin, fpout, fperr)
         try:
-            import httplib
-            self._conn = httplib.HTTPSConnection(self.host, key_file=self.key_file, cert_file=self.key_file)
+            import http.client
+            self._conn = http.client.HTTPSConnection(self.host, key_file=self.key_file, cert_file=self.key_file)
         except:
             self.raise_error('Oops, cannot connect')
 
@@ -88,7 +91,7 @@ class FGCPRelayCGIScript:
     def get_headers(self, environ=os.environ):
         """Get request headers"""
         headers = {'REQUEST_METHOD': 'GET', 'CONTENT_LENGTH': 0, 'CONTENT_TYPE': 'text/html', 'HTTP_USER_AGENT': 'Invalid'}
-        for header in headers.keys():
+        for header in list(headers.keys()):
             if header in environ:
                 headers[header] = environ[header]
         return headers

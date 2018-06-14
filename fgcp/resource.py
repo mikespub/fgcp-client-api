@@ -32,6 +32,8 @@ for vserver in vsystem.vservers:
 """
 from __future__ import print_function
 
+from builtins import str
+from builtins import object
 import time
 
 from fgcp import FGCPError
@@ -53,7 +55,7 @@ class FGCPResourceError(FGCPError):
 class FGCPElement(object):
     def __init__(self, **kwargs):
         # initialize object attributes, cfr. FGCPDesign().load()
-        for key in kwargs.keys():
+        for key in list(kwargs.keys()):
             setattr(self, key, kwargs[key])
 
     def __repr__(self):
@@ -65,7 +67,7 @@ class FGCPElement(object):
         prefix = '  ' * depth
         #if what is None:
         #    return '%sNone' % prefix
-        if isinstance(what, (str, unicode)):
+        if isinstance(what, (str, str)):
             return "%s'%s'" % (prefix, what)
         CRLF = '\r\n'
         L = []
@@ -84,7 +86,7 @@ class FGCPElement(object):
             if key == '_caller' or key == '_parent' or key == '_status':
                 if isinstance(what.__dict__[key], FGCPResource):
                     L.append("%s%s='%s'," % (prefix, key, repr(what.__dict__[key])))
-                elif isinstance(what.__dict__[key], (str, unicode)):
+                elif isinstance(what.__dict__[key], (str, str)):
                     L.append("%s%s='%s'," % (prefix, key, what.__dict__[key]))
                 else:
                     L.append('%s%s=%s,' % (prefix, key, what.__dict__[key]))
@@ -106,7 +108,7 @@ class FGCPElement(object):
                 for val in what.__dict__[key]:
                     L.append(self.pformat(val, depth + 1) + ',')
                 L.append('%s],' % prefix)
-            elif isinstance(what.__dict__[key], (str, unicode)):
+            elif isinstance(what.__dict__[key], (str, str)):
                 L.append("%s%s='%s'," % (prefix, key, what.__dict__[key]))
             elif isinstance(what.__dict__[key], int) or isinstance(what.__dict__[key], float):
                 L.append("%s%s=%s," % (prefix, key, what.__dict__[key]))
@@ -172,7 +174,7 @@ class FGCPResource(FGCPElement):
 
     def __init__(self, **kwargs):
         # initialize object attributes, cfr. FGCPDesign().load()
-        for key in kwargs.keys():
+        for key in list(kwargs.keys()):
             setattr(self, key, kwargs[key])
         # CHECKME: special case for id=123 and/or parentid=12 ?
         if hasattr(self, 'id') and self._idname is not None:

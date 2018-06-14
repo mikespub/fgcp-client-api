@@ -32,6 +32,7 @@ design.save_file('new_demo_system.txt')
 """
 from __future__ import print_function
 
+from builtins import str
 import sys
 import time
 
@@ -115,7 +116,7 @@ class FGCPDesign(FGCPResource):
             new_what = klass()
             # CHECKME: add parent and proxy to the FGCP Resource
             new_what.setparent(parent)
-            keylist = what.keys()
+            keylist = list(what.keys())
             for key in keylist:
                 if key == '_class':
                     continue
@@ -134,7 +135,7 @@ class FGCPDesign(FGCPResource):
         if isinstance(what, FGCPElement):
             # convert to dict and add _class
             new_what = {'_class': type(what).__name__}
-            keylist = what.__dict__.keys()
+            keylist = list(what.__dict__.keys())
             for key in keylist:
                 # skip internal attributes
                 if key.startswith('_') and key != '_status':
@@ -143,7 +144,7 @@ class FGCPDesign(FGCPResource):
             return new_what
         elif isinstance(what, dict):
             new_what = {}
-            keylist = what.keys()
+            keylist = list(what.keys())
             for key in keylist:
                 # skip internal keys
                 #if key.startswith('_'):
@@ -402,7 +403,7 @@ class FGCPDesign(FGCPResource):
         lines = lines.replace(self.vsystem.creator, 'DEMO')
         # CHECKME: replace ip addresses with names everywhere, including firewall policies and loadbalancer rules
         if replaceIps:
-            for ip in seenip.keys():
+            for ip in list(seenip.keys()):
                 lines = lines.replace(ip, seenip[ip])
         # CHECKME: fix from=... issue for firewall policies
         if format == 'txt':
@@ -804,7 +805,7 @@ class FGCPVisual(FGCPDesign):
                     self.link_nodes(target_idx['INTERNET'], target_idx[fw_rule.dst])
                 self.link_nodes(target_idx[fw_rule.dst], dstPort_idx)
             elif fw_rule.dst in natting:
-                natted = natting[fw_rule.dst].keys()[0]
+                natted = list(natting[fw_rule.dst].keys())[0]
                 # CHECKME: we're dealing with a vserver here
                 if natted in mapip:
                     dstPort_idx = self.add_fw_rule(fw_rule)

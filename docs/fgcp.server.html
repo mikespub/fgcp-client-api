@@ -33,11 +33,12 @@ Note:&nbsp;you&nbsp;need&nbsp;to&nbsp;unzip&nbsp;the&nbsp;file&nbsp;'fixtures.zi
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="httplib.html">httplib</a><br>
-</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="http.html">http</a><br>
+<a href="os.html">os</a><br>
 </td><td width="25%" valign=top><a href="re.html">re</a><br>
+<a href="future.standard_library.html">future.standard_library</a><br>
 </td><td width="25%" valign=top><a href="time.html">time</a><br>
-</td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -51,12 +52,17 @@ Note:&nbsp;you&nbsp;need&nbsp;to&nbsp;unzip&nbsp;the&nbsp;file&nbsp;'fixtures.zi
 <dt><font face="helvetica, arial"><a href="fgcp.server.html#FGCPServerError">FGCPServerError</a>
 </font></dt></dl>
 </dd>
+<dt><font face="helvetica, arial"><a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
 <dt><font face="helvetica, arial"><a href="fgcp.server.html#FGCPTestServer">FGCPTestServer</a>
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="fgcp.server.html#FGCPTestServerWithFixtures">FGCPTestServerWithFixtures</a>
 </font></dt><dt><font face="helvetica, arial"><a href="fgcp.server.html#FGCPTestServerWithRegistry">FGCPTestServerWithRegistry</a>
 </font></dt></dl>
+</dd>
+</dl>
 </dd>
 <dt><font face="helvetica, arial"><a href="httplib.html#HTTPConnection">httplib.HTTPConnection</a>
 </font></dt><dd>
@@ -293,10 +299,16 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FGCPTestServer">class <strong>FGCPTestServer</strong></a></font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="FGCPTestServer">class <strong>FGCPTestServer</strong></a>(<a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.server.html#FGCPTestServer">FGCPTestServer</a></dd>
+<dd><a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
 <dl><dt><a name="FGCPTestServer-__init__"><strong>__init__</strong></a>(self, *args, **kwargs)</dt></dl>
 
 <dl><dt><a name="FGCPTestServer-close"><strong>close</strong></a>(self)</dt></dl>
@@ -315,6 +327,26 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>status</strong> = 200</dl>
 
+<hr>
+Methods inherited from <a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>:<br>
+<dl><dt><a name="FGCPTestServer-__long__"><strong>__long__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServer-__native__"><strong>__native__</strong></a>(self)</dt><dd><tt>Hook&nbsp;for&nbsp;the&nbsp;future.utils.native()&nbsp;function</tt></dd></dl>
+
+<dl><dt><a name="FGCPTestServer-__nonzero__"><strong>__nonzero__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServer-__unicode__"><strong>__unicode__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServer-next"><strong>next</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
@@ -339,7 +371,14 @@ VServer&nbsp;DB1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;192.168.1.12&nbsp;&nbsp;&nbsp;&nbs
 VServer&nbsp;WebApp2&nbsp;192.168.0.15&nbsp;&nbsp;&nbsp;&nbsp;RUNNING<br>
 .<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.server.html#FGCPTestServerWithFixtures">FGCPTestServerWithFixtures</a></dd>
+<dd><a href="fgcp.server.html#FGCPTestServer">FGCPTestServer</a></dd>
+<dd><a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
 <dl><dt><a name="FGCPTestServerWithFixtures-__init__"><strong>__init__</strong></a>(self, *args, **kwargs)</dt></dl>
 
 <dl><dt><a name="FGCPTestServerWithFixtures-close"><strong>close</strong></a>(self)</dt></dl>
@@ -364,6 +403,26 @@ Data and other attributes inherited from <a href="fgcp.server.html#FGCPTestServe
 
 <dl><dt><strong>status</strong> = 200</dl>
 
+<hr>
+Methods inherited from <a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>:<br>
+<dl><dt><a name="FGCPTestServerWithFixtures-__long__"><strong>__long__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServerWithFixtures-__native__"><strong>__native__</strong></a>(self)</dt><dd><tt>Hook&nbsp;for&nbsp;the&nbsp;future.utils.native()&nbsp;function</tt></dd></dl>
+
+<dl><dt><a name="FGCPTestServerWithFixtures-__nonzero__"><strong>__nonzero__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServerWithFixtures-__unicode__"><strong>__unicode__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServerWithFixtures-next"><strong>next</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
@@ -371,7 +430,14 @@ Data and other attributes inherited from <a href="fgcp.server.html#FGCPTestServe
 <font color="#000000" face="helvetica, arial"><a name="FGCPTestServerWithRegistry">class <strong>FGCPTestServerWithRegistry</strong></a>(<a href="fgcp.server.html#FGCPTestServer">FGCPTestServer</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="fgcp.server.html#FGCPTestServerWithRegistry">FGCPTestServerWithRegistry</a></dd>
+<dd><a href="fgcp.server.html#FGCPTestServer">FGCPTestServer</a></dd>
+<dd><a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
 <dl><dt><a name="FGCPTestServerWithRegistry-__init__"><strong>__init__</strong></a>(self, filePath<font color="#909090">='fgcp_demo_system.txt'</font>)</dt></dl>
 
 <hr>
@@ -392,6 +458,26 @@ Data and other attributes inherited from <a href="fgcp.server.html#FGCPTestServe
 
 <dl><dt><strong>status</strong> = 200</dl>
 
+<hr>
+Methods inherited from <a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>:<br>
+<dl><dt><a name="FGCPTestServerWithRegistry-__long__"><strong>__long__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServerWithRegistry-__native__"><strong>__native__</strong></a>(self)</dt><dd><tt>Hook&nbsp;for&nbsp;the&nbsp;future.utils.native()&nbsp;function</tt></dd></dl>
+
+<dl><dt><a name="FGCPTestServerWithRegistry-__nonzero__"><strong>__nonzero__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServerWithRegistry-__unicode__"><strong>__unicode__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="FGCPTestServerWithRegistry-next"><strong>next</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="future.types.newobject.html#newobject">future.types.newobject.newobject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">

@@ -1,5 +1,7 @@
 from __future__ import print_function
 # http://www.packtpub.com/article/writing-a-package-in-python
+from future import standard_library
+standard_library.install_aliases()
 from setuptools import setup, Command
 
 
@@ -106,8 +108,8 @@ class DocsCommand(Command):
 
     def get_html(self, file, url, start_seq='<body>', end_seq='</body>', links={}, footer='<br /></body></html>'):
         print(file)
-        import urllib2
-        f = urllib2.urlopen(url)
+        import urllib.request, urllib.error, urllib.parse
+        f = urllib.request.urlopen(url)
         lines = f.read()
         f.close()
         # remove start_seq
