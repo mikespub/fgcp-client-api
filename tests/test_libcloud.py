@@ -19,6 +19,7 @@ Test FGCP via Libcloud - please check the source code of this file to see how li
 
 The test functions are organised by class, i.e. NodeDriver, NodeImage, Node, VolumeStorage etc.
 """
+from __future__ import print_function
 
 
 def fgcp_libcloud_walker(key_file, region):
@@ -44,39 +45,39 @@ def test_driver(driver):
     FGCP NodeDriver
     """
 
-    print 'Test: %s' % driver
+    print('Test: %s' % driver)
 
-    print 'Regions:'
+    print('Regions:')
     regions = driver.list_regions()
-    print regions
+    print(regions)
 
-    print 'Locations:'
+    print('Locations:')
     locations = driver.list_locations()
     for location in locations:
-        print location
+        print(location)
     test_location(location)
 
     # CHECKME: set driver location for vsystem calls
     driver.location = location.name
 
-    print 'Images:'
+    print('Images:')
     images = driver.list_images()
     for image in images:
-        print image
+        print(image)
     #image = driver.get_image('CentOS 5.4 32bit(EN)')
     test_image(image)
 
-    print 'Sizes:'
+    print('Sizes:')
     sizes = driver.list_sizes()
     for size in sizes:
-        print size
+        print(size)
     #size = driver.ex_get_size('economy')
     test_size(size)
 
-    print 'Nodes:'
+    print('Nodes:')
     nodes = driver.list_nodes()
     for node in nodes:
-        print node
+        print(node)
     #node = driver.ex_get_node_details('DB1')
     test_node(node)
 
@@ -85,12 +86,12 @@ def test_driver(driver):
     #result = driver.stop_node('My New Server', wait=True)
     #result = driver.destroy_node('My New Server', wait=True)
 
-    print 'Volumes:'
+    print('Volumes:')
     volumes = driver.list_volumes()
     volumes_by_name = {}
     for volume in volumes:
         volumes_by_name[volume.name] = volume
-        print volume
+        print(volume)
     volume = volumes_by_name['DISK1']
     test_volume(volume)
     #result = driver.create_volume('DISK2', size=1500, wait=True)
@@ -98,18 +99,18 @@ def test_driver(driver):
     #result = driver.detach_volume('DISK2', 'My New Server', wait=True)
     #result = driver.destroy_volume('DISK2', wait=True)
 
-    print 'Snapshots:' + ' (not in test fixtures)'
+    print('Snapshots:' + ' (not in test fixtures)')
     #volume = volumes_by_name['WebApp2']
     #snapshots = driver.list_volume_snapshots(volume)
     #for snapshot in snapshots:
     #    print snapshot
     #test_snapshot(snapshot)
 
-    print 'Backups:'
+    print('Backups:')
     volume = volumes_by_name['DB1']
     backups = driver.ex_list_volume_backups(volume)
     for backup in backups:
-        print backup
+        print(backup)
     test_backup(backup)
 
     #test_node_volume(node, volume)
@@ -153,7 +154,7 @@ def test_location(location):
     """
     FGCP NodeLocation
     """
-    print 'Test: %s' % location
+    print('Test: %s' % location)
     #location = driver.get_location('Python API Demo System')
 
     """
@@ -182,7 +183,7 @@ def test_image(image):
     """
     FGCP NodeImage
     """
-    print 'Test: %s' % image
+    print('Test: %s' % image)
     #softwares = image.list_softwares()
     #sizes = image.list_sizes()
 
@@ -193,7 +194,7 @@ def test_size(size):
     """
     FGCP NodeSize
     """
-    print 'Test: %s' % size
+    print('Test: %s' % size)
     pass
 
 
@@ -201,7 +202,7 @@ def test_node(node):
     """
     FGCP Node
     """
-    print 'Test: %s' % node
+    print('Test: %s' % node)
     #status = node.status()
 
     """
@@ -242,7 +243,7 @@ def test_volume(volume):
     """
     FGCP StorageVolume
     """
-    print 'Test: %s' % volume
+    print('Test: %s' % volume)
     #status = volume.status()
 
     """
@@ -265,7 +266,7 @@ def test_snapshot(snapshot):
     """
     FGCP VolumeSnapshot
     """
-    print 'Test: %s' % snapshot
+    print('Test: %s' % snapshot)
     #backup.restore(wait=True)
     #backup.destroy()
     pass
@@ -275,7 +276,7 @@ def test_backup(backup):
     """
     FGCP VolumeSnapshot (or BackupTargetRecoveryPoint)
     """
-    print 'Test: %s' % backup
+    print('Test: %s' % backup)
     #backup.restore(wait=True)
     #backup.destroy()
     pass
@@ -285,7 +286,7 @@ def test_node_volume(node, volume):
     """
     FGCP Node + FGCP StorageVolume Combination
     """
-    print 'Test: %s + %s' % (node, volume)
+    print('Test: %s + %s' % (node, volume))
     #result = volume.attach(node)
     #result = volume.detach(node)
     pass
@@ -295,7 +296,7 @@ def test_vnic(vnic):
     """
     FGCP VNic - TODO
     """
-    print 'Test: %s' % vnic
+    print('Test: %s' % vnic)
     pass
 
 
@@ -303,7 +304,7 @@ def test_firewall(firewall):
     """
     FGCP Firewall - TODO
     """
-    print 'Test: %s' % firewall
+    print('Test: %s' % firewall)
     #status = firewall.status()
     """
     #result = firewall.start(wait=True)
@@ -338,7 +339,7 @@ def test_loadbalancer(loadbalancer):
     """
     FGCP LoadBalancer - TODO
     """
-    print 'Test: %s' % loadbalancer
+    print('Test: %s' % loadbalancer)
     #status = loadbalancer.status()
     """
     #result = loadbalancer.start(wait=True)
@@ -388,7 +389,7 @@ def test_floating_ip(floating_ip):
     """
     FGCP floating_ip - TODO
     """
-    print 'Test: %s' % floating_ip
+    print('Test: %s' % floating_ip)
     #status = floating_ip.status()
     #result = floating_ip.attach(wait=True)
     #result = floating_ip.detach(wait=True)

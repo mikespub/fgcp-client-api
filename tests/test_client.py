@@ -22,6 +22,7 @@ The client methods below are organized by client role, i.e. Monitor, Operator, D
 Note: with version 1.0.x and later of the library, most of these client methods can now directly be
 replaced by corresponding resource actions.
 """
+from __future__ import print_function
 
 
 def fgcp_client_walker(key_file, region):
@@ -47,7 +48,7 @@ def test_monitor(key_file, region, vsysName, debug):
     from fgcp.client import FGCPMonitor
     client = FGCPMonitor(key_file, region)
 
-    print '\nUsing %s\n' % repr(client)
+    print('\nUsing %s\n' % repr(client))
 
     client.debug = debug
 
@@ -64,7 +65,7 @@ def test_operator(key_file, region, vsysName, debug):
     from fgcp.client import FGCPOperator
     client = FGCPOperator(key_file, region)
 
-    print '\nUsing %s\n' % repr(client)
+    print('\nUsing %s\n' % repr(client))
 
     client.debug = debug
 
@@ -101,7 +102,7 @@ def test_designer(key_file, region, vsysName, debug):
     from fgcp.client import FGCPDesigner
     client = FGCPDesigner(key_file, region)
 
-    print '\nUsing %s\n' % repr(client)
+    print('\nUsing %s\n' % repr(client))
 
     client.debug = debug
     client.verbose = 1
@@ -130,9 +131,9 @@ def test_client(key_file, region, vsysName, debug):
     from fgcp.client import FGCPClient
     client = FGCPClient(key_file, region)
 
-    print '\nUsing %s\n' % repr(client)
+    print('\nUsing %s\n' % repr(client))
 
-    print 'All of the above'
+    print('All of the above')
 
 
 if __name__ == "__main__":

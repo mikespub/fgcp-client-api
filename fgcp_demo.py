@@ -22,6 +22,7 @@ Requirements: this module uses tlslite.utils or gdata.tlslite.utils to create
 the key signature, see https://pypi.python.org/pypi/tlslite-ng or
 https://pypi.python.org/pypi/tlslite for download and installation
 """
+from __future__ import print_function
 
 
 def fgcp_via_libcloud():
@@ -67,7 +68,7 @@ def fgcp_run_sample(pem_file, region, private_key=None):
 
 
 def fgcp_show_usage(name='fgcp_demo.py'):
-    print """Client API library for the Fujitsu Global Cloud Platform (FGCP)
+    print("""Client API library for the Fujitsu Global Cloud Platform (FGCP)
 
 Usage: %s [pem_file] [region]
 
@@ -91,7 +92,7 @@ Note: to convert your .p12 or .pfx file to unencrypted PEM format, you can use
 the following 'openssl' command:
 
 openssl pkcs12 -in UserCert.p12 -out client.pem -nodes
-""" % name
+""" % name)
 
 
 if __name__ == "__main__":

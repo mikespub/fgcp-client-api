@@ -30,6 +30,7 @@ for vserver in vsystem.vservers:
     result = vserver.backup(wait=True)
 ...
 """
+from __future__ import print_function
 
 import time
 
@@ -124,9 +125,9 @@ class FGCPElement(object):
         Show dump of the FGCP Element for development
         """
         try:
-            print self.pformat(self)
+            print(self.pformat(self))
         except:
-            print self.__dict__
+            print(self.__dict__)
 
     #=========================================================================
 
@@ -237,7 +238,7 @@ class FGCPResource(FGCPElement):
         # CHECKME: keep track of verbose ourselves - in all resource objects ???
         if self._proxy is not None:
             if self._proxy.verbose > 0:
-                print text
+                print(text)
 
     #=========================================================================
 
@@ -605,13 +606,13 @@ class FGCPVDataCenter(FGCPResource):
 
     def show_vsystem_usage(self, vsysNames=None):
         date, usagelist = self.get_vsystem_usage(vsysNames)
-        print 'Usage Report on %s' % date
+        print('Usage Report on %s' % date)
         for usageinfo in usagelist:
             #entry.pprint()
-            print
-            print 'VSystem: %s [%s]' % (usageinfo.vsysName, usageinfo.vsysId)
+            print()
+            print('VSystem: %s [%s]' % (usageinfo.vsysName, usageinfo.vsysId))
             for product in usageinfo.products:
-                print '  %s:\t%s %s' % (product.productName, product.usedPoints, product.unitName)
+                print('  %s:\t%s %s' % (product.productName, product.usedPoints, product.unitName))
 
     def show_vsystem_status(self, sep='\t'):
         for vsystem in self.list_vsystems():

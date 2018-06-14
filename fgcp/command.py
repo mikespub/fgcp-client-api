@@ -32,6 +32,7 @@ for vsys in vsystems:
         status = api_proxy.GetVServerStatus(vsys.vsysId, vserver.vserverId)
     ...
 """
+from __future__ import print_function
 
 from fgcp import FGCPError
 
@@ -68,11 +69,11 @@ class FGCPCommand(FGCPProxyServer):
 
     def show_output(self, text=''):
         if self.verbose > 0:
-            print text
+            print(text)
 
     def show_status(self, text=''):
         if self.verbose > 1:
-            print text
+            print(text)
 
     def ListVSYSDescriptor(self, keyword=None, estimateFrom=None, estimateTo=None):
         """"
@@ -381,7 +382,7 @@ class FGCPCommand(FGCPProxyServer):
     def CreateMultipleVServer(self, vsysId, vservers):
         filename = 'dummy.xml'
         vserversXML = self._get_vserversXML(vservers)
-        print vserversXML
+        print(vserversXML)
         result = self.do_action('CreateMultipleVServer', {'vsysId': vsysId, 'vserversXMLFilePath': filename}, {'name': 'vserversXMLFilePath', 'filename': filename, 'body': vserversXML})
         return result.vservers
 
@@ -758,7 +759,7 @@ class FGCPCommand(FGCPProxyServer):
         """
         filename = 'dummy.xml'
         authInfoXML = self._get_authInfoXML(users)
-        print authInfoXML
+        print(authInfoXML)
         result = self.do_action('UpdateUserAuthority', {'authInfoXMLFilePath': filename}, {'name': 'authInfoXMLFilePath', 'filename': filename, 'body': authInfoXML})
         return result.responseStatus
 
@@ -817,7 +818,7 @@ class FGCPCommand(FGCPProxyServer):
         # CHECKME: this reissues the key each time, or removes it if contractNrs is empty
         filename = 'dummy.xml'
         contractsXML = self._get_contractsXML(contractNrs)
-        print contractsXML
+        print(contractsXML)
         result = self.do_action('SetVSYSDescriptorCopyKey', {'vsysDescriptorId': vsysDescriptorId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
         return result.responseStatus
 
@@ -842,7 +843,7 @@ class FGCPCommand(FGCPProxyServer):
         # CHECKME: this reissues the key each time, or removes it if contractNrs is empty
         filename = 'dummy.xml'
         contractsXML = self._get_contractsXML(contractNrs)
-        print contractsXML
+        print(contractsXML)
         result = self.do_action('SetDiskImageCopyKey', {'diskImageId': diskImageId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
         return result.responseStatus
 
@@ -867,7 +868,7 @@ class FGCPCommand(FGCPProxyServer):
         # CHECKME: this reissues the key each time, or removes it if contractNrs is empty
         filename = 'dummy.xml'
         contractsXML = self._get_contractsXML(contractNrs)
-        print contractsXML
+        print(contractsXML)
         result = self.do_action('SetVDiskBackupCopyKey', {'vsysId': vsysId, 'backupId': backupId, 'contractsXMLFilePath': filename}, {'name': 'contractsXMLFilePath', 'filename': filename, 'body': contractsXML})
         return result.responseStatus
 

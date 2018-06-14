@@ -32,6 +32,7 @@ for vserver in vsystem.vservers:
 
 Note: you need to unzip the file 'fixtures.zip' in tests/fixtures first
 """
+from __future__ import print_function
 
 import httplib
 import time
@@ -209,7 +210,7 @@ class FGCPTestServerWithFixtures(FGCPTestServer):
         # check if we have a request file
         self._file = os.path.join(self._path, '%s.request.xml' % self._testid)
         if not os.path.isfile(self._file):
-            print body
+            print(body)
             raise FGCPServerError('INVALID_PATH', 'File %s does not exist' % self._file)
         # compare body with request file
         f = open(self._file, 'rb')

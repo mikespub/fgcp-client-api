@@ -30,6 +30,7 @@ design = vdc.get_vsystem_design('Demo System')
 #design.load_vsystem('Demo System')
 design.save_file('new_demo_system.txt')
 """
+from __future__ import print_function
 
 import sys
 import time
@@ -64,7 +65,7 @@ class FGCPDesign(FGCPResource):
         # CHECKME: add line continuations before exec() !?
         try:
             # Note: FGCPElement().pformat() writes objects initialized with the right values
-            exec 'from fgcp.resource import *\nvsystem = ' + lines.replace("\r\n", "\\\r\n")
+            exec('from fgcp.resource import *\nvsystem = ' + lines.replace("\r\n", "\\\r\n"))
         except:
             #raise FGCPDesignError('INVALID_FORMAT', 'File %s seems to have some syntax errors' % self.filePath)
             raise
@@ -730,7 +731,7 @@ class FGCPVisual(FGCPDesign):
             for nat_rule in nat_rules:
                 #nat_rule.pprint()
                 if nat_rule.publicIp not in natting:
-                    print "Invalid NAT rule FROM"
+                    print("Invalid NAT rule FROM")
                     nat_rule.pprint()
                     #return
                 #if nat_rule.privateIp not in networks['DMZ']:
@@ -789,7 +790,7 @@ class FGCPVisual(FGCPDesign):
             mapip[vnic.privateIp] = vserver
 
         if 'INTERNET' not in fw_rules:
-            print fw_rules
+            print(fw_rules)
             fw_rules['INTERNET'] = {}
         if 'DMZ' not in fw_rules['INTERNET']:
             fw_rules['INTERNET']['DMZ'] = {}
@@ -829,7 +830,7 @@ class FGCPVisual(FGCPDesign):
                         target_idx[natted] = self.add_unknown(natted)
                     fw_port_idx[natted][fw_rule.dstPort] = target_idx[natted]
             else:
-                print "Unknown destination for FW_RULE"
+                print("Unknown destination for FW_RULE")
                 fw_rule.pprint()
                 sys.exit()
 
@@ -840,8 +841,8 @@ class FGCPVisual(FGCPDesign):
             except:
                 groups = []
             if loadbalancer.slbVip not in fw_port_idx:
-                print "No port mapping for SLB in FW_RULE?"
-                print fw_port_idx
+                print("No port mapping for SLB in FW_RULE?")
+                print(fw_port_idx)
                 fw_port_idx[loadbalancer.slbVip] = {}
                 if loadbalancer.slbVip not in target_idx:
                     target_idx[loadbalancer.slbVip] = self.add_loadbalancer(loadbalancer)
@@ -852,8 +853,8 @@ class FGCPVisual(FGCPDesign):
                 slb_rules[loadbalancer.slbVip][group.port1] = group
                 # CHECKME: save FW port idx for mapping with SLB rules later, instead of linking to SLB here?
                 if group.port1 not in fw_port_idx[loadbalancer.slbVip]:
-                    print "No port mapping for SLB in FW_RULE?"
-                    print fw_port_idx
+                    print("No port mapping for SLB in FW_RULE?")
+                    print(fw_port_idx)
                     group.pprint()
                     #sys.exit()
                     # CHECKME: add red Deny port instead?
@@ -887,8 +888,8 @@ class FGCPVisual(FGCPDesign):
                 slb_rules[loadbalancer.slbVip][group.port2] = group
                 # CHECKME: save FW port idx for mapping with SLB rules later, instead of linking to SLB here?
                 if group.port2 not in fw_port_idx[loadbalancer.slbVip]:
-                    print "No port mapping for SLB in FW_RULE?"
-                    print fw_port_idx
+                    print("No port mapping for SLB in FW_RULE?")
+                    print(fw_port_idx)
                     group.pprint()
                     #sys.exit()
                     # CHECKME: add red Deny port instead?
@@ -919,10 +920,10 @@ class FGCPVisual(FGCPDesign):
 
         for natted in fw_port_idx:
             if natted not in slb_rules:
-                print "Natted not in SLB rules?"
-                print natted
-                print slb_rules
-                print fw_port_idx
+                print("Natted not in SLB rules?")
+                print(natted)
+                print(slb_rules)
+                print(fw_port_idx)
                 if natted not in target_idx:
                     target_idx[natted] = self.add_unknown(natted)
                 #sys.exit()
@@ -930,8 +931,8 @@ class FGCPVisual(FGCPDesign):
             for dstPort in fw_port_idx[natted]:
                 if dstPort in slb_rules[natted]:
                     continue
-                print "dstPort not in SLB rules?"
-                print natted, dstPort
+                print("dstPort not in SLB rules?")
+                print(natted, dstPort)
                 #print slb_rules
                 #print fw_port_idx
                 #sys.exit()

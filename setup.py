@@ -1,3 +1,4 @@
+from __future__ import print_function
 # http://www.packtpub.com/article/writing-a-package-in-python
 from setuptools import setup, Command
 
@@ -54,7 +55,7 @@ class DocsCommand(Command):
             filename = modname + '.html'
             if not os.path.exists(filename):
                 continue
-            print filename
+            print(filename)
             f = open(filename)
             lines = f.read()
             f.close()
@@ -104,7 +105,7 @@ class DocsCommand(Command):
             self.get_html(file, wikipages[file], '<div class="markdown-body">', '</div>', wikireplace, footer)
 
     def get_html(self, file, url, start_seq='<body>', end_seq='</body>', links={}, footer='<br /></body></html>'):
-        print file
+        print(file)
         import urllib2
         f = urllib2.urlopen(url)
         lines = f.read()

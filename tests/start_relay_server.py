@@ -26,6 +26,7 @@ In order to use this CGI server for relay testing, you need to adapt the lines
 at the bottom of this script, and specify your own certificate and
 region there
 """
+from __future__ import print_function
 
 import CGIHTTPServer
 
@@ -111,13 +112,13 @@ if __name__ == "__main__":
     parent = os.path.dirname(__file__)
     sys.path.append(parent)
     sys.path.append(os.path.join(parent, 'cgi-bin'))
-    print """
+    print("""
 This is a really basic CGI server that allows you to test the really basic
 Relay CGI script, by specifying the following region in your scripts:
 
     region='relay=http://localhost:8000/cgi-bin/fgcp_relay.py'
 
-"""
+""")
     pem_file = '../client.pem'
     region = 'de'
     run_relay_server(pem_file, region)

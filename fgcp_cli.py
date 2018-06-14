@@ -1,4 +1,5 @@
 #!/usr/bin/python2.7
+from __future__ import print_function
 import os
 import sys
 from fgcp.resource import FGCPVDataCenter
@@ -22,10 +23,10 @@ class FGCP_CLI(object):
         self.vsysName = None
 
     def show_usage(self, argv):
-        print argv[0], '<vsysName> <vserverName> status|start|stop|restart'
+        print(argv[0], '<vsysName> <vserverName> status|start|stop|restart')
 
     def run(self, argv):
-        print argv
+        print(argv)
         if len(argv) < 2:
             self.show_usage(argv)
             return self.list_vsystems()
@@ -36,7 +37,7 @@ class FGCP_CLI(object):
         vserver = self.get_vserver(argv[1], argv[2])
         status = vserver.status()
         if len(argv) < 4:
-            print status
+            print(status)
             result = vserver
         elif argv[3] == 'status':
             result = status
@@ -49,7 +50,7 @@ class FGCP_CLI(object):
         elif argv[3] == 'halt':
             result = vserver.stop(self.wait, force=True)
         else:
-            print 'Invalid option %s' % argv[3]
+            print('Invalid option %s' % argv[3])
             result = vserver
         return result
 
@@ -88,14 +89,14 @@ class FGCP_Menu(FGCP_CLI):
     def loop(self, obj=None, depth=0):
         if not obj:
             obj = self.get_vdc()
-        print self.dump(obj)
+        print(self.dump(obj))
         while True:
-            print depth, type(obj).__name__
+            print(depth, type(obj).__name__)
             method = self.select_method(obj)
             if not method:
                 break
             result = self.run_method(obj, method)
-            print self.dump(result)
+            print(self.dump(result))
             item = self.select_result(obj, method, result)
             if not item:
                 continue
@@ -111,9 +112,9 @@ class FGCP_Menu(FGCP_CLI):
         methodlist = sorted(self.get_methods(obj))
         for method in methodlist:
             selected[str(idx)] = method
-            print '%s. %s' % (idx, method)
+            print('%s. %s' % (idx, method))
             idx += 1
-        print '%s. %s' % (0, 'Return')
+        print('%s. %s' % (0, 'Return'))
         if len(methodlist) < 1:
             default = '0'
         idx = raw_input('Please select %s method [%s] ' % (type(obj).__name__, default))
@@ -127,7 +128,7 @@ class FGCP_Menu(FGCP_CLI):
         params = self.get_method_params(obj, method)
         if not params:
             return getattr(obj, method)()
-        print params
+        print(params)
         return getattr(obj, method)(*params)
 
     def get_method_params(self, obj, method):
@@ -165,7 +166,7 @@ class FGCP_Menu(FGCP_CLI):
         get_method = method.replace('list_', 'get_')[:-1]
         if not hasattr(obj, get_method):
             return
-        print get_method
+        print(get_method)
         idx = 1
         selected = {}
         for item in result:
@@ -174,10 +175,10 @@ class FGCP_Menu(FGCP_CLI):
             else:
                 id = item
             selected[str(idx)] = id
-            print '%s. %s' % (idx, id)
+            print('%s. %s' % (idx, id))
             idx += 1
         default = '1'
-        print '%s. %s' % (0, 'Return')
+        print('%s. %s' % (0, 'Return'))
         idx = raw_input('Please select %s item [%s] ' % (type(result[0]).__name__, default))
         if not idx:
             idx = default
@@ -202,4 +203,4 @@ if __name__ == "__main__":
         sys.exit()
     cli = FGCP_CLI(key_file, region)
     result = cli.run(sys.argv)
-    print cli.dump(result)
+    print(cli.dump(result))

@@ -32,6 +32,7 @@ for vsys in vsystems:
         status = xmlrpc_proxy.do_action('GetVServerStatus', {'vsysId': vsys.vsysId, 'vserverId': vserver.vserverId})
     ...
 """
+from __future__ import print_function
 
 import time
 import base64
@@ -43,9 +44,9 @@ except:
     try:
         from gdata.tlslite.utils import keyfactory
     except:
-        print """Requirements: this module uses tlslite.utils or gdata.tlslite.utils to create
+        print("""Requirements: this module uses tlslite.utils or gdata.tlslite.utils to create
 the key signature, see https://pypi.python.org/pypi/tlslite-ng or
-https://pypi.python.org/pypi/tlslite for download and installation."""
+https://pypi.python.org/pypi/tlslite for download and installation.""")
         exit()
 from xml.etree import ElementTree
 
@@ -305,17 +306,17 @@ class FGCPConnection:
         headers = self.get_headers(attachments)
         body = self.get_body(action, params, attachments)
         if self.debug > 10:
-            print 'Saving request for %s' % self._testid
+            print('Saving request for %s' % self._testid)
             if not hasattr(self, '_tester'):
                 # use test API server for saving tests too
                 from fgcp.server import FGCPTestServerWithFixtures
                 setattr(self, '_tester', FGCPTestServerWithFixtures())
             self._tester.save_request(self._testid, body)
         elif self.debug > 2:
-            print 'XML-RPC Request for %s:' % self._testid
-            print body
+            print('XML-RPC Request for %s:' % self._testid)
+            print(body)
         elif self.debug > 0:
-            print self._testid
+            print(self._testid)
 
         # send XML-RPC request
         self.send('POST', self.uri, body, headers)
@@ -323,21 +324,21 @@ class FGCPConnection:
         # receive XML-RPC response
         data = self.receive()
         if self.debug > 10:
-            print 'Saving response for %s' % self._testid
+            print('Saving response for %s' % self._testid)
             self._tester.save_response(self._testid, data)
         elif self.debug > 2:
-            print 'XML-RPC Response for %s:' % self._testid
-            print data
+            print('XML-RPC Response for %s:' % self._testid)
+            print(data)
 
         # analyze XML-RPC response
         try:
             resp = FGCPResponseParser().parse_data(data, self)
         except:
-            print 'Invalid XML-RPC Response:'
-            print data
+            print('Invalid XML-RPC Response:')
+            print(data)
             raise
         if self.debug > 1:
-            print 'FGCP Response for %s:' % action
+            print('FGCP Response for %s:' % action)
             resp.pprint()
         # CHECKME: raise exception whenever we don't have SUCCESS
         if resp.responseStatus != 'SUCCESS':
