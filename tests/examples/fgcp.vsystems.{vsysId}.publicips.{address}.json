@@ -1,0 +1,7 @@
+{
+  "vsysId": "DEMO-VSYSTEM", 
+  "publicipStatus": "ATTACHED", 
+  "_class": "FGCPPublicIP", 
+  "v4v6Flag": "IPv4", 
+  "address": "publicip.1"
+}

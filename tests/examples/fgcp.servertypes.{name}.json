@@ -1,0 +1,18 @@
+{
+  "expectedUsage": "744", 
+  "name": "advanced", 
+  "price": "0.39360", 
+  "disks": [], 
+  "productName": "Advanced", 
+  "chargeType": "amount", 
+  "memory": "7.5", 
+  "id": "islanda-cbrm_1520", 
+  "_class": "FGCPServerType", 
+  "cpu": {
+    "cpuPerf": "4.0", 
+    "cpuArch": "", 
+    "_class": "FGCPServerTypeCPU", 
+    "numOfCpu": "1"
+  }, 
+  "productId": "DEU-VM-0001-0003"
+}

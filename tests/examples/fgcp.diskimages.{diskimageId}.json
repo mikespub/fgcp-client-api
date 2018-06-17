@@ -1,0 +1,346 @@
+{
+  "servertypes": [
+    {
+      "expectedUsage": "744", 
+      "name": "advanced", 
+      "price": "0.39360", 
+      "disks": [], 
+      "productName": "Advanced", 
+      "chargeType": "amount", 
+      "memory": "7.5", 
+      "id": "islanda-cbrm_1520", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-0003"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "advanced_15", 
+      "price": "0.59050", 
+      "productName": "Advanced 15", 
+      "chargeType": "amount", 
+      "memory": "15.0", 
+      "id": "islanda-cbrm_876229", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-1003"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "advanced_3", 
+      "price": "0.29530", 
+      "productName": "Advanced 3", 
+      "chargeType": "amount", 
+      "memory": "3.4", 
+      "id": "islanda-cbrm_876228", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-0103"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "advanced_30", 
+      "price": "1.15860", 
+      "productName": "Advanced 30", 
+      "chargeType": "amount", 
+      "memory": "30.0", 
+      "id": "islanda-cbrm_876230", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-2003"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "economy", 
+      "price": "0.09820", 
+      "productName": "Economy", 
+      "chargeType": "amount", 
+      "memory": "1.7", 
+      "id": "islanda-cbrm_1516", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "1.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-0001"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "high_performance", 
+      "price": "0.78730", 
+      "productName": "High-Performance", 
+      "chargeType": "amount", 
+      "memory": "15.0", 
+      "id": "islanda-cbrm_1522", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "2"
+      }, 
+      "productId": "DEU-VM-0001-0004"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "high_performance_3", 
+      "price": "0.52480", 
+      "productName": "High-Performance 3", 
+      "chargeType": "amount", 
+      "memory": "3.4", 
+      "id": "islanda-cbrm_876231", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "2"
+      }, 
+      "productId": "DEU-VM-0001-0204"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "high_performance_7", 
+      "price": "0.62330", 
+      "productName": "High-Performance 7", 
+      "chargeType": "amount", 
+      "memory": "7.5", 
+      "id": "islanda-cbrm_876232", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "2"
+      }, 
+      "productId": "DEU-VM-0001-0104"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "mini", 
+      "price": "0.04590", 
+      "productName": "Mini", 
+      "chargeType": "amount", 
+      "memory": "1.7", 
+      "id": "islanda-cbrm_876224", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "0.5", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-0000"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "quad_high", 
+      "price": "3.14940", 
+      "productName": "Quad High", 
+      "chargeType": "amount", 
+      "memory": "60.0", 
+      "id": "islanda-cbrm_842602", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "8"
+      }, 
+      "productId": "DEU-VM-0001-0012"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "quad_high_15", 
+      "price": "1.96840", 
+      "productName": "Quad High 15", 
+      "chargeType": "amount", 
+      "memory": "15.0", 
+      "id": "islanda-cbrm_876234", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "8"
+      }, 
+      "productId": "DEU-VM-0001-0212"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "quad_high_30", 
+      "price": "2.31730", 
+      "productName": "Quad High 30", 
+      "chargeType": "amount", 
+      "memory": "30.0", 
+      "id": "islanda-cbrm_842603", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "8"
+      }, 
+      "productId": "DEU-VM-0001-0112"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "standard", 
+      "price": "0.19730", 
+      "productName": "Standard", 
+      "chargeType": "amount", 
+      "memory": "3.4", 
+      "id": "islanda-cbrm_1518", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "2.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-0002"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "standard_15", 
+      "price": "0.46040", 
+      "productName": "Standard 15", 
+      "chargeType": "amount", 
+      "memory": "15.0", 
+      "id": "islanda-cbrm_876226", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "2.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-2002"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "standard_30", 
+      "price": "0.98420", 
+      "productName": "Standard 30", 
+      "chargeType": "amount", 
+      "memory": "30.0", 
+      "id": "islanda-cbrm_876227", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "2.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-3002"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "standard_7", 
+      "price": "0.26310", 
+      "productName": "Standard 7", 
+      "chargeType": "amount", 
+      "memory": "7.5", 
+      "id": "islanda-cbrm_876225", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "2.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "1"
+      }, 
+      "productId": "DEU-VM-0001-1002"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "w_high", 
+      "price": "1.57470", 
+      "productName": "Double High", 
+      "chargeType": "amount", 
+      "memory": "30.0", 
+      "id": "islanda-cbrm_443485", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "4"
+      }, 
+      "productId": "DEU-VM-0001-0011"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "w_high_15", 
+      "price": "1.15860", 
+      "productName": "Double High 15", 
+      "chargeType": "amount", 
+      "memory": "15.0", 
+      "id": "islanda-cbrm_842601", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "4"
+      }, 
+      "productId": "DEU-VM-0001-0111"
+    }, 
+    {
+      "expectedUsage": "744", 
+      "name": "w_high_7", 
+      "price": "0.98420", 
+      "productName": "Double High 7", 
+      "chargeType": "amount", 
+      "memory": "7.5", 
+      "id": "islanda-cbrm_876233", 
+      "_class": "FGCPServerType", 
+      "cpu": {
+        "cpuPerf": "4.0", 
+        "cpuArch": "", 
+        "_class": "FGCPServerTypeCPU", 
+        "numOfCpu": "4"
+      }, 
+      "productId": "DEU-VM-0001-0211"
+    }
+  ], 
+  "description": "OSS Web Platform(Ruby/PostgreSQL)", 
+  "licenseInfo": "", 
+  "creatorName": "DEMO", 
+  "osName": "CentOS 6.2 64bit (English)", 
+  "diskimageName": "CentOS6.2/Ruby /PostgreSQL(EN)", 
+  "diskimageId": "IMG0011_Cent62_64_Rub_PSQL_NoSPT", 
+  "osType": "pv", 
+  "softwares": [
+    {
+      "_class": "FGCPImageSoftware", 
+      "name": "OSS Web Platform(Ruby/PostgreSQL)", 
+      "license": ""
+    }
+  ], 
+  "_class": "FGCPDiskImage", 
+  "registrant": "DEMO", 
+  "imageType": "original", 
+  "size": "10.0"
+}

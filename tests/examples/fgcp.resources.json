@@ -1,0 +1,26 @@
+[
+  {
+    "href": "/vsystems", 
+    "_class": "FGCPVSystem", 
+    "name": "vsystems", 
+    "description": "Virtual Systems"
+  }, 
+  {
+    "href": "/servertypes", 
+    "_class": "FGCPServerType", 
+    "name": "servertypes", 
+    "description": "Server Types"
+  }, 
+  {
+    "href": "/diskimages", 
+    "_class": "FGCPDiskImage", 
+    "name": "diskimages", 
+    "description": "Disk Images"
+  }, 
+  {
+    "href": "/vsysdescriptors", 
+    "_class": "FGCPVSysDescriptor", 
+    "name": "vsysdescriptors", 
+    "description": "System Templates"
+  }
+]

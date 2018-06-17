@@ -1,0 +1,119 @@
+[
+  {
+    "efmId": "DEMO-VSYSTEM-S-0002", 
+    "webAccelerator": "false", 
+    "firmUpdateExist": "false", 
+    "efmName": "SLB1", 
+    "_status": "RUNNING", 
+    "creator": "DEMO", 
+    "slbVip": "SLB1", 
+    "configUpdateExist": "false", 
+    "comment": "", 
+    "efmStatus": "RUNNING", 
+    "ccacerts": "", 
+    "backout": "false", 
+    "currentVersion": "2.0", 
+    "efmType": "SLB", 
+    "groups": [
+      {
+        "maxConnection": "10000", 
+        "protocol": "http", 
+        "interval": "60", 
+        "uniqueType": "By connection", 
+        "targets": [
+          {
+            "serverId": "DEMO-VSYSTEM-S-0003", 
+            "_class": "FGCPSLBTarget", 
+            "ipAddress": "WebApp1", 
+            "serverName": "WebApp1", 
+            "port1": "80"
+          }, 
+          {
+            "serverId": "DEMO-VSYSTEM-S-0006", 
+            "_class": "FGCPSLBTarget", 
+            "ipAddress": "WebApp2", 
+            "serverName": "WebApp2", 
+            "port1": "80"
+          }
+        ], 
+        "recoveryAction": "switch-back", 
+        "port1": "80", 
+        "timeout": "10", 
+        "retryCount": "3", 
+        "monitorType": "ping", 
+        "_class": "FGCPSLBGroup", 
+        "id": "10", 
+        "causes": [
+          {
+            "_status": "default", 
+            "_class": "FGCPSLBCause", 
+            "cat": "HIGH_STRESS"
+          }, 
+          {
+            "_status": "customize", 
+            "_class": "FGCPSLBCause", 
+            "cat": "LIMIT_ACCESS"
+          }, 
+          {
+            "_status": "customize", 
+            "_class": "FGCPSLBCause", 
+            "cat": "MAINTE"
+          }, 
+          {
+            "_status": "customize", 
+            "_class": "FGCPSLBCause", 
+            "cat": "SERVER_STOP"
+          }, 
+          {
+            "_status": "default", 
+            "_class": "FGCPSLBCause", 
+            "cat": "SYSTEM"
+          }
+        ], 
+        "balanceType": "minimum-connection-strict"
+      }, 
+      {
+        "maxConnection": "58000", 
+        "protocol": "tcp", 
+        "interval": "60", 
+        "uniqueType": "By connection", 
+        "targets": [
+          {
+            "serverId": "DEMO-VSYSTEM-S-0003", 
+            "_class": "FGCPSLBTarget", 
+            "ipAddress": "WebApp1", 
+            "serverName": "WebApp1", 
+            "port1": "22"
+          }, 
+          {
+            "serverId": "DEMO-VSYSTEM-S-0006", 
+            "_class": "FGCPSLBTarget", 
+            "ipAddress": "WebApp2", 
+            "serverName": "WebApp2", 
+            "port1": "22"
+          }
+        ], 
+        "recoveryAction": "switch-back", 
+        "port1": "22", 
+        "timeout": "10", 
+        "retryCount": "3", 
+        "monitorType": "ping", 
+        "_class": "FGCPSLBGroup", 
+        "id": "20", 
+        "balanceType": "round-robin"
+      }
+    ], 
+    "servercerts": "", 
+    "latestVersion": "2.0", 
+    "_class": "FGCPLoadBalancer", 
+    "ipAddress": "SLB1", 
+    "backups": [
+      {
+        "backupId": "5", 
+        "_class": "FGCPBackup", 
+        "backupTime": "Dec 23, 2011 10:13:06 PM"
+      }
+    ], 
+    "category": "SLB"
+  }
+]

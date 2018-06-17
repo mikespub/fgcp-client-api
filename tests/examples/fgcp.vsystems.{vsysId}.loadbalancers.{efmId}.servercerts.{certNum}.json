@@ -1,0 +1,7 @@
+{
+  "certNum": "19", 
+  "_class": "FGCPSLBServerCert", 
+  "subject": "CN=mysite.example.com", 
+  "validity": "Sep  9 15:34:00 2017 GMT -> Dec  8 15:34:00 2017 GMT", 
+  "issuer": "C=US, O=Let's Encrypt, CN=Let's Encrypt Authority X3"
+}

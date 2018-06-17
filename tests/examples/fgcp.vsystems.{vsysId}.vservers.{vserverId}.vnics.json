@@ -1,0 +1,8 @@
+[
+  {
+    "networkId": "DEMO-VSYSTEM-N-DMZ", 
+    "nicNo": "0", 
+    "_class": "FGCPVNic", 
+    "privateIp": "WebApp1"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "v4v6Flag": "IPv4", 
+  "vsysId": "DEMO-VSYSTEM", 
+  "_class": "FGCPPublicIP", 
+  "address": "publicip.1"
+}

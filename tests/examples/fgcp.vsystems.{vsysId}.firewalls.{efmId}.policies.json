@@ -1,0 +1,121 @@
+[
+  {
+    "to_zone": "DEMO-VSYSTEM-N-INTERNET", 
+    "_class": "FGCPFWDirection", 
+    "from_zone": "DEMO-VSYSTEM-N-DMZ", 
+    "policies": [
+      {
+        "dstService": "NONE", 
+        "src": "any", 
+        "dstPort": "any", 
+        "protocol": "tcp-udp", 
+        "log": "Off", 
+        "dstType": "IP", 
+        "dst": "any", 
+        "srcPort": "any", 
+        "srcType": "IP", 
+        "action": "Accept", 
+        "_class": "FGCPFWPolicy", 
+        "id": "45999"
+      }
+    ]
+  }, 
+  {
+    "to_zone": "DEMO-VSYSTEM-N-SECURE1", 
+    "_class": "FGCPFWDirection", 
+    "from_zone": "DEMO-VSYSTEM-N-DMZ", 
+    "policies": [
+      {
+        "dstService": "NONE", 
+        "src": "any", 
+        "dstPort": "3306", 
+        "protocol": "tcp", 
+        "log": "Off", 
+        "dstType": "IP", 
+        "dst": "DB1", 
+        "srcPort": "any", 
+        "srcType": "IP", 
+        "action": "Accept", 
+        "_class": "FGCPFWPolicy", 
+        "id": "10306"
+      }
+    ]
+  }, 
+  {
+    "to_zone": "DEMO-VSYSTEM-N-DMZ", 
+    "_class": "FGCPFWDirection", 
+    "from_zone": "DEMO-VSYSTEM-N-INTERNET", 
+    "policies": [
+      {
+        "dstService": "NONE", 
+        "src": "any", 
+        "dstPort": "22", 
+        "protocol": "tcp", 
+        "log": "On", 
+        "dstType": "IP", 
+        "dst": "publicip.1", 
+        "srcPort": "any", 
+        "srcType": "IP", 
+        "action": "Accept", 
+        "_class": "FGCPFWPolicy", 
+        "id": "35022"
+      }, 
+      {
+        "dstService": "NONE", 
+        "src": "any", 
+        "dstPort": "80", 
+        "protocol": "tcp", 
+        "log": "Off", 
+        "dstType": "IP", 
+        "dst": "publicip.1", 
+        "srcPort": "any", 
+        "srcType": "IP", 
+        "action": "Accept", 
+        "_class": "FGCPFWPolicy", 
+        "id": "35080"
+      }
+    ]
+  }, 
+  {
+    "to_zone": "DEMO-VSYSTEM-N-DMZ", 
+    "_class": "FGCPFWDirection", 
+    "from_zone": "DEMO-VSYSTEM-N-SECURE1", 
+    "policies": [
+      {
+        "dstService": "NONE", 
+        "src": "any", 
+        "dstPort": "22", 
+        "protocol": "tcp", 
+        "log": "Off", 
+        "dstType": "IP", 
+        "dst": "any", 
+        "srcPort": "any", 
+        "srcType": "IP", 
+        "action": "Accept", 
+        "_class": "FGCPFWPolicy", 
+        "id": "12022"
+      }
+    ]
+  }, 
+  {
+    "to_zone": "DEMO-VSYSTEM-N-INTERNET", 
+    "_class": "FGCPFWDirection", 
+    "from_zone": "DEMO-VSYSTEM-N-SECURE1", 
+    "policies": [
+      {
+        "dstService": "NONE", 
+        "src": "any", 
+        "dstPort": "any", 
+        "protocol": "tcp-udp", 
+        "log": "Off", 
+        "dstType": "IP", 
+        "dst": "any", 
+        "srcPort": "any", 
+        "srcType": "IP", 
+        "action": "Accept", 
+        "_class": "FGCPFWPolicy", 
+        "id": "46999"
+      }
+    ]
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "api": {
+    "description": "This is a simple REST API that allows you to GET resources from the FGCP Demo System. This demo does not support creating, updating or deleting resources.\n\nThe URLs for the top-level resources can be found in the 'href' attributes here to get you started.", 
+    "href": "/", 
+    "version": "1.5.0", 
+    "name": "FGCP Demo REST API"
+  }, 
+  "resources": [
+    {
+      "href": "/vsystems", 
+      "_class": "FGCPVSystem", 
+      "name": "vsystems", 
+      "description": "Virtual Systems"
+    }, 
+    {
+      "href": "/servertypes", 
+      "_class": "FGCPServerType", 
+      "name": "servertypes", 
+      "description": "Server Types"
+    }, 
+    {
+      "href": "/diskimages", 
+      "_class": "FGCPDiskImage", 
+      "name": "diskimages", 
+      "description": "Disk Images"
+    }, 
+    {
+      "href": "/vsysdescriptors", 
+      "_class": "FGCPVSysDescriptor", 
+      "name": "vsysdescriptors", 
+      "description": "System Templates"
+    }
+  ]
+}

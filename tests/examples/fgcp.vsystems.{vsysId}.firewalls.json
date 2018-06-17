@@ -1,0 +1,164 @@
+[
+  {
+    "category": "FW", 
+    "comment": "", 
+    "firmUpdateExist": "false", 
+    "efmName": "Firewall", 
+    "efmId": "DEMO-VSYSTEM-S-0001", 
+    "creator": "DEMO", 
+    "backout": "false", 
+    "configUpdateExist": "false", 
+    "efmStatus": "RUNNING", 
+    "currentVersion": "3.0", 
+    "efmType": "FW", 
+    "dns": {
+      "_class": "FGCPFWDns", 
+      "type": "AUTO", 
+      "primary": "80.70.163.10", 
+      "secondary": ""
+    }, 
+    "nat": [
+      {
+        "publicIp": "publicip.1", 
+        "_class": "FGCPFWNATRule", 
+        "snapt": "true", 
+        "privateIp": "SLB1"
+      }
+    ], 
+    "directions": [
+      {
+        "to_zone": "DEMO-VSYSTEM-N-INTERNET", 
+        "_class": "FGCPFWDirection", 
+        "from_zone": "DEMO-VSYSTEM-N-DMZ", 
+        "policies": [
+          {
+            "dstService": "NONE", 
+            "src": "any", 
+            "dstPort": "any", 
+            "protocol": "tcp-udp", 
+            "log": "Off", 
+            "dstType": "IP", 
+            "dst": "any", 
+            "srcPort": "any", 
+            "srcType": "IP", 
+            "action": "Accept", 
+            "_class": "FGCPFWPolicy", 
+            "id": "45999"
+          }
+        ]
+      }, 
+      {
+        "to_zone": "DEMO-VSYSTEM-N-SECURE1", 
+        "_class": "FGCPFWDirection", 
+        "from_zone": "DEMO-VSYSTEM-N-DMZ", 
+        "policies": [
+          {
+            "dstService": "NONE", 
+            "src": "any", 
+            "dstPort": "3306", 
+            "protocol": "tcp", 
+            "log": "Off", 
+            "dstType": "IP", 
+            "dst": "DB1", 
+            "srcPort": "any", 
+            "srcType": "IP", 
+            "action": "Accept", 
+            "_class": "FGCPFWPolicy", 
+            "id": "10306"
+          }
+        ]
+      }, 
+      {
+        "to_zone": "DEMO-VSYSTEM-N-DMZ", 
+        "_class": "FGCPFWDirection", 
+        "from_zone": "DEMO-VSYSTEM-N-INTERNET", 
+        "policies": [
+          {
+            "dstService": "NONE", 
+            "src": "any", 
+            "dstPort": "22", 
+            "protocol": "tcp", 
+            "log": "On", 
+            "dstType": "IP", 
+            "dst": "publicip.1", 
+            "srcPort": "any", 
+            "srcType": "IP", 
+            "action": "Accept", 
+            "_class": "FGCPFWPolicy", 
+            "id": "35022"
+          }, 
+          {
+            "dstService": "NONE", 
+            "src": "any", 
+            "dstPort": "80", 
+            "protocol": "tcp", 
+            "log": "Off", 
+            "dstType": "IP", 
+            "dst": "publicip.1", 
+            "srcPort": "any", 
+            "srcType": "IP", 
+            "action": "Accept", 
+            "_class": "FGCPFWPolicy", 
+            "id": "35080"
+          }
+        ]
+      }, 
+      {
+        "to_zone": "DEMO-VSYSTEM-N-DMZ", 
+        "_class": "FGCPFWDirection", 
+        "from_zone": "DEMO-VSYSTEM-N-SECURE1", 
+        "policies": [
+          {
+            "dstService": "NONE", 
+            "src": "any", 
+            "dstPort": "22", 
+            "protocol": "tcp", 
+            "log": "Off", 
+            "dstType": "IP", 
+            "dst": "any", 
+            "srcPort": "any", 
+            "srcType": "IP", 
+            "action": "Accept", 
+            "_class": "FGCPFWPolicy", 
+            "id": "12022"
+          }
+        ]
+      }, 
+      {
+        "to_zone": "DEMO-VSYSTEM-N-INTERNET", 
+        "_class": "FGCPFWDirection", 
+        "from_zone": "DEMO-VSYSTEM-N-SECURE1", 
+        "policies": [
+          {
+            "dstService": "NONE", 
+            "src": "any", 
+            "dstPort": "any", 
+            "protocol": "tcp-udp", 
+            "log": "Off", 
+            "dstType": "IP", 
+            "dst": "any", 
+            "srcPort": "any", 
+            "srcType": "IP", 
+            "action": "Accept", 
+            "_class": "FGCPFWPolicy", 
+            "id": "46999"
+          }
+        ]
+      }
+    ], 
+    "latestVersion": "3.0", 
+    "_class": "FGCPFirewall", 
+    "backups": [
+      {
+        "backupId": "3", 
+        "_class": "FGCPBackup", 
+        "backupTime": "Dec 23, 2011 10:04:55 PM"
+      }, 
+      {
+        "backupId": "2", 
+        "_class": "FGCPBackup", 
+        "backupTime": "Jun 2, 2011 1:10:28 PM"
+      }
+    ]
+  }
+]

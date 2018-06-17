@@ -1,0 +1,19 @@
+{
+  "vserverType": "economy", 
+  "creator": "DEMO", 
+  "vserverName": "WebApp1", 
+  "diskimageName": "CentOS 5.4 32bit(EN)", 
+  "vdisks": "", 
+  "diskimageId": "IMG_f36620_M15GX18N755IWW", 
+  "vserverId": "DEMO-VSYSTEM-S-0003", 
+  "vserverStatus": "RUNNING", 
+  "vnics": [
+    {
+      "networkId": "DEMO-VSYSTEM-N-DMZ", 
+      "nicNo": "0", 
+      "_class": "FGCPVNic", 
+      "privateIp": "WebApp1"
+    }
+  ], 
+  "_class": "FGCPVServer"
+}

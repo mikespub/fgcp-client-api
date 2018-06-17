@@ -185,6 +185,7 @@ setup(
     author='mikespub',
     author_email='fgcp@mikespub.net',
     packages=['fgcp'],
+    install_requires=['future>=0.16.0'],
     license='Apache License 2.0',
     url='https://github.com/mikespub/fgcp-client-api',
     long_description=long_description,

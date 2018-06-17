@@ -1,0 +1,31 @@
+[
+  {
+    "certNum": "19", 
+    "_class": "FGCPSLBServerCert", 
+    "subject": "CN=mysite.example.com", 
+    "validity": "Sep  9 15:34:00 2017 GMT -> Dec  8 15:34:00 2017 GMT", 
+    "issuer": "C=US, O=Let's Encrypt, CN=Let's Encrypt Authority X3"
+  }, 
+  {
+    "certNum": "20", 
+    "_class": "FGCPSLBServerCert", 
+    "subject": "CN=mysite.example.com", 
+    "validity": "Dec  7 21:38:29 2017 GMT -> Mar  7 21:38:29 2018 GMT", 
+    "issuer": "C=US, O=Let's Encrypt, CN=Let's Encrypt Authority X3"
+  }, 
+  {
+    "certNum": "21", 
+    "_class": "FGCPSLBServerCert", 
+    "subject": "CN=mysite.example.com", 
+    "validity": "Mar  8 06:22:50 2018 GMT -> Jun  6 06:22:50 2018 GMT", 
+    "issuer": "C=US, O=Let's Encrypt, CN=Let's Encrypt Authority X3"
+  }, 
+  {
+    "issuer": "C=US, O=Let's Encrypt, CN=Let's Encrypt Authority X3", 
+    "validity": "Jun  6 08:41:03 2018 GMT -> Sep  4 08:41:03 2018 GMT", 
+    "certNum": "22", 
+    "_class": "FGCPSLBServerCert", 
+    "groupId": "443", 
+    "subject": "CN=mysite.example.com"
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "vserverType": "economy", 
+    "creator": "DEMO", 
+    "vserverName": "WebApp1", 
+    "diskimageName": "CentOS 5.4 32bit(EN)", 
+    "vdisks": "", 
+    "diskimageId": "IMG_f36620_M15GX18N755IWW", 
+    "vserverId": "DEMO-VSYSTEM-S-0003", 
+    "vserverStatus": "RUNNING", 
+    "vnics": [
+      {
+        "networkId": "DEMO-VSYSTEM-N-DMZ", 
+        "nicNo": "0", 
+        "_class": "FGCPVNic", 
+        "privateIp": "WebApp1"
+      }
+    ], 
+    "_class": "FGCPVServer"
+  }, 
+  {
+    "vserverType": "advanced", 
+    "creator": "DEMO", 
+    "vserverName": "DB1", 
+    "diskimageName": "CentOS 5.4 64bit(EN)", 
+    "vdisks": [
+      {
+        "vdiskStatus": "NORMAL", 
+        "vdiskName": "DISK1", 
+        "creator": "DEMO", 
+        "vdiskId": "DEMO-VSYSTEM-D-0001", 
+        "attachedTo": "DEMO-VSYSTEM-S-0005", 
+        "backups": "", 
+        "_class": "FGCPVDisk", 
+        "size": "100.0"
+      }
+    ], 
+    "diskimageId": "IMG_f36620_5ERF3849UO", 
+    "vserverId": "DEMO-VSYSTEM-S-0005", 
+    "vserverStatus": "RUNNING", 
+    "backups": [
+      {
+        "backupId": "0003", 
+        "_class": "FGCPBackup", 
+        "timeval": "1325094699.0", 
+        "backupTime": "Dec 28, 2011 6:51:39 PM"
+      }
+    ], 
+    "_class": "FGCPVServer", 
+    "vnics": [
+      {
+        "networkId": "DEMO-VSYSTEM-N-SECURE1", 
+        "nicNo": "0", 
+        "_class": "FGCPVNic", 
+        "privateIp": "DB1"
+      }
+    ]
+  }, 
+  {
+    "vserverType": "economy", 
+    "creator": "DEMO", 
+    "vserverName": "WebApp2", 
+    "diskimageName": "CentOS 32bit Upgraded Image", 
+    "vdisks": "", 
+    "diskimageId": "IMG_f36620_GNFDMQHXLE68", 
+    "vserverId": "DEMO-VSYSTEM-S-0006", 
+    "vserverStatus": "RUNNING", 
+    "vnics": [
+      {
+        "networkId": "DEMO-VSYSTEM-N-DMZ", 
+        "nicNo": "0", 
+        "_class": "FGCPVNic", 
+        "privateIp": "WebApp2"
+      }
+    ], 
+    "_class": "FGCPVServer"
+  }
+]

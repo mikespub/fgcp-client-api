@@ -1,0 +1,47 @@
+[
+  {
+    "description": "1-tier Skeleton", 
+    "keyword": "1-tier,Skeleton", 
+    "creatorName": "DEMO", 
+    "vsysdescriptorId": "1-tier_Skeleton_de_001", 
+    "_class": "FGCPVSysDescriptor", 
+    "registrant": "DEMO", 
+    "vsysdescriptorName": "1-tier Skeleton"
+  }, 
+  {
+    "description": "RHEL 1-Tier [RHEL6.4 64bit/Support Included (24 hours, 365 days)]", 
+    "keyword": "RHEL,Red,Hat,Linux,6.4,64", 
+    "creatorName": "DEMO", 
+    "vsysdescriptorId": "1_RHEL64EN64_SPT24_K", 
+    "_class": "FGCPVSysDescriptor", 
+    "registrant": "DEMO", 
+    "vsysdescriptorName": "RHEL 1-Tier [RHEL6.4 64bit/Support Included (24 hours, 365 days)]"
+  }, 
+  {
+    "description": "2-tier Skeleton", 
+    "keyword": "2-tier,Skeleton", 
+    "creatorName": "DEMO", 
+    "vsysdescriptorId": "2-tier_Skeleton_de_001", 
+    "_class": "FGCPVSysDescriptor", 
+    "registrant": "DEMO", 
+    "vsysdescriptorName": "2-tier Skeleton"
+  }, 
+  {
+    "description": "Windows 2-tier System[Win2k8R2SE IIS/SQL2k8R2SE]", 
+    "keyword": "Web,DB,IIS,SQL,windows,2008,SE", 
+    "creatorName": "DEMO", 
+    "vsysdescriptorId": "2_W2k8R2SE_IIS_SQL2k8R2SEende001", 
+    "_class": "FGCPVSysDescriptor", 
+    "registrant": "DEMO", 
+    "vsysdescriptorName": "Windows 2-Tier System[Win2k8R2SE IIS/SQL2k8R2SE]"
+  }, 
+  {
+    "description": "3-tier Skeleton", 
+    "keyword": "3-tier,Skeleton", 
+    "creatorName": "DEMO", 
+    "vsysdescriptorId": "3-tier_Skeleton_de_001", 
+    "_class": "FGCPVSysDescriptor", 
+    "registrant": "DEMO", 
+    "vsysdescriptorName": "3-tier Skeleton"
+  }
+]

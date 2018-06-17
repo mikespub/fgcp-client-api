@@ -1,0 +1,398 @@
+[
+  {
+    "description": "OSS Web Platform(Ruby/PostgreSQL)", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.2 64bit (English)", 
+    "diskimageName": "CentOS6.2/Ruby /PostgreSQL(EN)", 
+    "diskimageId": "IMG0011_Cent62_64_Rub_PSQL_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Web Platform(Ruby/PostgreSQL)", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "OSS Development Support Tools", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.2 64bit (English)", 
+    "diskimageName": "CentOS6.2/DevSup(EN)", 
+    "diskimageId": "IMG0012_Cent62_64_DST_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Development Support Tools", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "OSS Web Platform(Ruby/MySQL)", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.2 64bit (English)", 
+    "diskimageName": "CentOS6.2/Ruby /MySQL(EN)", 
+    "diskimageId": "IMG0013_Cent62_64_Rub_MSQL_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Web Platform(Ruby/MySQL)", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2008 R2 EE 64bit SP1 (English)", 
+    "diskimageName": "W2k8R2EESP1(EN)", 
+    "diskimageId": "IMG0015_W2K8R2EE64SP1EN_v1_NoSPT", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "OSS Web Platform(PHP/PostgreSQL)", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.3 64bit (English)", 
+    "diskimageName": "CentOS6.3/PHP/PostgreSQL(EN)", 
+    "diskimageId": "IMG0023_Cent63_64_PHP_PSQL_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Web Platform(PHP/PostgreSQL)", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "OSS Web Platform(PHP/MySQL)", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.3 64bit (English)", 
+    "diskimageName": "CentOS6.3/PHP/MySQL(EN)", 
+    "diskimageId": "IMG0024_Cent63_64_PHP_MSQL_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Web Platform(PHP/MySQL)", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "OSS Web Platform(Tomcat/PostgreSQL)", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.3 64bit (English)", 
+    "diskimageName": "CentOS6.3/Tomcat/PostgreSQL(EN)", 
+    "diskimageId": "IMG0025_Cent63_64_Tom_PSQL_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Web Platform(Tomcat/PostgreSQL)", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "OSS Web Platform(Tomcat/MySQL)", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.3 64bit (English)", 
+    "diskimageName": "CentOS6.3/Tomcat/MySQL(EN)", 
+    "diskimageId": "IMG0026_Cent63_64_Tom_MSQL_NoSPT", 
+    "osType": "pv", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "OSS Web Platform(Tomcat/MySQL)", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.4 32bit (English)", 
+    "diskimageName": "CentOS6.4 32bit (EN)", 
+    "diskimageId": "IMG0042_Cent64_32_EN_NoSPT", 
+    "osType": "pv", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.4 64bit (English)", 
+    "diskimageName": "CentOS6.4 64bit (EN)", 
+    "diskimageId": "IMG0043_Cent64_64_EN_NoSPT", 
+    "osType": "pv", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.6 32bit(English)", 
+    "diskimageName": "CentOS6.6 32bit(EN)", 
+    "diskimageId": "IMG0053_Cent66_32_EN_NoSPT", 
+    "osType": "pv", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2012 R2 SE 64bit (English)", 
+    "diskimageName": "W2012R2SE/SQL2014SE (EN)", 
+    "diskimageId": "IMG0057_W2K12R2SE64SQL14SE_NoSPT", 
+    "osType": "hvm", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "SQLServer 2014 SE(English)", 
+        "license": "Included"
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2012 SE 64bit (English)", 
+    "diskimageName": "W2012SE (EN)", 
+    "diskimageId": "IMG0058_W2K12SE64EN_NoSPT", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2008 R2 SE 64bit SP1 (English)", 
+    "diskimageName": "W2k8R2SESP1 (EN)", 
+    "diskimageId": "IMG0059_W2K8R2SE64SP1EN_NoSPT", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2008 R2 SE 64bit SP1 (English)", 
+    "diskimageName": "W2k8R2SE/SQL2012SE (EN)", 
+    "diskimageId": "IMG0060_W2K8R2SESP1SQL12SE_NoSPT", 
+    "osType": "hvm", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "SQLServer 2012 SE (English)", 
+        "license": "Included"
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "Ubuntu 14.04 LTS 64bit (English)", 
+    "diskimageName": "Ubuntu14.04 64bit(EN)", 
+    "diskimageId": "IMG0061_Ubuntu_14_04_64_EN_NoSPT", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "", 
+    "creatorName": "DEMO", 
+    "osName": "CentOS 6.6 64bit(English)", 
+    "diskimageName": "CentOS6.6 64bit (EN)", 
+    "diskimageId": "IMG0062_Cent66_64_EN_NoSPT", 
+    "osType": "pv", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "10.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2012 R2 SE 64bit (English)", 
+    "diskimageName": "W2012R2SE  (EN)", 
+    "diskimageId": "IMG0067_W2K12R2SE64EN_NoSPT", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2012 SE 64bit (English)", 
+    "diskimageName": "W2012SE/SQL2012SE  (EN)", 
+    "diskimageId": "IMG0068_W2K12SE64ENSQL12SE_NoSPT", 
+    "osType": "hvm", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "SQLServer 2012 SE (English)", 
+        "license": "Included"
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "180.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Red Hat Enterprise Linux 6.3 64bit", 
+    "diskimageName": "RHEL6.3 64bit(EN)_wSPT", 
+    "diskimageId": "IMG1004_RHEL6_3EN64_v1_24x7SPT", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "40.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Red Hat Enterprise Linux 6.4 64bit", 
+    "diskimageName": "RHEL6.4 64bit (EN) wSPT", 
+    "diskimageId": "IMG1008_RHEL64EN64_SPT24", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "40.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Red Hat Enterprise Linux 6.7 64bit (English)", 
+    "diskimageName": "RHEL6.7 64bit (EN) wSPT", 
+    "diskimageId": "IMG1018_RHEL67EN64_SPT24", 
+    "osType": "hvm", 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "40.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2008 R2 SE 64bit (English)", 
+    "diskimageName": "W2k8R2SE/IIS(EN)", 
+    "diskimageId": "IMG_f36620_N2AXTXLSVB8QO0", 
+    "osType": "hvm", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "Internet Information Server 7.5", 
+        "license": ""
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "40.0"
+  }, 
+  {
+    "description": "", 
+    "licenseInfo": "Included", 
+    "creatorName": "DEMO", 
+    "osName": "Windows Server 2008 R2 SE 64bit (English)", 
+    "diskimageName": "W2k8R2SE/SQL2k8R2(EN)", 
+    "diskimageId": "IMG_f36620_X1TT2HSES8J1VVUO", 
+    "osType": "hvm", 
+    "softwares": [
+      {
+        "_class": "FGCPImageSoftware", 
+        "name": "SQLServer 2008 R2 SE (English)", 
+        "license": "Included"
+      }
+    ], 
+    "_class": "FGCPDiskImage", 
+    "registrant": "DEMO", 
+    "imageType": "original", 
+    "size": "40.0"
+  }
+]

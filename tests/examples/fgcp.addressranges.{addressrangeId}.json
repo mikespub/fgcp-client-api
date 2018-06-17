@@ -1,0 +1,6 @@
+{
+  "to": "192.168.255.255", 
+  "range": "MANUAL", 
+  "_class": "FGCPAddressRange", 
+  "from": "192.168.0.0"
+}

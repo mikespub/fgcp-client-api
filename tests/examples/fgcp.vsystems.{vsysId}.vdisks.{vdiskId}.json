@@ -1,0 +1,10 @@
+{
+  "vdiskStatus": "NORMAL", 
+  "vdiskName": "DISK1", 
+  "creator": "DEMO", 
+  "vdiskId": "DEMO-VSYSTEM-D-0001", 
+  "attachedTo": "DEMO-VSYSTEM-S-0005", 
+  "backups": "", 
+  "_class": "FGCPVDisk", 
+  "size": "100.0"
+}

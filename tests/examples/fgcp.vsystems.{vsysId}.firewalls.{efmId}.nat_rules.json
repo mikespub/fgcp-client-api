@@ -1,0 +1,8 @@
+[
+  {
+    "publicIp": "publicip.1", 
+    "_class": "FGCPFWNATRule", 
+    "snapt": "true", 
+    "privateIp": "SLB1"
+  }
+]
