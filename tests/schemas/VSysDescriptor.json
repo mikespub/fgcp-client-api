@@ -1,0 +1,32 @@
+{
+  "type": "object", 
+  "properties": {
+    "vsysdescriptorName": {
+      "type": "string"
+    }, 
+    "creatorName": {
+      "type": "string"
+    }, 
+    "description": {
+      "type": "string"
+    }, 
+    "registrant": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "vsysdescriptorId": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "keyword": {
+      "type": "string"
+    }
+  }
+}

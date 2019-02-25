@@ -1,0 +1,20 @@
+{
+  "type": "object", 
+  "properties": {
+    "to_zone": {
+      "type": "string"
+    }, 
+    "from_zone": {
+      "type": "string"
+    }, 
+    "policies": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/FWPolicy.json"
+      }
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

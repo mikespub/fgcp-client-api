@@ -1,0 +1,20 @@
+{
+  "type": "object", 
+  "properties": {
+    "serverId": {
+      "type": "string"
+    }, 
+    "ipAddress": {
+      "type": "string"
+    }, 
+    "serverName": {
+      "type": "string"
+    }, 
+    "port1": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

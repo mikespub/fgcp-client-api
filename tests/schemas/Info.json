@@ -1,0 +1,14 @@
+{
+  "type": "object", 
+  "properties": {
+    "api": {
+      "$ref": "schemas/API.json"
+    }, 
+    "resources": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/Resource.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "type": "object", 
+  "properties": {
+    "creator": {
+      "type": "string"
+    }, 
+    "efmId": {
+      "type": "string"
+    }, 
+    "slbVip": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "efmType": {
+      "type": "string"
+    }, 
+    "efmName": {
+      "type": "string"
+    }, 
+    "webAccelerator": {
+      "type": "string"
+    }, 
+    "firmUpdateExist": {
+      "type": "string"
+    }, 
+    "latestVersion": {
+      "type": "string"
+    }, 
+    "backups": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/Backup.json"
+      }
+    }, 
+    "configUpdateExist": {
+      "type": "string"
+    }, 
+    "comment": {
+      "type": "string"
+    }, 
+    "ccacerts": {
+      "type": "string"
+    }, 
+    "backout": {
+      "type": "string"
+    }, 
+    "currentVersion": {
+      "type": "string"
+    }, 
+    "groups": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/SLBGroup.json"
+      }
+    }, 
+    "servercerts": {
+      "type": "string"
+    }, 
+    "category": {
+      "type": "string"
+    }, 
+    "ipAddress": {
+      "type": "string"
+    }, 
+    "efmStatus": {
+      "type": "string"
+    }
+  }
+}

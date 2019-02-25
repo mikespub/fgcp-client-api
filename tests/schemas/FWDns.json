@@ -1,0 +1,17 @@
+{
+  "type": "object", 
+  "properties": {
+    "type": {
+      "type": "string"
+    }, 
+    "primary": {
+      "type": "string"
+    }, 
+    "secondary": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

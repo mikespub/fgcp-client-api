@@ -1,0 +1,14 @@
+{
+  "type": "object", 
+  "properties": {
+    "backupId": {
+      "type": "string"
+    }, 
+    "backupTime": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

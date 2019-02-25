@@ -1,0 +1,17 @@
+{
+  "type": "object", 
+  "properties": {
+    "publicIp": {
+      "type": "string"
+    }, 
+    "snapt": {
+      "type": "string"
+    }, 
+    "privateIp": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

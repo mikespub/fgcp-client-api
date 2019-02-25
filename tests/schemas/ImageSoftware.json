@@ -1,0 +1,20 @@
+{
+  "type": "object", 
+  "properties": {
+    "license": {
+      "type": "string"
+    }, 
+    "name": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

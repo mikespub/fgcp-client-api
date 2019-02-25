@@ -1,0 +1,41 @@
+{
+  "type": "object", 
+  "properties": {
+    "dstService": {
+      "type": "string"
+    }, 
+    "src": {
+      "type": "string"
+    }, 
+    "protocol": {
+      "type": "string"
+    }, 
+    "log": {
+      "type": "string"
+    }, 
+    "dstType": {
+      "type": "string"
+    }, 
+    "dst": {
+      "type": "string"
+    }, 
+    "srcPort": {
+      "type": "string"
+    }, 
+    "srcType": {
+      "type": "string"
+    }, 
+    "action": {
+      "type": "string"
+    }, 
+    "dstPort": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

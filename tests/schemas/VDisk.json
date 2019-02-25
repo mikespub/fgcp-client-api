@@ -1,0 +1,35 @@
+{
+  "type": "object", 
+  "properties": {
+    "creator": {
+      "type": "string"
+    }, 
+    "size": {
+      "type": "string"
+    }, 
+    "vdiskName": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "attachedTo": {
+      "type": "string"
+    }, 
+    "vdiskId": {
+      "type": "string"
+    }, 
+    "vdiskStatus": {
+      "type": "string"
+    }, 
+    "backups": {
+      "type": "string"
+    }
+  }
+}

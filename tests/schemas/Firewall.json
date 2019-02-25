@@ -1,0 +1,71 @@
+{
+  "type": "object", 
+  "properties": {
+    "creator": {
+      "type": "string"
+    }, 
+    "efmId": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "efmType": {
+      "type": "string"
+    }, 
+    "efmName": {
+      "type": "string"
+    }, 
+    "category": {
+      "type": "string"
+    }, 
+    "comment": {
+      "type": "string"
+    }, 
+    "firmUpdateExist": {
+      "type": "string"
+    }, 
+    "backout": {
+      "type": "string"
+    }, 
+    "configUpdateExist": {
+      "type": "string"
+    }, 
+    "latestVersion": {
+      "type": "string"
+    }, 
+    "currentVersion": {
+      "type": "string"
+    }, 
+    "dns": {
+      "$ref": "schemas/FWDns.json"
+    }, 
+    "nat": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/FWNATRule.json"
+      }
+    }, 
+    "directions": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/FWDirection.json"
+      }
+    }, 
+    "backups": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/Backup.json"
+      }
+    }, 
+    "efmStatus": {
+      "type": "string"
+    }
+  }
+}

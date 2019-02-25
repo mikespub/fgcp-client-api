@@ -1,0 +1,53 @@
+{
+  "type": "object", 
+  "properties": {
+    "maxConnection": {
+      "type": "string"
+    }, 
+    "protocol": {
+      "type": "string"
+    }, 
+    "interval": {
+      "type": "string"
+    }, 
+    "uniqueType": {
+      "type": "string"
+    }, 
+    "recoveryAction": {
+      "type": "string"
+    }, 
+    "causes": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/SLBCause.json"
+      }
+    }, 
+    "timeout": {
+      "type": "string"
+    }, 
+    "monitorType": {
+      "type": "string"
+    }, 
+    "retryCount": {
+      "type": "string"
+    }, 
+    "balanceType": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "targets": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/SLBTarget.json"
+      }
+    }, 
+    "port1": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

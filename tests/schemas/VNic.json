@@ -1,0 +1,23 @@
+{
+  "type": "object", 
+  "properties": {
+    "nicNo": {
+      "type": "string"
+    }, 
+    "privateIp": {
+      "type": "string"
+    }, 
+    "networkId": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }
+  }
+}

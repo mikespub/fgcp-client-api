@@ -1,0 +1,71 @@
+{
+  "type": "object", 
+  "properties": {
+    "creator": {
+      "type": "string"
+    }, 
+    "vsysName": {
+      "type": "string"
+    }, 
+    "firewalls": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/Firewall.json"
+      }
+    }, 
+    "baseDescriptor": {
+      "type": "string"
+    }, 
+    "vdisks": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/VDisk.json"
+      }
+    }, 
+    "vservers": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/VServer.json"
+      }
+    }, 
+    "loadbalancers": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/LoadBalancer.json"
+      }
+    }, 
+    "vsysId": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "cloudCategory": {
+      "type": "string"
+    }, 
+    "publicips": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/PublicIP.json"
+      }
+    }, 
+    "vnets": {
+      "type": "array", 
+      "items": {
+        "type": "string"
+      }
+    }, 
+    "vsysStatus": {
+      "type": "string"
+    }, 
+    "description": {
+      "type": "string"
+    }
+  }
+}

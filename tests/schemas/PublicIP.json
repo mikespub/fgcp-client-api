@@ -1,0 +1,26 @@
+{
+  "type": "object", 
+  "properties": {
+    "address": {
+      "type": "string"
+    }, 
+    "vsysId": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "v4v6Flag": {
+      "type": "string"
+    }, 
+    "publicipStatus": {
+      "type": "string"
+    }
+  }
+}

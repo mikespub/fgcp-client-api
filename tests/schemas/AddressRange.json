@@ -1,0 +1,17 @@
+{
+  "type": "object", 
+  "properties": {
+    "to": {
+      "type": "string"
+    }, 
+    "range": {
+      "type": "string"
+    }, 
+    "from": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

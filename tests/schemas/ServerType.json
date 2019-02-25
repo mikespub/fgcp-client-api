@@ -1,0 +1,44 @@
+{
+  "type": "object", 
+  "properties": {
+    "expectedUsage": {
+      "type": "string"
+    }, 
+    "memory": {
+      "type": "string"
+    }, 
+    "productId": {
+      "type": "string"
+    }, 
+    "price": {
+      "type": "string"
+    }, 
+    "name": {
+      "type": "string"
+    }, 
+    "chargeType": {
+      "type": "string"
+    }, 
+    "cpu": {
+      "$ref": "schemas/ServerTypeCPU.json"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "productName": {
+      "type": "string"
+    }, 
+    "disks": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/Empty.json"
+      }
+    }
+  }
+}

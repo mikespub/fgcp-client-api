@@ -1,0 +1,11 @@
+{
+  "type": "object", 
+  "properties": {
+    "cat": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "type": "object", 
+  "properties": {
+    "softwares": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/ImageSoftware.json"
+      }
+    }, 
+    "creatorName": {
+      "type": "string"
+    }, 
+    "description": {
+      "type": "string"
+    }, 
+    "licenseInfo": {
+      "type": "string"
+    }, 
+    "osName": {
+      "type": "string"
+    }, 
+    "size": {
+      "type": "string"
+    }, 
+    "diskimageName": {
+      "type": "string"
+    }, 
+    "osType": {
+      "type": "string"
+    }, 
+    "registrant": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "id": {
+      "type": "string"
+    }, 
+    "diskimageId": {
+      "type": "string"
+    }, 
+    "servertypes": {
+      "type": "array", 
+      "items": {
+        "$ref": "schemas/ServerType.json"
+      }
+    }, 
+    "imageType": {
+      "type": "string"
+    }
+  }
+}

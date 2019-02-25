@@ -1,0 +1,20 @@
+{
+  "type": "object", 
+  "properties": {
+    "numOfCpu": {
+      "type": "string"
+    }, 
+    "cpuArch": {
+      "type": "string"
+    }, 
+    "href": {
+      "type": "string"
+    }, 
+    "_class": {
+      "type": "string"
+    }, 
+    "cpuPerf": {
+      "type": "string"
+    }
+  }
+}
